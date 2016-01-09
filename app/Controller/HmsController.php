@@ -5412,7 +5412,7 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	echo "hello";
+	echo "hello HMS";
 	exit;
 	//$sms='You one Product is liked by some one. Kindly login into the portal for more details.';
 	//$sms1=str_replace(" ", '+', $sms);
