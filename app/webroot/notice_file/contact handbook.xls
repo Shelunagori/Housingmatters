@@ -1,0 +1,16 @@
+<table border='1'>
+<tr>
+<th>Sr no.</th>
+<th>Name</th>
+<th>Mobile</th>
+<th>Email</th>
+<th>Website</th>
+<th>Services Provider</th>
+</tr>
+<tr>
+		<td>1</td>
+		<td>Shashi Pandey</td>
+		<td>9619275496</td>
+		<td>indya.sp@gmail.com</td>
+		<td>http://localhost/test/hms/contact_handbook</td>
+		<td>electrician</td> </tr></table>

@@ -1,0 +1,27 @@
+.flash_blue{
+	background-color: #CBD9E0;
+	padding: 3px 10px 3px 10px;
+}
+
+.flash_blue > span.title{
+	font-size: 15px;
+	color: rgb(2, 106, 158);
+}
+
+.flash_blue > span.description{
+	color: 000;
+}
+
+.flash_red{
+	background-color: #DFBBAE;
+	padding: 3px 10px 3px 10px;
+}
+
+.flash_red > span.title{
+	font-size: 15px;
+	color: rgb(143, 77, 2);
+}
+
+.flash_red > span.description{
+	color: 000;
+}

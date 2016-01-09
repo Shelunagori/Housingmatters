@@ -1,0 +1,4 @@
+Transaction Date,Deposited In,Receipt Mode,Cheque No/Reference/UTR #,Date,Drawn on which Bank?,Branch of Bank,Member Name,Wing,Flat,Receipt Type,Amount,Narration 
+25-01-2015,SBI,cheque,12345,25-01-2015,Allahabad Bank,Sec-4,Anupam Tagore,A,101,M,5000,Receipt for jan
+25-01-2015,SBBJ,neft,3534,25-01-2015,,,B L Naik,B,601,O,1953,Receipt for jan
+25-01-2015,SBBJ,pg,3534,25-01-2015,,,B L Naik,B,601,M,1953,Receipt for jan

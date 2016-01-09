@@ -1,0 +1,6 @@
+ec2-52-74-61-249.ap-southeast-1.compute.amazonaws.com
+Samv@i23
+mahantesh.komanur@housingmatters.in
+ cd /var/www/html/Housingmatters
+git pull origin master
+ubuntu

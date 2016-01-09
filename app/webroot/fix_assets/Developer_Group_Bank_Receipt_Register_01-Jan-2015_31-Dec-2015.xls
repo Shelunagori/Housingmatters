@@ -1,0 +1,53 @@
+<table border='1'>
+</tr>
+<tr>
+<th colspan='10'>Developer Group Bank Receipt Register From : 01-01-2015 &nbsp;&nbsp; To : 31-12-2015 </th>
+</tr>
+<tr>
+<th>Receipt#</th>
+<th>Receipt Date </th>
+<th>Receipt Type</th>
+<th>Party Name</th>
+<th>Unit Detail</th>
+<th>Payment Mode</th>
+<th>Instrument/UTR</th>
+<th>Deposit Bank</th>
+<th>Narration</th>
+<th>Amount</th>
+</tr> <tr>
+<td>1001</td>
+<td>08-12-2015</td>
+<td>Maintenance</td>
+<td>nikhil 2</td>
+<td>Wing A 101</td>
+<td>Cheque - Andhra Bank</td>
+<td>1111</td>
+<td>SBI</td>
+<td>Narration</td>
+<td align='right'>10,000</td>
+</tr> <tr>
+<td>1002</td>
+<td>09-12-2015</td>
+<td>Other</td>
+<td>Abhilash lohar</td>
+<td>Wing B 201</td>
+<td>NEFT - </td>
+<td>dfhfdh</td>
+<td>SBBJ</td>
+<td>Narration2</td>
+<td align='right'>11,000</td>
+</tr> <tr>
+<td>1003</td>
+<td>10-12-2015</td>
+<td>Non-Residential</td>
+<td>nikhil</td>
+<td></td>
+<td>PG - </td>
+<td>hdfhfd</td>
+<td>SBI</td>
+<td>Narration3</td>
+<td align='right'>12,000</td>
+</tr><tr>
+<td colspan='9' style='text-align:right;'><b>Total</b></td>
+<td align='right'><b>33,000</b></td>
+</tr></table>

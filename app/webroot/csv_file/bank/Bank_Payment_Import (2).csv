@@ -1,0 +1,4 @@
+Transaction Date,A/c Group,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration 
+15-09-2015,Sundry Creditors Control A/c,Rk & Sons,1000,1,Cheque,intru 1,SBI,invoice 1,narr 1
+15-09-2015,Liability,Salaries,2000,2,NEFT,intru 2,SBI,invoice 2,narr 2
+15-09-2015,Expenditure ,Pest control,3000,3,PG,intru 3,SBI,invoice 3,narr 3

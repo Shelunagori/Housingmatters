@@ -1,0 +1,17 @@
+Group Name,A/c name,wing,unit,Amount Type(Debit or Credit),Amount(Opening Balance),Penalty 
+Bank Accounts,SBBJ,,,Debit,1500,
+Bank Accounts,SBI,,,Debit,2250,
+Current Liabilities,Provisions,,,Credit,12500,
+Members Control Accounts,Sudhir,Wing B,210,Debit,5500,265
+Members Control Accounts,Mr Temp,Wing B,210,Debit,2500,87
+Members Control Accounts,ashish,Wing A,103,Debit,1250,46
+Members Control Accounts,Sudhir,Wing B,201,Debit,0,
+Members Control Accounts,Rohit,Wing A,101,Debit,2800,200
+Members Control Accounts,Abhilash,Wing A,102,Credit,1525,
+Members Control Accounts,Ankit,Wing B,202,Debit,1500,
+Members Control Accounts,Vinav,Wing B,203,Debit,0,
+Sundry Creditors Control A/c,Vicky,,,Credit,123,
+Sundry Creditors Control A/c,happy,,,,,
+Sundry Creditors Control A/c,Raju,,,,,
+Sundry Debtors Control A/c,Ramesh,,,Debit,3000,
+Sundry Debtors Control A/c,Suresh,,,Debit,2000,

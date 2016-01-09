@@ -1,0 +1,5 @@
+Transaction Date,Receipt Mode,Cheque No. ,Reference/UTR,Drawn Bank name,Deposited In,Date,Member Name,Wing,Flat,Amount,Narration 
+01-02-2015,Cheque,55434,445566H,Saraswat Bank,SBI,01-02-2015,Rohit,B,202,5000,Receipt for bill
+16-02-2015,NEFT,9635,435,,SBI,16-02-2015,Rohit,B,201,4000,Receipt for bill
+25-02-2015,PG,9635,435,,SBI,25-02-2015,Rohit,B,203,3000,Receipt for bill
+02-02-2015,Cheque,55434,445566H,Saraswat Bank,SBI,02-02-2015,Rohit,B,202,2000,Receipt for bill

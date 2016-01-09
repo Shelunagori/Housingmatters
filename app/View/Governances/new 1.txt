@@ -1,0 +1,47 @@
+<div id="myModal3" style="margin-top:-5%;" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<h3 id="myModalLabel3">Select Template</h3>
+	</div>
+	
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab_1_1" data-toggle="tab">Agenda Items</a></li>
+			<li class=""><a href="#tab_1_2" data-toggle="tab">Other Notes</a></li>
+			
+		</ul>
+		<div class="scroller" data-height="400px">
+		<!---------content---------------------->
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab_1_1">
+			<?php
+			foreach ($result_template1 as $cat1) 
+			{
+			$template=$cat1["template"]["template"];
+			?>                                 
+			<div class="tmplt t_hov" onClick="templt('<?php echo $template; ?>')" data-dismiss="modal">
+			<?php echo $template; ?>
+			</div>
+			<?php } ?>
+			</div>
+			
+			<div class="tab-pane" id="tab_1_2">
+			<?php
+			foreach ($result_template2 as $cat2) 
+			{
+			$template=$cat2["template"]["template"];
+			?>                                 
+			<div class="tmplt t_hov" onClick="templt('<?php echo $template; ?>')" data-dismiss="modal">
+			<?php echo $template; ?>
+			</div>
+			<?php } ?>
+			</div>
+						
+		</div>
+		<!---------content---------------------->								
+		</div>
+
+
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</div>
