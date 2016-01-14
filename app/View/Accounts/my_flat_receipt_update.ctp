@@ -10,9 +10,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </script>
 </div>
 <?php
-
 $default_date = date('d-m-Y');
-
 ?>
 
 
@@ -119,8 +117,8 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]">
 				    </td>
 										 
 					<td>
-					<select class="m-wrap span12" disabled="disabled">
-					<option value="" style="display:none;"></option>
+					<select class="m-wrap span12 chosen">
+					<option value="" style="display:none;">Select</option>
 					<?php
 					foreach($ledger_sub_account_data as $data)
 					{
@@ -133,9 +131,12 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]">
 					$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
 					}
 					$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_iddd)));
+					if($user_id == $s_user_id)
+					{
 					?>
-					<option value="<?php echo $flat_iddd; ?>" <?php if($user_id == $s_user_id) { ?> selected="selected" <?php } ?>><?php echo $resident_name; ?> <?php echo $wing_flat; ?></option>
+					<option value="<?php echo $flat_iddd; ?>"><?php echo $resident_name; ?> <?php echo $wing_flat; ?></option>
 					<?php
+					}
 					}
 					?>
 					</select>

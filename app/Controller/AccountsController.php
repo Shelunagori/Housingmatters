@@ -5113,7 +5113,13 @@ else
 		die($output);
 		}
 
-}			
+}	
+        if(empty($child[11]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Resident'));
+		die($output);
+		}
+		
         if(empty($child[8]))
 		{
 		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount '));
