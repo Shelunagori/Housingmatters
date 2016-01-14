@@ -472,7 +472,8 @@ function cronjob()
 	{
 		$e_id=$data['email_requests']['e_id'];
 		$to=$data['email_requests']['to'];
-		$from='notice@housingmatters.in';
+		//$from='notice@housingmatters.in';
+		$from=$data['email_requests']['from'];
 		$from_name=$data['email_requests']['from_name'];
 		$subject=$data['email_requests']['subject'];
 		$message_web=$data['email_requests']['message_web'];
