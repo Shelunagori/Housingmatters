@@ -13,11 +13,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 <?php
 foreach($result_society as $data){
-	$society_name=$data["society"]["society_name"];
-	$society_reg_num=$data["society"]["society_reg_num"];
-	$society_address=$data["society"]["society_address"];
-	$society_email=$data["society"]["society_email"];
-	$society_phone=$data["society"]["society_phone"];
+	$society_name=@$data["society"]["society_name"];
+	$society_reg_num=@$data["society"]["society_reg_num"];
+	$society_address=@$data["society"]["society_address"];
+	$society_email=@$data["society"]["society_email"];
+	$society_phone=@$data["society"]["society_phone"];
 }
 
 $result_opening_balance= $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_opening_balance_via_user_id'),array('pass'=>array($s_user_id)));
