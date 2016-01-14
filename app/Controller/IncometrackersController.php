@@ -6667,6 +6667,20 @@ foreach($result_society as $data_society){
 
 $this->loadmodel('new_regular_bill');
 $condition=array('society_id'=>$s_society_id,"approval_status"=>0);
+$order=array('new_regular_bill.one_time_id'=> 'DESC');
+$result_new_regular_bill_period=$this->new_regular_bill->find('all',array('conditions'=>$condition,'order'=>$order,'limit'=>1)); 
+
+//$this->set('result_new_regular_bill_period',$result_new_regular_bill_period);
+if(sizeof($result_new_regular_bill_period)>0){
+ $bill_start_d=$result_new_regular_bill_period[0]['new_regular_bill']['bill_start_date'];
+ $bill_end_date=$result_new_regular_bill_period[0]['new_regular_bill']['bill_end_date'];
+ $this->set('bill_start_d',$bill_start_d=date('d-m-Y',$bill_start_d));
+ $this->set('bill_end_date',$bill_end_date=date('d-m-Y',$bill_end_date));
+}
+
+
+$this->loadmodel('new_regular_bill');
+$condition=array('society_id'=>$s_society_id,"approval_status"=>0);
 $order=array('new_regular_bill.one_time_id'=> 'ASC');
 $result_new_regular_bill=$this->new_regular_bill->find('all',array('conditions'=>$condition)); 
 $this->set('result_new_regular_bill',$result_new_regular_bill);
