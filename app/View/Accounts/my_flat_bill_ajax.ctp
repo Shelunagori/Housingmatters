@@ -34,7 +34,7 @@ foreach($result_ledger as $ledger_data){
 	<div align="center" style="color:#606060;">
 		<h4 style="color:#5D9B5D;"><b><?php echo strtoupper($society_name); ?></b></h4>
 		Regn # <?php echo $society_reg_num; ?><br/>
-		<?php echo $society_address; ?><br/>
+		
 		Email: <?php echo $society_email; ?> | Phone : <?php echo $society_phone; ?>
 	</div>
 	<div class="row-fluid" style="font-size:14px;">
@@ -146,23 +146,23 @@ foreach($result_ledger as $ledger_data){
 						} ?>
 						</td>
 						<td><?php echo $description; ?></td>
-						<td><?php echo $maint_charges; ?></td>
-						<td><?php echo $interest; ?></td>
-						<td><?php echo $credits; ?></td>
-						<td><?php echo $account_balance; ?></td>
+						<td style="text-align:right;"><?php echo $maint_charges; ?></td>
+						<td style="text-align:right;"><?php echo $interest; ?></td>
+						<td style="text-align:right;"><?php echo $credits; ?></td>
+						<td style="text-align:right;"><?php echo $account_balance; ?></td>
 					</tr>
 				
 			<?php } ?>
 					<tr>
 						<td colspan="3" align="right"><b>Total</b></td>
-						<td><b><?php echo $total_maint_charges; ?></b></td>
-						<td><b><?php echo $total_interest; ?></b></td>
-						<td><b><?php echo $total_credits; ?></b></td>
+						<td style="text-align:right;"><b><?php echo $total_maint_charges; ?></b></td>
+						<td style="text-align:right;"><b><?php echo $total_interest; ?></b></td>
+						<td style="text-align:right;"><b><?php echo $total_credits; ?></b></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td colspan="6" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
-						<td style="color:#33773E;"><b><?php echo $account_balance; ?></b></td>
+						<td style="color:#33773E; text-align:right;"><b><?php echo $account_balance; ?></b></td>
 					</tr>
                     </tbody>
 		</table>

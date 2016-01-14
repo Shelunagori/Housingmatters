@@ -127,7 +127,7 @@
 
 	
 </tr>
-<?php }} ?>
+<?php } } ?>
 <tr>
 <th colspan="2" style="text-align:right;">Total</th>
 <th id="deb"><?php echo $tt_debit; ?></th>

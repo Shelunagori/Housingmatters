@@ -148,23 +148,23 @@ background-color: #E6ECE7;
 						} ?>
 						</td>
 						<td><?php echo $description; ?></td>
-						<td><?php echo $maint_charges; ?></td>
-						<td><?php echo $interest; ?></td>
-						<td><?php echo $credits; ?></td>
-						<td><?php echo $account_balance; ?></td>
+						<td style="text-align:right;"><?php echo $maint_charges; ?></td>
+						<td style="text-align:right;"><?php echo $interest; ?></td>
+						<td style="text-align:right;"><?php echo $credits; ?></td>
+						<td style="text-align:right;"><?php echo $account_balance; ?></td>
 					</tr>
 				
 			<?php } ?>
 					<tr>
 						<td colspan="3" align="right"><b>Total</b></td>
-						<td><b><?php echo $total_maint_charges; ?></b></td>
-						<td><b><?php echo $total_interest; ?></b></td>
-						<td><b><?php echo $total_credits; ?></b></td>
-						<td></td>
+						<td style="text-align:right;"><b><?php echo $total_maint_charges; ?></b></td>
+						<td style="text-align:right;"><b><?php echo $total_interest; ?></b></td>
+						<td style="text-align:right;"><b><?php echo $total_credits; ?></b></td>
+						<td style="text-align:right;"></td>
 					</tr>
 					<tr>
 						<td colspan="6" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
-						<td style="color:#33773E;"><b><?php echo $account_balance; ?></b></td>
+						<td style="color:#33773E; text-align:right;"><b><?php echo $account_balance; ?></b></td>
 					</tr>
 		</table>
 	</div>
