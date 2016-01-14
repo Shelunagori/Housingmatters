@@ -494,10 +494,9 @@ function regular_bill_preview_screen_new(){
 	
 			
 		
-		foreach($new_flats_for_bill as $flat_data_id){ $inc++;
+		foreach($flats_for_bill as $flat_data_id){ $inc++;
 		    
-			$flat_id = $flat_data_id;
-			//$flat_id = (int)$this->request->data['flat_id'.$inc];
+			$flat_id = (int)$this->request->data['flat_id'.$inc];
 			//wing_id via flat_id//
 			$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 			foreach($result_flat_info as $flat_info){
@@ -3166,6 +3165,20 @@ $ih2 = implode('/',$ih_id4);
 		}
 }
 
+if(isset($this->request->data['add_non_member']))
+{
+$non_member_name = $this->request->data['mem_name'];	
+
+$auto_id=(int)$this->autoincrement('ledger_sub_account','auto_id');
+$this->loadmodel('ledger_sub_account');
+$multipleRowData = Array( Array("auto_id"=>$auto_id,"ledger_id"=>112,"name"=>$non_member_name,"delete_id"=>0,
+"society_id"=>$s_society_id));
+$this->ledger_sub_account->saveAll($multipleRowData);
+	
+}
+
+
+
 
 $this->loadmodel('ledger_sub_account');
 $conditions=array("society_id"=>$s_society_id, "ledger_id" => 34,"deactive"=>0);
@@ -3173,7 +3186,7 @@ $cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions))
 $this->set('cursor1',$cursor1);	
 
 $this->loadmodel('ledger_sub_account');
-$conditions=array("society_id"=>$s_society_id, "ledger_id" => 97);
+$conditions=array("society_id"=>$s_society_id, "ledger_id" => 112);
 $cursor11=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor11',$cursor11);	
 
@@ -3426,7 +3439,7 @@ $r_sms=$this->hms_sms_ip();
 $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
-$subject="[".$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".date('d-M-Y',$from)." against Unit ".$wing_flat."";
+$subject="[".@$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".date('d-M-Y',$from)." against Unit ".@$wing_flat."";
 $this->send_email($email,'accounts@housingmatters.in','HousingMatters',$subject,$html_bill,'donotreply@housingmatters.in');
 }
 			
@@ -3460,7 +3473,7 @@ else
 	$k = (int)$this->autoincrement('ledger','auto_id');
 	$this->loadmodel('ledger');
 	$multipleRowData = Array( Array("auto_id"=>$k, "transaction_date"=> strtotime($from2),"debit"=>$amount, 
-	"credit" =>null,"ledger_account_id"=>97,"ledger_sub_account_id"=>$res_id, 
+	"credit" =>null,"ledger_account_id"=>112,"ledger_sub_account_id"=>$res_id, 
 	"table_name"=>"adhoc_bill","element_id" => $l, "society_id" => $s_society_id));
 	$this->ledger->saveAll($multipleRowData);
 //////////////////////////
@@ -3496,7 +3509,7 @@ $multipleRowData = Array( Array("adhoc_bill_id"=>$adhoc_bill_id,"receipt_id" => 
 "html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih));
 $this->adhoc_bill->saveAll($multipleRowData);
 }
-
+exit;
 $this->Session->write('suppll',1);
 
 ?>
@@ -4110,7 +4123,20 @@ function other_charges(){
 				$this->flat->updateAll(array('other_charges'=> $other_charges),array('flat_id'=>(int)$flat_id));
 			}
 		}
-		
+	?>
+
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>Other Charges Updated Successfully</p>
+</div>
+<div class="modal-footer">
+<a href="other_charges" class="btn red">OK</a>
+</div>
+</div>
+
+<?php
 	}
 
 }
@@ -4149,11 +4175,12 @@ $this->terms_condition->updateAll(array("status" => 2),array("terms_conditions_i
 <!----alert-------------->
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-body" style="font-size:16px;">
-Terms & Condition Deleted Successfully
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>Terms & Condition Deleted Successfully</p>
 </div> 
 <div class="modal-footer">
-<a href="it_setup"   class="btn green">OK</a>
+<a href="it_setup"   class="btn red">OK</a>
 </div>
 </div>
 <!----alert-------------->
@@ -4181,11 +4208,12 @@ $this->society->updateAll(array("terms_conditions" => $terms_con),array("society
 <!----alert-------------->
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-body" style="font-size:16px;">
-Terms & Condition Added Successfully
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>Terms & Condition Added Successfully</p>
 </div> 
 <div class="modal-footer">
-<a href="it_setup"   class="btn green">OK</a>
+<a href="it_setup"   class="btn red">OK</a>
 </div>
 </div>
 <!----alert-------------->
@@ -4624,19 +4652,40 @@ $this->check_user_privilages();
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');	
-	$this->loadmodel('ledger_sub_account');
-	$condition=array('society_id'=>$s_society_id,'ledger_id'=>34,'deactive'=>0);
-	$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$condition));
-	foreach($result_ledger_sub_account as $ledger_sub_account){
-	$ledger_sub_account_user_id=$ledger_sub_account["ledger_sub_account"]["user_id"];
-	$ledger_sub_account_flat_id=$ledger_sub_account["ledger_sub_account"]["flat_id"];
-	$flats_for_bill[]=$ledger_sub_account_flat_id;
-	}
 	
-	$this->set('flats_for_bill',$flats_for_bill);
-
+	
+	$this->loadmodel('ledger_sub_account');
+		$condition=array('society_id'=>$s_society_id,'ledger_id'=>34,'deactive'=>0);
+		$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$condition));
+		$this->set('result_ledger_sub_account',$result_ledger_sub_account);
+		foreach($result_ledger_sub_account as $ledger_sub_account){
+			$ledger_sub_account_user_id=$ledger_sub_account["ledger_sub_account"]["user_id"];
+			$ledger_sub_account_flat_id=$ledger_sub_account["ledger_sub_account"]["flat_id"];
+				$flats_for_bill[]=$ledger_sub_account_flat_id;
+		}
+		///order asc wing and flat/////
+		$this->loadmodel('wing');
+		$condition=array('society_id'=>$s_society_id);
+		$order=array('wing.wing_name'=>'ASC');
+		$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+		foreach($result_wing as $wing_info){
+			$wing_id=$wing_info["wing"]["wing_id"];
+			$this->loadmodel('flat');
+			$condition=array('wing_id'=>(int)$wing_id);
+			$order=array('flat.flat_name'=>'ASC');
+			$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
+			foreach($result_flat as $flat_info){
+				$flat_id=$flat_info["flat"]["flat_id"];
+				if (in_array($flat_id, $flats_for_bill)) {
+					$new_flats_for_bill[]=$flat_id;
+				}
+			}
+		}
+		$this->set('flats_for_bill',$new_flats_for_bill);
+	
+	
 	if($this->request->is('post')){
-	foreach($flats_for_bill as $flat_id1){
+	foreach($new_flats_for_bill as $flat_id1){
 	  
 			$value =@$this->request->data[$flat_id1]; 
 			if($value==1){
@@ -4716,20 +4765,15 @@ $this->society->updateAll(array('tax'=>$tax,"tax_type"=>$type),array('society_id
 ?>
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-header">
-<center>
-<h3 id="myModalLabel3" style="color:#999;"><b>Penalty</b></h3>
-</center>
-</div>
 <div class="modal-body">
-<center>
-<h5><b>Record Updated Successfully</b></h5>
-</center>
+<h4><b>Thank You!</b></h4>
+<p>Penalty Updated Successfully</p>
 </div>
 <div class="modal-footer">
-<a href="it_penalty" class="btn blue">OK</a>
+<a href="it_penalty" class="btn red">OK</a>
 </div>
 </div>
+
 <?php
 }
 
@@ -6622,20 +6666,6 @@ foreach($result_society as $data_society){
 
 $this->loadmodel('new_regular_bill');
 $condition=array('society_id'=>$s_society_id,"approval_status"=>0);
-$order=array('new_regular_bill.one_time_id'=> 'DESC');
-$result_new_regular_bill_period=$this->new_regular_bill->find('all',array('conditions'=>$condition,'order'=>$order,'limit'=>1)); 
-
-//$this->set('result_new_regular_bill_period',$result_new_regular_bill_period);
-if(sizeof($result_new_regular_bill_period)>0){
- $bill_start_d=$result_new_regular_bill_period[0]['new_regular_bill']['bill_start_date'];
- $bill_end_date=$result_new_regular_bill_period[0]['new_regular_bill']['bill_end_date'];
- $this->set('bill_start_d',$bill_start_d=date('d-m-Y',$bill_start_d));
- $this->set('bill_end_date',$bill_end_date=date('d-m-Y',$bill_end_date));
-}
-
-
-$this->loadmodel('new_regular_bill');
-$condition=array('society_id'=>$s_society_id,"approval_status"=>0);
 $order=array('new_regular_bill.one_time_id'=> 'ASC');
 $result_new_regular_bill=$this->new_regular_bill->find('all',array('conditions'=>$condition)); 
 $this->set('result_new_regular_bill',$result_new_regular_bill);
@@ -6938,20 +6968,15 @@ $this->society->updateAll(array("neft_detail" => $neft,"neft_type"=>$neft_for),a
 ?>
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-header">
-<center>
-<h3 id="myModalLabel3" style="color:#999;"><b>Income Tracker</b></h3>
-</center>
-</div>
 <div class="modal-body">
-<center>
-<h5><b>Record Inserted Successfully</b></h5>
-</center>
+<h4><b>Thank You!</b></h4>
+<p>The NEFT Detail Updated Successfully</p>
 </div>
 <div class="modal-footer">
-<a href="neft_add" class="btn blue">OK</a>
+<a href="neft_add" class="btn red">OK</a>
 </div>
 </div>
+
 <?php
 }
 $this->loadmodel('wing');
