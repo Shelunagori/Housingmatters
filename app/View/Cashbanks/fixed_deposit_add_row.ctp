@@ -58,7 +58,7 @@ $default_date = date('d-m-Y');
 					
 					<td>
 					<input type="text"  name="interest_rate" class="m-wrap span12 corsrr" 
-					maxlength="5" onkeyup="intrest_vali(this.value,2)" 
+					maxlength="5" onkeyup="intrest_vali(this.value,<?php echo $count; ?>)" 
 					id="intrate2" style="background-color:#FFF !important; text-align:right;">
 					</td>
 					
