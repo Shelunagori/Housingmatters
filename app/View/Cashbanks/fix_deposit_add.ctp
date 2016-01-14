@@ -107,7 +107,7 @@ $default_date = date('d-m-Y');
 			   
 			   <td>
 			   <input type="text" class="m-wrap span12 corsrr" style="text-align:right; background-color:#FFF !important;" 
-			   maxlength="10" onkeyup="numeric_vali(this.value,2)" id="amttt2">
+			   maxlength="10" onkeyup="numeric_vali(this.value,1)" id="amttt1">
 			   </td>
 			   
 				 <td>
