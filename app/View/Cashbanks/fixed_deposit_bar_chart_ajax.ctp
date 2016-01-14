@@ -56,7 +56,7 @@ $cccount = (int)@$chart_array[1];
 </div>
 <div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;" class="row-fluid">
 <h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-money"></i> Fixed Deposit Maturity Profile</h4>
-<h5 style="margin-left:3%;"><b>Rupeessssss</b></h5>
+<h5 style="margin-left:3%;"><b>Rupees</b></h5>
 
 <div style="width:6.3%; height:350px; float:left;">
 

@@ -52,6 +52,7 @@ function check_charecter_name($name){
 }
 
 
+
 function sample_csv_file_for_update_user_info(){
 	$this->layout=null;
 	$s_society_id=(int)$this->Session->read('society_id');

@@ -140,8 +140,9 @@ foreach($result_society as $data){
 			<tbody>
 				<?php 
 				$inc=0; 
-				$bill_number = $this->requestAction(array('controller' => 'Hms', 'action' => 'autoincrement_with_society_ticket'),array('pass'=>array('new_regular_bill','bill_no'))); $bill_number--;
-				foreach($new_flats_for_bill as $flat){ $inc++; $bill_number++; $total=0; $due_for_payment=0;
+				 $bill_number = $this->requestAction(array('controller' => 'Hms', 'action' => 'autoincrement_with_society_ticket'),array('pass'=>array('new_regular_bill','bill_no')));  $bill_number--;
+				
+				foreach($new_flats_for_bill as $flat){ $inc++;  $total=0; $due_for_payment=0;
 				
 				//wing_id via flat_id//
 				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat)));
@@ -157,8 +158,7 @@ foreach($result_society as $data){
 					$user_name=$user_info["user"]["user_name"];
 				} 
 					
-					
-					if(($bill_for==1 && in_array($wing,$wing_array)) || $bill_for==2){ 
+					if(($bill_for==1 && in_array($wing,$wing_array)) || $bill_for==2){  $bill_number++;
 						
 					$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'), array('pass' => array($wing,$flat))); 
 					$result_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'flat_fetch2'),array('pass'=>array(@$flat,$wing))); 
@@ -277,7 +277,7 @@ foreach($result_society as $data){
 									
 									
 									if($data4[1]==1){
-										$ih_charges=$data4[2];
+										
 										$ih_charges=round($ih_charges*$multiply);
 										echo '<input type="text" class="text_bx call_calculation" name="income_head'.$income_head.$inc.'" value='.$ih_charges.' row_id="'.$inc.'" column_id="'.$column_id.'" id="income_head'.$in_count.'_'.$inc.'" />';
 										
@@ -348,25 +348,26 @@ foreach($result_society as $data){
 						<td>
 						<?php $column_id++; if($noc_ch_id==2){
 							if($noc_charge[0]==1){
+								
 								$noc_charges=$noc_charge[1];
-								$noc_charges=$noc_charges*$multiply;
+								$noc_charges=round($noc_charges*$multiply);
 								echo '<input type="text" class="text_bx call_calculation" name="noc_charges'.$inc.'" value='.$noc_charges.' column_id="'.$column_id.'"  row_id="'.$inc.'" />';
 								$total+=$noc_charges;
 							}
 							if($noc_charge[0]==2){
-								$noc_charges=$sq_feet*$noc_charge[1];
-								$noc_charges=$noc_charges*$multiply;
+								$noc_charges=$sq_feet*$noc_charge[1]; 
+								$noc_charges=round($noc_charges*$multiply);
 								echo '<input type="text" class="text_bx call_calculation" name="noc_charges'.$inc.'" value='.$noc_charges.' column_id="'.$column_id.'"  row_id="'.$inc.'" />';
 								$total+=$noc_charges;
 							}
 							if($noc_charge[0]==3){
 								$noc_charges=$noc_charge[1];
-								$noc_charges=$noc_charges*$multiply;
+								$noc_charges=round($noc_charges*$multiply);
 								echo '<input type="text" class="text_bx call_calculation" name="noc_charges'.$inc.'" value='.$noc_charges.' column_id="'.$column_id.'"  row_id="'.$inc.'" />';
 								$total+=$noc_charges;
 							}
 							if($noc_charge[0]==4){
-								$percent = $noc_charge[1];
+								$percent = $noc_charge[1]; 
 								
 								$noc_charges=round($noc_percent_amt*((10)/100));
 								//$noc_charges=$noc_charges*$multiply;
@@ -392,7 +393,7 @@ foreach($result_society as $data){
 								$other_charges_type = (int)$otheramount[1];
 								if($other_charges_type == 2)
 								{
-								$otheramount3=$otheramount2*$multiply;
+								$otheramount3=round($otheramount2*$multiply);
 								}
 								else
 								{
@@ -530,8 +531,8 @@ foreach($result_society as $data){
 </div>
 
 <div style="padding-right:20%">
-	<a href="it_regular_bill" class="btn pull-right" style="background-color: rgb(204, 204, 204);color: rgb(0, 0, 0);padding: 5px;"><i class="icon-arrow-left"></i> Back</a>
-	<button type="submit" name="generate_bill" id="generate_bill" class="btn blue pull-right" style="padding: 2px;background-color: #D40101;color: #FFF;">Generate Bill</button>
+	<a href="it_regular_bill" class="btn pull-right" style="background-color: rgb(204, 204, 204);color: rgb(0, 0, 0);padding: 5px;margin-left: 10px;"><i class="icon-arrow-left"></i> Back</a>
+	<button type="submit" name="generate_bill" id="generate_bill" class="btn blue pull-right" style="padding: 2px;background-color: #D40101;color: #FFF;margin-left: 5px;">Generate Bill</button>
 </div>
 
 </form>

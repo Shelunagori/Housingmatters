@@ -7,19 +7,11 @@ $("#fix<?php echo $id_current_page; ?>").removeClass("blue");
 $("#fix<?php echo $id_current_page; ?>").addClass("red");
 });
 </script>    
-<input type="hidden" id="fi" value="<?php echo $datef1; ?>" />
-<input type="hidden" id="ti" value="<?php echo $datet1; ?>" />
-<input type="hidden" id="cn" value="<?php echo $count; ?>" />
-
+<a style="background-color:#D9D1FA "
 <!--  Start Bank Receipt form Front End  -->
-<center>
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt" class="btn yellow" rel='tab'>Create</a>
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" class="btn" rel='tab'>View</a>
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_deposit_slip" class="btn" rel='tab'>Deposit Slip</a>
-<a href="<?php echo $webroot_path; ?>Cashbanks/new_bank_receipt" class="btn" rel='tab'>New Bank Receipt</a>
-</center>
+
 <!---- Start Import Code -->
-        <div id='suces'>
+    <?php /*    <div id='suces'>
         <div id="error_msg"></div>
         <div id="myModal3" class="modal hide fade in" style="display:none;">
         <div class="modal-backdrop fade in"></div>
@@ -667,4 +659,45 @@ $("#amttt"+ dd).val("");
 return false;		
 }
 }
-</script>
+</script>  */ ?>
+
+
+
+
+
+
+
+
+
+<form method="post">
+
+
+<input type="text" name="abc" />
+<button type="submit" name="sub555">Submit</button>
+</form>
+
+
+
+function bank_receipt()
+{
+		if($this->RequestHandler->isAjax())
+		{
+		$this->layout='blank';
+		}else{
+		$this->layout='session';
+		}
+
+		$this->ath();
+		//$this->check_user_privilages();
+
+if(isset($this->request->data['sub555']))
+{
+ $value = $this->request->data['abc'];	
+	
+$this->loadmodel('hobbies_category');
+$auto_id=(int)$this->autoincrement('hobbies_category','hobbies_id');
+$this->hobbies_category->saveAll(array("hobbies_id" => $auto_id,"hobbies_name" => $value));
+}
+	
+}
+

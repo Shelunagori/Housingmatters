@@ -28,7 +28,7 @@ $default_date = date('d-m-Y');
 		    <th style="width:14%;">Billing Date</th>
 		    <th style="width:14%;">Payment Due Date</th>
             <th style="width:20%;">Bill Type</th>
-            <th style="width:20%;">User</th>
+            <th style="width:20%;">User<a class="btn mini green" style="float:right;" onclick="add_member()"><i class="icon-plus"></i></a></th>
 			<th style="width:20%;">Income Head</th>
 			<th style="width:12%;">Amount</th>
 			</tr>
@@ -175,7 +175,7 @@ function bill_type(ttt)
 		
 <script>
 $(document).ready(function() { 
-	$('form').submit( function(ev){
+	$('form#contact-form').submit( function(ev){
 		ev.preventDefault();
 	     		var ar = [];
    
@@ -218,10 +218,37 @@ $(document).ready(function() {
 });
 
 </script>			
+<script>
+function add_member() 
+{
+$("#add_memrr").show();
+}
+function hide_add_mem()
+{
+$("#add_memrr").hide();	
+}
+
+</script>		
 		
 		
-		
-		
+<div id="add_memrr" class="hide">
+<form method="post">
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<label style="font-size:14px;">Member Name</label>
+<div class="controls">
+<input type="text" name="mem_name" class="m-wrap span8">
+<span id="vall"></span>
+</div>
+</div>
+<div class="modal-footer">
+<a class="btn" onclick="hide_add_mem()">Cancel</a>
+<button type="submit" name="add_non_member" class="btn red">Add</button>
+</div>
+</div>
+</form>
+</div> 		
 		
 		
 		

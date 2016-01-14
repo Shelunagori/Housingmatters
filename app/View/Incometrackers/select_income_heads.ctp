@@ -209,18 +209,12 @@ $(document).ready(function() {
 <div id="shwd" class="hide">
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-header">
-<center>
-<h3 id="myModalLabel3" style="color:#999;"><b>Selection of Income Head</b></h3>
-</center>
-</div>
 <div class="modal-body">
-<center>
-<h5><b class="success_report"></b></h5>
-</center>
+<h4><b>Thank You!</b></h4>
+The Income Heads Added Successfully
 </div>
 <div class="modal-footer">
-<a href="<?php echo $webroot_path; ?>Incometrackers/select_income_heads" class="btn blue" rel='tab'>OK</a>
+<a class="btn red" href="<?php echo $webroot_path; ?>Incometrackers/select_income_heads" rel="tab">OK</a>
 </div>
 </div>
 </div> 

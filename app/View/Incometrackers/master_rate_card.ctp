@@ -50,7 +50,7 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 </tr>
 </table> 
 <?php /////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
-
+<div id="validate_result"></div>
 <div class="alert alert-error hide" id="mgg">
 <button class="close" data-dismiss="alert"></button>
 <center>
@@ -59,7 +59,7 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 </div>
 
 
-<form method="post">
+<form method="post" onsubmit="">
 <center>
 <br /><Br />
 <div id="error_msg" style="background-color:white; width:100%;"></div>
@@ -259,6 +259,10 @@ $(document).ready(function() {
 		{
 		var type = $("#tp"+ p + q).val();	
         var amt = $("#rs"+ p + q).val(); 
+			if(type=== '') { $('#validate_result').html('<div style="background-color:white; color:red; padding:5px;">Please Fill All     Fields</div>'); return false; }	
+			var rs1 = document.getElementById("rs"+ p + q).value;
+			if(amt=== '') { $('#validate_result').html('<div style="background-color:white; color:red; padding:5px;">Please Fill All Fields</div>'); return false; }
+			$('#validate_result').html('');
         var flat_type_id = $("#flat_type_auto_id"+ p + q).val();
         var income_head = $("#income_head_id"+ p + q).val();
 		ar.push([type,amt,flat_type_id,income_head,mm]);

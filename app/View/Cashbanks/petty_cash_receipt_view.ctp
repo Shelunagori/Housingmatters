@@ -50,6 +50,7 @@ $b_date = date('1-m-Y');
 <div id="result" style="width:100%;">
 </center>
 <?php //////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
+
 <script>
 $(document).ready(function() {
 	$("#go").bind('click',function(){

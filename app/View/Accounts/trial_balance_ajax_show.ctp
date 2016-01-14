@@ -17,11 +17,10 @@ $society_name=$society_result[0]["society"]["society_name"];
 <span >Trial-Balance Report</span><br/>
 From: <?php echo $from; ?> To: <?php echo $to; ?>
 	<div style="overflow: auto;">
-<<<<<<< HEAD
-	<a href="trial_balance_ajax_show_excel/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $wise; ?>" class="btn mini green pull-right" ><i class="fa fa-file-excel-o"></i> </a>
-=======
+
 	<a href="trial_balance_ajax_show_excel/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $wise; ?>" class="btn mini blue pull-right" ><i class="icon-download"></i> </a>
->>>>>>> 4477a1b1f7c5a422016652202b6dc03eb5d7e534
+
+	
 	</div>
 </div>
 <div style="width:100%; overflow:auto; margin-top:10px;" class="hide_at_print">

@@ -75,7 +75,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 <!----- end  import functionality ---------->
-
+<!--
 
 <div style="border:solid 2px #4cae4c; width:100%; margin:auto;" class="portal">
 <div style="border-bottom:solid 2px #4cae4c; color:white; background-color: #5cb85c; padding:4px; font-size:20px;"><i class="icon-money"></i> Record Expense Transaction</div>
@@ -85,10 +85,10 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <div style="padding:10px;background-color:#FFF;">
 <form method="post" id="contact-form" name="myform" enctype="multipart/form-data">
 <div id="output"></div>
-
+-->
 
 <!----------Add row functionality ---------------->
-
+<!--
 <table class="" style="" id="tbb">
 <thead>
 <tr>
@@ -181,7 +181,7 @@ foreach($result_account_group as $data){
 
 <!---------- End add row functioality ---------------->
 
-
+<!--
 <br/>
 <button type="submit" name="send" class="btn blue " value="1"> Submit</button>
 <button type="button" name="draft" class="btn " value="2" id="add"> Add Row</button>
@@ -220,7 +220,149 @@ foreach($result_account_group as $data){
 	</form>
 </div>
 
+-->
 
+<!-------------------------------- Start New Expense Tracker Form ------------------------------------->
+<form method="post">
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Create New Expense Tracker Vouchers</h4>
+</div>
+<div class="portlet-body form">
+<div id="output"></div>                    
+<table class="table table-hover" style="background-color:#CDE9FE;" id="main_table">
+<tr>
+<td style="border:solid 1px blue;">
+                    
+              <table class="table table-bordered" id="sub_table2">
+                    
+                    <tr style="background-color:#E8EAE8;">
+                            <th style="width:20%;">Posting date</th>
+                            <th style="width:20%;">Date of Invoice</th>
+                            <th style="width:20%;">Due Date</th>
+                            <th style="width:20%;">Party Account Head</th>
+                            <th style="width:20%;">Invoice Reference</th>
+		    </tr>
+                    
+                    <tr style="background-color:#E8F3FF;">
+                    
+                    <td>
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" value="<?php echo date("d-m-Y"); ?>" style="background-color:white !important;">
+                    </td>
+                    
+                    
+                    <td>
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" style="background-color:white !important;">
+                    </td>
+                    
+                    
+                    <td>
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy"  style="background-color:white !important;">
+                    </td>
+                    
+                    
+                    <td>
+                                <select class="m-wrap span12 chosen">
+                                <option value="">Select</option>
+                                <?php 
+                                foreach($result_ledger_sub_account as $data){
+                                
+                                $auto_id=$data['ledger_sub_account']['auto_id'];
+                                $name=$data['ledger_sub_account']['name'];
+                                
+                                ?>
+                                <option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
+                                
+                                <?php }	?>
+                                </select>
+                    </td>
+                    
+                    
+                    <td>
+                    <input type="text" class="m-wrap span12" style="text-align:right; background-color:white !important;">
+                    </td>
+                        
+                    </tr>
+                    
+                    <tr style="background-color:#E8EAE8;">
+                      <th>Expense Head</th>
+                      <th>Amount of Invoice</th>
+                      <th>Attachment</th>
+                      <th colspan="2">Description</th>
+                    </tr>
+             
+                     <tr style="background-color:#E8F3FF;">
+                     
+                     <td>
+                                <select class="m-wrap span12 chosen">
+                                <option value="">Select</option>
+                                <?php
+                                foreach($result_account_group as $data){
+                                $accounts_id=$data['accounts_group']['accounts_id'];
+                                $auto_id=$data['accounts_group']['auto_id'];
+                                $result_ledger_account= $this->requestAction(array('controller' => 'hms', 'action' => 'expense_tracker_fetch2'),array('pass'=>array($auto_id)));
+                                foreach($result_ledger_account as $data){
+                                $led_auto_id=$data['ledger_account']['auto_id'];
+                                $ledger_name = $data['ledger_account']['ledger_name'];
+                                
+                                ?>
+                                
+                                <option value="<?php echo $led_auto_id; ?>"><?php echo $ledger_name; ?> </option>	
+                                
+                                <?php } } ?>
+                                
+                                </select>
+                     </td>
+                     
+                     
+                     <td>
+                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" onkeyup="amt_val(this.value,1)" maxlength="7" id="ammmttt1">
+                     </td>
+                     
+                     
+                     <td>
+                               
+                                
+                                
+                                <div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="">
+                                <span class="btn btn-file">
+                                <span class="fileupload-new"> file</span>
+                                <span class="fileupload-exists">Change</span>
+                                <input type="file" class="default" name="file1">
+                                </span>
+                                <span class="fileupload-preview"></span>
+                                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none"></a>
+                                </div>
+                               
+                               
+                     </td>
+                     
+                     
+                     <td colspan="2">
+                     <input type="text" class="m-wrap span12" maxlength="100" style="background-color:white !important;">
+                     </td>
+                     </tr>
+                    
+                    </table>
+
+</td>
+<td style="border:solid 1px blue;">
+<a class="btn green mini adrww" onclick="add_rowwwww()"><i class="icon-plus"></i></a><br>
+</td>
+</tr>
+</table>
+       
+                          
+<div class="form-actions">
+<button type="submit" class="btn blue">Save</button>
+<button type="button" class="btn">Cancel</button>
+</div>
+</div>
+</div>
+</form>
+
+
+<!------------------------------ End New Expense Tracker Form ----------------------------------------->
 
 <script>
 function amt_val(vv,dd)
@@ -231,18 +373,32 @@ $("#output").html('');
 }
 else
 {
-$("#output").html('<div class="alert alert-error">Please Fill Numeric amount in row'+ dd +'</div>');
+$("#output").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric Value in row '+ dd +'</div>');
 $("#ammmttt"+ dd).val("");
 return false;		
 }
 }
 </script>
 
+<script>
 
-
-
-
-
+function add_rowwwww()
+{
+$(".adrww").hide();	
+var count = $("#main_table")[0].rows.length;
+count++;
+$.ajax({
+url: 'expense_tracker_add_row?con=' + count,
+}).done(function(response) {
+$('#main_table').append(response);
+$(".adrww").show();
+});
+}
+function delete_row(ttt)
+{
+$('.content_'+ttt).remove();	
+}
+</script>
 
 
 
@@ -272,16 +428,7 @@ $(".submit_btn").bind('click',function(){
 	
 	
 	
-$("#add").bind('click',function(){
-var count = $("#count_row tr").length;
-count++;
-$.ajax({
-url: 'expense_tracker_add_row?con=' + count,
-}).done(function(response) {
-$('tbody#count_row').append(response);
 
-});
-});
 
 $(".delete").live('click',function(){	
 var id = $(this).attr("id");
@@ -331,23 +478,24 @@ m_data.append( 'file', $('input[name=file]')[0].files[0]);
 
 
 
-$('form#contact-form').submit( function(ev){ 
+$('form').submit( function(ev){ 
 	ev.preventDefault();	
 	var m_data = new FormData(); 
-	var count = $("#count_row tr").length;
+	var count = $("#main_table")[0].rows.length;
+	
 	var ar=[];
 	
 	for(var i=1; i<=count; i++){
-				var posting_date=$("#count_row tr:nth-child("+i+") td:nth-child(1) input").val();
-				var date_of_invoice=$("#count_row tr:nth-child("+i+") td:nth-child(2) input").val();
-				var due_date=$("#count_row tr:nth-child("+i+") td:nth-child(3) input").val();
-				var ex_head=$("#count_row tr:nth-child("+i+") td:nth-child(4) select").val();
-				var invoice_ref=$("#count_row tr:nth-child("+i+") td:nth-child(5) input").val();
-				var party_ac=$("#count_row tr:nth-child("+i+") td:nth-child(6) select").val();
-				var amt_inv=$("#count_row tr:nth-child("+i+") td:nth-child(7)  input").val();
-				var description=$("#count_row tr:nth-child("+i+") td:nth-child(8)  input").val();
-				//m_data.append( 'file'+i, $('input[name=file'+i+']')[0].files[0]);
-				ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
+var posting_date=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(1) input").val();
+var date_of_invoice=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(2) input").val();
+var due_date=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(3) input").val();
+var ex_head=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(4) select").val();
+var invoice_ref=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(5) input").val();
+var party_ac=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(1) select").val();
+var amt_inv=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(2) input").val();
+var description=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(4) input").val();
+//m_data.append( 'file'+i, $('input[name=file'+i+']')[0].files[0]);
+ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
 			}
 	var myJsonString = JSON.stringify(ar);
 	m_data.append('myJsonString',myJsonString);
@@ -363,7 +511,7 @@ $('form#contact-form').submit( function(ev){
 				$("#output").html(response);
 			if(response.report_type=='error'){
 			
-					$("#output").html('<div class="alert alert-error">'+response.text+'</div>');
+					$("#output").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
 					 //setInterval(function(){ $("#output").html(''); }, 10000);
 					//$("#output").html('');
 			}

@@ -107,7 +107,7 @@ $default_date = date('d-m-Y');
 			   
 			   <td>
 			   <input type="text" class="m-wrap span12 corsrr" style="text-align:right; background-color:#FFF !important;" 
-			   maxlength="10" onkeyup="numeric_vali(this.value,2)" id="amttt2">
+			   maxlength="10" onkeyup="numeric_vali(this.value,1)" id="amttt1">
 			   </td>
 			   
 				 <td>
@@ -133,8 +133,8 @@ $default_date = date('d-m-Y');
 					
 					<td>
 					<input type="text"  name="interest_rate" class="m-wrap span12 corsrr" 
-					maxlength="5" onkeyup="intrest_vali(this.value,2)" 
-					id="intrate2" style="background-color:#FFF !important;">
+					maxlength="5" onkeyup="intrest_vali(this.value,1)" 
+					id="intrate1" style="background-color:#FFF !important; text-align:right;">
 					</td>
 					
 						<td>
@@ -267,6 +267,9 @@ $(document).ready(function() {
 					if(response.type == 'error'){
 			
 			 $("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
+			$("html, body").animate({
+					 scrollTop:0
+					 },"slow");
 			}
 		    if(response.type == 'success'){
 			  $("#shwd").show();

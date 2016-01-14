@@ -112,6 +112,8 @@ foreach($result_fix_asset as $data){
 <td><?php echo $warranty_period_to; ?></td>
 <td><?php echo $maintanance_schedule; ?></td>
 <td><?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
+<a class="btn mini black tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?>,on: <?php echo $current_date; ?>">
+  !</a>
 </td>
 </tr>
 <?php } ?>

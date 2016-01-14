@@ -32,7 +32,7 @@ $default_date = date('d-m-Y');
 			   
 			   <td>
 			   <input type="text" class="m-wrap span12 corsrr" style="text-align:right; background-color:#FFF !important;" 
-			   maxlength="10" onkeyup="numeric_vali(this.value,2)" id="amttt2">
+			   maxlength="10" onkeyup="numeric_vali(this.value,<?php echo $count; ?>)" id="amttt<?php echo $count; ?>">
 			   </td>
 			   
 				 <td>
@@ -58,8 +58,8 @@ $default_date = date('d-m-Y');
 					
 					<td>
 					<input type="text"  name="interest_rate" class="m-wrap span12 corsrr" 
-					maxlength="5" onkeyup="intrest_vali(this.value,2)" 
-					id="intrate2" style="background-color:#FFF !important;">
+					maxlength="5" onkeyup="intrest_vali(this.value,<?php echo $count; ?>)" 
+					id="intrate<?php echo $count; ?>" style="background-color:#FFF !important; text-align:right;">
 					</td>
 					
 						<td>

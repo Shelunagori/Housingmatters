@@ -8,12 +8,8 @@ $hh = (int)$t_id-1;
 $terms_name = $trms_arr[$hh];
 ?>
 
-<div class="modal-header" >
-	<h4 id="myModalLabel1">Edit Terms and Conditions</h4>
-</div>
+
 <div class="modal-body">
-	
-	
 	<div class="control-group">
 	  <label class="control-label">Terms and Condition</label>
 	  <div class="controls">
@@ -26,15 +22,18 @@ $terms_name = $trms_arr[$hh];
 </div>
 <div class="modal-footer">
 	<button class="btn" id="close_edit">Close</button>
-	<button class="btn blue save_edited_terms" tems_id="<?php echo $t_id; ?>">Save</button>
+	<button class="btn red save_edited_terms" tems_id="<?php echo $t_id; ?>">Save</button>
 </div>
 
 <?php  } ?>
 
 
 <?php if($edit == 1) { ?>
-<div class="modal-body">Terms and Condition Updated Successfully</div>
-<div class="modal-footer"><button class="btn blue" id="close_edit">Ok</button></div>
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+Terms and Condition Updated Successfully
+</div>
+<div class="modal-footer"><button class="btn red" id="close_edit">Ok</button></div>
 <?php } ?>
 
 
