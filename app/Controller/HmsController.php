@@ -2456,7 +2456,15 @@ $this->layout='session';
 		}
 		
 	} */
-	exit; 
+				if(isset($this->request->data['sub555']))
+				{
+				$value = htmlentities($this->request->data['abc']);	
+
+				$this->loadmodel('contact_handbook_service');
+				$auto_id=(int)$this->autoincrement('contact_handbook_service','contact_handbook_service_id');
+				$this->contact_handbook_service->saveAll(array("contact_handbook_service_id" => $auto_id,"contact_handbook_service_name" => $value));
+				}
+
 }
 
 
