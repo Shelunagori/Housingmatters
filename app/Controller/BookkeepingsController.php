@@ -597,7 +597,7 @@ function journal_validation(){
 	$date=date("d-m-Y");
 	$time=date('h:i:a',time());
 				if(empty($tra_date)){
-				$output = json_encode(array('type'=>'error', 'text' => 'Please Select Transaction Date'));
+				$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date is Required'));
 				die($output);
 			}
 			
@@ -623,7 +623,7 @@ function journal_validation(){
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year'));
+		$output=json_encode(array('type'=>'error','text'=>'Transaction Date Should be in Open Financial Year'));
 		die($output);
 	}		
 		
@@ -636,21 +636,21 @@ function journal_validation(){
 foreach($myArray as $child){
 	$c++;
 	if(empty($child[0])){
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Select Ledger Account in rows'.$c));
+	$output = json_encode(array('type'=>'error', 'text' => 'Ledger Account is Required in row '.$c));
 	die($output);
 	}
 	if(!empty($child[2]) and !empty($child[3])){
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill only Debit or  Credit in rows'.$c));
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill only Debit or  Credit in row '.$c));
 	die($output);
 	}
 	if($child[0] == 15 || $child[0] == 33 || $child[0] == 34 || $child[0] == 35){	
 	
 	if(empty($child[1])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Ledger Sub Account in rows'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Ledger Sub Account is Required in row '.$c));
 		die($output);
 	}	
 	if(empty($child[2]) and empty($child[3])){
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Debit or Credit in rows'.$c));
+	$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit is Required in row '.$c));
 	die($output);
 	}
 	
@@ -658,7 +658,7 @@ foreach($myArray as $child){
 	}	
 	else
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric value in Debit or Credit'.$c));
+	$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit Should be Numeric Value in row '.$c));
 	die($output);
 	}
 	$total_debit = $total_debit + $child[2];
@@ -666,14 +666,14 @@ foreach($myArray as $child){
  }	
  else{
 		if(empty($child[2]) and empty($child[3])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Debit or Credit in rows'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit is Required in row '.$c));
 		die($output);
 		}	
 		if(is_numeric($child[2]) || is_numeric($child[3]))
 		{
 		}	
 	else{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric value in Debit or Credit'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit Should be Numeric Value in row '.$c));
 		die($output);
 	}
 	 $total_debit = $total_debit + $child[2];
@@ -682,7 +682,7 @@ foreach($myArray as $child){
 
 }	
 	if($total_debit != $total_credit){
-			$output = json_encode(array('type'=>'error', 'text' => 'Debit and Credit not Match '));
+			$output = json_encode(array('type'=>'error', 'text' => 'Total Debit Should be Match with Total Credit'));
 			die($output);
 		}
 		
