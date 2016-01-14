@@ -226,7 +226,7 @@ $("#error_msg").html('');
 }
 else
 {
-$("#error_msg").html('<div class="alert alert-error">Please Fill Numeric amount in row'+ ddd +'</div>');
+$("#error_msg").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric Value in row '+ ddd +'</div>');
 $("#debit"+ ddd).val("");
 return false;		
 }
@@ -241,7 +241,7 @@ $("#error_msg").html('');
 }
 else
 {
-$("#error_msg").html('<div class="alert alert-error">Please Fill Numeric amount in row'+ ddd +'</div>');
+$("#error_msg").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric Value in row '+ ddd +'</div>');
 $("#credit"+ ddd).val("");
 return false;		
 }
@@ -377,7 +377,7 @@ $(document).ready(function() {
 				
 				if(response.type == 'error'){  
 				$('#test').hide();
-					output = '<div class="alert alert-error">'+response.text+'</div>';
+					output = '<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>';
 					$("#submit").removeClass("disabled").text("submit");
 					$("html, body").animate({
 					 scrollTop:0

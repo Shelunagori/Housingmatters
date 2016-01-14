@@ -74,6 +74,16 @@ foreach($result_journal as $data){
 	$result_ledger_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));
 	$ledger_ac_name=$result_ledger_account[0]['ledger_account']['ledger_name'];
 	
+	
+$user_detaillll = $this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'user_fetch'), array('pass' => array($user_id)));		
+foreach($user_detaillll as $dataaaa){
+$prepaired_by = $dataaaa['user']['user_name'];
+}
+	
+	
+	
+	
+	
 	if($ledger_account_id == 34 ){
 	$result_ledger_sub_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($ledger_sub_account_id)));
 	$flat_id=$result_ledger_sub_account[0]['ledger_sub_account']['flat_id'];	
@@ -141,7 +151,8 @@ foreach($result_journal as $data){
 <div class="btn-group">
 <a class="btn blue mini" href="#" data-toggle="dropdown">
 <i class="icon-chevron-down"></i>	
-</a>
+</a><a class="btn mini black tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?>,on: <?php echo $current_date; ?>">
+  !</a>	
 <ul class="dropdown-menu" style="min-width:80px !important;">
 <li><a href="journal_voucher_view/<?php echo $voucher_id; ?>" target="_blank" ><i class="icon-search"></i> View</a>  </li>
 </ul>
