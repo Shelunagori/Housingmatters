@@ -3785,7 +3785,7 @@ $tds_id = $child[3];
 $net_amt = $child[4];
 $mode = $child[5];
 $instrument = $child[6];
-$bank_ac = $child[7];
+$bank_ac = (int)$child[7];
 $invoice = @$child[8];
 $narration = $child[9];
 
