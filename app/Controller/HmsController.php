@@ -58,40 +58,37 @@ function sample_csv_file_for_update_user_info(){
 	$this->layout=null;
 	$s_society_id=(int)$this->Session->read('society_id');
 	
-		
+		$filename="sample_csv_file_for_update_user_info";
+		header ("Expires: 0");
+		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+		header ("Cache-Control: no-cache, must-revalidate");
+		header ("Pragma: no-cache");
+		header ("Content-type: application/vnd.ms-excel");
+		header ("Content-Disposition: attachment; filename=".$filename.".csv");
+		header ("Content-Description: Generated Report" );
 
 		$s_role_id=$this->Session->read('role_id');
 		$s_society_id = (int)$this->Session->read('society_id');
 		$s_user_id = (int)$this->Session->read('user_id');
 
-		$output = "Name,wing,unit,email,mobile,Owner,committee \n";
+		$output = "Name,wing,unit,email,mobile \n";
 		
-		///order asc wing and flat/////
-		$this->loadmodel('wing');
-		$condition=array('society_id'=>$s_society_id);
-		$order=array('wing.wing_name'=>'ASC');
-		$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
-		foreach($result_wing as $wing_info){
-			$wing_id=$wing_info["wing"]["wing_id"];
-			$this->loadmodel('flat');
-			$condition=array('wing_id'=>(int)$wing_id);
-			$order=array('flat.flat_name'=>'ASC');
-			$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
-			foreach($result_flat as $flat_info){
-				$flat_id=$flat_info["flat"]["flat_id"];
-				$ordered_flats[]=$flat_id;
-			}
-		}
-		foreach($ordered_flats as $flat_id){
-			$this->loadmodel('user_flat');
-			$conditions=array("society_id" => $s_society_id,"flat_id" => $flat_id);
-			$result_user_flat = $this->user_flat->find('all',array('conditions'=>$conditions));
-			foreach($result_user_flat as $users_data){
-				$user_id=$users_data["user_flat"]["user_id"];
-			}
+		$this->loadmodel('user');
+		$conditions=array("society_id" => $s_society_id);
+		$result_users=$this->user->find('all',array('conditions'=>$conditions));
+		foreach($result_users as $data){
+			$user_name = $data['user']['user_name'];
+			$wing = $data['user']['wing'];
+			$flat = $data['user']['flat'];
+			$email = @$data['user']['email'];
+			$mobile = @$data['user']['mobile'];
+			$wing_name = $this->fetch_wingname_via_wingid($wing);
+			$flat_name = $this->fetch_flatname_viaflatid($flat);
+			$output.=$user_name.",".$wing_name.",".$flat_name.",".$email.",".$mobile." \n";
 		}
 		
-echo $output;
+		
+		echo $output;
 }
 function email_mobile_update(){
 	
@@ -716,6 +713,19 @@ $result=$this->wing->find('all',array('conditions'=>$conditions));
 foreach ($result as $dd) 
 {
 return $wing_name=$dd["wing"]["wing_name"];
+}
+}
+
+function fetch_flatname_viaflatid($flat_id) 
+{
+$s_society_id=$this->Session->read('society_id');
+
+$this->loadmodel('flat');
+$conditions=array("society_id"=>$s_society_id,"flat_id"=>$flat_id);
+$result=$this->flat->find('all',array('conditions'=>$conditions));
+foreach ($result as $dd) 
+{
+return $flat_name=$dd["flat"]["flat_name"];
 }
 }
 
