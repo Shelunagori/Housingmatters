@@ -52,44 +52,6 @@ function check_charecter_name($name){
 }
 
 
-
-function sample_csv_file_for_update_user_info(){
-	$this->layout=null;
-	$s_society_id=(int)$this->Session->read('society_id');
-	
-		$filename="sample_csv_file_for_update_user_info";
-		header ("Expires: 0");
-		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-		header ("Cache-Control: no-cache, must-revalidate");
-		header ("Pragma: no-cache");
-		header ("Content-type: application/vnd.ms-excel");
-		header ("Content-Disposition: attachment; filename=".$filename.".csv");
-		header ("Content-Description: Generated Report" );
-
-		$s_role_id=$this->Session->read('role_id');
-		$s_society_id = (int)$this->Session->read('society_id');
-		$s_user_id = (int)$this->Session->read('user_id');
-
-		$output = "Name,wing,unit,email,mobile \n";
-		
-		$this->loadmodel('user');
-		$conditions=array("society_id" => $s_society_id);
-		$result_users=$this->user->find('all',array('conditions'=>$conditions));
-		foreach($result_users as $data){
-			$user_name = $data['user']['user_name'];
-			$wing = $data['user']['wing'];
-			$flat = $data['user']['flat'];
-			$email = @$data['user']['email'];
-			$mobile = @$data['user']['mobile'];
-			$wing_name = $this->fetch_wingname_via_wingid($wing);
-			$flat_name = $this->fetch_flatname_viaflatid($flat);
-			$output.=$user_name.",".$wing_name.",".$flat_name.",".$email.",".$mobile." \n";
-		}
-		
-		
-		echo $output;
-}
-
 function email_mobile_update(){
 	
 $this->layout='session';	
@@ -712,19 +674,6 @@ $result=$this->wing->find('all',array('conditions'=>$conditions));
 foreach ($result as $dd) 
 {
 return $wing_name=$dd["wing"]["wing_name"];
-}
-}
-
-function fetch_flatname_viaflatid($flat_id) 
-{
-$s_society_id=$this->Session->read('society_id');
-
-$this->loadmodel('flat');
-$conditions=array("society_id"=>$s_society_id,"flat_id"=>$flat_id);
-$result=$this->flat->find('all',array('conditions'=>$conditions));
-foreach ($result as $dd) 
-{
-return $flat_name=$dd["flat"]["flat_name"];
 }
 }
 
