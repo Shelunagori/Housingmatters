@@ -14,9 +14,6 @@ public $components = array(
 
 
 
-
-
-
 var $name = 'Hms';
 
 function check_charecter_name($name){
@@ -54,6 +51,7 @@ function check_charecter_name($name){
 	
 }
 
+
 function sample_csv_file_for_update_user_info(){
 	$this->layout=null;
 	$s_society_id=(int)$this->Session->read('society_id');
@@ -90,6 +88,7 @@ function sample_csv_file_for_update_user_info(){
 		
 		echo $output;
 }
+
 function email_mobile_update(){
 	
 $this->layout='session';	
@@ -449,7 +448,7 @@ function webroot_path() {
 	$this->loadmodel('user');
 	$conditions=array("email" => "housingmatters.in@gmail.com");
 	$resultwebroot_path=$this->user->find('all',array('conditions'=>$conditions));
-	return $resultwebroot_path[0]['user']['webroot_path'];
+	return @$resultwebroot_path[0]['user']['webroot_path'];
 }
 
 
@@ -469,7 +468,6 @@ function cronjob()
 	{
 		$e_id=$data['email_requests']['e_id'];
 		$to=$data['email_requests']['to'];
-		//$from='notice@housingmatters.in';
 		$from=$data['email_requests']['from'];
 		$from_name=$data['email_requests']['from_name'];
 		$subject=$data['email_requests']['subject'];
@@ -570,7 +568,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- //Configure::write('debug', 0);
+ Configure::write('debug', 0);
 }
 
 
@@ -2506,15 +2504,7 @@ $this->layout='session';
 		}
 		
 	} */
-				if(isset($this->request->data['sub555']))
-				{
-				$value = htmlentities($this->request->data['abc']);	
-
-				$this->loadmodel('contact_handbook_service');
-				$auto_id=(int)$this->autoincrement('contact_handbook_service','contact_handbook_service_id');
-				$this->contact_handbook_service->saveAll(array("contact_handbook_service_id" => $auto_id,"contact_handbook_service_name" => $value));
-				}
-
+	exit; 
 }
 
 
@@ -5470,7 +5460,8 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	
+	//echo "hello";
+	//exit;
 	//$sms='You one Product is liked by some one. Kindly login into the portal for more details.';
 	//$sms1=str_replace(" ", '+', $sms);
 	//echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey=Ac47f5663efae985cc42d0081ef8e95b7&sender=NMINVT&to=9636653883&message='.$sms1);
@@ -9806,9 +9797,9 @@ function send_sms_for_verify_mobile(){
 	$random_otp=(string)mt_rand(1000,9999);
 
 
-
-	$dd=explode(' ',$user_name);
-	$user_name=$dd[0];
+	$user_name=$this->check_charecter_name($user_name);
+	//$dd=explode(' ',$user_name);
+	//$user_name=$dd[0];
 	$user_name=ucfirst($user_name);
 	$r_sms=$this->hms_sms_ip();
 	$working_key=$r_sms->working_key;
@@ -9938,9 +9929,9 @@ function verify_mobile_ajax()
 		 $mobile= $data['user']['mobile'];
 		 $user= $data['user']['user_name'];
 	}
-	
-	$dd=explode(' ',$user);
-	$user_name=$dd[0];
+	$user_name=$this->check_charecter_name($user);
+	//$dd=explode(' ',$user);
+	//$user_name=$dd[0];
 	$user_name=ucfirst($user_name);
 	
 $r_sms=$this->hms_sms_ip();
@@ -19979,13 +19970,13 @@ $c++;
 
 
 	if(empty($child[0])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Asset Category in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Category is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 			if(empty($child[1])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Date of Purchase in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Date of Purchase is Required in row '.$c));
 		die($output);
 		}	
 		
@@ -20010,7 +20001,7 @@ $c++;
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('type'=>'error','text'=>'Date of Purchase Should be in Open Financial Year in row '.$c));
 		die($output);
 	}
 		
@@ -20022,19 +20013,19 @@ $c++;
 		
 		
 			if(empty($child[2])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Name of Supplier in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Name of Supplier is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 			if(empty($child[3])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Rupees in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Rupees is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 		if(empty($child[4])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Asset name in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Name is Required in row '.$c));
 		die($output);
 		}	
 		
@@ -20047,7 +20038,7 @@ $c++;
 		$tttm2 = strtotime($tttm);
 		if($tttm2 < $frmm2)
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Warranty Period to can not be small than Warranty Period From  in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Warranty Period To can not be Small Than Warranty Period From  in row '.$c));
 		die($output);	
 			
 		}
