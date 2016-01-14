@@ -156,7 +156,7 @@ function expense_tracker_json(){
 		
 ////////////////   Validation code ///////////////////////////////		
 		if(empty($child[0])){
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Select Posting Date in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting Date is Required in row '.$c));
 		die($output);
 		}
 				
@@ -181,7 +181,7 @@ function expense_tracker_json(){
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('report_type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting date Should be in Open Financial Year in row '.$c));
 		die($output);
 	}					
 				
@@ -204,29 +204,48 @@ function expense_tracker_json(){
 				} */
 				if(empty($child[1])){
 					
-						$output=json_encode(array('report_type'=>'error','text'=>'Please Select Invoice Date in row'.$c));
+						$output=json_encode(array('report_type'=>'error','text'=>'Invoice Date is Required in row '.$c));
 						die($output);
 				}
 	
+	if(empty($child[2])){
+					
+						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required in row '.$c));
+						die($output);
+				}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		if(empty($part_ac)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Select Party Account Head in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Party Account Head is Required in row '.$c));
 		die($output);
 		}
 		
 		
 		if(empty($invoice_ref)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Fill Invoice Reference in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Invoice Reference is Required in row '.$c));
 		die($output);
 		}
 		
 		
 		if(empty($expense_head)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Select Expense Head in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Expense Head is Required in row '.$c));
 		die($output);
 		}
 		
 		if(empty($amt_inv)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Fill Amount of Invoice in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required in row '.$c));
 		die($output);
 		}
 		
@@ -235,7 +254,7 @@ function expense_tracker_json(){
 		}
 		else
 		{
-		$output=json_encode(array('report_type'=>'error','text'=>'Please Fill Numeric Amount of Invoice in row'.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric Value in row '.$c));
 		die($output);
 		}
 		
