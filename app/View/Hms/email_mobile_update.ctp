@@ -7,7 +7,7 @@
 			<h5>Upload CSV file in given format to import email and mobile update.</h5>
 			<input name="file1" class="default" id="image-file1" type="file">
 			<label id="vali1"></label>
-			<strong><a href="<?php echo $this->webroot; ?>Hms/sample_csv_file_for_update_user_info" download>Click here for sample format</a></strong><br/><br/>
+			<strong><a href="<?php echo $this->webroot; ?>csv_file/demo/user_enrollment_email.csv" download>Click here for sample format</a></strong><br/><br/>
 			<h5 id="submit_element" >
 			<h4>Instruction set to import users</h4>
 			<ol>

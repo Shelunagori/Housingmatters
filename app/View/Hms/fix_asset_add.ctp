@@ -168,7 +168,7 @@ $("#validdn").html('');
 }
 else
 {
-$("#validdn").html('<div class="alert alert-error" style="color:red;">Please Fill Numeric amount</div>');
+$("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric Value in row '+vv+'</div>');
 $("#amountt" + vv).val("");
 return false;		
 }
