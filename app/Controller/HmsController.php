@@ -9879,9 +9879,9 @@ function verify_mobile_ajax()
 		 $mobile= $data['user']['mobile'];
 		 $user= $data['user']['user_name'];
 	}
-	
-	$dd=explode(' ',$user);
-	$user_name=$dd[0];
+	$user_name=$this->check_charecter_name($user);
+	//$dd=explode(' ',$user);
+	//$user_name=$dd[0];
 	$user_name=ucfirst($user_name);
 	
 $r_sms=$this->hms_sms_ip();

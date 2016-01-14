@@ -494,9 +494,10 @@ function regular_bill_preview_screen_new(){
 	
 			
 		
-		foreach($flats_for_bill as $flat_data_id){ $inc++;
+		foreach($new_flats_for_bill as $flat_data_id){ $inc++;
 		    
-			$flat_id = (int)$this->request->data['flat_id'.$inc];
+			$flat_id = $flat_data_id;
+			//$flat_id = (int)$this->request->data['flat_id'.$inc];
 			//wing_id via flat_id//
 			$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 			foreach($result_flat_info as $flat_info){
