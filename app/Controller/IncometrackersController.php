@@ -494,9 +494,10 @@ function regular_bill_preview_screen_new(){
 	
 			
 		
-		foreach($flats_for_bill as $flat_data_id){ $inc++;
+		foreach($new_flats_for_bill as $flat_data_id){ $inc++;
 		    
-			$flat_id = (int)$this->request->data['flat_id'.$inc];
+			$flat_id = $flat_data_id;
+			//$flat_id = (int)$this->request->data['flat_id'.$inc];
 			//wing_id via flat_id//
 			$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 			foreach($result_flat_info as $flat_info){
@@ -6618,6 +6619,20 @@ foreach($result_society as $data_society){
 	$email_is_on_off=(int)@$data_society["society"]["account_email"];
 	$sms_is_on_off=(int)@$data_society["society"]["account_sms"];
 }
+
+$this->loadmodel('new_regular_bill');
+$condition=array('society_id'=>$s_society_id,"approval_status"=>0);
+$order=array('new_regular_bill.one_time_id'=> 'DESC');
+$result_new_regular_bill_period=$this->new_regular_bill->find('all',array('conditions'=>$condition,'order'=>$order,'limit'=>1)); 
+
+//$this->set('result_new_regular_bill_period',$result_new_regular_bill_period);
+if(sizeof($result_new_regular_bill_period)>0){
+ $bill_start_d=$result_new_regular_bill_period[0]['new_regular_bill']['bill_start_date'];
+ $bill_end_date=$result_new_regular_bill_period[0]['new_regular_bill']['bill_end_date'];
+ $this->set('bill_start_d',$bill_start_d=date('d-m-Y',$bill_start_d));
+ $this->set('bill_end_date',$bill_end_date=date('d-m-Y',$bill_end_date));
+}
+
 
 $this->loadmodel('new_regular_bill');
 $condition=array('society_id'=>$s_society_id,"approval_status"=>0);

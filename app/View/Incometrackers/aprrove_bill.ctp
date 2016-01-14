@@ -38,6 +38,8 @@ if(sizeof($result_new_regular_bill)==0){
 		echo '<div align="center"><h4>No bill is pending for approval.</h4></div>'; exit;
 	}
 ?>
+<span class="label label-info pull-right" style="padding:2px; ">Bill Period: <?php echo $bill_start_d;?> to <?php echo $bill_end_date; ?> </span>
+<div> </div>
 <form method="post" >
 <div class="portlet-body" style="background-color: #fff; overflow-x: auto;overflow-y:hidden;" align="center">
 
@@ -224,12 +226,12 @@ if($status5==1)
 ?>
 $.gritter.add({
 title: 'Regular Bill',
-text: '<p>Thank you.</p><p>Regular Bills generated successfully.</p>',
+text: '<p>Thank you.</p><p>Bill is generated for approval</p>',
 sticky: false,
 time: '10000',
 });
-<?php
+<?php 
 $this->requestAction(array('controller' => 'hms', 'action' => 'griter_notification'), array('pass' => array(1901)));
-} ?>
+}  ?>
 });
 </script> 
