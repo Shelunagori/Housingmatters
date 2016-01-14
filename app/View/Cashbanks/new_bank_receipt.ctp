@@ -15,7 +15,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <a href="<?php echo $webroot_path; ?>Cashbanks/new_bank_receipt" class="btn yellow" rel='tab'>Create</a>
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" class="btn" rel='tab'>View</a>
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_deposit_slip" class="btn" rel='tab'>Deposit Slip</a>
-
+<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_approve" class="btn" rel='tab'>Approve Receipts</a>
 <!--<a href="#" class="btn purple" role="button" id="import" style="float:right; margin-right:8px;">Import csv</a>-->
 <a href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" class="btn purple"   style="float:right; margin-right:8px;">Import csv</a>
 </center>
@@ -257,7 +257,7 @@ $("#validdn").html('');
 }
 else
 {
-$("#validdn").html('<div class="alert alert-error">Please Fill Numeric amount in row'+ dd +'</div>');
+$("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric value in row '+ dd +'</div>');
 $("#amttt"+ dd).val("");
 return false;		
 }
@@ -387,6 +387,9 @@ $(document).ready(function() {
 			if(response.type == 'error'){
 			
 			 $("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
+			$("html, body").animate({
+					 scrollTop:0
+					 },"slow");
 			}
 		    if(response.type == 'success'){
 			  $("#shwd").show();

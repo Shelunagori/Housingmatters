@@ -267,6 +267,9 @@ $(document).ready(function() {
 					if(response.type == 'error'){
 			
 			 $("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
+			$("html, body").animate({
+					 scrollTop:0
+					 },"slow");
 			}
 		    if(response.type == 'success'){
 			  $("#shwd").show();

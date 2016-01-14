@@ -87,7 +87,7 @@ $("#validdn").html('');
 }
 else
 {
-$("#validdn").html('<div class="alert alert-error" style="color:red;">Please Fill Numeric amount in row'+ dd +'</div>');
+$("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Amount Should be Numeric Value in row '+ dd +'</div>');
 $("#amttt"+ dd).val("");
 return false;		
 }
@@ -152,7 +152,11 @@ $(document).ready(function() {
 			}).done(function(response){
 			if(response.type == 'error'){
 			
-			 $("#validdn").html('<div class="alert alert-error" style="color:red;">'+response.text+'</div>');
+			 $("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
+			$("html, body").animate({
+					 scrollTop:0
+					 },"slow");
+			
 			}
 		    if(response.type == 'success'){
 			  $("#shwd").show();
