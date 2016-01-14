@@ -16,6 +16,7 @@ public $components = array(
 
 
 
+
 var $name = 'Hms';
 
 function check_charecter_name($name){
