@@ -857,6 +857,8 @@ function my_flat_bill()
 	$to=$current_year."-".$current_month."-".$last_date;
 	$this->set("from",$from);
 	$this->set("to",$to);
+	
+	
 	$this->ath();
 	$this->check_user_privilages();
 	$s_society_id = (int)$this->Session->read('society_id');
@@ -3657,8 +3659,21 @@ $child_ex=explode(',',$child[0]);
 
 		if($group_id == 34)
 		{
+			
+		$this->loadmodel('wing'); 
+		$conditions=array("wing_name"=> new MongoRegex('/^' . trim($wingg_nammm) . '$/i'),"society_id"=>$s_society_id);
+		$wing_dataaa=$this->wing->find('all',array('conditions'=>$conditions));
+		foreach($wing_dataaa as $wing_detaill)
+		{
+		$wing_id_new = (int)$wing_detaill['wing']['wing_id'];
+		//$wingg_idddd = (int)$wing_detaill['flat']['wing_id'];
+		}	
+			
+			
+			
+			
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' .  $flatt_nammm . '$/i'),"society_id"=>$s_society_id);
+		$conditions=array("flat_name"=> new MongoRegex('/^' .  trim($flatt_nammm) . '$/i'),"society_id"=>$s_society_id,"wing_id"=>$wing_id_new);
 		$flat_data=$this->flat->find('all',array('conditions'=>$conditions));
 		foreach($flat_data as $flltdddt)
 		{
@@ -3953,7 +3968,7 @@ function pay_bill()
 function open_excel()
 {
 		$this->layout="";
-		$filename="User_email_mobile_import_Sample";
+		$filename="Opening_Balance_Import";
 		header ("Expires: 0");
 		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
 		header ("Cache-Control: no-cache, must-revalidate");
@@ -4876,5 +4891,290 @@ if(empty($from) || empty($to) || empty($wise)){
 	
 }	
 /////////////////End trial_balance_ajax_show_excel_with_sub_ledger/////////////////////////////////
+///////////////// Start my_flat_receipt_update //////////////////////////////////////////////
+function my_flat_receipt_update()
+{
+if($this->RequestHandler->isAjax()){
+$this->layout='blank';
+}else{
+$this->layout='session';
+}
+$this->ath();
+$this->check_user_privilages();	
+
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+
+$this->set('s_user_id',$s_user_id);
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id,"deactive"=>0);
+$ledger_sub_account_data = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('ledger_sub_account_data',$ledger_sub_account_data);	
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
+$bank_detail=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('bank_detail',$bank_detail);
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+}
+
+//////////////////////End my_flat_receipt_update /////////////////////////////////////////////////
+/////////////////////// Start my_flat_receipt_update_ajax ///////////////////////////////////
+function my_flat_receipt_update_ajax($from=null,$to=null)
+{
+$this->layout='blank';
+	$this->ath();
+	
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');		
+$this->set('s_user_id',$s_user_id);
+
+$from = date('Y-m-d',strtotime($from));
+$to = date('Y-m-d',strtotime($to));
+$from_strtotime = strtotime($from);
+$to_strtotime = strtotime($to);
+
+$this->loadmodel('new_cash_bank');
+$order=array('new_cash_bank.receipt_date'=> 'ASC');
+$conditions=array('society_id'=>$s_society_id,"receipt_source"=>1,"edit_status"=>"NO",
+'new_cash_bank.receipt_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime));
+$bank_receipt_detail=$this->new_cash_bank->find('all',array('conditions'=>$conditions,'order'=>$order));
+$this->set('bank_receipt_detail',$bank_receipt_detail);
+	
+}
+////////////////////End my_flat_receipt_update_ajax //////////////////////////////////////////////
+/////////////////////// Start my_flat_receipt_update_form //////////////////////////////////////
+function my_flat_receipt_update_form($auto_id = null)
+{
+if($this->RequestHandler->isAjax()){
+$this->layout='blank';
+}else{
+$this->layout='session';
+}
+$this->ath();
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');			
+
+$auto_id = (int)$auto_id;
+
+$this->loadmodel('new_cash_bank');
+$conditions=array('society_id'=>$s_society_id,"receipt_source"=>1,"edit_status"=>"NO","transaction_id"=>$auto_id);
+$bank_receipt_detail=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+$this->set('bank_receipt_detail',$bank_receipt_detail);
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id,"deactive"=>0);
+$ledger_sub_account_data = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('ledger_sub_account_data',$ledger_sub_account_data);	
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
+$bank_detail=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('bank_detail',$bank_detail);
+
+
+
+}
+
+/////////////////End my_flat_receipt_update_form ////////////////////////////////////////////////
+////////////////////Start my_flat_receipt_update_json ////////////////////////////////////////////
+function my_flat_receipt_update_json()
+{
+$this->layout=null;
+$this->ath();
+$s_society_id=$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');
+$date=date('d-m-Y');
+$time = date(' h:i a', time());
+
+$q=$this->request->query('q');
+$q = html_entity_decode($q);
+$myArray = json_decode($q, true);
+
+$c = 0;
+foreach($myArray as $child)
+{	
+
+	if(empty($child[0])){
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Select transaction date'));
+	die($output);
+	}	
+	
+	
+ $TransactionDate = $child[0];
+		$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($TransactionDate));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
+					break;
+					}	
+		}
+	if($abc == 555){
+		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year '));
+		die($output);
+	}	
+
+if(empty($child[10]))
+{
+$output = json_encode(array('type'=>'error', 'text' => 'Please Select Deposited In '));
+die($output);
+}
+
+
+
+
+
+	
+if(empty($child[1]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Receipt Mode '));
+		die($output);
+		}
+
+if($child[1] == "Cheque")
+{		
+	if(empty($child[2]))
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Cheque Number '));
+	die($output);
+	}
+	
+	if(is_numeric($child[2]))
+	{
+	}	
+	else
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Cheque Number '));
+	die($output);
+	}
+	
+	if(empty($child[3]))
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Select Cheque Date '));
+	die($output);
+	}
+		
+		if(empty($child[4]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Drawn in which Bank '));
+		die($output);
+		}
+		
+	if(empty($child[5]))
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Baranch of Bank '));
+	die($output);
+	}
+	
+}	
+else
+{
+        if(empty($child[7]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Reference/Utr '));
+		die($output);
+		}		
+		
+		if(empty($child[6]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Date '));
+		die($output);
+		}
+
+}			
+        if(empty($child[8]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount '));
+		die($output);
+		}
+
+		if(is_numeric($child[8]))
+		{
+		}
+		else
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Amount '));
+		die($output);
+		}	
+	
+	
+	
+}
+
+foreach($myArray as $child)
+{	
+$transaction_date = $child[0];
+$mode = $child[1];
+
+if($mode == "Cheque" || $mode == "cheque")
+{
+$cheque_number = $child[2];
+$cheque_date = $child[3];
+$drawn_bank_name = $child[4];
+$branch = $child[5];
+}
+else
+{
+$utr_ref = $child[7];
+$cheque_date = $child[6];
+}
+$amount = $child[8];
+$narration = $child[9];
+$bank_id = (int)$child[10];
+$flat_id = (int)$child[11];
+
+$current_date = date('d-m-Y');
+
+$l=$this->autoincrement('my_flat_receipt_update','auto_id');
+	   
+$this->loadmodel('my_flat_receipt_update');
+$multipleRowData = Array( Array("auto_id"=> $l,
+"receipt_date" => $transaction_date, "receipt_mode" => $mode, 
+"cheque_number" =>@$cheque_number,"cheque_date" =>@$cheque_date,
+"drawn_on_which_bank" =>@$drawn_bank_name,"reference_utr" => @$utr_ref,
+"deposited_bank_id" => $bank_id,"member_type" => 1,
+"party_name_id"=>$flat_id,"receipt_type" => 1,"amount" => $amount,
+"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,
+"narration"=>$narration,"prepaired_by"=>$s_user_id,"bank_branch"=>@$branch,"approval_id"=>1));
+$this->my_flat_receipt_update->saveAll($multipleRowData);
+
+}
+
+$output = json_encode(array('type'=>'success', 'text' => 'Please Fill Numeric Amount '));
+		die($output);	
+}
+////////////////////End my_flat_receipt_update_json /////////////////////////////////////////////
 }
 ?>
