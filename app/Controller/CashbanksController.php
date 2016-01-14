@@ -1059,668 +1059,21 @@ function bank_receipt()
 		}
 
 		$this->ath();
-		$this->check_user_privilages();
+		//$this->check_user_privilages();
 
-			App::import('', 'sendsms.php');
-			$s_role_id=$this->Session->read('role_id');
-			$s_society_id = (int)$this->Session->read('society_id');
-			$s_user_id = (int)$this->Session->read('user_id');
-
-		$this->set('s_user_id',$s_user_id);
-		$this->set('s_role_id',$s_role_id);
-		$first_day_this_month = date('01-m-Y'); 
-		$this->set('default_date',$first_day_this_month);
-		
-			$this->loadmodel('user');
-			$conditions=array("society_id" => $s_society_id,"user_id" => $s_user_id);
-			$cursor=$this->user->find('all',array('conditions'=>$conditions));
-			foreach ($cursor as $collection) 
-			{
-			$tenant_c = (int)$collection['user']['tenant'];
-			}
-			
-		$this->set('tenant_c',$tenant_c);
-
-			$this->loadmodel('financial_year');
-			$conditions=array("society_id" => $s_society_id, "status"=>1);
-			$cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
-			foreach($cursor as $collection)
-			{
-			$date_from = @$collection['financial_year']['from'];
-			$date_to = @$collection['financial_year']['to'];
-
-				$date_from1 = date('Y-m-d',$date_from->sec);
-				$date_to1 = date('Y-m-d',$date_to->sec);
-
-			$datef[] = $date_from1;
-			$datet[] = $date_to1;
-			}
-			
-				if(!empty($datef))
-				{
-				$datef1 = implode(',',$datef);
-				$datet1 = implode(',',$datet);
-				}
-				
-			$count = sizeof(@$datef);
-			$this->set('datef1',@$datef1);
-			$this->set('datet1',@$datet1);
-			$this->set('count',$count);
-
-
-		$this->loadmodel('cash_bank');
-		$conditions=array("society_id" => $s_society_id,"module_id"=>1);
-		$order=array('cash_bank.receipt_id'=> 'DESC');
-		$cursor=$this->cash_bank->find('all',array('conditions'=>$conditions,'order' =>$order,'limit'=>1));
-		foreach ($cursor as $collection) 
-		{
-		$last=$collection['cash_bank']['receipt_id'];
-		}
-		if(empty($last))
-		{
-		$zz=0;
-		}	
-		else
-		{	
-		$zz=$last;
-		}
-		$this->set('zz',$zz);
-
-
-
-		$this->loadmodel('ledger_sub_account');
-		$conditions=array("society_id" => $s_society_id, "ledger_id" => 34);
-		$cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
-		$this->set('cursor1',$cursor1);
-		foreach($cursor1 as $collection)
-		{
-		$user_id = (int)@$collection['ledger_sub_account']['user_id'];
-		$this->loadmodel('user');
-		$conditions=array("user_id" => $user_id);
-		$cursor2=$this->user->find('all',array('conditions'=>$conditions));
-		$this->set('cursor',$cursor2);
-		}
-		
-			$this->loadmodel('ledger_sub_account');
-			$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
-			$cursor3=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
-			$this->set('cursor3',$cursor3);
-				
-				//submit code//
-				if(isset($this->request->data['bank_receipt_add']))
-				{
-				$current_date = date('Y-m-d');
-				$receipt_date = $this->request->data['transaction_date']; 
-				$TransactionDate = date('Y-m-d',strtotime($receipt_date));
-				$TransactionDate = strtotime($TransactionDate); 
-				$deposited_bank_id = (int)$this->request->data['deposited_bank_id'];
-				$receipt_mode = $this->request->data['receipt_mode'];
-			
-				if($receipt_mode == "Cheque")
-				{
-				$cheque_number = $this->request->data['cheque_number'];
-				$cheque_date = $this->request->data['cheque_date1'];
-				$drawn_on_which_bank = $this->request->data['drawn_on_which_bank'];
-			
-						$knddd = "&quot;".$drawn_on_which_bank."&quot;";
-						$this->loadmodel('reference');
-						$conditions=array();
-						$rfff=$this->reference->find('all',array('conditions'=>$conditions));
-						foreach($rfff as $dddttt)
-						{
-						$knnddd = @$dddttt['reference']['reference'];			
-						}
-						for($n=0; $n<sizeof($knnddd); $n++)
-						{
-							 $kendo_name = $knnddd[$n];
-							if($kendo_name == $knddd)
-							{
-							$nnn = 5;
-							break;
-							}
-							else
-							{
-							$nnn = 555;
-							}
-						}
-					 $nnn;
-					if($nnn == 555){
-					
-					$knnddd[] = $knddd;
-			
-				$this->loadmodel('reference');
-				$this->reference->updateAll(array("reference" => $knnddd),array("auto_id" =>6));
-				}
-			}
-			else
-			{
-			$reference_utr = $this->request->data['reference_number'];
-			$cheque_date = $this->request->data['cheque_date'];
-			}
-			$member_type = $this->request->data['member_type'];
-			
-			if($member_type == 1)
-			{
-			$party_name = (int)$this->request->data['resident_name'];
-			$receipt_type = (int)$this->request->data['receipt_type'];
-			$flat_id = $party_name;
-			if($receipt_type == 1)
-			{
-			$amount = $this->request->data['amount1'];
-			}
-			else
-			{
-			$amount = $this->request->data['amount2'];
-			}
-			}
-			else 
-			{
-			$party_name = $this->request->data['party_name'];
-			$bill_reference = $this->request->data['bill_reference'];
-			$amount = $this->request->data['amount'];
-			}
-            $narration = $this->request->data['description'];
-
-
-
-////////////////////////////////
-	
-$s_society_id =(int)$this->Session->read('society_id');
-$s_role_id=$this->Session->read('role_id');
-$s_user_id=$this->Session->read('user_id');
-	
-	
-	
-if($member_type == 1)
+if(isset($this->request->data['sub555']))
 {
-	if($receipt_type == 1)
-	{
-     //apply receipt in regular_bill//
-	 
-	 $result_new_regular_bill = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_bill_info_via_flat_id'),array('pass'=>array($flat_id)));
+ $value = $this->request->data['abc'];	
 	
-	 $auto_id=null; $regular_bill_one_time_id=null;
-	if(sizeof($result_new_regular_bill)>0){
-		foreach($result_new_regular_bill as $data){
-	$auto_id=$data["auto_id"];  
-	$edit_status=$data["edit_status"]; 
-	$latest_bill=@$data["latest_bill"]; 
-	$receipt_applied=@$data["receipt_applied"]; 
-	$regular_bill_one_time_id = (int)$data["one_time_id"];
-	$flat_id = (int)$data["flat_id"];
-	if($edit_status=="NO" && $latest_bill=="YES"){
-			if(empty($receipt_applied)){
-				$arrear_intrest=$data["arrear_intrest"];
-				$intrest_on_arrears=$data["intrest_on_arrears"];
-				$total=$data["total"];
-				$arrear_maintenance=$data["arrear_maintenance"];
-			}else{
-				$arrear_intrest=$data["new_arrear_intrest"];
-				$intrest_on_arrears=$data["new_intrest_on_arrears"];
-				$total=$data["new_total"];
-				$arrear_maintenance=$data["new_arrear_maintenance"];
-			}
-	}else{
-		$number_of_receipt=$this->count_receipt_against_bill($regular_bill_one_time_id,$flat_id);
-		if($number_of_receipt==0){
-			$arrear_intrest=$data["arrear_intrest"];
-			$intrest_on_arrears=$data["intrest_on_arrears"];
-			$total=$data["total"];
-			$arrear_maintenance=$data["arrear_maintenance"]; 
-		}else{
-			$arrear_intrest=$data["new_arrear_intrest"];
-			$intrest_on_arrears=$data["new_intrest_on_arrears"];
-			$total=$data["new_total"];
-			$arrear_maintenance=$data["new_arrear_maintenance"];
-		}
-	}
-	
-	
-	
-	
-	}
-    	$amount_after_arrear_intrest=$amount-$arrear_intrest;
-		if($amount_after_arrear_intrest<0)
-		{
-		$new_arrear_intrest=abs($amount_after_arrear_intrest);
-		$new_intrest_on_arrears=$intrest_on_arrears;
-		$new_arrear_maintenance=$arrear_maintenance;
-		$new_total=$total;
-		}
-		else
-		{
-		$new_arrear_intrest=0;
-		$amount_after_intrest_on_arrears=$amount_after_arrear_intrest-$intrest_on_arrears;
-			if($amount_after_intrest_on_arrears<0)
-			{
-			$new_intrest_on_arrears=abs($amount_after_intrest_on_arrears);
-			$new_arrear_maintenance=$arrear_maintenance;
-			$new_total=$total;
-			}
-			else
-			{
-			$new_intrest_on_arrears=0;
-			$amount_after_arrear_maintenance=$amount_after_intrest_on_arrears-$arrear_maintenance;
-				if($amount_after_arrear_maintenance<0){
-				$new_arrear_maintenance=abs($amount_after_arrear_maintenance);
-				$new_total=$total;
-				}else{
-				$new_arrear_maintenance=0;
-				$amount_after_total=$amount_after_arrear_maintenance-$total; 
-				if($amount_after_total>0){
-				$new_total=0;
-				$new_arrear_maintenance=-$amount_after_total;
-				}else{
-							$new_total=abs($amount_after_total);
-							
-					}
-				}
-			}
-		}
-			
-		$this->loadmodel('new_regular_bill');
-		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>$new_arrear_intrest,"new_intrest_on_arrears"=>$new_intrest_on_arrears,"new_arrear_maintenance"=>$new_arrear_maintenance,"new_total"=>$new_total),array('auto_id'=>$auto_id));
-	}
-	
-			
-		$t1=$this->autoincrement('new_cash_bank','transaction_id');
-		$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1); 
-		$this->loadmodel('new_cash_bank');
-		$multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k, "receipt_date" => $TransactionDate, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_number,"cheque_date" =>$cheque_date,"drawn_on_which_bank" =>@$drawn_on_which_bank,"reference_utr" => @$reference_utr,"deposited_bank_id" => $deposited_bank_id,"member_type" => $member_type,"party_name_id"=>$party_name,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name,"bill_auto_id"=>$auto_id,"bill_one_time_id"=>$regular_bill_one_time_id,"narration"=>$narration,"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id));
-		$this->new_cash_bank->saveAll($multipleRowData);
-	
-	
-	
-		$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array($party_name)));
-		foreach($result_flat_info as $flat_info){
-		$account_id = (int)$flat_info["ledger_sub_account"]["auto_id"];
-		}
-
-
-	
-
-$l=$this->autoincrement('ledger','auto_id');
-$this->loadmodel('ledger');
-$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $TransactionDate, "debit" => $amount, "credit" =>null,"ledger_account_id" => 33, "ledger_sub_account_id" => $deposited_bank_id, "table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
-$this->ledger->saveAll($multipleRowData); 
-
-$l=$this->autoincrement('ledger','auto_id');
-$this->loadmodel('ledger');
-$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $TransactionDate, "credit" => $amount, "debit" =>null,"ledger_account_id" => 34, "ledger_sub_account_id" => $account_id,"table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
-$this->ledger->saveAll($multipleRowData);
-//////////////////////////////////////////////////
-
-
-$this->loadmodel('new_cash_bank');
-$conditions=array("receipt_id" => $k,"receipt_source"=>1);
-$cursor=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
-foreach($cursor as $collection)
-{
-$receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
-$d_date = $collection['new_cash_bank']['receipt_date'];
-$today = date("d-M-Y");
-$flat_id = $collection['new_cash_bank']['party_name_id'];
-$amount = $collection['new_cash_bank']['amount'];
-$society_id = (int)$collection['new_cash_bank']['society_id'];
-$bill_reference = $collection['new_cash_bank']['reference_utr'];
-$narration = $collection['new_cash_bank']['narration'];
-$member = (int)$collection['new_cash_bank']['member_type'];
-$receiver_name = @$collection['new_cash_bank']['receiver_name'];
-$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
-$cheque_number = @$collection['new_cash_bank']['cheque_number'];
-$which_bank = @$collection['new_cash_bank']['drawn_on_which_bank'];
-$reference_number = @$collection['new_cash_bank']['reference_number'];
-$cheque_date = @$collection['new_cash_bank']['cheque_date'];
-$sub_account = (int)$collection['new_cash_bank']['deposited_bank_id'];
-$sms_date=date("d-m-Y",($d_date));
-
-$amount = str_replace( ',', '', $amount );
-$am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
-
-$this->loadmodel('society');
-$conditions=array("society_id" => $s_society_id);
-$cursor2=$this->society->find('all',array('conditions'=>$conditions));
-foreach ($cursor2 as $collection) 
-{
-$society_name = $collection['society']['society_name'];
-$society_reg_no = $collection['society']['society_reg_num'];
-$society_address = $collection['society']['society_address'];
-$sig_title = $collection['society']['sig_title'];
+$this->loadmodel('hobbies_category');
+$auto_id=(int)$this->autoincrement('hobbies_category','hobbies_id');
+$this->hobbies_category->saveAll(array("hobbies_id" => $auto_id,"hobbies_name" => $value));
 }
-if($member == 2)
-{
-$user_name = $receiver_name;
-$wing_flat = "";
-}
-else
-{
-$flatt_datta = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
-foreach ($flatt_datta as $fltt_datttaa) 
-{
-$wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
-}
-
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
-foreach ($result_lsa as $collection) 
-{
-$wing_id = $collection['user']['wing'];  
-$flat_id = (int)$collection['user']['flat'];
-$tenant = (int)$collection['user']['tenant'];
-$user_name = $collection['user']['user_name'];
-$to_mobile = $collection['user']['mobile'];
-$to_email = $collection['user']['email'];
-}
-$wing_flat = $this->requestAction(array('controller' => 'hms', 'action'=>'wing_flat'),array('pass'=>array($wing_id,$flat_id)));									
-}  
-$result2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($sub_account))); 
-foreach($result2 as $collection)
-{
-$bank_name = $collection['ledger_sub_account']['name'];
-}
-                                    
-$ip=$this->hms_email_ip();
-$date=date("d-m-Y",($d_date));
-	$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tbody><tr>
-                <td>
-                    <table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
-                        <tbody>
-						<tr>
-							<td height="10">
-							<table width="100%" class="hmlogobox">
-								<tr>
-									<td width="50%" style="padding: 10px 0px 0px 10px;"><img src="'.$ip.$this->webroot.'/as/hm/hm-logo.png" style="max-height: 60px; " height="60px" /></td>
-									<td width="50%" align="right" valign="middle"  style="padding: 7px 10px 0px 0px;">
-									<a href="https://www.facebook.com/HousingMatters.co.in"><img src="'.$ip.$this->webroot.'/as/hm/SMLogoFB.png"    style="max-height: 30px; height: 30px; width: 30px; max-width: 30px;" height="30px" width="30px" /></a>
-									</td>
-								</tr>
-							</table>
-							</td>
-						</tr>
-						<tr>
-							<td height="10"></td>
-						</tr>
-                        <tr>
-                            <td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:2px;background-color:rgb(0,141,210);color:#fff" align="center" width="100%"><b>'.strtoupper($society_name).'</b></td>
-								</tr>
-							</tbody></table>
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody>
-								<tr>
-									<td style="padding:5px;border-bottom:solid 1px #767575;border-top:solid 1px #767575" width="100%" align="center">
-									<span style="color:rgb(100,100,99)">Regn# &nbsp; '.$society_reg_no.'</span><br>
-									<span style="color:rgb(100,100,99)">'.$society_address.'</span><br
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
-									
-									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
-									
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px" colspan="2"> Received with thanks from: <b>'.$user_name.' '.$wing_flat.'</b></td>
-																		
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px"  colspan="4">Rupees '.$am_in_words.' Only </td>
-									
-								</tr>';
-								
-							if($receipt_mode=="Cheque"){
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
-							}
-							else{
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
-							}
-
-$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tbody><tr>
-                <td>
-                    <table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
-                        <tbody>
-                        <tr>
-                            <td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:2px;background-color:rgb(0,141,210);color:#fff" align="center" width="100%"><b>'.strtoupper($society_name).'</b></td>
-								</tr>
-							</tbody></table>
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody>
-								<tr>
-									<td style="padding:5px;border-bottom:solid 1px #767575;border-top:solid 1px #767575" width="100%" align="center">
-									<span style="color:rgb(100,100,99)">Regn# &nbsp; '.$society_reg_no.'</span><br>
-									<span style="color:rgb(100,100,99)">'.$society_address.'</span><br
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
-									
-									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
-									
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px" colspan="2"> Received with thanks from: <b>'.$user_name.' '.$wing_flat.'</b></td>
-																		
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px"  colspan="4">Rupees '.$am_in_words.' Only </td>
-									
-								</tr>';
-								
-							if($receipt_mode=="Cheque"){
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
-							}
-							else{
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
-							}
-
-
-								
-								$html_receipt.='<tr>
-									<td style="padding:0px 0 2px 5px"  colspan="4">'.$receipt_mode_type.'</td>
-									
-								</tr>
-								
-								<tr>
-									<td style="padding:0px 0 2px 5px" colspan="4">Payment of previous bill</td>
-									
-								</tr>
-								
-							</tbody></table>
-							
-							
-							
-							<table style="font-size:12px;" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td width="50%" style="padding:5px" valign="top">
-									<span style="font-size:16px;"> <b>Rs '.$amount.'</b></span><br>';
-									if($receipt_mode=="Cheque"){
-									$receipt_title_cheq='Subject to realization of Cheque(s)';
-									}
-																		
-									$html_receipt.='<span>'.@$receipt_title_cheq.'</span></td>
-									<td align="center" width="50%" style="padding:5px" valign="top">
-									For  <b>'.$society_name.'</b><br><br><br>
-									<div><span style="border-top:solid 1px #424141">'.$sig_title.'</span></div>
-									</td>
-								</tr>
-							</tbody></table>
-												
-							
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td colspan="2">
-                                <table style="background-color:#008dd2;font-size:11px;color:#fff;border:solid 1px #767575;border-top:none" width="100%" cellspacing="0">
-                                 <tbody>
-								 
-									<tr>
-                                        <td align="center" colspan="7"><b>
-										Your Society is empowered by HousingMatters - <b> <i>"Making Life Simpler"</i>
-										</b></b></td>
-                                    </tr>
-									<tr>
-                                        <td width="50" align="right" style="font-size: 10px;"><b>Email :</b></td>
-                                        <td width="120" style="color:#fff!important;font-size: 10px;"> 
-										<a href="mailto:support@housingmatters.in" style="color:#fff!important" target="_blank"><b>support@housingmatters.in</b></a>
-                                        </td>
-										<td align="center" style="font-size: 10px;"></td>
-                                        <td align="right" style="font-size: 10px;"><b>Phone :</b></td>
-                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b>022-41235568</b></td>
-										<td align="center" style="font-size: 10px;"></td>
-                                        <td width="100" style="padding-right:10px;text-decoration:none"> <a href="http://www.housingmatters.in" style="color:#fff!important" target="_blank"><b>www.housingmatters.in</b></a></td>
-                                    </tr>
-                                    
-                                    
-                                </tbody>
-							</table>
-                            </td>
-                        </tr>
-                        <tr>
-							<td align="center"><div class="hmlogobox" ><a href="mailto:Support@housingmatters.in">Do not miss important e-mails from HousingMatters,  add us to your address book</a></div></td>
-						</tr>
-                    </tbody></table>
-                </td>
-            </tr>
-        </tbody>
-</table>';
-
-
-////////////////my Email//////////////
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
-$this->loadmodel('society');
-$condition=array('society_id'=>$s_society_id);
-$result_society=$this->society->find('all',array('conditions'=>$condition)); 
-$this->set('result_society',$result_society);
-foreach($result_society as $data_society){
-	$society_name=$data_society["society"]["society_name"];
-	$email_is_on_off=(int)@$data_society["society"]["account_email"];
-	$sms_is_on_off=(int)@$data_society["society"]["account_sms"];
-   }
-//////////////////////////////////////////////////////////////////////////
-
-
-if($email_is_on_off==1){
-////email code//
-
-$r_sms=$this->hms_sms_ip();
-$working_key=$r_sms->working_key;
-$sms_sender=$r_sms->sms_sender; 
-$sms_allow=(int)$r_sms->sms_allow;
-
-$subject="[".$society_name."]- Receipt of Rs ".$amount." on ".date('d-M-Y',$d_date)." against Unit ".$wing_flat."";
-//$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
-
-$this->send_email($to_email,'accounts@housingmatters.in','HousingMatters',$subject,$html_receipt,'donotreply@housingmatters.in');
-
-}
-
-if($sms_is_on_off==1){
-	if($sms_allow==1){
-
-	
-$r_sms=$this->hms_sms_ip();
-$working_key=$r_sms->working_key;
-$sms_sender=$r_sms->sms_sender; 
-$sms_allow=(int)$r_sms->sms_allow;
-$user_name_short=$this->check_charecter_name($user_name);
-$sms="Dear ".$user_name_short." ,we have received Rs ".$amount." on ".$sms_date." towards Society Maint. dues. Cheques are subject to realization,".$society_name;
-$sms1=str_replace(' ', '+', $sms);
-
-$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$to_mobile.'&message='.$sms1.''); 
-}
-}	
-//////////////////////////////////////////////////////////////////////////////
-		
-}
-if($receipt_type == 2)
-	{
-	$t2=$this->autoincrement('new_cash_bank','transaction_id');
-	$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1);
-	$this->loadmodel('new_cash_bank');
-	$multipleRowData = Array( Array("transaction_id"=>$t2, "receipt_id" => $k, "receipt_date" => $TransactionDate, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_number,"cheque_date" =>$cheque_date,"drawn_on_which_bank" =>@$drawn_on_which_bank,"reference_utr" => @$reference_utr,"deposited_bank_id" => $deposited_bank_id,"member_type" => $member_type,"party_name_id"=>$party_name,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name,"narration"=>$narration,"receipt_source"=>1,"prepaired_by" => $s_user_id,"edit_status"=>"NO","auto_inc"=>"YES"));
-	$this->new_cash_bank->saveAll($multipleRowData);
-
-	
-	
-$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array($party_name)));
-foreach($result_flat_info as $flat_info){
-$account_id = (int)$flat_info["ledger_sub_account"]["auto_id"];
-}
-
-$l=$this->autoincrement('ledger','auto_id');
-$this->loadmodel('ledger');
-$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $TransactionDate, "debit" => $amount, "credit" =>null, "ledger_account_id" => 33, "ledger_sub_account_id" => $deposited_bank_id,"table_name" => "new_cash_bank","element_id" => $t2, "society_id" => $s_society_id,));
-$this->ledger->saveAll($multipleRowData); 
-
-$l=$this->autoincrement('ledger','auto_id');
-$this->loadmodel('ledger');
-$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $TransactionDate, "credit" => $amount, "debit" =>null, "ledger_account_id" => 34, "ledger_sub_account_id" => $account_id,"table_name" => "new_cash_bank","element_id" => $t2, "society_id" => $s_society_id,));
-$this->ledger->saveAll($multipleRowData);
 	
 }
-}
-else if($member_type == 2)
-{
-$t3=$this->autoincrement('new_cash_bank','transaction_id');
-$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1);
-$this->loadmodel('new_cash_bank');
-$multipleRowData = Array( Array("transaction_id"=>$t3,"receipt_id" => $k, "receipt_date" => $TransactionDate,	 "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_number,"cheque_date" =>$cheque_date,"drawn_on_which_bank" =>@$drawn_on_which_bank,"reference_utr" => @$reference_utr,"deposited_bank_id" => $deposited_bank_id,"member_type" => $member_type,"party_name_id"=>$party_name,"receipt_type" => @$receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name,"narration"=>$narration,"bill_reference"=>$bill_reference,"receipt_source"=>1,"prepaired_by" => $s_user_id,"edit_status"=>"NO","auto_inc"=>"YES"));
-$this->new_cash_bank->saveAll($multipleRowData);
-}
-	
-$result_new_regular_bill = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_bill_info_via_flat_id'),array('pass'=>array($party_name)));
-if(sizeof($result_new_regular_bill)==1){
-foreach($result_new_regular_bill as $last_bill){
-$bill_auto_id=$last_bill["auto_id"];
-$bill_one_time_id=$last_bill["one_time_id"];
-}
-}
-$this->Session->write('bank_rrr', 1);
 
 
-?>
-<div class="modal-backdrop fade in"></div>
-<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-body">
-<p style="font-size:15px; font-weight:600;">Bank Receipt No. <?php echo $k; ?> is  generated successfully</p>
-</div>
-<div class="modal-footer">
-<a href="bank_receipt_view" class="btn green">OK</a>
-</div>
-</div>
-<?php
-}
 
-
-$this->loadmodel('reference');
-$conditions=array();
-$rfff=$this->reference->find('all',array('conditions'=>$conditions));
-foreach($rfff as $dddtttt)
-{
-$kendo_array = @$dddtttt['reference']['reference'];			
-}
-if(!empty($kendo_array))
-{
-$kendo_implode = implode(",",$kendo_array);
-}
-$this->set('kendo_implode',@$kendo_implode);
-}
 function upload_csv_cash_bank(){
 	$this->layout=null;
 	if(isset($_FILES['file'])){
@@ -4356,7 +3709,7 @@ foreach($myArray as $child)
 {
 $c++;
 if(empty($child[0])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select transaction date in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date is Required in row '.$c));
 die($output);
 }	
 
@@ -4381,17 +3734,17 @@ die($output);
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('type'=>'error','text'=>'Transaction date Should be in Open Financial Year in row '.$c));
 		die($output);
 	}
 
 if(empty($child[1])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select Ledger Account in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Ledger Account is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[2])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount is Required in row '.$c));
 die($output);
 }	
 
@@ -4400,23 +3753,23 @@ if(is_numeric($child[2]))
 }
 else
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Amount in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount Should be Numeric Value in row '.$c));
 die($output);
 }
 
 
 if(empty($child[5])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select Mode of Payment in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Mode of Payment is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[6])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Instrument/Utr in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Instrument/Utr is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[7])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select Bank Account in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Bank Account is Required in row '.$c));
 die($output);
 }	
 	
@@ -4553,7 +3906,7 @@ foreach($myArray as $child)
 {
 $c++;
 if(empty($child[0])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select transaction date in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date is Required in row '.$c));
 die($output);
 }	
 
@@ -4577,29 +3930,29 @@ die($output);
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('type'=>'error','text'=>'Transaction date Should be in Open Financial Year in row '.$c));
 		die($output);
 	}
 
 
 
 if(empty($child[1])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select A/c Group in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'A/c Group is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[2])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select Income/Party A/c in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Income/Party A/c is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[3])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select Account Head in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Account Head is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[4])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please fill Amount in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount is Required in row '.$c));
 die($output);
 }	
 
@@ -4608,7 +3961,7 @@ if(is_numeric($child[4]))
 }
 else
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Please fill numeric Amount in rows'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount Should be Numeric Value in row '.$c));
 die($output);
 }
 }
@@ -6069,7 +5422,7 @@ foreach($myArray as $child)
 $c++;
 
 if(empty($child[0])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please fill transaction date in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date is Required in row '.$c));
 die($output);
 }	
 
@@ -6094,28 +5447,28 @@ die($output);
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('type'=>'error','text'=>'Transaction Date Should be in Open Financial Year in row '.$c));
 		die($output);
 	}
 
 
 if(empty($child[1])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please select account group in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Account Group is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[2])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please select expense party account in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Expense Party Account is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[3])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Select paid from in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Paid From is Required in row '.$c));
 die($output);
 }	
 
 if(empty($child[4])){
-$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount is Required in row '.$c));
 die($output);
 }	
 
@@ -6125,7 +5478,7 @@ if(is_numeric($child[4]))
 }
 else
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Amount in row'.$c));
+$output = json_encode(array('type'=>'error', 'text' => 'Amount Should be Numeric Value in row '.$c));
 die($output);
 }
 }
@@ -6863,7 +6216,7 @@ function bank_receipt_json()
 
 			if(empty($child[0]))
 			{
-			$output = json_encode(array('type'=>'error', 'text' => 'Please Select transaction date in row'.$r));
+			$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date is Required in row '.$r));
 			die($output);
 			}
 			
@@ -6899,7 +6252,7 @@ function bank_receipt_json()
 			
 			if($nnnnn == 555)
 			{
-			$output = json_encode(array('type'=>'error', 'text' => 'transaction date is not in financial year in row'.$r));
+			$output = json_encode(array('type'=>'error', 'text' => 'Transaction Date Should be in Open Financial Year in row '.$r));
 			die($output);
 			}
 
@@ -6908,13 +6261,13 @@ function bank_receipt_json()
 			
 			if(empty($child[1]))
 			{
-			$output = json_encode(array('type'=>'error', 'text' => 'Please Select Deposited In in row'.$r));
+			$output = json_encode(array('type'=>'error', 'text' => 'Deposited In is Required in row '.$r));
 			die($output);
 			}
 		
 		if(empty($child[2]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Receipt Mode in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Receipt Mode is Required in row '.$r));
 		die($output);
 		}
 
@@ -6922,7 +6275,7 @@ if($child[2] == "Cheque")
 {		
 	if(empty($child[3]))
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Cheque Number in row'.$r));
+	$output = json_encode(array('type'=>'error', 'text' => 'Cheque Number is Required in row '.$r));
 	die($output);
 	}
 	
@@ -6931,25 +6284,25 @@ if($child[2] == "Cheque")
 	}	
 	else
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Cheque Number in row'.$r));
+	$output = json_encode(array('type'=>'error', 'text' => 'Cheque Number Should be Numeric Value in row '.$r));
 	die($output);
 	}
 	
 	if(empty($child[4]))
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Select Cheque Date in row'.$r));
+	$output = json_encode(array('type'=>'error', 'text' => 'Cheque Date is Required in row '.$r));
 	die($output);
 	}
 		
 		if(empty($child[5]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Drawn in which Bank in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Drawn in which Bank is Required in row '.$r));
 		die($output);
 		}
 		
 	if(empty($child[15]))
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Baranch of Bank in row'.$r));
+	$output = json_encode(array('type'=>'error', 'text' => 'Branch of Bank is Required in row '.$r));
 	die($output);
 	}
 		
@@ -6959,20 +6312,20 @@ else
 {
         if(empty($child[7]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Reference/Utr row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Reference/Utr is Required in row '.$r));
 		die($output);
 		}		
 		
 		if(empty($child[6]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Date in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Date is Required in row '.$r));
 		die($output);
 		}
 
 }		
 		if(empty($child[8]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Received From in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Received From is Required in row '.$r));
 		die($output);
 		}
 		
@@ -6981,13 +6334,13 @@ else
  
 		if(empty($child[9]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Resident in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Select Resident is Required in row '.$r));
 		die($output);
 		}
  
 		if(empty($child[10]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Receipt Type in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Receipt Type is Required in row '.$r));
 		die($output);
 		}
 }
@@ -6995,20 +6348,20 @@ else
 {
 		if(empty($child[11]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Party Name in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Party Name is Required in row '.$r));
 		die($output);
 		}
 
 		if(empty($child[12]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Bill Reference in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Bill Reference is Required in row '.$r));
 		die($output);
 		}
         }		
 		
 		if(empty($child[13]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Amount is Required in row '.$r));
 		die($output);
 		}
 
@@ -7017,7 +6370,7 @@ else
 		}
 		else
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Numeric Amount in row'.$r));
+		$output = json_encode(array('type'=>'error', 'text' => 'Amount Should be Numeric Value in row '.$r));
 		die($output);
 		}
 }
@@ -7252,7 +6605,7 @@ $this->ledger->saveAll($multipleRowData);
 
 
 $this->loadmodel('new_cash_bank');
-$conditions=array("receipt_id" => $k,"receipt_source"=>1);
+$conditions=array("receipt_id" => $k,"receipt_source"=>1,"society_id"=>$s_society_id);
 $cursor=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
 foreach($cursor as $collection)
 {
@@ -8306,6 +7659,476 @@ $this->set('cursor1',$cursor1);
 	
 }
 ///////////////////////////// End fixed_deposit_renewal_show ///////////////////////////////////////////
+/////////////////////////// Start bank_receipt_approve //////////////////////////////////////////////
+function bank_receipt_approve()
+{
+if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+$this->set('s_role_id',$s_role_id);
+	
+$this->ath();		
+$this->check_user_privilages();	
+
+
+$auto_id22 = (int)$this->request->query('aa');
+
+if(!empty($auto_id22))
+{
+	
+	
+$this->loadmodel('my_flat_receipt_update');
+$conditions=array('society_id'=>$s_society_id,"approval_id"=>1,"auto_id"=>$auto_id22);
+$cursor=$this->my_flat_receipt_update->find('all',array('conditions'=>$conditions));
+foreach($cursor as $data)
+{
+$transaction_date = $data['my_flat_receipt_update']['receipt_date'];
+$transaction_date = date('Y-m-d',strtotime($transaction_date));
+  $transaction_date = strtotime($transaction_date);
+  $mode = $data['my_flat_receipt_update']['receipt_mode'];
+if($mode == "Cheque" || $mode == "cheque")
+{
+  $cheque_number = @$data['my_flat_receipt_update']['cheque_number'];
+  $cheque_date = @$data['my_flat_receipt_update']['cheque_date'];
+  $drawn_bank_name = @$data['my_flat_receipt_update']['drawn_on_which_bank'];
+  $branch = @$data['my_flat_receipt_update']['bank_branch'];
+}
+else
+{
+ $utr_ref = @$data['my_flat_receipt_update']['reference_utr'];
+ $cheque_date = @$data['my_flat_receipt_update']['date'];
+}
+$amount = $data['my_flat_receipt_update']['amount'];
+$narration = $data['my_flat_receipt_update']['narration'];	
+$deposited_bank_id = (int)$data['my_flat_receipt_update']['deposited_bank_id'];
+$party_name_id = (int)$data['my_flat_receipt_update']['party_name_id'];
+$current_date = $data['my_flat_receipt_update']['current_date'];
+$prepaired_by = $data['my_flat_receipt_update']['prepaired_by'];
+}
+
+/////////////////// Bill Code//////
+ 
+	 $result_new_regular_bill = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_bill_info_via_flat_id'),array('pass'=>array($party_name_id)));
+	
+	 $auto_id=null; $regular_bill_one_time_id=null;
+	if(sizeof($result_new_regular_bill)>0){
+		foreach($result_new_regular_bill as $data){
+	$auto_id=$data["auto_id"];  
+	$edit_status=$data["edit_status"]; 
+	$latest_bill=@$data["latest_bill"]; 
+	$receipt_applied=@$data["receipt_applied"]; 
+	$regular_bill_one_time_id = (int)$data["one_time_id"];
+	$flat_id = (int)$data["flat_id"];
+	if($edit_status=="NO" && $latest_bill=="YES"){
+			if(empty($receipt_applied)){
+				$arrear_intrest=$data["arrear_intrest"];
+				$intrest_on_arrears=$data["intrest_on_arrears"];
+				$total=$data["total"];
+				$arrear_maintenance=$data["arrear_maintenance"];
+			}else{
+				$arrear_intrest=$data["new_arrear_intrest"];
+				$intrest_on_arrears=$data["new_intrest_on_arrears"];
+				$total=$data["new_total"];
+				$arrear_maintenance=$data["new_arrear_maintenance"];
+			}
+	}else{
+		$number_of_receipt=$this->count_receipt_against_bill($regular_bill_one_time_id,$flat_id);
+		if($number_of_receipt==0){
+			$arrear_intrest=$data["arrear_intrest"];
+			$intrest_on_arrears=$data["intrest_on_arrears"];
+			$total=$data["total"];
+			$arrear_maintenance=$data["arrear_maintenance"]; 
+		}else{
+			$arrear_intrest=$data["new_arrear_intrest"];
+			$intrest_on_arrears=$data["new_intrest_on_arrears"];
+			$total=$data["new_total"];
+			$arrear_maintenance=$data["new_arrear_maintenance"];
+		}
+	}
+	
+	
+	
+	
+	}
+    	$amount_after_arrear_intrest=$amount-$arrear_intrest;
+		if($amount_after_arrear_intrest<0)
+		{
+		$new_arrear_intrest=abs($amount_after_arrear_intrest);
+		$new_intrest_on_arrears=$intrest_on_arrears;
+		$new_arrear_maintenance=$arrear_maintenance;
+		$new_total=$total;
+		}
+		else
+		{
+		$new_arrear_intrest=0;
+		$amount_after_intrest_on_arrears=$amount_after_arrear_intrest-$intrest_on_arrears;
+			if($amount_after_intrest_on_arrears<0)
+			{
+			$new_intrest_on_arrears=abs($amount_after_intrest_on_arrears);
+			$new_arrear_maintenance=$arrear_maintenance;
+			$new_total=$total;
+			}
+			else
+			{
+			$new_intrest_on_arrears=0;
+			$amount_after_arrear_maintenance=$amount_after_intrest_on_arrears-$arrear_maintenance;
+				if($amount_after_arrear_maintenance<0){
+				$new_arrear_maintenance=abs($amount_after_arrear_maintenance);
+				$new_total=$total;
+				}else{
+				$new_arrear_maintenance=0;
+				$amount_after_total=$amount_after_arrear_maintenance-$total; 
+				if($amount_after_total>0){
+				$new_total=0;
+				$new_arrear_maintenance=-$amount_after_total;
+				}else{
+							$new_total=abs($amount_after_total);
+							
+					}
+				}
+			}
+		}
+			
+		$this->loadmodel('new_regular_bill');
+		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>$new_arrear_intrest,"new_intrest_on_arrears"=>$new_intrest_on_arrears,"new_arrear_maintenance"=>$new_arrear_maintenance,"new_total"=>$new_total),array('auto_id'=>$auto_id));
+	}
+/////////////////////////////
+
+
+
+
+
+
+
+
+
+
+	
+$t1=$this->autoincrement('new_cash_bank','transaction_id');
+$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1); 
+$this->loadmodel('new_cash_bank');
+$multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k, 
+"receipt_date" => $transaction_date, "receipt_mode" => $mode, 
+"cheque_number" =>@$cheque_number,"cheque_date" =>@$cheque_date,
+"drawn_on_which_bank" =>@$drawn_bank_name,"reference_utr" => @$utr_ref,
+"deposited_bank_id" => $deposited_bank_id,"member_type" => 1,
+"party_name_id"=>$party_name_id,"receipt_type" => 1,"amount" => $amount,
+"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name_id,
+"bill_auto_id"=>$auto_id,"bill_one_time_id"=>@$regular_bill_one_time_id,"narration"=>$narration,
+"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $prepaired_by,"bank_branch"=>@$branch));
+$this->new_cash_bank->saveAll($multipleRowData);
+
+	
+	
+$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array($party_name_id)));
+foreach($result_flat_info as $flat_info){
+$account_id = (int)$flat_info["ledger_sub_account"]["auto_id"];
+}
+
+
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $transaction_date, "debit" => $amount, "credit" =>null,"ledger_account_id" => 33, "ledger_sub_account_id" => $deposited_bank_id, "table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $transaction_date, "credit" => $amount, "debit" =>null,"ledger_account_id" => 34, "ledger_sub_account_id" => $account_id,"table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData);
+
+//////////////Email Sms///////////////////
+
+$this->loadmodel('new_cash_bank');
+$conditions=array("receipt_id" => $k,"receipt_source"=>1,"society_id"=>$s_society_id);
+$cursor=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+foreach($cursor as $collection)
+{
+$receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
+$d_date = $collection['new_cash_bank']['receipt_date'];
+$today = date("d-M-Y");
+$flat_id = $collection['new_cash_bank']['party_name_id'];
+$amount = $collection['new_cash_bank']['amount'];
+$society_id = (int)$collection['new_cash_bank']['society_id'];
+$bill_reference = $collection['new_cash_bank']['reference_utr'];
+$narration = $collection['new_cash_bank']['narration'];
+$member = (int)$collection['new_cash_bank']['member_type'];
+$receiver_name = @$collection['new_cash_bank']['receiver_name'];
+$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
+$cheque_number = @$collection['new_cash_bank']['cheque_number'];
+$which_bank = @$collection['new_cash_bank']['drawn_on_which_bank'];
+$reference_number = @$collection['new_cash_bank']['reference_number'];
+$cheque_date = @$collection['new_cash_bank']['cheque_date'];
+$sub_account = (int)$collection['new_cash_bank']['deposited_bank_id'];
+$sms_date=date("d-m-Y",($d_date));
+
+$amount = str_replace( ',', '', $amount );
+$am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
+
+$this->loadmodel('society');
+$conditions=array("society_id" => $s_society_id);
+$cursor2=$this->society->find('all',array('conditions'=>$conditions));
+foreach ($cursor2 as $collection) 
+{
+$society_name = $collection['society']['society_name'];
+$society_reg_no = $collection['society']['society_reg_num'];
+$society_address = $collection['society']['society_address'];
+$sig_title = $collection['society']['sig_title'];
+}
+if($member == 2)
+{
+$user_name = $receiver_name;
+$wing_flat = "";
+}
+else
+{
+$flatt_datta = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach ($flatt_datta as $fltt_datttaa) 
+{
+$wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
+}
+
+$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
+foreach ($result_lsa as $collection) 
+{
+$wing_id = $collection['user']['wing'];  
+$flat_id = (int)$collection['user']['flat'];
+$tenant = (int)$collection['user']['tenant'];
+$user_name = $collection['user']['user_name'];
+$to_mobile = $collection['user']['mobile'];
+$to_email = $collection['user']['email'];
+}
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action'=>'wing_flat'),array('pass'=>array($wing_id,$flat_id)));									
+}  
+$result2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($sub_account))); 
+foreach($result2 as $collection)
+{
+$bank_name = $collection['ledger_sub_account']['name'];
+}
+                                    
+$ip=$this->hms_email_ip();
+$date=date("d-m-Y",($d_date));
+
+$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tbody><tr>
+                <td>
+                    <table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
+                        <tbody>
+						<tr>
+							<td height="10">
+							<table width="100%" class="hmlogobox">
+<tr>
+<td width="50%" style="padding: 10px 0px 0px 10px;"><img src="'.$ip.$this->webroot.'/as/hm/hm-logo.png" style="max-height: 60px; " height="60px" /></td>
+<td width="50%" align="right" valign="middle"  style="padding: 7px 10px 0px 0px;">
+<a href="https://www.facebook.com/HousingMatters.co.in"><img src="'.$ip.$this->webroot.'/as/hm/SMLogoFB.png" style="max-height: 30px; height: 30px; width: 30px; max-width: 30px;" height="30px" width="30px" /></a>
+</td>
+</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<td height="10"></td>
+						</tr>
+                        <tr>
+                            <td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
+							<table style="font-size:12px" width="100%" cellspacing="0">
+								<tbody><tr>
+									<td style="padding:2px;background-color:rgb(0,141,210);color:#fff" align="center" width="100%"><b>'.strtoupper($society_name).'</b></td>
+								</tr>
+							</tbody></table>
+							<table style="font-size:12px" width="100%" cellspacing="0">
+								<tbody>
+								<tr>
+									<td style="padding:5px;border-bottom:solid 1px #767575;border-top:solid 1px #767575" width="100%" align="center">
+									<span style="color:rgb(100,100,99)">Regn# &nbsp; '.$society_reg_no.'</span><br>
+									<span style="color:rgb(100,100,99)">'.$society_address.'</span><br
+									</td>
+								</tr>
+								</tbody>
+							</table>
+							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
+								<tbody><tr>
+									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
+									
+									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
+									
+								</tr>
+								<tr>
+									<td style="padding:0px 0 2px 5px" colspan="2"> Received with thanks from: <b>'.$user_name.' '.$wing_flat.'</b></td>
+																		
+								</tr>
+								<tr>
+									<td style="padding:0px 0 2px 5px"  colspan="4">Rupees '.$am_in_words.' Only </td>
+									
+								</tr>';
+								
+							if($receipt_mode=="Cheque"){
+							$receipt_mode_type='Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
+							}
+							else{
+							$receipt_mode_type='Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
+							}
+
+								
+								$html_receipt.='<tr>
+									<td style="padding:0px 0 2px 5px"  colspan="4">'.$receipt_mode_type.'</td>
+									
+								</tr>
+								
+								<tr>
+									<td style="padding:0px 0 2px 5px" colspan="4">Payment of previous bill</td>
+									
+								</tr>
+								
+							</tbody></table>
+							
+							
+							
+							<table style="font-size:12px;" width="100%" cellspacing="0">
+								<tbody><tr>
+									<td width="50%" style="padding:5px" valign="top">
+									<span style="font-size:16px;"> <b>Rs '.$amount.'</b></span><br>';
+									if($receipt_mode=="Cheque"){
+									$receipt_title_cheq='Subject to realization of Cheque(s)';
+									}
+																		
+									$html_receipt.='<span>'.@$receipt_title_cheq.'</span></td>
+									<td align="center" width="50%" style="padding:5px" valign="top">
+									For  <b>'.$society_name.'</b><br><br><br>
+									<div><span style="border-top:solid 1px #424141">'.$sig_title.'</span></div>
+									</td>
+								</tr>
+							</tbody></table>
+												
+							
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2">
+                                <table style="background-color:#008dd2;font-size:11px;color:#fff;border:solid 1px #767575;border-top:none" width="100%" cellspacing="0">
+                                 <tbody>
+								 
+									<tr>
+                                        <td align="center" colspan="7"><b>
+										Your Society is empowered by HousingMatters - <b> <i>"Making Life Simpler"</i>
+										</b></b></td>
+                                    </tr>
+									<tr>
+                                        <td width="50" align="right" style="font-size: 10px;"><b>Email :</b></td>
+                                        <td width="120" style="color:#fff!important;font-size: 10px;"> 
+										<a href="mailto:support@housingmatters.in" style="color:#fff!important" target="_blank"><b>support@housingmatters.in</b></a>
+                                        </td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td align="right" style="font-size: 10px;"><b>Phone :</b></td>
+                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b>022-41235568</b></td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td width="100" style="padding-right:10px;text-decoration:none"> <a href="http://www.housingmatters.in" style="color:#fff!important" target="_blank"><b>www.housingmatters.in</b></a></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+							</table>
+                            </td>
+                        </tr>
+                        <tr>
+							<td align="center"><div class="hmlogobox" ><a href="mailto:Support@housingmatters.in">Do not miss important e-mails from HousingMatters,  add us to your address book</a></div></td>
+						</tr>
+                    </tbody></table>
+                </td>
+            </tr>
+        </tbody>
+</table>';
+////////////////my Email//////////////
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+$this->loadmodel('society');
+$condition=array('society_id'=>$s_society_id);
+$result_society=$this->society->find('all',array('conditions'=>$condition)); 
+$this->set('result_society',$result_society);
+foreach($result_society as $data_society){
+	$society_name=$data_society["society"]["society_name"];
+	$email_is_on_off=(int)@$data_society["society"]["account_email"];
+	$sms_is_on_off=(int)@$data_society["society"]["account_sms"];
+   }
+//////////////////////////////////////////////////////////////////////////
+
+
+if($email_is_on_off==1){
+////email code//
+$r_sms=$this->hms_sms_ip();
+$working_key=$r_sms->working_key;
+$sms_sender=$r_sms->sms_sender; 
+$sms_allow=(int)$r_sms->sms_allow;
+
+$subject="[".$society_name."]- e-Receipt of Rs ".$amount." on ".date('d-M-Y',$d_date)." against Unit ".$wing_flat."";
+//$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
+
+$this->send_email($to_email,'accounts@housingmatters.in','HousingMatters',$subject,$html_receipt,'donotreply@housingmatters.in');
+
+}
+
+if($sms_is_on_off==1){
+	if($sms_allow==1){
+
+	
+$r_sms=$this->hms_sms_ip();
+$working_key=$r_sms->working_key;
+$sms_sender=$r_sms->sms_sender; 
+$sms_allow=(int)$r_sms->sms_allow;
+$user_name_short=$this->check_charecter_name($user_name);
+$sms="Dear ".$user_name_short." ,we have received Rs ".$amount." on ".$sms_date." towards Society Maint. dues. Cheques are subject to realization,".$society_name;
+$sms1=str_replace(' ', '+', $sms);
+
+$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$to_mobile.'&message='.$sms1.''); 
+}
+}
+
+
+
+$this->loadmodel('my_flat_receipt_update');
+$this->my_flat_receipt_update->updateAll(array("approval_id"=>2),array('society_id'=>$s_society_id,"approval_id"=>1,"auto_id"=>$auto_id22));
+
+?>	
+
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>The Receipt Approved Successfully</p>
+</div>
+<div class="modal-footer">
+<a href="bank_receipt_approve" class="btn red">OK</a>
+</div>
+</div>
+
+
+<?php	
+}
+
+
+
+
+
+
+
+
+
+$this->loadmodel('my_flat_receipt_update');
+$conditions=array('society_id'=>$s_society_id,"approval_id"=>1);
+$cursor1=$this->my_flat_receipt_update->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+	
+}
+
+/////////////////////////////End bank_receipt_approve //////////////////////////////////////////////
 
 }
 ?>
