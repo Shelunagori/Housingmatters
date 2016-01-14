@@ -16,7 +16,6 @@ public $components = array(
 
 
 
-
 var $name = 'Hms';
 
 function check_charecter_name($name){
@@ -54,45 +53,7 @@ function check_charecter_name($name){
 	
 }
 
-function sample_csv_file_for_update_user_info(){
-	$this->layout=null;
-	$s_society_id=(int)$this->Session->read('society_id');
-	
-		
 
-		$s_role_id=$this->Session->read('role_id');
-		$s_society_id = (int)$this->Session->read('society_id');
-		$s_user_id = (int)$this->Session->read('user_id');
-
-		$output = "Name,wing,unit,email,mobile,Owner,committee \n";
-		
-		///order asc wing and flat/////
-		$this->loadmodel('wing');
-		$condition=array('society_id'=>$s_society_id);
-		$order=array('wing.wing_name'=>'ASC');
-		$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
-		foreach($result_wing as $wing_info){
-			$wing_id=$wing_info["wing"]["wing_id"];
-			$this->loadmodel('flat');
-			$condition=array('wing_id'=>(int)$wing_id);
-			$order=array('flat.flat_name'=>'ASC');
-			$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
-			foreach($result_flat as $flat_info){
-				$flat_id=$flat_info["flat"]["flat_id"];
-				$ordered_flats[]=$flat_id;
-			}
-		}
-		foreach($ordered_flats as $flat_id){
-			$this->loadmodel('user_flat');
-			$conditions=array("society_id" => $s_society_id,"flat_id" => $flat_id);
-			$result_user_flat = $this->user_flat->find('all',array('conditions'=>$conditions));
-			foreach($result_user_flat as $users_data){
-				$user_id=$users_data["user_flat"]["user_id"];
-			}
-		}
-		
-echo $output;
-}
 function email_mobile_update(){
 	
 $this->layout='session';	
@@ -452,7 +413,7 @@ function webroot_path() {
 	$this->loadmodel('user');
 	$conditions=array("email" => "housingmatters.in@gmail.com");
 	$resultwebroot_path=$this->user->find('all',array('conditions'=>$conditions));
-	return $resultwebroot_path[0]['user']['webroot_path'];
+	return @$resultwebroot_path[0]['user']['webroot_path'];
 }
 
 
@@ -472,8 +433,7 @@ function cronjob()
 	{
 		$e_id=$data['email_requests']['e_id'];
 		$to=$data['email_requests']['to'];
-		//$from='notice@housingmatters.in';
-		$from=$data['email_requests']['from'];
+		$from='notice@housingmatters.in';
 		$from_name=$data['email_requests']['from_name'];
 		$subject=$data['email_requests']['subject'];
 		$message_web=$data['email_requests']['message_web'];
@@ -2496,15 +2456,7 @@ $this->layout='session';
 		}
 		
 	} */
-				if(isset($this->request->data['sub555']))
-				{
-				$value = htmlentities($this->request->data['abc']);	
-
-				$this->loadmodel('contact_handbook_service');
-				$auto_id=(int)$this->autoincrement('contact_handbook_service','contact_handbook_service_id');
-				$this->contact_handbook_service->saveAll(array("contact_handbook_service_id" => $auto_id,"contact_handbook_service_name" => $value));
-				}
-
+	exit; 
 }
 
 
@@ -5460,7 +5412,8 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	
+	//echo "hello";
+	//exit;
 	//$sms='You one Product is liked by some one. Kindly login into the portal for more details.';
 	//$sms1=str_replace(" ", '+', $sms);
 	//echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey=Ac47f5663efae985cc42d0081ef8e95b7&sender=NMINVT&to=9636653883&message='.$sms1);
@@ -19969,13 +19922,13 @@ $c++;
 
 
 	if(empty($child[0])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Asset Category in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Category is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 			if(empty($child[1])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Date of Purchase in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Date of Purchase is Required in row '.$c));
 		die($output);
 		}	
 		
@@ -20000,7 +19953,7 @@ $c++;
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('type'=>'error','text'=>'Transaction date is not in open Financial Year in row'.$c));
+		$output=json_encode(array('type'=>'error','text'=>'Date of Purchase Should be in Open Financial Year in row '.$c));
 		die($output);
 	}
 		
@@ -20012,19 +19965,19 @@ $c++;
 		
 		
 			if(empty($child[2])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Name of Supplier in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Name of Supplier is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 			if(empty($child[3])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Rupees in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Rupees is Required in row '.$c));
 		die($output);
 		}	
 		
 		
 		if(empty($child[4])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please fill Asset name in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Name is Required in row '.$c));
 		die($output);
 		}	
 		
@@ -20037,7 +19990,7 @@ $c++;
 		$tttm2 = strtotime($tttm);
 		if($tttm2 < $frmm2)
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Warranty Period to can not be small than Warranty Period From  in row'.$c));
+		$output = json_encode(array('type'=>'error', 'text' => 'Warranty Period To can not be Small Than Warranty Period From  in row '.$c));
 		die($output);	
 			
 		}
