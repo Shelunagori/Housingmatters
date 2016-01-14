@@ -9747,9 +9747,9 @@ function send_sms_for_verify_mobile(){
 	$random_otp=(string)mt_rand(1000,9999);
 
 
-
-	$dd=explode(' ',$user_name);
-	$user_name=$dd[0];
+	$user_name=$this->check_charecter_name($user_name);
+	//$dd=explode(' ',$user_name);
+	//$user_name=$dd[0];
 	$user_name=ucfirst($user_name);
 	$r_sms=$this->hms_sms_ip();
 	$working_key=$r_sms->working_key;
