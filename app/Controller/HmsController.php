@@ -16,7 +16,6 @@ public $components = array(
 
 
 
-
 var $name = 'Hms';
 
 function check_charecter_name($name){
@@ -54,45 +53,7 @@ function check_charecter_name($name){
 	
 }
 
-function sample_csv_file_for_update_user_info(){
-	$this->layout=null;
-	$s_society_id=(int)$this->Session->read('society_id');
-	
-		
 
-		$s_role_id=$this->Session->read('role_id');
-		$s_society_id = (int)$this->Session->read('society_id');
-		$s_user_id = (int)$this->Session->read('user_id');
-
-		$output = "Name,wing,unit,email,mobile,Owner,committee \n";
-		
-		///order asc wing and flat/////
-		$this->loadmodel('wing');
-		$condition=array('society_id'=>$s_society_id);
-		$order=array('wing.wing_name'=>'ASC');
-		$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
-		foreach($result_wing as $wing_info){
-			$wing_id=$wing_info["wing"]["wing_id"];
-			$this->loadmodel('flat');
-			$condition=array('wing_id'=>(int)$wing_id);
-			$order=array('flat.flat_name'=>'ASC');
-			$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
-			foreach($result_flat as $flat_info){
-				$flat_id=$flat_info["flat"]["flat_id"];
-				$ordered_flats[]=$flat_id;
-			}
-		}
-		foreach($ordered_flats as $flat_id){
-			$this->loadmodel('user_flat');
-			$conditions=array("society_id" => $s_society_id,"flat_id" => $flat_id);
-			$result_user_flat = $this->user_flat->find('all',array('conditions'=>$conditions));
-			foreach($result_user_flat as $users_data){
-				$user_id=$users_data["user_flat"]["user_id"];
-			}
-		}
-		
-echo $output;
-}
 function email_mobile_update(){
 	
 $this->layout='session';	
@@ -472,7 +433,6 @@ function cronjob()
 	{
 		$e_id=$data['email_requests']['e_id'];
 		$to=$data['email_requests']['to'];
-		//$from='notice@housingmatters.in';
 		$from=$data['email_requests']['from'];
 		$from_name=$data['email_requests']['from_name'];
 		$subject=$data['email_requests']['subject'];
@@ -2271,7 +2231,7 @@ return ++$auto2;
 
 function autoincrement_with_society_ticket($table,$field) 
 {
-$s_society_id=$this->Session->read('society_id');
+  $s_society_id=$this->Session->read('society_id'); 
 $this->loadmodel($table);
 $conditions=array("society_id" => $s_society_id);
 $order=array($table.'.'.$field=>'DESC');
@@ -2286,7 +2246,7 @@ $auto2=1000;
 }
 else
 {
-$auto2=$last;	
+ $auto2=$last;	
 }
 return ++$auto2;
 }
@@ -2496,15 +2456,7 @@ $this->layout='session';
 		}
 		
 	} */
-				if(isset($this->request->data['sub555']))
-				{
-				$value = htmlentities($this->request->data['abc']);	
-
-				$this->loadmodel('contact_handbook_service');
-				$auto_id=(int)$this->autoincrement('contact_handbook_service','contact_handbook_service_id');
-				$this->contact_handbook_service->saveAll(array("contact_handbook_service_id" => $auto_id,"contact_handbook_service_name" => $value));
-				}
-
+	exit; 
 }
 
 
@@ -5460,7 +5412,7 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	
+
 	//$sms='You one Product is liked by some one. Kindly login into the portal for more details.';
 	//$sms1=str_replace(" ", '+', $sms);
 	//echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey=Ac47f5663efae985cc42d0081ef8e95b7&sender=NMINVT&to=9636653883&message='.$sms1);
@@ -9796,10 +9748,10 @@ function send_sms_for_verify_mobile(){
 	$random_otp=(string)mt_rand(1000,9999);
 
 
-
-	$dd=explode(' ',$user_name);
-	$user_name=$dd[0];
-	$user_name=ucfirst($user_name);
+	$user_short=$this->check_charecter_name($user_name);
+	//$dd=explode(' ',$user_name);
+	//$user_name=$dd[0];
+	$user_name=ucfirst($user_short);
 	$r_sms=$this->hms_sms_ip();
 	$working_key=$r_sms->working_key;
 	$sms_sender=$r_sms->sms_sender; 	
@@ -9928,9 +9880,9 @@ function verify_mobile_ajax()
 		 $mobile= $data['user']['mobile'];
 		 $user= $data['user']['user_name'];
 	}
-	
-	$dd=explode(' ',$user);
-	$user_name=$dd[0];
+	$user_name=$this->check_charecter_name($user);
+	//$dd=explode(' ',$user);
+	//$user_name=$dd[0];
 	$user_name=ucfirst($user_name);
 	
 $r_sms=$this->hms_sms_ip();
