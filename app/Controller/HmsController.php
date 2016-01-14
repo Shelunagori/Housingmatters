@@ -14,12 +14,6 @@ public $components = array(
 
 
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
 var $name = 'Hms';
 
 function check_charecter_name($name){
