@@ -3440,7 +3440,7 @@ $r_sms=$this->hms_sms_ip();
 $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
-$subject="[".@$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".date('d-M-Y',$from)." against Unit ".@$wing_flat."";
+$subject="[".$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".date('d-M-Y',$from)." against Unit ".@$wing_flat."";
 $this->send_email($email,'accounts@housingmatters.in','HousingMatters',$subject,$html_bill,'donotreply@housingmatters.in');
 }
 			
@@ -3510,7 +3510,7 @@ $multipleRowData = Array( Array("adhoc_bill_id"=>$adhoc_bill_id,"receipt_id" => 
 "html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih));
 $this->adhoc_bill->saveAll($multipleRowData);
 }
-exit;
+
 $this->Session->write('suppll',1);
 
 ?>
