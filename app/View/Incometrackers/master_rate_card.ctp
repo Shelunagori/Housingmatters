@@ -50,7 +50,7 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 </tr>
 </table> 
 <?php /////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
-
+<div id="validate_result"></div>
 <div class="alert alert-error hide" id="mgg">
 <button class="close" data-dismiss="alert"></button>
 <center>
@@ -59,7 +59,7 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 </div>
 
 
-<form method="post">
+<form method="post" onsubmit="">
 <center>
 <br /><Br />
 <div id="error_msg" style="background-color:white; width:100%;"></div>
@@ -187,7 +187,25 @@ if($b == 5)
 <?php } ?>
 
 </table>
-
+<div id="shwd" class="hide">
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-header">
+<center>
+<h3 id="myModalLabel3" style="color:#999;"><b>Rate Card</b></h3>
+</center>
+</div>
+<div class="modal-body">
+<center>
+<h5><b class="success_report"></b></h5>
+</center>
+</div>
+<div class="modal-footer">
+<a href="<?php echo $webroot_path; ?>Incometrackers/master_rate_card" class="btn blue" rel='tab'>No</a>
+<button type="submit" class="btn blue form_post" submit_type="con" onclick="mssg()">Yes</button>
+</div>
+</div>
+</div> 
 
 <?php
 //$imih = implode(",",$ih);
@@ -198,20 +216,7 @@ if($b == 5)
 <button type="submit" name="suxgxbb" class="btn green form_post" submit_type="sub">Update</button>
 </div>
 </center>
-<div id="shwd" class="hide">
-<div class="modal-backdrop fade in"></div>
-<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-body">
-<h4><b>Are You Sure</b></h4>
-</div>
-<div class="modal-footer">
-<a href="<?php echo $webroot_path; ?>Incometrackers/master_rate_card" class="btn" rel='tab'>NO</a>
-<button type="submit" class="btn red form_post" submit_type="con" onclick="mssg()">YES</button>
-</div>
-</div>
-</div> 
 </form>
-
 <?php ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <script>
 function amt_validattt(vvv,nnn,mmm)
@@ -254,6 +259,10 @@ $(document).ready(function() {
 		{
 		var type = $("#tp"+ p + q).val();	
         var amt = $("#rs"+ p + q).val(); 
+			if(type=== '') { $('#validate_result').html('<div style="background-color:white; color:red; padding:5px;">Please Fill All     Fields</div>'); return false; }	
+			var rs1 = document.getElementById("rs"+ p + q).value;
+			if(amt=== '') { $('#validate_result').html('<div style="background-color:white; color:red; padding:5px;">Please Fill All Fields</div>'); return false; }
+			$('#validate_result').html('');
         var flat_type_id = $("#flat_type_auto_id"+ p + q).val();
         var income_head = $("#income_head_id"+ p + q).val();
 		ar.push([type,amt,flat_type_id,income_head,mm]);
