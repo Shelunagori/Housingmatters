@@ -3953,7 +3953,7 @@ function pay_bill()
 function open_excel()
 {
 		$this->layout="";
-		$filename="Opening_Balance_Import";
+		$filename="User_email_mobile_import_Sample";
 		header ("Expires: 0");
 		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
 		header ("Cache-Control: no-cache, must-revalidate");
