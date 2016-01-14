@@ -218,23 +218,16 @@ if($inhead_idd == $income_id) { ?> selected="selected" <?php } } ?>><?php echo $
         <input type="hidden" value="<?php echo $n; ?>" id="cnt" />
 
         <div id="shwd" class="hide">
-        <div class="modal-backdrop fade in"></div>
-        <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-header">
-        <center>
-        <h3 id="myModalLabel3" style="color:#999;"><b>NOC Charges</b></h3>
-        </center>
+		<div class="modal-backdrop fade in"></div>
+		<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+		<div class="modal-body">
+		<h4><b>Are You Sure</b></h4>
+		</div>
+		<div class="modal-footer">
+		<a href="<?php echo $webroot_path; ?>Incometrackers/master_noc" class="btn" rel='tab'>NO</a>
+        <button type="submit" class="btn red form_post" submit_type="con" onclick="mssg()">YES</button>
         </div>
-        <div class="modal-body">
-        <center>
-        <h5><b class="success_report"></b></h5>
-        </center>
-        </div>
-        <div class="modal-footer">
-        <a href="<?php echo $webroot_path; ?>Incometrackers/master_noc" class="btn blue" rel='tab'>No</a>
-        <button type="submit" class="btn blue form_post" submit_type="con" onclick="mssg()">Yes</button>
-        </div>
-        </div>
+		</div>
         </div> 
  
 

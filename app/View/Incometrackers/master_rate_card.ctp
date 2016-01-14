@@ -187,25 +187,7 @@ if($b == 5)
 <?php } ?>
 
 </table>
-<div id="shwd" class="hide">
-<div class="modal-backdrop fade in"></div>
-<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-header">
-<center>
-<h3 id="myModalLabel3" style="color:#999;"><b>Rate Card</b></h3>
-</center>
-</div>
-<div class="modal-body">
-<center>
-<h5><b class="success_report"></b></h5>
-</center>
-</div>
-<div class="modal-footer">
-<a href="<?php echo $webroot_path; ?>Incometrackers/master_rate_card" class="btn blue" rel='tab'>No</a>
-<button type="submit" class="btn blue form_post" submit_type="con" onclick="mssg()">Yes</button>
-</div>
-</div>
-</div> 
+
 
 <?php
 //$imih = implode(",",$ih);
@@ -216,7 +198,20 @@ if($b == 5)
 <button type="submit" name="suxgxbb" class="btn green form_post" submit_type="sub">Update</button>
 </div>
 </center>
+<div id="shwd" class="hide">
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Are You Sure</b></h4>
+</div>
+<div class="modal-footer">
+<a href="<?php echo $webroot_path; ?>Incometrackers/master_rate_card" class="btn" rel='tab'>NO</a>
+<button type="submit" class="btn red form_post" submit_type="con" onclick="mssg()">YES</button>
+</div>
+</div>
+</div> 
 </form>
+
 <?php ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <script>
 function amt_validattt(vvv,nnn,mmm)
