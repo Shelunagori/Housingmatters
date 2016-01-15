@@ -1,91 +1,143 @@
+<?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;" id="myModal4">
 	<div class="portlet-title">
 		<h4><i class="icon-cogs"></i> Import Email and Mobile </h4>
 	</div>
+	
 	<div class="portlet-body" align="">
-		<form method="post" id="form_email" style="margin: 0px;">
+		<form method="post" id="form1" style="margin: 0px;">
 			<h5>Upload CSV file in given format to import email and mobile update.</h5>
-			<input name="file1" class="default" id="image-file1" type="file">
+			<input name="file" class="default" id="image-file1" type="file">
 			<label id="vali1"></label>
 			<strong><a href="<?php echo $this->webroot; ?>hms/email_mobile_import_file" download>Click here for sample format</a></strong><br/><br/>
-			<h5 id="submit_element" >
+			
 			<h4>Instruction set to import users</h4>
 			<ol>
 			<li>Email ID should be correct as all the further communication will be send to this email id. No duplicate Email is allowed.</li>
 			<li>Mobile number should be 10 digits. No Duplicate Mobile No is allowed.</li>
 			</ol>
+			<span  id="submit_element">
 			<button type="submit" class="btn blue">IMPORT </button>
-			</h5>
+			</span>
+			
 		</form>
 	</div>
 </div>
+<?php } ?>
 
-<div id="url_main_new">
-
+<?php if(@$process_status==1){ ?>
+	<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+		<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+		<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+		<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+		<br/><br/>
+		<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
+		<span style="padding-left: 10px; font-weight: bold; color: red;">Do Not Close Window, Reading CSV file...</span>
+	</div>
+	<script>
+	$( document ).ready(function() {
+		$.ajax({
+			url: "read_user_info_csv_file",
+			dataType: 'json'
+		}).done(function(response){
+			
+			if(response=="READ"){
+				change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
+			}
+		});
+	});
+	</script>
+	<?php } ?>
+	
+	
+	
+<?php if(@$process_status==2){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
+	<span style="padding-left: 10px; font-weight: bold; color: red;">Preparing Data For More Modifications.</span>
+	<div class="progress progress-striped progress-danger active">
+		<div id="progress" style="width: <?php echo $converted_per; ?>%;" class="bar"></div>
+	</div>
 </div>
+<script>
+$( document ).ready(function() {
+	convert_csv_data_ajax();
+});
+function convert_csv_data_ajax(){
+	$( document ).ready(function() {
+		$.ajax({
+			url: "convert_user_info_data",
+			dataType: 'json'
+		}).done(function(response){
+			alert(response.again_call_ajax);
+			if(response.again_call_ajax=="YES"){
+				$("#progress").css("width",response.converted_per+"%");
+				convert_csv_data_ajax();
+			}
+			if(response.again_call_ajax=="NO"){
+				change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
+			}
+		});
+	});
+}
+</script>
+<?php } ?>
+
+<?php if(@$process_status==3){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Uploaded Data Is Ready To More Modification.</span>
+	<br/><br/>
+	<a href="<?php echo $webroot_path; ?>Cashbanks/modify_bank_receipt_csv_data" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
+</div>
+<?php } ?>
 
 <script>
-$(document).ready(function(){
-	
-	$('#submit').live("click",function(ev){
-		ev.preventDefault();	
-		var count = $("#url_main tr").length;
-		alert(count);
-		var ar = [];
-		for(var i=1;i<=count;i++){
-			$("#url_main tr:nth-child("+i+") span.report").remove();
-			$("#url_main  tr:nth-child("+i+") td").css("background-color", "#fff");
-			
-			var n=$("#url_main  tr:nth-child("+i+")  select").val();
-			var e=$("#url_main  tr:nth-child("+i+")  input[name=email]").val();
-			var m=$("#url_main  tr:nth-child("+i+")  input[name=mobile]").val();
-			ar.push([n,e,m]);
+$('form#form1').submit( function(ev){
+	ev.preventDefault();
+	$("#submit_element").html("<img src='<?php echo $webroot_path; ?>as/loding.gif' /> Please Wait, Csv file is Uploading...");
+	var m_data = new FormData();
+	m_data.append( 'file', $('input[name=file]')[0].files[0]);
+	$.ajax({
+	url: "Upload_user_info_csv_file",
+	data: m_data,
+	processData: false,
+	contentType: false,
+	type: 'POST',
+	dataType: 'json'
+	}).done(function(response){
+		if(response=="UPLOADED"){
+			change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 		}
-		
-		var myJsonString = JSON.stringify(ar);
-		myJsonString=encodeURIComponent(myJsonString);
-		$.ajax({
-		url: "email_mobile_update_ajax?q="+myJsonString,
-		type: 'POST',
-		//dataType:'json',
-		}).done(function(response) {
-			
-			alert(response);
-			
-		});	
-		
-	});	
-	
- $('form#form_email').submit( function(ev){
-		ev.preventDefault();
-			
-		im_name=$("#image-file1").val();
-		var insert = 1;
-		if(im_name==""){
-			$("#vali1").html("<span style='color:red;'>Please Select a Csv File</span>");	
-			return false;
-		}
-		
-		var ext = $('#image-file1').val().split('.').pop().toLowerCase();
-		if($.inArray(ext, ['csv']) == -1) {
-			$("#vali1").html("<span style='color:red;'>Please Select a Csv File</span>");
-			return false;
-		}
-		$(".import_btn").text("Importing...");
-		var m_data = new FormData();
-		m_data.append( 'file1', $('input[name=file1]')[0].files[0]);
-		$.ajax({
-			url: "import_email_mobile_update",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			}).done(function(response) {
-				alert(response);
-				$("#myModal4").hide();
-				$("#url_main_new").html(response);
-			});	
-	
 	});
 });
-	</script>
+
+function change_page_automatically(pageurl){
+	$.ajax({
+		url: pageurl,
+		}).done(function(response) {
+		
+		$(".page-content").html(response);
+		$("html, body").animate({
+			scrollTop:0
+		},"slow");
+		 $('#submit_success').hide();
+		});
+	
+	window.history.pushState({path:pageurl},'',pageurl);
+}
+</script>
