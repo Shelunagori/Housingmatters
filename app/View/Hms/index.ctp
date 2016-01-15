@@ -17,32 +17,7 @@
 		</div>
 	  <?php } ?>
 
-	 <a href="http://app.housingmatters.co.in/1353/fbconfig.php" style="text-decoration: none;">
-		 <div style="color:#fff;">
-		 <table width="100%">
-			<tr>
-				<td width="20%" style="background-color:#35508D;padding: 7px;" align="center"><i class="icon-facebook" style="font-size: 28px;"></i></td>
-				<td style="background-color: rgb(60, 90, 152); padding-left: 15px; font-size: 14px; font-weight: bold;">Login with Facebook</td>
-			</tr>
-		 </table>
-		 </div>
-	 </a>
-	 <br/>
-	 <a href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;redirect_uri=http%3A%2F%2Fapp.housingmatters.co.in%2Fgoogle-login-api%2Findex.php&amp;client_id=453149326689-5k5b4ar6s49bs1rv0n4k9umno56qf113.apps.googleusercontent.com&amp;scope=email+profile&amp;access_type=online&amp;approval_prompt=auto" style="text-decoration: none;">
-		 <div style="color:#fff;">
-		 <table width="100%">
-			<tr>
-				<td width="20%" style="background-color:#C5462E;padding: 7px;" align="center"><i class="icon-google-plus" style="font-size: 28px;"></i></td>
-				<td style="background-color: #DD4D3B; padding-left: 15px; font-size: 14px; font-weight: bold;">Login with Google</td>
-			</tr>
-		 </table>
-		 </div>
-	 </a>
-	 <br/>
-	 
-	  <div align="center" style="color:#7A7A7A;"><b>OR</b></div>
-	  
-
+	
       <div style="color:red;"><?php echo @$wrong; ?></div><br>
       <div class="control-group">
 	  	<div class="controls">
@@ -65,6 +40,32 @@
         </label>
 			<button type="submit" name="login" class="btn green  pull-right" style="font-size:16px; width:45%">Login  <i class="m-icon-swapright m-icon-white"></i></button>
       </div>
+	  
+	    <div align="center" style="color:#7A7A7A;"><b>OR</b></div>
+		<br/>
+	   <a href="http://app.housingmatters.co.in/1353/fbconfig.php" style="text-decoration: none;">
+		 <div style="color:#fff;">
+		 <table width="100%">
+			<tr>
+				<td width="20%" style="background-color:#35508D;padding: 7px;" align="center"><i class="icon-facebook" style="font-size: 28px;"></i></td>
+				<td style="background-color: rgb(60, 90, 152); padding-left: 15px; font-size: 14px; font-weight: bold;">Login with Facebook</td>
+			</tr>
+		 </table>
+		 </div>
+	 </a>
+	 <br/>
+	 <a href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;redirect_uri=http%3A%2F%2Fapp.housingmatters.co.in%2Fgoogle-login-api%2Findex.php&amp;client_id=453149326689-5k5b4ar6s49bs1rv0n4k9umno56qf113.apps.googleusercontent.com&amp;scope=email+profile&amp;access_type=online&amp;approval_prompt=auto" style="text-decoration: none;">
+		 <div style="color:#fff;">
+		 <table width="100%">
+			<tr>
+				<td width="20%" style="background-color:#C5462E;padding: 7px;" align="center"><i class="icon-google-plus" style="font-size: 28px;"></i></td>
+				<td style="background-color: #DD4D3B; padding-left: 15px; font-size: 14px; font-weight: bold;">Login with Google</td>
+			</tr>
+		 </table>
+		 </div>
+	 </a>
+	 <br/>
+	  
 	 </form> 
 	<!-- The plugin will be embedded into this div //-->
 	
@@ -98,5 +99,27 @@
   </div>
   <!-- END COPYRIGHT -->
 
-
+<script>
+$(document).ready(function(){
+		$('#contact-form').validate({
+	    rules: {
+	      username: {
+	       
+	        required: true
+	      },
+	      password: {
+	        required: true,
+	      },
+	    },
+			highlight: function(element) {
+				$(element).closest('.control-group').removeClass('success').addClass('error');
+			},
+			success: function(element) {
+				element
+				.text('OK!').addClass('valid')
+				.closest('.control-group').removeClass('error').addClass('success');
+			}
+	  });
+}); 
+</script>
 

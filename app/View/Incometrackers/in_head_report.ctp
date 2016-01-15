@@ -156,12 +156,21 @@ $wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing
            </div>
 
 <?php 
+$max_size=0;
 foreach($result_new_regular_bill as $regular_bill){
 	$one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
 	if($one_time_id==$last_one_time_id){
 		$income_head_array=$regular_bill["new_regular_bill"]["income_head_array"];
+		  if($max_size<sizeof($income_head_array))
+		  {
+			  $income_head_array_size=$income_head_array;
+			  $max_size=sizeof($income_head_array);
+		  }
+		 
+		  
 	}
-} ?>
+}   
+ ?>
 <br />
 <?php
 if($nnn == 555555)
@@ -191,13 +200,14 @@ else
 			<th>Name</th>
 			<th>Area <?php if($vallllll == 0) { ?>(sq. feet)<?php } else {?> (sq. mtr) <?php } ?></th>
 			<th>Bill No.</th>
-			<?php foreach($income_head_array as $income_head=>$value){ 
+			<?php 	
+			foreach($income_head_array_size as $income_head=>$value){ 
 			$result_income_head = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($income_head)));	
 			foreach($result_income_head as $data2){
 				$income_head_name = $data2['ledger_account']['ledger_name'];
 			} ?>
 			<th><?php echo $income_head_name; ?></th>	
-			<?php } ?>
+			<?php }  ?>
 			<th>Non Occupancy charges</th>
 			
 			<?php 
@@ -267,11 +277,15 @@ foreach($result_new_regular_bill as $regular_bill){
 			<td><?php echo $user_name; ?></td>
 			<td><?php echo $sq_feet; ?></td>
 			<td><?php echo $bill_no; ?></td>
-			<?php foreach($income_head_array as $income_head=>$value){
-				$total_income_heads[$income_head][]=$value;
+			<?php 
+			
+			foreach($income_head_array_size as $income_head=>$value){ 
+			//foreach($income_head_array as $income_head=>$value)
+			{
+				$total_income_heads[$income_head][]=@$income_head_array[$income_head];
 			 ?>
-			<td><?php echo @$value; ?></td>	
-			<?php } ?>
+			<td><?php echo @$income_head_array[$income_head]; ?></td>	
+			<?php } } ?>
 			<td><?php echo $noc_charges; $total_noc_charges+=$noc_charges; ?></td>
 			<?php 
 			if(sizeof(@$other_charges_ids)>0){
@@ -318,7 +332,7 @@ foreach($result_new_regular_bill as $regular_bill){
 	</tbody>
 		<tr>
 			<td colspan="4" align="right"><b>Total<b/></td>
-			<?php foreach($income_head_array as $income_head=>$value){ $total_income_heads_am=0;
+			<?php foreach($income_head_array_size as $income_head=>$value){ $total_income_heads_am=0;
 				foreach($total_income_heads[$income_head] as $data5){
 					$total_income_heads_am+=$data5;
 				}
@@ -447,8 +461,18 @@ $("#three").show();
 }
 
 </script>
- 
- 
- 
+ <script>
+ $(document).ready(function() {
+    var table = $('#report_tb').DataTable( {
+        scrollY:        "300px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         false,
+        fixedColumns:   {
+            leftColumns: 2
+        }
+    } );
+} );
+ </script>
  
  
