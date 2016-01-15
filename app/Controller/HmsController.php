@@ -16871,6 +16871,12 @@ return $this->user_flat->find('all',array('conditions'=>$conditions));
 	
 }
 
+function fetch_user_flat($id){
+$s_society_id=$this->Session->read('society_id');
+$this->loadmodel('user_flat');	
+$conditions=array('user_id'=>$id);	
+return $this->user_flat->find('all',array('conditions'=>$conditions));
+}
 function check_due_payment(){
 	
 $s_society_id=$this->Session->read('society_id');	

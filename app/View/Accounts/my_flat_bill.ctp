@@ -42,7 +42,10 @@ background-color: #E6ECE7;
 	 width:98% !important;
  }
 </style>
+<?php
+$multiple_flat=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_flat'), array('pass' => array($s_user_id)));
 
+?>
 
 
 <div align="center" class="hide_at_print">
@@ -53,15 +56,17 @@ background-color: #E6ECE7;
 		<select class="m-wrap" data-placeholder="Choose a Category"  id="flat_select_box">
 			<option value="" style="display:none;" >Select...</option>
 			<?php $count=0; foreach($multiple_flat as $flat_data){ $count++;
-				//wing_id via flat_id//
-				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_data[1])));
+				
+				$flat_id = (int)$flat_data['user_flat']['flat_id'];
+				
+				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 				foreach($result_flat_info as $flat_info){
 					$wing_id=$flat_info["flat"]["wing_id"];
 				}
 				
-				$wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'wing_flat'), array('pass' => array($wing_id,$flat_data[1])));
+				$wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'wing_flat'), array('pass' => array($wing_id,$flat_id)));
 			?>
-			<option value="<?php echo $flat_data[1]; ?>" <?php if($count==1){ echo 'selected="selected"'; } ?> ><?php echo $wing_flat; ?></option>
+			<option value="<?php echo $flat_id; ?>" <?php if($count==1){ echo 'selected="selected"'; } ?> ><?php echo $wing_flat; ?></option>
 			<?php } ?>
 		</select>
 		</td>
