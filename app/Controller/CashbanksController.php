@@ -3013,7 +3013,7 @@ foreach($cursor as $collection)
 $receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
 $d_date = $collection['new_cash_bank']['receipt_date'];
 $today = date("d-M-Y");
-$flat_id = (int)$collection['new_cash_bank']['party_name_id'];
+$flat_id = (int)$collection['new_cash_bank']['flat_id'];
 $amount = $collection['new_cash_bank']['amount'];
 $society_id = (int)$collection['new_cash_bank']['society_id'];
 $bill_reference = $collection['new_cash_bank']['reference_utr'];
@@ -3027,7 +3027,7 @@ $reference_number = @$collection['new_cash_bank']['reference_number'];
 $cheque_date = @$collection['new_cash_bank']['cheque_date'];
 $sub_account = (int)$collection['new_cash_bank']['deposited_bank_id'];
 $sms_date=date("d-m-Y",($d_date));
-
+exit;
 $amount = str_replace( ',', '', $amount );
 $am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
 
@@ -3054,7 +3054,7 @@ foreach ($flatt_datta as $fltt_datttaa)
 $wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
 }
 
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array(55,$flat_id)));
+$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
 foreach ($result_lsa as $collection) 
 {
 $wing_id = $collection['user']['wing'];  
