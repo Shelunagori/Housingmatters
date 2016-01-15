@@ -70,6 +70,8 @@ $this->ath();
 		$step2=(int)@$data_import["user_info_import_record"]["step2"];
 		$step3=(int)@$data_import["user_info_import_record"]["step3"];
 		$step4=(int)@$data_import["user_info_import_record"]["step4"];
+		$date=@$data_import["user_info_import_record"]["date"];
+		$this->set("date",$date);
 	}
 	$process_status= @$step1+@$step2+@$step3+@$step4;
 	$this->set("process_status",$process_status);
@@ -268,7 +270,8 @@ function email_mobile_import_file(){
 	
 	$this->loadmodel('user');
 	$conditions=array("society_id" => $s_society_id,"deactive"=>0);
-	$result_users=$this->user->find('all',array('conditions'=>$conditions));
+	$order=array('user.user_name'=>'ASC');
+	$result_users=$this->user->find('all',array('conditions'=>$conditions,'order'=>$order));
 	foreach($result_users as $user_info){
 		$user_name=$user_info["user"]["user_name"];
 		$wing=$user_info["user"]["wing"];
