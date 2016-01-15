@@ -461,18 +461,6 @@ $("#three").show();
 }
 
 </script>
- <script>
- $(document).ready(function() {
-    var table = $('#report_tb').DataTable( {
-        scrollY:        "300px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         false,
-        fixedColumns:   {
-            leftColumns: 2
-        }
-    } );
-} );
- </script>
+
  
  
