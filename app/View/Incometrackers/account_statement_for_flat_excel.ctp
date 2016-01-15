@@ -132,16 +132,16 @@ foreach($result_ledger as $ledger_data){
 				?>
 					<tr>
 						<td><?php echo date("d-m-Y",$transaction_date); ?></td>
-						<td>
+						<td style="text-align:right;">
 						<?php if($table_name=="new_regular_bill"){
-							echo '<a class="tooltips" data-original-title="Click for view Source" data-placement="bottom" href="'.$this->webroot.'Incometrackers/regular_bill_view/'.$element_id.'" target="_blank">'.$refrence_no.'</a>';
+							echo $refrence_no;
 						}
 						if($table_name=="new_cash_bank"){
-							echo '<a class="tooltips" data-original-title="Click for view Source" data-placement="bottom" href="'.$this->webroot.'Cashbanks/bank_receipt_html_view/'.$element_id.'" target="_blank">'.$refrence_no.'</a>';
+							echo $refrence_no;
 						}
                         if($table_name=="adhoc_bill")
 						{
-						echo '<a class="tooltips" data-original-title="Click for view Source" data-placement="bottom" href="'.$this->webroot.'Incometrackers/supplimentry_view/'.$element_id.'" target="_blank">'.$refrence_no.'</a>';	
+						echo $refrence_no;	
 						}
 						?>
 						</td>

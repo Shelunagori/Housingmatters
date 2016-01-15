@@ -75,6 +75,7 @@ background-color: #E6ECE7;
 			}
 			$account_balance=0; $total_maint_charges=0; $total_interest=0; $total_credits=0;  $total_account_balance=0; 
 			foreach($result_ledger as $ledger_data){ 
+				$credits = "";
 				$transaction_date=$ledger_data["ledger"]["transaction_date"];
 				$table_name=$ledger_data["ledger"]["table_name"];
 				$element_id=$ledger_data["ledger"]["element_id"];
@@ -134,19 +135,37 @@ background-color: #E6ECE7;
 					$credits=$debit+$credit;
 					$account_balance=$account_balance-(int)$credits;
 				} 
+				if($table_name=='adhoc_bill')
+				{
+				$element_id=$element_id;	
+				$result_adhoc=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'adhoc_info_via_auto_id'), array('pass' => array($element_id)));
+				$refrence_no=@$result_adhoc[0]["adhoc_bill"]["receipt_id"]; 
+				$flat_id = (int)@$result_adhoc[0]["adhoc_bill"]["person_name"];
+				$description = @$result_adhoc[0]["adhoc_bill"]["description"];
+
+				$maint_charges=$debit+$credit;
+				$interest="";
+				$account_balance=$account_balance+(int)$maint_charges;
+				}
 				$total_maint_charges=$total_maint_charges+(int)$maint_charges;
 				$total_interest=$total_interest+(int)$interest;
 				$total_credits=$total_credits+(int)$credits;
 				?>
 					<tr>
 						<td><?php echo date("d-m-Y",$transaction_date); ?></td>
-						<td>
+						<td style="text-align:right;">
 						<?php if($table_name=="new_regular_bill"){
 							echo $refrence_no;
 						}
 						if($table_name=="new_cash_bank"){
 							echo $refrence_no;
-						} ?>
+						}
+if($table_name=="adhoc_bill")
+						{
+						echo $refrence_no;	
+						}
+						?>
+						
 						</td>
 						<td>
 						<?php if($table_name=="new_regular_bill"){
@@ -154,7 +173,11 @@ background-color: #E6ECE7;
 						}
 						if($table_name=="new_cash_bank"){
 							echo "Bank Receipt";
-						} ?>
+						}
+						if($table_name=="adhoc_bill")
+						{
+						echo "Supplimentry Bill";
+						}						?>
 						</td>
 						<td><?php echo $description; ?></td>
 						<td style="text-align:right;"><?php echo $maint_charges; ?></td>
