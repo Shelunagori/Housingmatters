@@ -2906,7 +2906,7 @@ function b_receipt_edit($transaction_id=null){
 		
 		$this->loadmodel('new_cash_bank');
 		$new_new_cash_bank_auto_id=$this->autoincrement('new_cash_bank','transaction_id');
-		$this->new_cash_bank->saveAll(array('transaction_id'=>$new_new_cash_bank_auto_id,'receipt_date'=>strtotime($tranjection_date),"deposited_bank_id"=>$deposited_bank_id,"receipt_mode"=>$receipt_mode,"cheque_number"=>$cheque_number,"cheque_date"=>$cheque_date,"drawn_on_which_bank"=>$drawn_on_which_bank,"member_type"=>$member_type,"receipt_type"=>$receipt_type,"flat_id"=>$resident_flat_id,"amount"=>$amount,"narration"=>$narration,"reference_utr"=>$reference_utr,"party_name_id"=>$party_name,"bill_reference"=>$bill_reference,"current_date"=>$current_date,"society_id"=>$s_society_id,"receipt_id"=>$receipt_id,"receipt_source"=>1,"bill_one_time_id"=>$bill_one_time_id,"edit_status"=>"NO"));
+		$this->new_cash_bank->saveAll(array('transaction_id'=>$new_new_cash_bank_auto_id,'receipt_date'=>strtotime($tranjection_date),"deposited_bank_id"=>$deposited_bank_id,"receipt_mode"=>$receipt_mode,"cheque_number"=>$cheque_number,"cheque_date"=>$cheque_date,"drawn_on_which_bank"=>$drawn_on_which_bank,"member_type"=>$member_type,"receipt_type"=>$receipt_type,"flat_id"=>$resident_flat_id,"amount"=>$amount,"narration"=>$narration,"reference_utr"=>$reference_utr,"party_name_id"=>$party_name,"bill_reference"=>$bill_reference,"current_date"=>$current_date,"society_id"=>$s_society_id,"receipt_id"=>$receipt_id,"receipt_source"=>1,"bill_one_time_id"=>$bill_one_time_id,"edit_status"=>"NO","prepaired_by"=>$s_user_id));
 		
 		
 		$result_ledger_sub_account = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch3'),array('pass'=>array($resident_flat_id)));
