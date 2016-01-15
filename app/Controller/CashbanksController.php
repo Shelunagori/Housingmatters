@@ -3113,7 +3113,7 @@ $html_receipt='<table style="padding:24px;background-color:#34495e" align="cente
 							</table>
 							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
 								<tbody><tr>
-									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
+									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'-R</td>
 									
 									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
 									
