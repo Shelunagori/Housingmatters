@@ -3054,7 +3054,7 @@ foreach ($flatt_datta as $fltt_datttaa)
 $wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
 }
 
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
+$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array(55,$flat_id)));
 foreach ($result_lsa as $collection) 
 {
 $wing_id = $collection['user']['wing'];  
