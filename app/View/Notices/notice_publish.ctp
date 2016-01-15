@@ -123,7 +123,7 @@ $i++;
 <?php } }  ?> 
 </tbody>
 </table> 
-<?php if(sizeof($result_notice_publish)==0){ echo '<div align="center">No any Notice Published</div>'; } ?>
+<?php if(sizeof($result_notice_publish)==0){ echo '<div align="center">No Notices published yet</div>'; } ?>
 </div>
 
 
