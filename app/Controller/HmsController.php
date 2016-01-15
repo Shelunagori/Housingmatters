@@ -56,11 +56,43 @@ function email_mobile_update(){
 	
 $this->layout='session';	
 $s_society_id=$this->Session->read('society_id');	
-	
 
 }
 
+function email_mobile_import_file(){
+	$this->layout="";
+	$filename="email_mobile_import_file";
+	header ("Expires: 0");
+	header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+	header ("Cache-Control: no-cache, must-revalidate");
+	header ("Pragma: no-cache");
+	header ("Content-type: application/vnd.ms-excel");
+	header ("Content-Disposition: attachment; filename=".$filename.".csv");
+	header ("Content-Description: Generated Report" );
 
+	$s_role_id=$this->Session->read('role_id');
+	$s_society_id = (int)$this->Session->read('society_id');
+	$s_user_id = (int)$this->Session->read('user_id');
+	
+	$output= "Name,wing,unit,email,mobile \n";
+	
+	
+	$this->loadmodel('user');
+	$conditions=array("society_id" => $s_society_id,"deactive"=>0);
+	$result_users=$this->user->find('all',array('conditions'=>$conditions));
+	foreach($result_users as $user_info){
+		$user_name=$user_info["user"]["user_name"];
+		$wing=$user_info["user"]["wing"];
+		$flat=$user_info["user"]["flat"];
+		
+		$wing_name=$this->fetch_wingname_via_wingid($wing);
+		$flat_name=$this->fetch_flatname_via_flatid($flat);
+		
+		$output.= $user_name.",".$wing_name.",".$flat_name." \n";
+	}
+	echo $output;
+}
+		
 
 
 function import_email_mobile_update(){
@@ -674,6 +706,20 @@ $result=$this->wing->find('all',array('conditions'=>$conditions));
 foreach ($result as $dd) 
 {
 return $wing_name=$dd["wing"]["wing_name"];
+}
+}
+
+
+function fetch_flatname_via_flatid($flat_id) 
+{
+$s_society_id=$this->Session->read('society_id');
+
+$this->loadmodel('flat');
+$conditions=array("society_id"=>$s_society_id,"flat_id"=>$flat_id);
+$result=$this->flat->find('all',array('conditions'=>$conditions));
+foreach ($result as $dd) 
+{
+return $flat_name=$dd["flat"]["flat_name"];
 }
 }
 
