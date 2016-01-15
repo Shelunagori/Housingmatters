@@ -209,6 +209,7 @@ function convert_user_info_data(){
 	}else{
 		$again_call_ajax="YES"; 
 		}
+		
 	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
 }
 
@@ -270,8 +271,9 @@ function email_mobile_import_file(){
 	
 	$this->loadmodel('user');
 	$conditions=array("society_id" => $s_society_id,"deactive"=>0);
-	$order=array('user.user_name'=>'ASC');
+	$order=array('user_name'=>'DESC');
 	$result_users=$this->user->find('all',array('conditions'=>$conditions,'order'=>$order));
+	
 	foreach($result_users as $user_info){
 		$user_name=$user_info["user"]["user_name"];
 		$wing=$user_info["user"]["wing"];
