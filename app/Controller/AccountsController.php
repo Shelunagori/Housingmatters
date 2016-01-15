@@ -871,8 +871,8 @@ function my_flat_bill()
 		$user_id=$collection2["user"]["user_id"];
 		$user_name=$collection2["user"]["user_name"];
 		$this->set('user_name',$user_name);
-		$multiple_flat=@$collection2["user"]["multiple_flat"];
-		$this->set('multiple_flat',$multiple_flat);
+		//$multiple_flat=@$collection2["user"]["multiple_flat"];
+		//$this->set('multiple_flat',$multiple_flat);
 		$flat_id=$collection2["user"]["flat"];
 	}
 	
@@ -913,7 +913,7 @@ function my_flat_bill_ajax($from=null,$to=null,$flat_id=null)
 		$this->ath();
 		$s_society_id = (int)$this->Session->read('society_id');
 	
-		$s_user_id=$this->Session->read('user_id');
+		$s_user_id=(int)$this->Session->read('user_id');
 		$this->set("s_user_id",$s_user_id);
 	
 	
@@ -974,8 +974,15 @@ function my_flat_bill_ajax($from=null,$to=null,$flat_id=null)
 	$order=array('ledger.transaction_date'=>'ASC');
 	$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order));
 	$this->set('result_ledger',$result_ledger);
-}
+	
+//$this->loadmodel('ledger_sub_account');
+//$conditions=array("society_id"=>$s_society_id,"user_id" =>$s_user_id);
+//$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+//$this->set('result_ledger_sub_account',$result_ledger_sub_account);
 
+	
+}
+////////////////////////////End My Flat Bill Ajax/////////////////////////////////////////////////
 function my_flat_bill_excel_export($from=null,$to=null,$flat_id=null)
 {
 $this->layout=null;
@@ -5113,7 +5120,13 @@ else
 		die($output);
 		}
 
-}			
+}	
+        if(empty($child[11]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Resident'));
+		die($output);
+		}
+		
         if(empty($child[8]))
 		{
 		$output = json_encode(array('type'=>'error', 'text' => 'Please Fill Amount '));

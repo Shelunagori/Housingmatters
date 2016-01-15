@@ -43,7 +43,7 @@ background-color: #E6ECE7;
 	
 		<table id="report_tb" width="100%" border="1">
 			<tr>
-				<td colspan="7">
+				<td colspan="8">
 				<div class="row-fluid" style="font-size:14px;" align="center">
 					<div class="span6">
 						<span style="font-size:16px;">Statement of Account</span><br/>
@@ -58,6 +58,7 @@ background-color: #E6ECE7;
 			<tr>
 				<th>Date</th>
 				<th>Reference</th>
+				<th>Type</th>
 				<th>Description</th>
 				<th>Maint. Charges</th>
 				<th>Interest</th>
@@ -74,6 +75,7 @@ background-color: #E6ECE7;
 			}
 			$account_balance=0; $total_maint_charges=0; $total_interest=0; $total_credits=0;  $total_account_balance=0; 
 			foreach($result_ledger as $ledger_data){ 
+				$credits = "";
 				$transaction_date=$ledger_data["ledger"]["transaction_date"];
 				$table_name=$ledger_data["ledger"]["table_name"];
 				$element_id=$ledger_data["ledger"]["element_id"];
@@ -120,7 +122,7 @@ background-color: #E6ECE7;
 				}
 				if($table_name=="new_cash_bank"){
 					
-					$element_id=$element_id+1000;
+					$element_id=$element_id;
 					
 					$result_cash_bank=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'receipt_info_via_auto_id'), array('pass' => array($element_id)));
 					$refrence_no=@$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
@@ -133,19 +135,49 @@ background-color: #E6ECE7;
 					$credits=$debit+$credit;
 					$account_balance=$account_balance-(int)$credits;
 				} 
+				if($table_name=='adhoc_bill')
+				{
+				$element_id=$element_id;	
+				$result_adhoc=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'adhoc_info_via_auto_id'), array('pass' => array($element_id)));
+				$refrence_no=@$result_adhoc[0]["adhoc_bill"]["receipt_id"]; 
+				$flat_id = (int)@$result_adhoc[0]["adhoc_bill"]["person_name"];
+				$description = @$result_adhoc[0]["adhoc_bill"]["description"];
+
+				$maint_charges=$debit+$credit;
+				$interest="";
+				$account_balance=$account_balance+(int)$maint_charges;
+				}
 				$total_maint_charges=$total_maint_charges+(int)$maint_charges;
 				$total_interest=$total_interest+(int)$interest;
 				$total_credits=$total_credits+(int)$credits;
 				?>
 					<tr>
 						<td><?php echo date("d-m-Y",$transaction_date); ?></td>
-						<td>
+						<td style="text-align:right;">
 						<?php if($table_name=="new_regular_bill"){
 							echo $refrence_no;
 						}
 						if($table_name=="new_cash_bank"){
 							echo $refrence_no;
-						} ?>
+						}
+if($table_name=="adhoc_bill")
+						{
+						echo $refrence_no;	
+						}
+						?>
+						
+						</td>
+						<td>
+						<?php if($table_name=="new_regular_bill"){
+							echo "Regular_bill";
+						}
+						if($table_name=="new_cash_bank"){
+							echo "Bank Receipt";
+						}
+						if($table_name=="adhoc_bill")
+						{
+						echo "Supplimentry Bill";
+						}						?>
 						</td>
 						<td><?php echo $description; ?></td>
 						<td style="text-align:right;"><?php echo $maint_charges; ?></td>
@@ -156,14 +188,14 @@ background-color: #E6ECE7;
 				
 			<?php } ?>
 					<tr>
-						<td colspan="3" align="right"><b>Total</b></td>
+						<td colspan="4" align="right"><b>Total</b></td>
 						<td style="text-align:right;"><b><?php echo $total_maint_charges; ?></b></td>
 						<td style="text-align:right;"><b><?php echo $total_interest; ?></b></td>
 						<td style="text-align:right;"><b><?php echo $total_credits; ?></b></td>
 						<td style="text-align:right;"></td>
 					</tr>
 					<tr>
-						<td colspan="6" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
+						<td colspan="7" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
 						<td style="color:#33773E; text-align:right;"><b><?php echo $account_balance; ?></b></td>
 					</tr>
 		</table>

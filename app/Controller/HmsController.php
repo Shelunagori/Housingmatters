@@ -54,13 +54,241 @@ function check_charecter_name($name){
 
 function email_mobile_update(){
 	
-$this->layout='session';	
+if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+	}else{
+		$this->layout='session';
+	}
 $s_society_id=$this->Session->read('society_id');	
-	
+$this->ath();
+	$this->loadmodel('user_info_import_record');
+	$conditions=array("society_id" => $s_society_id);
+	$result_import_record = $this->user_info_import_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["user_info_import_record"]["step1"];
+		$step2=(int)@$data_import["user_info_import_record"]["step2"];
+		$step3=(int)@$data_import["user_info_import_record"]["step3"];
+		$step4=(int)@$data_import["user_info_import_record"]["step4"];
+		$date=@$data_import["user_info_import_record"]["date"];
+		$this->set("date",$date);
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	$this->set("process_status",$process_status);
 
 }
 
+function Upload_user_info_csv_file(){
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$this->ath();
+	if(isset($_FILES['file'])){
+		$file_name=$s_society_id.".csv";
+		$file_tmp_name =$_FILES['file']['tmp_name'];
+		$target = "user_email_mobile_csv/";
+		$target=@$target.basename($file_name);
+		move_uploaded_file($file_tmp_name,@$target);
+		
+		
+		$today = date("d-M-Y");
+		
+		$this->loadmodel('user_info_import_record');
+		$auto_id=$this->autoincrement('user_info_import_record','auto_id');
+		$this->user_info_import_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "step1" => 1,"date"=>$today))); 
+		
+		die(json_encode("UPLOADED"));
+	}
+}
 
+function read_user_info_csv_file(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$f = fopen('user_email_mobile_csv/'.$s_society_id.'.csv', 'r') or die("ERROR OPENING DATA");
+	$batchcount=0;
+	$records=0;
+	while (($line = fgetcsv($f, 4096, ';')) !== false) {
+	$numcols = count($line);
+	$test[]=$line;
+	++$records;
+	}
+	$i=0;
+	foreach($test as $child){ $i++;
+		if($i>1){
+			$child_ar=explode(',',$child[0]);
+			$name=$child_ar[0];
+			$wing_name=$child_ar[1];
+			$flat_name=$child_ar[2];
+			$email=$child_ar[3];
+			$mobile=$child_ar[4];
+			
+			
+			$this->loadmodel('user_info_csv');
+			$auto_id=$this->autoincrement('user_info_csv','auto_id');
+			$this->user_info_csv->saveAll(Array(Array("auto_id" => $auto_id, "name" => $name,"wing_name" => $wing_name, "flat_name" => $flat_name, "email" => $email, "mobile" => $mobile,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+		}
+	}
+	$this->loadmodel('user_info_import_record');
+	$this->user_info_import_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id));
+	die(json_encode("READ"));
+}
+
+function convert_user_info_data(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$this->loadmodel('user_info_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
+	$result_import_record = $this->user_info_csv->find('all',array('conditions'=>$conditions,'limit'=>10));
+	foreach($result_import_record as $import_record){
+		$user_info_csv_id=$import_record["user_info_csv"]["auto_id"];
+		$name=trim($import_record["user_info_csv"]["name"]);
+		$wing_name=trim($import_record["user_info_csv"]["wing_name"]);
+		$flat_name=trim($import_record["user_info_csv"]["flat_name"]);
+		$email=trim($import_record["user_info_csv"]["email"]);
+		$mobile=trim($import_record["bank_receipt_csv"]["mobile"]);
+		
+		
+		
+		
+		$this->loadmodel('wing'); 
+		$conditions=array("wing_name"=> new MongoRegex('/^' . $wing_name . '$/i'),"society_id"=>$s_society_id);
+		$result_ac=$this->wing->find('all',array('conditions'=>$conditions));
+		if(sizeof($result_ac)>0){
+			foreach($result_ac as $collection){
+				$wing_id = (int)$collection['wing']['wing_id'];
+			}
+		}else{
+			$wing_id=0;
+		}
+		
+
+		$this->loadmodel('flat'); 
+		$conditions=array("flat_name"=> new MongoRegex('/^' . trim($flat_name) . '$/i'), "society_id"=>$s_society_id);
+		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
+		if(sizeof($result_ac)>0){
+			foreach($result_ac as $collection){
+				$flat_id = (int)$collection['flat']['flat_id'];
+				$true_wing_id = (int)$collection['flat']['wing_id'];
+			}
+		}else{
+			$flat_id=0; $true_wing_id=0;
+		}
+		
+		
+		if($true_wing_id!=$wing_id && ($true_wing_id==0)){
+			$wing_id=0; $flat_id=0;
+		}
+		
+		$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wing_id,$flat_id)));
+		foreach($result_user_info as $user_info){
+			$user_id=(int)$user_info["user"]["user_id"];
+			$user_name=$user_info["user"]["user_name"];
+		} 
+
+		$this->loadmodel('user_info_csv_converted');
+		$auto_id=$this->autoincrement('user_info_csv_converted','auto_id');
+		$this->user_info_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "name" => $user_name,"wing_id" => $wing_id, "flat_id" => $flat_id, "email" => $email, "mobile" => $mobile,"user_id"=>$user_id,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		
+		$this->loadmodel('user_info_csv');
+		$this->user_info_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $user_info_csv_id));
+	}
+	
+	$this->loadmodel('user_info_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
+	$total_converted_records = $this->user_info_csv->find('count',array('conditions'=>$conditions));
+	
+	$this->loadmodel('user_info_csv');
+	$conditions=array("society_id" => $s_society_id);
+	$total_records = $this->user_info_csv->find('count',array('conditions'=>$conditions));
+	
+	$converted_per=($total_converted_records*100)/$total_records;
+	if($converted_per==100){ $again_call_ajax="NO"; 
+		$this->loadmodel('user_info_import_record');
+		$this->user_info_import_record->updateAll(array("step3" => 1),array("society_id" => $s_society_id));
+	}else{
+		$again_call_ajax="YES"; 
+		}
+		
+	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
+}
+
+
+function modify_user_info_csv_data($page=null){
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);
+	
+	$this->loadmodel('user_info_import_record');
+	$conditions=array("society_id" => $s_society_id);
+	$result_import_record = $this->user_info_import_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["user_info_import_record"]["step1"];
+		$step2=(int)@$data_import["user_info_import_record"]["step2"];
+		$step3=(int)@$data_import["user_info_import_record"]["step3"];
+	}
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('user_info_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_user_info_csv_converted=$this->user_info_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>10,"page"=>$page));
+		$this->set('result_user_info_csv_converted',$result_user_info_csv_converted);
+		
+		$this->loadmodel('user_info_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_user_info_csv_converted=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_user_info_csv_converted',$count_user_info_csv_converted);
+	}
+	
+			
+}
+
+
+function email_mobile_import_file(){
+	$this->layout="";
+	$filename="email_mobile_import_file";
+	header ("Expires: 0");
+	header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+	header ("Cache-Control: no-cache, must-revalidate");
+	header ("Pragma: no-cache");
+	header ("Content-type: application/vnd.ms-excel");
+	header ("Content-Disposition: attachment; filename=".$filename.".csv");
+	header ("Content-Description: Generated Report" );
+
+	$s_role_id=$this->Session->read('role_id');
+	$s_society_id = (int)$this->Session->read('society_id');
+	$s_user_id = (int)$this->Session->read('user_id');
+	
+	$output= "Name,wing,unit,email,mobile \n";
+	
+	
+	$this->loadmodel('user');
+	$conditions=array("society_id" => $s_society_id,"deactive"=>0);
+	$order=array('user_name'=>'DESC');
+	$result_users=$this->user->find('all',array('conditions'=>$conditions,'order'=>$order));
+	
+	foreach($result_users as $user_info){
+		$user_name=$user_info["user"]["user_name"];
+		$wing=$user_info["user"]["wing"];
+		$flat=$user_info["user"]["flat"];
+		$email=$user_info["user"]["email"];
+		$mobile=$user_info["user"]["mobile"];
+		
+		$wing_name=$this->fetch_wingname_via_wingid($wing);
+		$flat_name=$this->fetch_flatname_via_flatid($flat);
+		
+		$output.= $user_name.",".$wing_name.",".$flat_name.",".$email.",".$mobile." \n";
+	}
+	echo $output;
+}
+		
 
 
 function import_email_mobile_update(){
@@ -531,7 +759,9 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
+
  //Configure::write('debug', 0);
+
 }
 
 
@@ -674,6 +904,20 @@ $result=$this->wing->find('all',array('conditions'=>$conditions));
 foreach ($result as $dd) 
 {
 return $wing_name=$dd["wing"]["wing_name"];
+}
+}
+
+
+function fetch_flatname_via_flatid($flat_id) 
+{
+$s_society_id=$this->Session->read('society_id');
+
+$this->loadmodel('flat');
+$conditions=array("society_id"=>$s_society_id,"flat_id"=>$flat_id);
+$result=$this->flat->find('all',array('conditions'=>$conditions));
+foreach ($result as $dd) 
+{
+return $flat_name=$dd["flat"]["flat_name"];
 }
 }
 
@@ -2827,7 +3071,7 @@ function fetch_user_info_via_flat_id($wing,$flat){
 	$conditions=array('flat_id'=>$flat,'status'=>1,'active'=>0);
 	$result_user_flat=$this->user_flat->find('all',array('conditions'=>$conditions));
 	$user_id=$result_user_flat[0]['user_flat']['user_id'];
-	return $this->profile_picture($user_id);
+	return $this->profile_picture((int)$user_id);
 	
 }
 
@@ -16672,6 +16916,13 @@ return $this->user_flat->find('all',array('conditions'=>$conditions));
 	
 }
 
+function fetch_user_flat($id){
+$s_society_id=$this->Session->read('society_id');
+$this->loadmodel('user_flat');	
+$conditions=array('user_id'=>$id);	
+return $this->user_flat->find('all',array('conditions'=>$conditions));
+
+}
 function check_due_payment(){
 	
 $s_society_id=$this->Session->read('society_id');	

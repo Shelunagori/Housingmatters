@@ -739,7 +739,7 @@ function final_import_bank_receipt_ajax(){
 								<table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
 									<tbody>
 									<tr>
-										<td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
+										<td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;">
 										
 										<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
 										<tbody>
@@ -2906,7 +2906,7 @@ function b_receipt_edit($transaction_id=null){
 		
 		$this->loadmodel('new_cash_bank');
 		$new_new_cash_bank_auto_id=$this->autoincrement('new_cash_bank','transaction_id');
-		$this->new_cash_bank->saveAll(array('transaction_id'=>$new_new_cash_bank_auto_id,'receipt_date'=>strtotime($tranjection_date),"deposited_bank_id"=>$deposited_bank_id,"receipt_mode"=>$receipt_mode,"cheque_number"=>$cheque_number,"cheque_date"=>$cheque_date,"drawn_on_which_bank"=>$drawn_on_which_bank,"member_type"=>$member_type,"receipt_type"=>$receipt_type,"flat_id"=>$resident_flat_id,"amount"=>$amount,"narration"=>$narration,"reference_utr"=>$reference_utr,"party_name_id"=>$party_name,"bill_reference"=>$bill_reference,"current_date"=>$current_date,"society_id"=>$s_society_id,"receipt_id"=>$receipt_id,"receipt_source"=>1,"bill_one_time_id"=>$bill_one_time_id,"edit_status"=>"NO"));
+		$this->new_cash_bank->saveAll(array('transaction_id'=>$new_new_cash_bank_auto_id,'receipt_date'=>strtotime($tranjection_date),"deposited_bank_id"=>$deposited_bank_id,"receipt_mode"=>$receipt_mode,"cheque_number"=>$cheque_number,"cheque_date"=>$cheque_date,"drawn_on_which_bank"=>$drawn_on_which_bank,"member_type"=>$member_type,"receipt_type"=>$receipt_type,"flat_id"=>$resident_flat_id,"amount"=>$amount,"narration"=>$narration,"reference_utr"=>$reference_utr,"party_name_id"=>$party_name,"bill_reference"=>$bill_reference,"current_date"=>$current_date,"society_id"=>$s_society_id,"receipt_id"=>$receipt_id,"receipt_source"=>1,"bill_one_time_id"=>$bill_one_time_id,"edit_status"=>"NO","prepaired_by"=>$s_user_id));
 		
 		
 		$result_ledger_sub_account = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch3'),array('pass'=>array($resident_flat_id)));
@@ -3013,7 +3013,7 @@ foreach($cursor as $collection)
 $receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
 $d_date = $collection['new_cash_bank']['receipt_date'];
 $today = date("d-M-Y");
-$flat_id = $collection['new_cash_bank']['flat_id'];
+$flat_id = (int)$collection['new_cash_bank']['flat_id'];
 $amount = $collection['new_cash_bank']['amount'];
 $society_id = (int)$collection['new_cash_bank']['society_id'];
 $bill_reference = $collection['new_cash_bank']['reference_utr'];
@@ -3027,7 +3027,6 @@ $reference_number = @$collection['new_cash_bank']['reference_number'];
 $cheque_date = @$collection['new_cash_bank']['cheque_date'];
 $sub_account = (int)$collection['new_cash_bank']['deposited_bank_id'];
 $sms_date=date("d-m-Y",($d_date));
-
 $amount = str_replace( ',', '', $amount );
 $am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
 
@@ -3041,7 +3040,6 @@ $society_reg_no = $collection['society']['society_reg_num'];
 $society_address = $collection['society']['society_address'];
 $sig_title = $collection['society']['sig_title'];
 }
-
 if($member == 2)
 {
 $user_name = $receiver_name;
@@ -3049,15 +3047,13 @@ $wing_flat = "";
 }
 else
 {
-$flatt_datta = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id')
-,array('pass'=>array($flat_id)));
+$flatt_datta = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 foreach ($flatt_datta as $fltt_datttaa) 
 {
 $wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
 }
 
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 
-'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
+$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wnngg_idddd,$flat_id)));
 foreach ($result_lsa as $collection) 
 {
 $wing_id = $collection['user']['wing'];  
@@ -3077,7 +3073,8 @@ $bank_name = $collection['ledger_sub_account']['name'];
                                     
 $ip=$this->hms_email_ip();
 $date=date("d-m-Y",($d_date));
-	$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+
+$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tbody><tr>
                 <td>
                     <table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
@@ -3085,12 +3082,12 @@ $date=date("d-m-Y",($d_date));
 						<tr>
 							<td height="10">
 							<table width="100%" class="hmlogobox">
-								<tr>
-									<td width="50%" style="padding: 10px 0px 0px 10px;"><img src="'.$ip.$this->webroot.'/as/hm/hm-logo.png" style="max-height: 60px; " height="60px" /></td>
-									<td width="50%" align="right" valign="middle"  style="padding: 7px 10px 0px 0px;">
-									<a href="https://www.facebook.com/HousingMatters.co.in"><img src="'.$ip.$this->webroot.'/as/hm/SMLogoFB.png"    style="max-height: 30px; height: 30px; width: 30px; max-width: 30px;" height="30px" width="30px" /></a>
-									</td>
-								</tr>
+<tr>
+<td width="50%" style="padding: 10px 0px 0px 10px;"><img src="'.$ip.$this->webroot.'/as/hm/hm-logo.png" style="max-height: 60px; " height="60px" /></td>
+<td width="50%" align="right" valign="middle"  style="padding: 7px 10px 0px 0px;">
+<a href="https://www.facebook.com/HousingMatters.co.in"><img src="'.$ip.$this->webroot.'/as/hm/SMLogoFB.png" style="max-height: 30px; height: 30px; width: 30px; max-width: 30px;" height="30px" width="30px" /></a>
+</td>
+</tr>
 							</table>
 							</td>
 						</tr>
@@ -3116,7 +3113,7 @@ $date=date("d-m-Y",($d_date));
 							</table>
 							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
 								<tbody><tr>
-									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
+									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'-R</td>
 									
 									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
 									
@@ -3136,52 +3133,6 @@ $date=date("d-m-Y",($d_date));
 							else{
 							$receipt_mode_type='Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
 							}
-
-$html_receipt='<table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tbody><tr>
-                <td>
-                    <table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
-                        <tbody>
-                        <tr>
-                            <td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:2px;background-color:rgb(0,141,210);color:#fff" align="center" width="100%"><b>'.strtoupper($society_name).'</b></td>
-								</tr>
-							</tbody></table>
-							<table style="font-size:12px" width="100%" cellspacing="0">
-								<tbody>
-								<tr>
-									<td style="padding:5px;border-bottom:solid 1px #767575;border-top:solid 1px #767575" width="100%" align="center">
-									<span style="color:rgb(100,100,99)">Regn# &nbsp; '.$society_reg_no.'</span><br>
-									<span style="color:rgb(100,100,99)">'.$society_address.'</span><br
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table style="font-size:12px;border-bottom:solid 1px #767575;" width="100%" cellspacing="0">
-								<tbody><tr>
-									<td style="padding:0px 0 2px 5px" colspan="2">Receipt No: '.$receipt_no.'</td>
-									
-									<td colspan="2" align="right" style="padding:0px 5px 0 0px"><b>Date:</b> '.$date.' </td>
-									
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px" colspan="2"> Received with thanks from: <b>'.$user_name.' '.$wing_flat.'</b></td>
-																		
-								</tr>
-								<tr>
-									<td style="padding:0px 0 2px 5px"  colspan="4">Rupees '.$am_in_words.' Only </td>
-									
-								</tr>';
-								
-							if($receipt_mode=="Cheque"){
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
-							}
-							else{
-							$receipt_mode_type='Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
-							}
-
 
 								
 								$html_receipt.='<tr>
@@ -3253,7 +3204,6 @@ $html_receipt='<table style="padding:24px;background-color:#34495e" align="cente
             </tr>
         </tbody>
 </table>';
-
 ////////////////my Email//////////////
 }		
 $this->loadmodel('society');
@@ -3785,7 +3735,7 @@ $tds_id = $child[3];
 $net_amt = $child[4];
 $mode = $child[5];
 $instrument = $child[6];
-$bank_ac = $child[7];
+$bank_ac = (int)$child[7];
 $invoice = @$child[8];
 $narration = $child[9];
 

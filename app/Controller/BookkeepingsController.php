@@ -22,7 +22,15 @@ var $name = 'Bookkeepings';
 		$conditions=array('transaction_id'=>$auto_id);
 		return $this->new_cash_bank->find('all',array('conditions'=>$conditions)); 
 	}
-
+	
+function adhoc_info_via_auto_id($auto_id){
+	$s_society_id = (int)$this->Session->read('society_id');
+		$auto_id=(int)$auto_id;
+		$this->loadmodel('adhoc_bill');
+		$conditions=array('adhoc_bill_id'=>$auto_id,'society_id'=>$s_society_id);
+		return $this->adhoc_bill->find('all',array('conditions'=>$conditions)); 
+	}
+	
 	function ledger_sub_account_detail_via_auto_id($auto_id){
 	$s_society_id = (int)$this->Session->read('society_id');
 	$auto_id=(int)$auto_id;
