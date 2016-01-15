@@ -102,7 +102,7 @@ function convert_csv_data_ajax(){
 	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
 	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Uploaded Data Is Ready To More Modification.</span>
 	<br/><br/>
-	<a href="<?php echo $webroot_path; ?>Cashbanks/modify_bank_receipt_csv_data" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
+	<a href="<?php echo $webroot_path; ?>Hms/modify_user_info_csv_data" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
 </div>
 <?php } ?>
 

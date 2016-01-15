@@ -210,6 +210,44 @@ function convert_user_info_data(){
 	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
 }
 
+
+function modify_user_info_csv_data($page=null){
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);
+	
+	$this->loadmodel('user_info_import_record');
+	$conditions=array("society_id" => $s_society_id);
+	$result_import_record = $this->user_info_import_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["user_info_import_record"]["step1"];
+		$step2=(int)@$data_import["user_info_import_record"]["step2"];
+		$step3=(int)@$data_import["user_info_import_record"]["step3"];
+	}
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('user_info_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_user_info_csv_converted=$this->user_info_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>10,"page"=>$page));
+		$this->set('result_user_info_csv_converted',$result_user_info_csv_converted);
+		
+		$this->loadmodel('user_info_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_user_info_csv_converted=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_user_info_csv_converted',$count_user_info_csv_converted);
+	}
+	
+			
+}
+
+
 function email_mobile_import_file(){
 	$this->layout="";
 	$filename="email_mobile_import_file";
@@ -716,7 +754,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+//Configure::write('debug', 0);
 }
 
 
