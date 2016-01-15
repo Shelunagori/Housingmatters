@@ -43,7 +43,7 @@ background-color: #E6ECE7;
 	
 		<table id="report_tb" width="100%" border="1">
 			<tr>
-				<td colspan="7">
+				<td colspan="8">
 				<div class="row-fluid" style="font-size:14px;" align="center">
 					<div class="span6">
 						<span style="font-size:16px;">Statement of Account</span><br/>
@@ -58,6 +58,7 @@ background-color: #E6ECE7;
 			<tr>
 				<th>Date</th>
 				<th>Reference</th>
+				<th>Type</th>
 				<th>Description</th>
 				<th>Maint. Charges</th>
 				<th>Interest</th>
@@ -120,7 +121,7 @@ background-color: #E6ECE7;
 				}
 				if($table_name=="new_cash_bank"){
 					
-					$element_id=$element_id+1000;
+					$element_id=$element_id;
 					
 					$result_cash_bank=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'receipt_info_via_auto_id'), array('pass' => array($element_id)));
 					$refrence_no=@$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
@@ -147,6 +148,14 @@ background-color: #E6ECE7;
 							echo $refrence_no;
 						} ?>
 						</td>
+						<td>
+						<?php if($table_name=="new_regular_bill"){
+							echo "Regular_bill";
+						}
+						if($table_name=="new_cash_bank"){
+							echo "Bank Receipt";
+						} ?>
+						</td>
 						<td><?php echo $description; ?></td>
 						<td style="text-align:right;"><?php echo $maint_charges; ?></td>
 						<td style="text-align:right;"><?php echo $interest; ?></td>
@@ -156,14 +165,14 @@ background-color: #E6ECE7;
 				
 			<?php } ?>
 					<tr>
-						<td colspan="3" align="right"><b>Total</b></td>
+						<td colspan="4" align="right"><b>Total</b></td>
 						<td style="text-align:right;"><b><?php echo $total_maint_charges; ?></b></td>
 						<td style="text-align:right;"><b><?php echo $total_interest; ?></b></td>
 						<td style="text-align:right;"><b><?php echo $total_credits; ?></b></td>
 						<td style="text-align:right;"></td>
 					</tr>
 					<tr>
-						<td colspan="6" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
+						<td colspan="7" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
 						<td style="color:#33773E; text-align:right;"><b><?php echo $account_balance; ?></b></td>
 					</tr>
 		</table>

@@ -76,7 +76,7 @@ background-color: #E6ECE7;
 
 
 <br/>
-<div style="width:80%;margin:auto;overflow:auto;background-color:#FFF;padding:5px;display:none;border:solid 1px #ccc;" id="result_statement" >
+<div style="width:98%;margin:auto;overflow:auto;background-color:#FFF;padding:5px;display:none;border:solid 1px #ccc;" id="result_statement" >
 	
 </div>
 
