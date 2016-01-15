@@ -43,6 +43,7 @@ $default_to = date('d-m-Y');
 					<?php foreach($result_ledger_sub_account as $ledger_sub_account){
 							$flat=(int)$ledger_sub_account["ledger_sub_account"]["flat_id"];
 							$ledger_sub_account_id=$ledger_sub_account["ledger_sub_account"]["auto_id"];
+							$user_id = $ledger_sub_account["ledger_sub_account"]["user_id"];
 							//wing_id via flat_id//
 							$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat)));
 							foreach($result_flat_info as $flat_info){
@@ -51,7 +52,7 @@ $default_to = date('d-m-Y');
 							
 							
 							//user info via flat_id//
-							$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wing,$flat)));
+							$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'user_fetch'),array('pass'=>array($user_id)));
 							foreach($result_user_info as $user_info){
 								$user_id=(int)$user_info["user"]["user_id"];
 								$user_name=$user_info["user"]["user_name"];
