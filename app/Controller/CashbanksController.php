@@ -3027,7 +3027,6 @@ $reference_number = @$collection['new_cash_bank']['reference_number'];
 $cheque_date = @$collection['new_cash_bank']['cheque_date'];
 $sub_account = (int)$collection['new_cash_bank']['deposited_bank_id'];
 $sms_date=date("d-m-Y",($d_date));
-exit;
 $amount = str_replace( ',', '', $amount );
 $am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
 
