@@ -73,6 +73,7 @@ foreach($result_ledger as $ledger_data){
                 <tbody id="table">
 		<?php	$account_balance=0; $total_maint_charges=0; $total_interest=0; $total_credits=0;  $total_account_balance=0; 
 			foreach($result_ledger as $ledger_data){ 
+				$credits = "";
 				$transaction_date=$ledger_data["ledger"]["transaction_date"];
 				$table_name=$ledger_data["ledger"]["table_name"];
 				$element_id=$ledger_data["ledger"]["element_id"];
@@ -132,6 +133,18 @@ foreach($result_ledger as $ledger_data){
 					$credits=$debit+$credit;
 					$account_balance=$account_balance-(int)$credits;
 				} 
+				if($table_name=='adhoc_bill')
+				{
+				$element_id=$element_id;	
+				$result_adhoc=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'adhoc_info_via_auto_id'), array('pass' => array($element_id)));
+			$refrence_no=@$result_adhoc[0]["adhoc_bill"]["receipt_id"]; 
+			$flat_id = (int)@$result_adhoc[0]["adhoc_bill"]["person_name"];
+			$description = @$result_adhoc[0]["adhoc_bill"]["description"];
+				
+               $maint_charges=$debit+$credit;
+			   $interest="";
+			   $account_balance=$account_balance+(int)$maint_charges;
+				}	
 				$total_maint_charges=$total_maint_charges+(int)$maint_charges;
 				$total_interest=$total_interest+(int)$interest;
 				$total_credits=$total_credits+(int)$credits;
@@ -144,7 +157,12 @@ foreach($result_ledger as $ledger_data){
 						}
 						if($table_name=="new_cash_bank"){
 							echo '<a class="tooltips" data-original-title="Click for view Source" data-placement="bottom" href="'.$this->webroot.'Cashbanks/bank_receipt_html_view/'.$element_id.'" target="_blank">'.$refrence_no.'</a>';
-						} ?>
+						} 
+						if($table_name=="adhoc_bill")
+						{
+						echo '<a class="tooltips" data-original-title="Click for view Source" data-placement="bottom" href="'.$this->webroot.'Incometrackers/supplimentry_view/'.$element_id.'" target="_blank">'.$refrence_no.'</a>';	
+						}
+						?>
 						</td>
 						<td>
 						<?php if($table_name=="new_regular_bill"){
@@ -152,6 +170,10 @@ foreach($result_ledger as $ledger_data){
 						}
 						if($table_name=="new_cash_bank"){
 							echo "Bank Receipt";
+						}
+						if($table_name=="adhoc_bill")
+						{
+							echo "Supplimentry Bill";
 						}
 						?>
 						</td>

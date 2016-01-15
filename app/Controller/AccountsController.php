@@ -936,7 +936,7 @@ function my_flat_bill_ajax($from=null,$to=null,$flat_id=null)
 		$user_name=$collection2["user"]["user_name"];
 		$this->set('user_name',$user_name);
 		$wing_id=$collection2["user"]["wing"];
-		//$flat_id=$collection2["user"]["flat"];
+		$flat_id=$collection2["user"]["flat"];
 		}
 
 		$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'), array('pass' => array($wing_id,$flat_id)));

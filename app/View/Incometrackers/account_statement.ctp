@@ -22,7 +22,11 @@ table#report_tb tr:hover td {
 background-color: #E6ECE7;
 }
 </style>
+<?php
+$default_from = date('1-m-Y');
+$default_to = date('d-m-Y');
 
+?>
 
 <div style="text-align:center;" class="hide_at_print">
 <a href="<?php echo $webroot_path; ?>Incometrackers/in_head_report" class="btn" rel='tab'>Regular Bill Report</a>
@@ -37,7 +41,7 @@ background-color: #E6ECE7;
 				<select class="m-wrap chosen" data-placeholder="Choose a Category" id="flat_select_box" tabindex="1">
 					<option value="">Select...</option>
 					<?php foreach($result_ledger_sub_account as $ledger_sub_account){
-							$flat=$ledger_sub_account["ledger_sub_account"]["flat_id"];
+							$flat=(int)$ledger_sub_account["ledger_sub_account"]["flat_id"];
 							$ledger_sub_account_id=$ledger_sub_account["ledger_sub_account"]["auto_id"];
 							//wing_id via flat_id//
 							$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat)));
@@ -53,18 +57,18 @@ background-color: #E6ECE7;
 								$user_name=$user_info["user"]["user_name"];
 							}
 							$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'), array('pass' => array($wing,$flat))); ?>
-						<option value="<?php echo $ledger_sub_account_id; ?>"><?php echo $user_name.' ( '.$wing_flat.' )'; ?></option>
+						<option value="<?php echo $flat; ?>"><?php echo $user_name.' ( '.$wing_flat.' )'; ?></option>
 					<?php } ?>
 				</select>
 			</td>
 			<td>
 <input class="date-picker m-wrap medium" id="from" data-date-format="dd-mm-yyyy" name="from" 
-placeholder="From" style="background-color:white !important; margin-top:8px;" value="01-11-2015" type="text">
+placeholder="From" style="background-color:white !important; margin-top:8px;" value="<?php echo $default_from; ?>" type="text">
 			</td>
 			<td>
 				<input class="date-picker  m-wrap medium" id="to" data-date-format="dd-mm-yyyy" 
 				name="to" placeholder="To" style="background-color:white !important; margin-top:8px;" 
-				value="30-11-2015" type="text">
+				value="<?php echo $default_to; ?>" type="text">
 			</td>
 			<td valign="top"><button type="button" name="sub" class="btn yellow" id="go" style="margin-top:8px;">Go</button></td>
 		</tr>
@@ -75,7 +79,7 @@ placeholder="From" style="background-color:white !important; margin-top:8px;" va
 
 
 <br/>
-<div style="width:80%;margin:auto;overflow:auto;background-color:#FFF;padding:5px;display:none;border:solid 1px #ccc;" id="result_statement" >
+<div style="width:98%;margin:auto;overflow:auto;background-color:#FFF;padding:5px;display:none;border:solid 1px #ccc;" id="result_statement" >
 	
 </div>
 <script>
