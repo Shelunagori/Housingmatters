@@ -4054,8 +4054,8 @@ $excel = "Group Name,A/c name,wing,unit,Amount Type(Debit or Credit),Amount(Open
 			}
 echo $excel;
 }
-////////////////////// End Opening Balance  Excel Export ///////////////////////////////////////////////////////////
-/////////////////////////// Start fixed_deposit_reminder //////////////////////////////////////////////////////
+////////////////////// End Opening Balance  Excel Export /////////////////////////////////////
+/////////////////////////// Start fixed_deposit_reminder /////////////////////////////////////
 function reminder_settings()
 {
 if($this->RequestHandler->isAjax()){
@@ -4152,6 +4152,19 @@ $this->loadmodel('society');
 $this->society->updateAll(array('reminder'=>$arrr),array('society_id'=>$s_society_id));
 }
 
+?>
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>The Record Updated Successfully</p>
+
+</div>
+<div class="modal-footer">
+<a href="reminder_settings" class="btn red">OK</a>
+</div>
+</div>
+<?php
 $this->Session->write('remindrrr', 1);
 }
 
