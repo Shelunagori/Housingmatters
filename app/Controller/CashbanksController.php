@@ -739,7 +739,7 @@ function final_import_bank_receipt_ajax(){
 								<table style="padding:38px 30px 30px 30px;background-color:#fafafa" align="center" border="0" cellpadding="0" cellspacing="0" width="540">
 									<tbody>
 									<tr>
-										<td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;border:solid 1px #767575">
+										<td colspan="2" style="font-size:12px;line-height:1.4;font-family:Arial,Helvetica,sans-serif;color:#34495e;">
 										
 										<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
 										<tbody>
