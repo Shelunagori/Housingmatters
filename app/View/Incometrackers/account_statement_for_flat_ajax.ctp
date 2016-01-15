@@ -186,8 +186,7 @@ foreach($result_ledger as $ledger_data){
 }
 ?>
 <div style="overflow: auto;">
-<a href="<?php echo $webroot_path; ?>Accounts/my_flat_bill_excel_export/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $flat_id; ?>" class="btn mini blue pull-right hide_at_print" style="margin-left: 2px;" ><i class="icon-download"></i></a>
-
+<a href="<?php echo $webroot_path; ?>Incometrackers/account_statement_for_flat_excel/<?php echo $flat_id; ?>/<?php echo $from; ?>/<?php echo $to; ?>" class="btn mini blue pull-right hide_at_print" style="margin-left: 2px;"><i class="icon-download"></i></a>
 <a href="#" role="button" class="btn mini purple pull-right hide_at_print" style="margin-left: 2px;" onclick="window.print();"><i class="fa fa-print"></i></a>
 </div>
 

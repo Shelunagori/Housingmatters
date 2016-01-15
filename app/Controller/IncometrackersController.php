@@ -6465,7 +6465,7 @@ $this->loadmodel('society');
 	
 }
 
-function account_statement_for_flat_excel($ledger_sub_account_id,$from,$to){
+function account_statement_for_flat_excel($flat_id,$from,$to){
 	$this->layout=null;
 	
 	
@@ -6479,38 +6479,55 @@ function account_statement_for_flat_excel($ledger_sub_account_id,$from,$to){
 	header ("Content-Description: Generated Report" );
 	
 	
-	$this->set("ledger_sub_account_id",$ledger_sub_account_id);
+	
 	
 	$from=date("Y-m-d",strtotime($from));
 	$this->set("from",$from);
 	$to=date("Y-m-d",strtotime($to));
 	$this->set("to",$to);
 	
-	$this->loadmodel('ledger_sub_account');
-	$conditions=array("auto_id" => (int)$ledger_sub_account_id);
-	$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
-	foreach($result_ledger_sub_account as $ledger_sub_account_data){
-		$name=$ledger_sub_account_data["ledger_sub_account"]["name"];
-		$this->set("name",$name);
-		$flat_id=$ledger_sub_account_data["ledger_sub_account"]["flat_id"];
-		$this->set("flat_id",$flat_id);
-	}
 	
+	$flat_id = (int)$flat_id;
 	$this->ath();
 	$s_role_id=$this->Session->read('role_id');
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');	
+	$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array((int)$flat_id)));
+		foreach($result_flat_info as $flat_info){
+		$wing_id=$flat_info["flat"]["wing_id"];
+		} 
+		
+	$wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'wing_flat'), array('pass' => array($wing_id,(int)$flat_id)));
+	$this->set('wing_flat',$wing_flat);
+		
+		//user info via flat_id//
+		$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wing_id,$flat_id)));
+		foreach($result_user_info as $user_info){
+			$user_id=(int)$user_info["user"]["user_id"];
+			$user_name=$user_info["user"]["user_name"];
+			$this->set('user_name',$user_name);
+		}
+
+
+
+$this->loadmodel('society');
+$conditions=array("society_id" => $s_society_id);
+$result_society=$this->society->find('all',array('conditions'=>$conditions));
+$this->set('result_society',$result_society);
 	
-	$this->loadmodel('ledger');
-	$conditions=array("society_id" => $s_society_id, "ledger_sub_account_id" => (int)$ledger_sub_account_id,'transaction_date'=> array('$gte' => strtotime($from),'$lte' => strtotime($to)));
-	$order=array('ledger.transaction_date'=>'ASC');
-	$result_ledger_sub_account=$this->ledger->find('all',array('conditions'=>$conditions));
-	$this->set('result_ledger_sub_account',$result_ledger_sub_account);
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id,"flat_id" => (int)$flat_id);
+$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$ledger_sub_account_id=@$result_ledger_sub_account[0]["ledger_sub_account"]["auto_id"];
+
 	
-	$this->loadmodel('society');
-	$conditions=array("society_id" => $s_society_id);
-	$result_society=$this->society->find('all',array('conditions'=>$conditions));
-	$this->set('result_society',$result_society);
+$this->loadmodel('ledger');
+$conditions=array("society_id" => $s_society_id,"ledger_account_id" => 34,"ledger_sub_account_id" => (int)$ledger_sub_account_id,'transaction_date'=> array('$gte' => strtotime($from),'$lte' => strtotime($to)));
+$order=array('ledger.transaction_date'=>'ASC');
+$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order));
+$this->set('result_ledger',$result_ledger);
+
+
 }
 ////////////////End Account Statement (Accounts)/////////////////////////////////////
 
