@@ -26,7 +26,7 @@ foreach ($cursor1 as $collection)
 $receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
 $d_date = $collection['new_cash_bank']['receipt_date'];
 $today = date("d-M-Y");
-$flat_id = $collection['new_cash_bank']['party_name_id'];
+$flat_id = $collection['new_cash_bank']['flat_id'];
 $amount = $collection['new_cash_bank']['amount'];
 $society_id = (int)$collection['new_cash_bank']['society_id'];
 $bill_reference = $collection['new_cash_bank']['reference_utr'];
