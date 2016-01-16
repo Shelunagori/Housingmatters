@@ -137,6 +137,7 @@ function final_import_user_info_ajax(){
 			url: "final_import_user_info_ajax",
 			dataType: 'json'
 		}).done(function(response){
+			alert(response.again_call_ajax);
 			if(response.again_call_ajax=="YES"){
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
