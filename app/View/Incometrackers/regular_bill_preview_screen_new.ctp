@@ -415,14 +415,14 @@ foreach($result_society as $data){
 						<td style="background-color:#FBF1C8;">
 						<?php $column_id++; echo '<input type="text" class="m-wrap text_rdoff" name="total'.$inc.'" column_id="'.$column_id.'"  value='.$total.' readonly/>'; ?></td>
 						<?php $due_for_payment+=$total; ?>
-						<td>
+						<td style="background-color:#DEE6FF;">
 						<?php $column_id++;
 						$arrear_maintenance=$last_arrear_maintenance+$last_total;
 						$arrear_maintenance-=@$advance_receipt;
 						$due_for_payment+=$arrear_maintenance; 
 						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_maintenance'.$inc.'" value='.$arrear_maintenance.' column_id="'.$column_id.'"  row_id="'.$inc.'" readonly />'; ?>
 						</td>
-						<td>
+						<td style="background-color:#DEE6FF;">
 						<?php  $column_id++;
 						if(sizeof($result_new_cash_bank)>=1){
 							$arrear_intrest=$last_new_arrear_intrest+$last_new_intrest_on_arrears;
