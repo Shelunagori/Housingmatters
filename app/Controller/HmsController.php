@@ -374,10 +374,61 @@ function check_user_info_csv_validation($id=null,$field=null,$val=null){
 		
 		if($mobileErr==0){ die(json_encode(false)); }else{ die(json_encode(true));}
 	}
+
+}
+
+function final_import_user_info_ajax(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
 	
-	 
-	 
-	 
+	$this->loadmodel('user_info_import_record');
+	$conditions=array("society_id" => $s_society_id);
+	$result_import_record = $this->user_info_import_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["user_info_import_record"]["step1"];
+		$step2=(int)@$data_import["user_info_import_record"]["step2"];
+		$step3=(int)@$data_import["user_info_import_record"]["step3"];
+		$step4=(int)@$data_import["user_info_import_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	if($process_status==4){
+		$this->loadmodel('user_info_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
+		$result_import_converted = $this->user_info_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		foreach($result_import_converted as $data){
+			$user_id=$data["user_info_csv_converted"]["user_id"];
+			$email=$data["user_info_csv_converted"]["email"];
+			$mobile=$data["user_info_csv_converted"]["mobile"];
+			
+			$this->loadmodel('user');
+			$conditions=array("user_id" => $user_id);
+			$result_user = $this->user->find('all',array('conditions'=>$conditions));
+			foreach($result_user as $data2){
+				$al_email=$data2["user"]["email"];
+				$al_mobile=$data2["user"]["mobile"];
+			}
+			
+			if($email!=$al_email){
+				$this->loadmodel('user');
+				$this->user->updateAll(array("email" => $email),array("user_id" => (int)$user_id));
+			}
+			if($mobile!=$al_mobile){
+				$this->loadmodel('user');
+				$this->user->updateAll(array("mobile" => $mobile),array("user_id" => (int)$user_id));
+			}
+			
+			if(empty($al_email) && empty($al_mobile)){
+				$this->loadmodel('login');
+				$login_id=$this->autoincrement('login','login_id');
+				$this->login->saveAll(array('login_id' => $login_id, 'user_name' => $email, 'mobile' => $mobile, 'signup_random' => ""));
+				
+				$this->loadmodel('user');
+				$this->user->updateAll(array("login_id" => $login_id),array("user_id" => (int)$user_id));
+			}
+		}
+	}
 }
 
 function email_mobile_import_file(){
@@ -21305,7 +21356,7 @@ $s_user_id=$this->Session->read('user_id');
 $del_id = (int)$this->request->query('con');
 $this->set('del_id',$del_id);
 
-if(isset($this->request->data['delc']))
+if(isset($this->reque t->data['delc']))
 {
 $del = (int)$this->request->data['del_id'];
 $this->loadmodel('accounts_category');

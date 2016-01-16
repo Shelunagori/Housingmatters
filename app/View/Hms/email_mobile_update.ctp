@@ -123,24 +123,24 @@ function convert_csv_data_ajax(){
 	<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
 	<span style="padding-left: 10px; font-weight: bold; color: red;">Updating Information Into The System.</span>
 	<div class="progress progress-striped progress-danger active">
-		<div id="progress_im" style="width: <?php echo $converted_per_im; ?>%;" class="bar"></div>
+		<div id="progress_im" style="width: <?php echo @$converted_per_im; ?>%;" class="bar"></div>
 	</div>
 	<span style="padding-left: 35px; color: rgb(114, 113, 113);"><b id="text_per_im"></b> Information Updated.</span>
 </div>
 <script>
 $( document ).ready(function() {
-	final_import_bank_receipt_ajax();
+	final_import_user_info_ajax();
 });
-function final_import_bank_receipt_ajax(){
+function final_import_user_info_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "final_import_bank_receipt_ajax",
+			url: "final_import_user_info_ajax",
 			dataType: 'json'
 		}).done(function(response){
 			if(response.again_call_ajax=="YES"){
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
-				final_import_bank_receipt_ajax();
+				final_import_user_info_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
 				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" >OK</a> </p></div>');
