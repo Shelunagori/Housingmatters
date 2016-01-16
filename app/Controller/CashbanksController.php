@@ -7146,7 +7146,7 @@ $remarks = $data['fix_deposit']['purpose'];
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
-$renewal = $data['fix_deposit']['renewal'];
+@$renewal = @$data['fix_deposit']['renewal'];
 
 $start_date	= date('d-m-Y',($start_date));	
 $mat_date	= date('d-m-Y',($mat_date));

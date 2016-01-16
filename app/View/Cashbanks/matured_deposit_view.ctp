@@ -134,7 +134,7 @@ $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
 $creation_date = $data['fix_deposit']['current_date'];
 $creater_id = (int)$data['fix_deposit']['prepaired_by'];
-$renewal = $data['fix_deposit']['renewal'];
+@$renewal = @$data['fix_deposit']['renewal'];
 $creation_date = date('d-m-Y',strtotime($creation_date));
 
 $start_date	= date('d-m-Y',($start_date));	
