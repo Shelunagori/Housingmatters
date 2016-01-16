@@ -2943,7 +2943,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'deactive_date'=>$date,'deactive_time'=>$time,'status'=>1));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>1,'exit_date'=>$exit_date),array('user_id'=>$user_id,'flat_id'=>$flat_id));
+		$this->ledger_sub_account->updateAll(array('deactive'=>1),array('user_id'=>$user_id,'flat_id'=>$flat_id));
 		
 		
 		$this->loadmodel('user_flat');
@@ -2983,7 +2983,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'active_date'=>$date,'active_time'=>$time,'status'=>2));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>0,'exit_date'=>$exit_date),array('user_id'=>$user_id,'flat_id'=>$flat_id)); 
+		$this->ledger_sub_account->updateAll(array('deactive'=>0),array('user_id'=>$user_id,'flat_id'=>$flat_id)); 
 		$output = json_encode(array('report_type'=>'done', 'text' => ''));
 		die($output);
 		
@@ -21356,7 +21356,7 @@ $s_user_id=$this->Session->read('user_id');
 $del_id = (int)$this->request->query('con');
 $this->set('del_id',$del_id);
 
-if(isset($this->reque t->data['delc']))
+if(isset($this->requet->data['delc']))
 {
 $del = (int)$this->request->data['del_id'];
 $this->loadmodel('accounts_category');
@@ -25892,15 +25892,6 @@ $s_society_id=$this->Session->read('society_id');
 		$flat_id = $data['ledger_sub_account']['flat_id'];
 		$name = $data['ledger_sub_account']['name'];
        
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
 $wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 foreach($wing_detailll as $wing_dataaa)
 {
