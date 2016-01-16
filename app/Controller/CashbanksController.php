@@ -6085,7 +6085,7 @@ function new_bank_receipt()
 
 
 		$this->loadmodel('ledger_sub_account');
-		$conditions=array("society_id" => $s_society_id, "ledger_id" => 34);
+		$conditions=array("society_id" => $s_society_id, "ledger_id" => 34,"deactive"=>0);
 		$cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 		$this->set('cursor1',$cursor1);
 		foreach($cursor1 as $collection)
@@ -7443,7 +7443,7 @@ $count = (int)$this->request->query('con');
 $this->set('count',$count);
 
 $this->loadmodel('ledger_sub_account');
-$conditions=array("society_id" => $s_society_id, "ledger_id" => 34);
+$conditions=array("society_id" => $s_society_id, "ledger_id" => 34,"deactive"=>0);
 $cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 foreach($cursor1 as $collection)

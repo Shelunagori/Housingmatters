@@ -45,10 +45,31 @@ if($s_role_id == 3)
 <?php } ?>
 </div>
 </center>
-<div style="background-color:#FFF; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:10px;"><i class="icon-money" style="margin-left:8px;"></i> Generate Deposit Slip</h4>
-<br />
+<?php
+$nnn = 55;
+foreach($cursor1 as $collection)
+{
+$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
+if($receipt_mode == "Cheque")
+{	
+$nnn = 555;
+}		
+}	
+
+?>
+                  
+
+<?php
+if($nnn == 555)
+{
+?>
 <form method="post">
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Generate Deposit Slip</h4>
+</div>
+<div class="portlet-body form">
+
 <table id="tbb" style="width:100%;">
 <tr>
 <th>Receipt Date</th>
@@ -281,13 +302,20 @@ if($deposit_status == 1)
 
 <br />
 
+
+<div class="form-actions">
 <button type="submit" name="dep_slip" class="btn green" style="margin-left:75%;">Generate Deposit Slip</button>
-
-<br /><br />
-
-
 </div>
-
+                        
+                        
+	</div>
+	</div>
+<?php } else { ?>
+<center>
+<br><br>
+<h3>No Receipt Found for Deposit Slip</h3>
+</center>
+<?php } ?>
 <script>
 function allchkk()
 {

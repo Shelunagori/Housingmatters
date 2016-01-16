@@ -24,6 +24,20 @@ if($s_role_id == 3)
 </div>
 </center>
 <style>
+<?php	
+$nnn=55;
+foreach ($cursor1 as $collection) 
+{
+$nnn = 555;
+}
+?>
+
+
+
+
+
+
+
 
  #bg_color th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
@@ -48,8 +62,9 @@ if($s_role_id == 3)
 </style>
 
 
-
-
+<?php if($nnn == 555)
+{
+	?>
 <table  width="100%" style=" background-color:white;" id="report_tb">
 <thead>
 <tr id="bg_color">
@@ -210,7 +225,15 @@ echo $total_debit; ?> <?php //echo "  dr"; ?></b></td>
 </tbody>										 
 </table> 
 
-
+<?php } else {
+	?>
+	<center>
+	<br><br>
+<h3>No Receipt Found for Approval</h4>
+</center>
+	<?php
+	
+}
 
 
 
