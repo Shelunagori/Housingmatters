@@ -43,6 +43,7 @@ foreach($result_expense_tracker as $data){
 	$voucher_id=$data['expense_tracker']['expense_id'];
 	$posting_date=$data['expense_tracker']['posting_date'];
 	$posting_date=date('d-m-Y',$posting_date);
+	$creation_date = $data['expense_tracker']['current_date'];
 	$due_date=$data['expense_tracker']['due_date'];
 	if(!empty($due_date)){
 	$due_date=date('d-m-Y',$due_date);
@@ -81,7 +82,7 @@ $prepaired_by_name=$result_user[0]['user']['user_name'];
 <td align="right"><?php echo $ammount_of_invoice; ?> <?php $total+=$ammount_of_invoice ; ?></td>
 <td class="hide_at_print">
 <span>
-<i class=" icon-info-sign tooltips " data-placement="left" data-original-title="Created By: <?php echo $prepaired_by_name; ?>"></i> 
+<a class=" btn mini black tooltips " data-placement="left" data-original-title="Created By: <?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>">! </a> 
 </span>
 <?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/expenset/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i></a><?php } ?>
 
