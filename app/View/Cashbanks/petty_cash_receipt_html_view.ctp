@@ -22,7 +22,7 @@ $sig_title = $collection['society']['sig_title'];
 }
 if($account_type == 1)
 {
-$subleddger_result = $this->requestAction(array('controller' => 'hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($user_id)));
+$subleddger_result = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($user_id)));
 foreach ($subleddger_result as $dddd) 
 {
 $user_name = $dddd['ledger_sub_account']['name'];

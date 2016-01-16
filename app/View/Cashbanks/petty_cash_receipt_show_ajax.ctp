@@ -234,7 +234,7 @@ $amount = number_format($amount);
 	<ul class="dropdown-menu" style="min-width:80px !important;">
 	<li><a href="petty_cash_receipt_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
 	<li><a href="petty_cash_receipt_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
-	<li><a href="" target="_blank"><i class="icon-file"></i>Pdf</a></li>
+	<!--<li><a href="petty_cash_receipt_pdf?c=<?php echo $transaction_id; ?>" target="_blank"><i class="icon-file"></i>Pdf</a></li>-->
 	</ul>
 	</div>
 	

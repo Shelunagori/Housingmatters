@@ -2300,11 +2300,10 @@ $tns_id = (int)$this->request->query('c');
 $this->set('tns_id',$tns_id);
 
 
-$this->loadmodel('cash_bank');
-$conditions=array("transaction_id" => $tns_id,"module_id"=>3);
-$cursor1=$this->cash_bank->find('all',array('conditions'=>$conditions));
+$this->loadmodel('new_cash_bank');
+$conditions=array("transaction_id" => $tns_id,"receipt_source"=>3,"society_id"=>$s_society_id);
+$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
-
 
 $this->loadmodel('society');
 $conditions=array("society_id" => $s_society_id);
@@ -3385,7 +3384,6 @@ $s_role_id = (int)$this->Session->read('role_id');
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id = (int)$this->Session->read('user_id');	
 
-	$auto_id=(int)$auto_id;
 	$this->ath();
 
 $trans_id = (int)$trans_id;

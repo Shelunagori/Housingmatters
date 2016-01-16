@@ -1,49 +1,71 @@
-<?php
-foreach($cursor1 as $collection)
+<?php 
+foreach ($cursor1 as $collection) 
 {
-$account_type = (int)$collection['cash_bank']['account_type'];
-$receipt_no = (int)$collection['cash_bank']['receipt_id'];
-$d_date = $collection['cash_bank']['transaction_date'];
+$receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
+$d_date = $collection['new_cash_bank']['transaction_date'];
 $today = date("d-M-Y");
-$user_id_d = (int)$collection['cash_bank']['user_id'];
-$amount = $collection['cash_bank']['amount'];
-$society_id = (int)$collection['cash_bank']['society_id'];
-$narration = $collection['cash_bank']['narration'];
+$amount = $collection['new_cash_bank']['amount'];
+$society_id = (int)$collection['new_cash_bank']['society_id'];
+$narration = @$collection['new_cash_bank']['narration'];
+$user_id = (int)@$collection['new_cash_bank']['user_id'];
+$account_type = (int)@$collection['new_cash_bank']['account_type'];
+$sub_account = (int)$collection['new_cash_bank']['account_head'];
+}
+$amount = str_replace( ',', '', $amount );
+$am_in_words=ucwords($this->requestAction(array('controller' => 'hms', 'action' => 'convert_number_to_words'), array('pass' => array($amount))));
+foreach ($cursor2 as $collection) 
+{
+$society_name = $collection['society']['society_name'];
+$society_reg_no = $collection['society']['society_reg_num'];
+$society_address = $collection['society']['society_address'];
+$sig_title = $collection['society']['sig_title'];
 }
 if($account_type == 1)
 {
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($user_id_d)));
-foreach($result_lsa as $collection)
+$subleddger_result = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($user_id)));
+foreach ($subleddger_result as $dddd) 
 {
-$user_id = (int)$collection['ledger_sub_account']['user_id'];
+$user_name = $dddd['ledger_sub_account']['name'];
+$flat_id = (int)$dddd['ledger_sub_account']['flat_id'];	  
 }
 
-$result = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($user_id)));
-											foreach ($result as $collection) 
-											{
-											$wing_id = $collection['user']['wing'];  
-											$flat_id = (int)$collection['user']['flat'];
-											$tenant = (int)$collection['user']['tenant'];
-											$user_name = $collection['user']['user_name'];
-											}	
-$wing_flat = $this->requestAction(array('controller' => 'hms', 'action'=>'wing_flat'),array('pass'=>array($wing_id,$flat_id)));									
-}
-else if($account_type == 2)
-{
+$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach($result_flat_info as $flat_info){
+$wing=$flat_info["flat"]["wing_id"];
+} 
 
-$result_la = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_amount'),array('pass'=>array($user_id_d)));
-foreach($result_la as $collection)
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action'=>'wing_flat'),array('pass'=>array($wing,$flat_id)));
+
+
+
+
+
+}
+else
 {
-$user_name = $collection['ledger_account']['ledger_name'];
+$ledger_resullt = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($user_id)));
+foreach ($ledger_resullt as $collection) 
+{
+$user_name = $collection['ledger_account']['ledger_name'];	  
+}
 $wing_flat = "";
 }
-}
-foreach($cursor2 as $collection)
+	
+$acc_headd = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($sub_account)));
+foreach ($acc_headd as $resull_acc) 
 {
-$society_name = $collection['society']['society_name'];
-}
+$account_head_name = $resull_acc['ledger_account']['ledger_name'];	  
+}		
 
-$date = date("d-M-Y",$d_date->sec);
+ 
+				
+				
+				//user info via flat_id//
+				
+
+                                    
+
+$date=date("d-m-Y",($d_date));
  // $words = convert_number_to_words($amount);
 
 
@@ -69,94 +91,99 @@ $tcpdf->AddPage();
 // example:  
 $tcpdf->SetTextColor(0, 0, 0); 
 $tcpdf->SetFont($textfont,'B',2); 
-$tcpdf->writeHTML('<table border="1" width="100%">
+//$tcpdf->writeHTML('<table border="1" width="100%">
+
+$q='<div style="width:70%;margin:auto;border:solid 1px;background-color:#FFF;" class="bill_on_screen">';
+$q.= '<div align="center" style="background-color: rgb(0, 141, 210);padding: 5px;font-size: 16px;font-weight: bold;color: #fff;">'.strtoupper($society_name).'</div>
+<div align="center" style="border-bottom:solid 1px;">
+<span style="font-size:12px;color:rgb(100, 100, 99);">Regn# '.$society_reg_no.'</span><br/>
+<span style="font-size:12px;color:rgb(100, 100, 99);">'.$society_address.'</span><br>
+<span style="font-size:15px;color:rgb(100, 100, 99); font-weight:400;">Petty Cash Receipt</span>
+</div>
+<table width="100%" >
 <tr>
 <td>
-<br><br>
-<table width="100%">
-<tr>
-<td></td>
-<td align="center"><p style="font-size:18px;">RECEIPT</p>
-
-</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td align="center"></td>
-<td></td>
-</tr>
-<tr>
-<td align="center"><p style="font-size:10px;">Receipt No : '.$receipt_no.'</p></td>
-<td></td>
-<td align="center"><p style="font-size:10px;">Receipt Date : '.$date.'</p></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td>
-<br><Br>
-<table width="100%">
-<tr>
-<td width="80%"><p style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Received with thanks from : '.$user_name.' &nbsp;&nbsp;&nbsp;&nbsp;('.$wing_flat.')</p></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><p style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a sum of Rs.'.$amount.' in words(only)</p></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><p style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Narration : '.$narration.'</p></td>
-<td></td>
-</tr>
-</table>
-<br><Br><Br>
-<table width="100%">
-<tr>
-<td></td>
-<td><p style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;For : '.$society_name.'</p></td>
-</tr>
-
-<tr>
-<td></td>
-<td></td>
-</tr>
-
-
-<tr>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<td></td>
-<td><p style="font-size:10px;">&nbsp;&nbsp;&nbsp;&nbsp;Secretary/Treasurer</p></td>
-</tr>
-
-
-</table>
-
-<br><Br><br>
+		<table width="100%" cellpadding="5px">
+			<tr>
+				<td>Receipt No: '.$receipt_no.'</td>
+				<td align="right">Date: '.$date.'</td>
+			</tr>
+			<tr>
+				<td>
+				Received with thanks from:  <b>'.$user_name.'  '.$wing_flat.'</b>
+				<br/>
+				Rupees '.$am_in_words.' Only
+				<br/>';
+				//if($receipt_mode=="Cheque"){
+					//echo 'Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
+				//}
+				//else{
+					//echo 'Via '.$receipt_mode.'-'.$reference_number.' dated '.$cheque_date;
+				//}
+				
+				
+				$q.= '<br/>
+				Narration: '.$narration.'
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<div style="border-bottom:solid 1px;"></div>
+		<table width="100%" cellpadding="5px">
+			<tr>
+				<td><span style="font-size:16px;"> <b>Rs '.$amount.'</b></span><br/>';
+				//if($receipt_mode=="Cheque"){
+					//echo 'Subject to realization of Cheque(s)';
+				//}
+				$q.= '</td>
+			</tr>
+		</table>
+		<table width="100%" cellpadding="5px">
+			<tr>
+				<td width="50%"></td>
+				<td align="right">
+				<table width="100%">
+					<tr>
+						<td align="center">
+						For '.$society_name.'
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+			<tr>
+			<td width="50%"></td>
+			<td align="right">
+			<table width="100%">
+					<tr>
+						<td align="center"><br/>'.$sig_title.'</td>
+					</tr>
+				</table>
+			</td>
+			</tr>
+		</table>
 </td>
 </tr>
+</table>';
+$q.= '</div>';
 
+$tcpdf->writeHTML($q);
+echo $tcpdf->Output('bank_receipt.pdf', 'D');
 
+?>
+<style>
+@media screen {
+    .bill_on_screen {
+       width:70%;
+    }
+}
 
-</table>');
+@media print {
+    .bill_on_screen {
+       width:96% !important;
+    }
+}
+</style>
 
 
 
