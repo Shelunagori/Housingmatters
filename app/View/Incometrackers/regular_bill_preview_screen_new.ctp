@@ -420,7 +420,7 @@ foreach($result_society as $data){
 						$arrear_maintenance=$last_arrear_maintenance+$last_total;
 						$arrear_maintenance-=@$advance_receipt;
 						$due_for_payment+=$arrear_maintenance; 
-						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_maintenance'.$inc.'" value='.$arrear_maintenance.' column_id="'.$column_id.'"  row_id="'.$inc.'" />'; ?>
+						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_maintenance'.$inc.'" value='.$arrear_maintenance.' column_id="'.$column_id.'"  row_id="'.$inc.'" readonly />'; ?>
 						</td>
 						<td>
 						<?php  $column_id++;
@@ -431,7 +431,7 @@ foreach($result_society as $data){
 						}
 						
 						$due_for_payment+=$arrear_intrest;
-						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_intrest'.$inc.'" value='.$arrear_intrest.' column_id="'.$column_id.'" row_id="'.$inc.'"  />'; ?>
+						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_intrest'.$inc.'" value='.$arrear_intrest.' column_id="'.$column_id.'" row_id="'.$inc.'" readonly />'; ?>
 						</td>
 						<td>
 						<?php $column_id++;
