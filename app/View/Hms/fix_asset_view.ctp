@@ -85,6 +85,13 @@ foreach($result_fix_asset as $data){
 	$warranty_period_to=$data['fix_asset']['warranty_period_to'];
 	$warranty_period_from=$data['fix_asset']['warranty_period_from'];
 	$maintanance_schedule=$data['fix_asset']['maintanance_schedule'];
+	$prepaired_by_id = (int)$data['fix_asset']['user_id'];
+	
+	$user_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));
+foreach($user_detaill as $data)
+{
+$prepaired_by = $data['user']['user_name'];
+}
 	
 	$result_ledger_account = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($asset_category_id)));
 	foreach($result_ledger_account as $collection)
