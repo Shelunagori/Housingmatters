@@ -30,7 +30,17 @@
 	   <div class="control-group">
 			  <div class="controls">
         	<div style="background-color:#EFEFEF; border-top:1px solid #e6e6e6; border-bottom:1px solid #e6e6e6; padding:12px; box-shadow:20px; font-size:16px; color:#006;">
-               Mobile Verification
+               Mobile Verification 
+			   
+		<span style="font-size: 11px;"><image src="<?php echo $webroot_path; ?>/as/hm/flag.jpg" width="14px" height="10px" > &nbsp<span> +91 </span>  	 <?php 
+		//$r= substr($mobb, 0, 2);
+		//$l= substr($mobb, 8, 10);
+		//$g= chunk_split($r,2,"******");
+		 //echo $mmob= chunk_split($g,8,"$l"); 
+		echo $mobb;
+		?> </span> &nbsp  <!--<span><image src="<?php echo $this->webroot ; ?>/as/hm/ajax-loader-4.gif" ></span>-->
+            
+			 
 </div>
 		</div>
 	  </div>
@@ -49,7 +59,7 @@
 	  <div class="control-group">
 			  <div class="controls">
         	<div>
-			<p style="font-size:16px;">We have sent you a verification code. Enter the code to verify your mobile number. Please note that SMS delivery can take a minute or more.  </p>
+			<p style="font-size:14px;">We have sent you a verification code. Enter the code to verify your mobile number. <br/>Please note that SMS delivery can take a minute or more.  </p>
              </div>
 		</div>
 	  </div>
@@ -77,18 +87,7 @@
 		</div>
 	  </div>
 	  <div class="control-group">
-			  <div class="controls">
-        	<div>
-		<image src="<?php echo $webroot_path; ?>/as/hm/flag.jpg" width="20px" height="20px" > &nbsp<span> +91 </span>  <span>	 <?php 
-		//$r= substr($mobb, 0, 2);
-		//$l= substr($mobb, 8, 10);
-		//$g= chunk_split($r,2,"******");
-		 //echo $mmob= chunk_split($g,8,"$l"); 
-		echo $mobb;
-		?> </span> &nbsp  <!--<span><image src="<?php echo $this->webroot ; ?>/as/hm/ajax-loader-4.gif" ></span>-->
-            
-			 </div>
-		</div>
+			<p style="font-size:14px;"> <span style="color:red;">* </span> If the mobile number shown above is incorrect, pls get in touch with your society office </p>
 	  </div>
 	  
 	     <!-- <div class="control-group">
