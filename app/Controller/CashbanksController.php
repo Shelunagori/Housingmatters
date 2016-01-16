@@ -7146,10 +7146,13 @@ $remarks = $data['fix_deposit']['purpose'];
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
-$tt_amt = $tt_amt + $amt;
+$renewal = $data['fix_deposit']['renewal'];
+
 $start_date	= date('d-m-Y',($start_date));	
 $mat_date	= date('d-m-Y',($mat_date));
-
+if($renewal != 'y')
+{
+	$tt_amt = $tt_amt + $amt;
 $excel.="<tr>
 <td>$receipt_id</td>
 <td>$bank_name</td>
@@ -7161,7 +7164,7 @@ $excel.="<tr>
 <td>$amt</td>
 <td>$remarks</td>
 </tr>";
-}
+}}
 $excel.="<tr><td colspan='7' style='text-align:right;'><b>Total</b></td>
             <td><b>$tt_amt</b></td>
             <td></td></tr>
