@@ -119,13 +119,14 @@ function read_user_info_csv_file(){
 			$name=$child_ar[0];
 			$wing_name=$child_ar[1];
 			$flat_name=$child_ar[2];
-			$email=$child_ar[3];
-			$mobile=$child_ar[4];
+			$owner_tenant=$child_ar[3];
+			$email=$child_ar[4];
+			$mobile=$child_ar[5];
 			
 			
 			$this->loadmodel('user_info_csv');
 			$auto_id=$this->autoincrement('user_info_csv','auto_id');
-			$this->user_info_csv->saveAll(Array(Array("auto_id" => $auto_id, "name" => $name,"wing_name" => $wing_name, "flat_name" => $flat_name, "email" => $email, "mobile" => $mobile,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+			$this->user_info_csv->saveAll(Array(Array("auto_id" => $auto_id, "name" => $name,"wing_name" => $wing_name, "flat_name" => $flat_name, "owner_tenant" => $owner_tenant, "email" => $email, "mobile" => $mobile,"society_id"=>$s_society_id,"is_converted"=>"NO")));
 		}
 	}
 	$this->loadmodel('user_info_import_record');
@@ -145,11 +146,9 @@ function convert_user_info_data(){
 		$name=trim($import_record["user_info_csv"]["name"]);
 		$wing_name=trim($import_record["user_info_csv"]["wing_name"]);
 		$flat_name=trim($import_record["user_info_csv"]["flat_name"]);
+		$owner_tenant=trim($import_record["user_info_csv"]["owner_tenant"]);
 		$email=trim($import_record["user_info_csv"]["email"]);
-		$mobile=trim($import_record["bank_receipt_csv"]["mobile"]);
-		
-		
-		
+		$mobile=trim($import_record["user_info_csv"]["mobile"]);
 		
 		$this->loadmodel('wing'); 
 		$conditions=array("wing_name"=> new MongoRegex('/^' . $wing_name . '$/i'),"society_id"=>$s_society_id);
@@ -162,33 +161,71 @@ function convert_user_info_data(){
 			$wing_id=0;
 		}
 		
-
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' . trim($flat_name) . '$/i'), "society_id"=>$s_society_id);
+		$conditions=array("flat_name"=> new MongoRegex('/^' . $flat_name . '$/i'),"society_id"=>$s_society_id);
 		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
 		if(sizeof($result_ac)>0){
 			foreach($result_ac as $collection){
 				$flat_id = (int)$collection['flat']['flat_id'];
-				$true_wing_id = (int)$collection['flat']['wing_id'];
 			}
 		}else{
-			$flat_id=0; $true_wing_id=0;
+			$flat_id=0;
 		}
 		
+		if($owner_tenant=="owner"){ $tenant=1; }else{ $tenant=2; }
 		
-		if($true_wing_id!=$wing_id && ($true_wing_id==0)){
-			$wing_id=0; $flat_id=0;
-		}
+		$this->loadmodel('user'); 
+		$conditions=array("wing"=>$wing_id,"flat"=>$flat_id,"tenant"=>$tenant);
+		$result_user=$this->user->find('all',array('conditions'=>$conditions));
+		$user_id =0;
+		foreach($result_user as $collection){
+				$user_id = (int)$collection['user']['user_id'];
+			}
 		
-		$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wing_id,$flat_id)));
-		foreach($result_user_info as $user_info){
-			$user_id=(int)$user_info["user"]["user_id"];
-			$user_name=$user_info["user"]["user_name"];
-		} 
-
+		 $emailErr = 1;
+		 if(!empty($email)){
+			 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			   $emailErr = 0;
+			 }else{
+				$this->loadmodel('user'); 
+				$conditions=array("email"=>$email);
+				$result_user_count=$this->user->find('count',array('conditions'=>$conditions));
+				
+				$this->loadmodel('user_info_csv_converted'); 
+				$conditions=array("email"=>$email);
+				$result_user_info_csv_converted_count=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+				
+				if($result_user_count>1 or $result_user_info_csv_converted_count>1){
+					 $emailErr = 0;
+				}
+			 }
+		 }
+		 
+		 
+		 $mobileErr = 1;
+		 if(!empty($mobile)){
+			 $mob="/([0-9]{10})/"; 
+			 if(!preg_match($mob, $mobile) && strlen($mobile)!=10 ) {
+				 $mobileErr = 0;
+			}else{
+				$this->loadmodel('user'); 
+				$conditions=array("mobile"=>$mobile);
+				$result_user_count=$this->user->find('count',array('conditions'=>$conditions));
+				
+				$this->loadmodel('user_info_csv_converted'); 
+				$conditions=array("mobile"=>$mobile);
+				$result_user_info_csv_converted_count=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+				
+				if($result_user_count>1 or $result_user_info_csv_converted_count>1){
+					 $mobileErr = 0;
+				}
+			}
+		 }
+		 
+			
 		$this->loadmodel('user_info_csv_converted');
 		$auto_id=$this->autoincrement('user_info_csv_converted','auto_id');
-		$this->user_info_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "name" => $user_name,"wing_id" => $wing_id, "flat_id" => $flat_id, "email" => $email, "mobile" => $mobile,"user_id"=>$user_id,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		$this->user_info_csv_converted->saveAll(Array(Array("auto_id" => $auto_id,"user_id" => $user_id, "email" => $email, "mobile" => $mobile,"emailErr" => $emailErr,"mobileErr" => $mobileErr,"user_id"=>$user_id,"society_id"=>$s_society_id,"is_imported"=>"NO")));
 		
 		$this->loadmodel('user_info_csv');
 		$this->user_info_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $user_info_csv_id));
@@ -213,6 +250,24 @@ function convert_user_info_data(){
 	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));
 }
 
+function check_user_info_before_submit(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$this->loadmodel('user_info_csv_converted');
+	$conditions =array( '$or' => array( 
+	array('emailErr' =>0,'mobileErr' =>0),
+	array('emailErr' =>1,'mobileErr' =>0),
+	array('emailErr' =>0,'mobileErr' =>1)
+	));
+	$result_count = $this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+	if($result_count==0){ 
+		$this->loadmodel('user_info_import_record');
+		$this->user_info_import_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id));
+		
+		die(json_encode(true)); 
+	}
+}
 
 function modify_user_info_csv_data($page=null){
 	if($this->RequestHandler->isAjax()){
@@ -250,6 +305,80 @@ function modify_user_info_csv_data($page=null){
 			
 }
 
+function check_user_info_csv_validation($id=null,$field=null,$val=null){
+	$this->layout=null;
+	
+	
+		
+	if($field=="email"){
+		$emailErr = 1;
+		$email=$val;
+		
+		$this->loadmodel('user_info_csv_converted');
+		$this->user_info_csv_converted->updateAll(array("email" => $email),array("auto_id" => (int)$id));
+		
+		 if(!empty($email)){
+			 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			   $emailErr = 0;
+			 }else{
+				$this->loadmodel('user'); 
+				$conditions=array("email"=>$email);
+				$result_user_count=$this->user->find('count',array('conditions'=>$conditions));
+				
+				
+				
+				$this->loadmodel('user_info_csv_converted'); 
+				$conditions=array("email"=>$email);
+				$result_user_info_csv_converted_count=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+				
+				if($result_user_count>1 or $result_user_info_csv_converted_count>1){
+					 $emailErr = 0;
+				}
+			 }
+		 }
+		 
+		$this->loadmodel('user_info_csv_converted');
+		$this->user_info_csv_converted->updateAll(array("emailErr" => $emailErr),array("auto_id" => (int)$id));
+		
+		if($emailErr==0){ die(json_encode(false)); }else{ die(json_encode(true)); }
+	}
+	
+	if($field=="mobile"){
+		$mobileErr = 1;
+		$mobile=$val;
+		
+		$this->loadmodel('user_info_csv_converted');
+		$this->user_info_csv_converted->updateAll(array("mobile" => $mobile),array("auto_id" => (int)$id));
+		
+		 if(!empty($mobile)){
+			 $mob="/([0-9]{10})/"; 
+			 if(!preg_match($mob, $mobile) ) {
+				 $mobileErr = 0;
+			}else{
+				$this->loadmodel('user'); 
+				$conditions=array("mobile"=>$mobile);
+				$result_user_count=$this->user->find('count',array('conditions'=>$conditions));
+				
+				$this->loadmodel('user_info_csv_converted'); 
+				$conditions=array("mobile"=>$mobile);
+				$result_user_info_csv_converted_count=$this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
+				
+				if($result_user_count>1 or $result_user_info_csv_converted_count>1){
+					 $mobileErr = 0;
+				}
+			}
+		 }
+		 
+		$this->loadmodel('user_info_csv_converted');
+		$this->user_info_csv_converted->updateAll(array("mobileErr" => $mobileErr),array("auto_id" => (int)$id));
+		
+		if($mobileErr==0){ die(json_encode(false)); }else{ die(json_encode(true));}
+	}
+	
+	 
+	 
+	 
+}
 
 function email_mobile_import_file(){
 	$this->layout="";
@@ -266,12 +395,12 @@ function email_mobile_import_file(){
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id = (int)$this->Session->read('user_id');
 	
-	$output= "Name,wing,unit,email,mobile \n";
+	$output= "Name,wing,unit,owner/tenant,email,mobile \n";
 	
 	
 	$this->loadmodel('user');
 	$conditions=array("society_id" => $s_society_id,"deactive"=>0);
-	$order=array('user_name'=>'DESC');
+	$order=array('user.user_name'=>'ASC');
 	$result_users=$this->user->find('all',array('conditions'=>$conditions,'order'=>$order));
 	
 	foreach($result_users as $user_info){
@@ -280,11 +409,17 @@ function email_mobile_import_file(){
 		$flat=$user_info["user"]["flat"];
 		$email=$user_info["user"]["email"];
 		$mobile=$user_info["user"]["mobile"];
+		$tenant=$user_info["user"]["tenant"];
+		if($tenant==1){
+			$ownership="owner";
+		}else{
+			$ownership="tenant";
+		}
 		
 		$wing_name=$this->fetch_wingname_via_wingid($wing);
 		$flat_name=$this->fetch_flatname_via_flatid($flat);
 		
-		$output.= $user_name.",".$wing_name.",".$flat_name.",".$email.",".$mobile." \n";
+		$output.= $user_name.",".$wing_name.",".$flat_name.",".$ownership.",".$email.",".$mobile." \n";
 	}
 	echo $output;
 }
@@ -3069,6 +3204,16 @@ function fetch_user_info_via_flat_id($wing,$flat){
 	)); */
 	
 	$conditions=array('flat_id'=>$flat,'status'=>1,'active'=>0);
+	$result_user_flat=$this->user_flat->find('all',array('conditions'=>$conditions));
+	$user_id=$result_user_flat[0]['user_flat']['user_id'];
+	return $this->profile_picture((int)$user_id);
+	
+}
+
+function fetch_user_info_via_flat_id2($flat){
+	$s_society_id=$this->Session->read('society_id');
+	$this->loadmodel('user_flat');
+	$conditions=array('flat_id'=>$flat,'active'=>0);
 	$result_user_flat=$this->user_flat->find('all',array('conditions'=>$conditions));
 	$user_id=$result_user_flat[0]['user_flat']['user_id'];
 	return $this->profile_picture((int)$user_id);
