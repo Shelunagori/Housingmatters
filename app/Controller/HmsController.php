@@ -25920,8 +25920,8 @@ $s_society_id=$this->Session->read('society_id');
 	$cursor = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
     foreach($cursor as $data)
 	{
-		$flat_id = $data['ledger_sub_account']['flat_id'];
-		$name = $data['ledger_sub_account']['name'];
+	$flat_id = $data['ledger_sub_account']['flat_id'];
+	$name = $data['ledger_sub_account']['name'];
        
 $wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 foreach($wing_detailll as $wing_dataaa)
