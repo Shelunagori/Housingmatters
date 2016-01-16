@@ -120,7 +120,7 @@ $default_date = date('d-m-Y');
                  <th>Maturity Date</th>
 				 <th>Interest Rate%</th>
 				 <th>Attachment</th>
-				 <th colspan="2">Remarks</th>
+				 <th colspan="2">Purpose</th>
 				 
              </tr>
 					
@@ -145,7 +145,15 @@ $default_date = date('d-m-Y');
 						</td>
 						
 					<td colspan="2">
-					<input type="text" class="m-wrap span12 corsrr" style="background-color:#FFF !important;">
+					<select class="m-wrap span12 chosen">
+					<option value="" style="display:none;">Select</option>
+					<option value="General Fund">General Fund</option>
+					<option value="Reserve Fund">Reserve Fund</option>
+					<option value="Repairs and Maintenance Fund">Repairs and Maintenance Fund</option>
+					<option value="Sinking Fund">Sinking Fund</option>
+					<option value="Major Repair Fund">Major Repair Fund</option>
+					<option value="Education and Training Fund">Education and Training Fund</option>
+					</select>
 					</td>
 					</tr>			 
 			</table> 
@@ -249,9 +257,10 @@ $(document).ready(function() {
 		var start_date = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(2) td:nth-child(5) input").val();
 		var maturity_date = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(1) input").val();
 		var interest = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(2) input").val();
-		var remarks = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(4) input").val();
+		var purpose = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(4) select").val();
+		
 		//m_data.append( 'file'+i, $('input[name=file'+i+']')[0].files[0]);
-		ar.push([bank_name,branch,ac_reference,pricipal_amt,start_date,maturity_date,interest,remarks]);
+		ar.push([bank_name,branch,ac_reference,pricipal_amt,start_date,maturity_date,interest,purpose]);
 		
 		}
 		var myJsonString = JSON.stringify(ar);

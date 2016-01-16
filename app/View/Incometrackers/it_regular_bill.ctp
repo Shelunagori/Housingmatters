@@ -150,8 +150,7 @@ if($income_head_detail == 'YES')
         <div class="controls">
         &nbsp;&nbsp;<input type="text" name="from" class="m-wrap span7 date-picker" 
 		data-date-format="dd-mm-yyyy" placeholder="Bill Date" id="from" value="<?php echo $default_date; ?>"/>
-        &nbsp;&nbsp;<label id="from"></label>
-        &nbsp;&nbsp;<div id="result11"></div>
+        &nbsp;&nbsp;<label id="from"></label><label id="result11"></label>
         </div>
         <br />
 
@@ -159,8 +158,7 @@ if($income_head_detail == 'YES')
         <label style="font-size:14px; color:red;">&nbsp;&nbsp;&nbsp;Payment Due Date<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select payment due date "> </i></label>
         <div class="controls">
        &nbsp;&nbsp;<input type="text" class="m-wrap span7 date-picker" data-date-format="dd-mm-yyyy" placeholder="Due Date" name="due_date" id="due" style="color:red; border-color:red;">
-        &nbsp;&nbsp;<label id="due" ></label>
-        &nbsp;&nbsp;<div id="result12"></div>
+        &nbsp;&nbsp;<label id="due" ></label><label id="result12"></label>
         </div>
         <br />
         
@@ -337,7 +335,7 @@ $(document).ready(function(){
 		},
 		messages: {
 	                from: {
-	                    required: "Bill Date is Required."
+	                    required: "Billing Date is Required."
 	                },
 					to: {
 	                    required: "To date is required."
@@ -368,7 +366,7 @@ $(document).ready(function(){
 <script>
 
 		$(document).ready(function() {
-		$("#go").live('click',function(){
+		$("#go").bind('click',function(){
 	
 		var from1 = document.getElementById("from").value;
 		var per_tp = document.getElementById("bp").value;

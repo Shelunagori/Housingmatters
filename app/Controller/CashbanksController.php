@@ -4074,7 +4074,19 @@ else
 {
 $output = json_encode(array('type'=>'error', 'text' => 'Interest Rate Should be Numeric Value in row '.$c));
 die($output);
-}		
+}
+
+
+if(empty($child[7])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Purpose is Required in row '.$c));
+		die($output);
+		}
+
+
+
+
+
+		
 }
 $rr = array();
 $z=1;
@@ -4088,7 +4100,7 @@ $principal_amt = $child[3];
 $start_date = $child[4];
 $maturity_date = $child[5];
 $rate = $child[6];
-$remarks = @$child[7];
+$purpose = @$child[7];
 
  $knddd = "&quot;".$bank_name."&quot;";
 			$this->loadmodel('reference');
@@ -4191,7 +4203,7 @@ $this->loadmodel('fix_deposit');
 $multipleRowData = Array( Array("transaction_id" => $l,"receipt_id"=>$re_id,"bank_name"=>$bank_name,
 "bank_branch"=>$branch,"account_reference"=>$ac_reference,"principal_amount"=>$principal_amt,
 "start_date"=>strtotime($start_date),"maturity_date"=>strtotime($maturity_date),"interest_rate"=>$rate,
-"remarks"=>$remarks,"file_name"=>$file_name,"society_id" => $s_society_id,"matured_status"=>1,
+"purpose"=>$purpose,"file_name"=>$file_name,"society_id" => $s_society_id,"matured_status"=>1,
 "auto_inc"=>"YES","current_date"=>$current_date,"prepaired_by"=>$s_user_id));
 $this->fix_deposit->saveAll($multipleRowData);
 }
@@ -4319,7 +4331,7 @@ $excel="<table border='1'>
 <th>Maturity Date</th>
 <th>Interest Rate</th>
 <th>Principal Amount</th>
-<th>Remarks</th>
+<th>Purpose</th>
 </tr>";
 
 $tt_amt = 0;
@@ -4335,7 +4347,7 @@ $bank_name = $data['fix_deposit']['bank_name'];
 $branch = $data['fix_deposit']['bank_branch'];	
 $rate = $data['fix_deposit']['interest_rate'];	
 $mat_date = $data['fix_deposit']['maturity_date'];	
-$remarks = $data['fix_deposit']['remarks'];		
+$remarks = $data['fix_deposit']['purpose'];		
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
@@ -7114,7 +7126,7 @@ $excel="<table border='1'>
 <th>Maturity Date</th>
 <th>Interest Rate</th>
 <th>Principal Amount</th>
-<th>Remarks</th>
+<th>Purpose</th>
 </tr>";
 
 $tt_amt = 0;
@@ -7130,7 +7142,7 @@ $bank_name = $data['fix_deposit']['bank_name'];
 $branch = $data['fix_deposit']['bank_branch'];	
 $rate = $data['fix_deposit']['interest_rate'];	
 $mat_date = $data['fix_deposit']['maturity_date'];	
-$remarks = $data['fix_deposit']['remarks'];		
+$remarks = $data['fix_deposit']['purpose'];		
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
@@ -7240,7 +7252,7 @@ $amount = $this->request->data['amount'];
 $start_date = $this->request->data['start_date'];
 $maturity_date = $this->request->data['maturity_date'];
 $rate = $this->request->data['rate'];
-$remarks = $this->request->data['remarks'];
+$remarks = $this->request->data['purpose'];
 $receipt_iddd = (int)$this->request->data['rriddd'];
 $current_date = date('Y-m-d');
 $file_name=@$_FILES["file2"]["name"];
@@ -7256,7 +7268,7 @@ move_uploaded_file($_FILES['file2']['tmp_name'], $target);
 $this->loadmodel('fix_deposit');
 $this->fix_deposit->updateAll(array("bank_name" =>$bank_name,"bank_branch"=>$branch,
 "account_reference"=>$reference, "principal_amount"=>$amount,"start_date"=>strtotime($start_date),
-"maturity_date"=>strtotime($maturity_date),"interest_rate"=>$rate,"remarks"=>$remarks,
+"maturity_date"=>strtotime($maturity_date),"interest_rate"=>$rate,"purpose"=>$remarks,
 "society_id"=>$s_society_id,"file_name"=>$file_name),array("transaction_id" => $transaction_id));
 
 ?>
@@ -7273,7 +7285,7 @@ Fixed Deposit #<?php echo $receipt_iddd; ?> is updated successfully
 <?php
 }
 }
-////////////////////////////// End active_deposit_edit //////////////////////////////////////////////////
+////////////////////////////// End active_deposit_edit ////////////////////////////////////
 ///////////////////////////////// Start renewal_fixed_deposit /////////////////////////////////////////////////
 function renewal_fixed_deposit()
 {
@@ -7297,7 +7309,7 @@ $amount = $this->request->data['amount'];
 $start_date = $this->request->data['start_date'];
 $maturity_date = $this->request->data['maturity_date'];
 $rate = $this->request->data['rate'];
-$remarks = @$this->request->data['remarks'];
+$remarks = @$this->request->data['purpose'];
 $receipt_iddddd = (int)$this->request->data['rriddd'];
 
 $file_name=@$_FILES["file2"]["name"];
@@ -7339,7 +7351,7 @@ $this->loadmodel('fix_deposit');
 $multipleRowData = Array( Array("transaction_id" => $l,"receipt_id"=>$rrrrr_idddd,"bank_name"=>$bank_name,
 "bank_branch"=>$branch,"account_reference"=>$reference,"principal_amount"=>$amount,
 "start_date"=>strtotime($start_date),"maturity_date"=>strtotime($maturity_date),"interest_rate"=>$rate,
-"remarks"=>$remarks,"file_name"=>$file_name,"society_id" => $s_society_id,"matured_status"=>1,
+"purpose"=>$remarks,"file_name"=>$file_name,"society_id" => $s_society_id,"matured_status"=>1,
 "auto_inc"=>"NO","renewal_id"=>$renewal_id,"prepaired_by"=>$s_user_id,"current_date"=>$current_date));
 $this->fix_deposit->saveAll($multipleRowData);
 

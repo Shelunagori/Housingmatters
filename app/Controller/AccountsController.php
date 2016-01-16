@@ -4174,8 +4174,8 @@ $cursor2=$this->society->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 }
-/////////////////////////// End fixed_deposit_reminder //////////////////////////////////////////////////////
-///////////////////////////////// Start auto_reminder ///////////////////////////////////////////////////////// 
+/////////////////////////// End fixed_deposit_reminder //////////////////////////////////////
+///////////////////////////////// Start auto_reminder ////////////////////////////////////// 
 function auto_reminder()
 {
 		if($this->RequestHandler->isAjax()){
@@ -4211,26 +4211,24 @@ for($a=0; $a<sizeof($arrrr); $a++)
 {
 $sub_arr = $arrrr[$a];
 $iddd = (int)$sub_arr[0];
-if($iddd == 1)
-{
-$income_tracker_days = (int)$sub_arr[1];  
+     if($iddd == 1)
+     {
+     $income_tracker_days = (int)$sub_arr[1];  
+     }
+     else if($iddd == 2)
+     {
+     $fixed_dep_days = (int)$sub_arr[1];  
+     }
+     else if($iddd == 3)
+     {
+     $help_desk_days = (int)$sub_arr[1];  
+     }
 }
-else if($iddd == 2)
-{
-$fixed_dep_days = (int)$sub_arr[1];  
-}
-else if($iddd == 3)
-{
-$help_desk_days = (int)$sub_arr[1];  
-}
-}
-
- 
 
 if($reminder_status == 1)
 {
 	$this->loadmodel('fix_deposit');
-	$conditions=array("society_id" => $s_society_id);
+	$conditions=array("society_id" => $s_society_id,'matured_status'=>1);
 	$fixdeposittt=$this->fix_deposit->find('all',array('conditions'=>$conditions));
 	foreach($fixdeposittt as $dataaa)
 	{
@@ -4278,26 +4276,13 @@ $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
 
-$subject="[".$society_name."]- Receipt of Rs ".$amount." on ".date('d-M-Y',$d_date)." against Unit ".$wing_flat."";
+//$subject="[".$society_name."]- Receipt of Rs ".$amount." on ".date('d-M-Y',$d_date)." against Unit ".$wing_flat."";
 //$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
 
 //$this->send_email($to_email,'accounts@housingmatters.in','HousingMatters',$subject,$html_receipt,'donotreply@housingmatters.in');
 }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -4442,12 +4427,11 @@ $subject="[".$society_name."]- Receipt of Rs ".$amount." on ".date('d-M-Y',$d_da
 
 	}	
 	
-	////// end code help desk reminder ///////////
-			
+////// end code help desk reminder ///////////
 }
 }
-///////////////////////////////// End auto_reminder ///////////////////////////////////////////////////////// 
-//////////////////////////////////// Start  tds_payment_report /////////////////////////////////////
+///////////////////////////////// End auto_reminder ////////////////////////////////////////////// 
+//////////////////////////////////// Start  tds_payment_report //////////////////////////////////
 function tds_payment_report()
 {
         if($this->RequestHandler->isAjax()){

@@ -46,7 +46,7 @@ $c_date = date('d-m-Y');
 <th>Maturity Date</th>
 <th>Interest Rate</th>
 <th>Principal Amount</th>
-<th>Remarks</th>
+<th>Purpose</th>
 <th class="hide_at_print">Action </th>
 </tr>
 </thead>
@@ -62,7 +62,7 @@ $bank_name = $data['fix_deposit']['bank_name'];
 $branch = $data['fix_deposit']['bank_branch'];	
 $rate = $data['fix_deposit']['interest_rate'];	
 $mat_date = $data['fix_deposit']['maturity_date'];	
-$remarks = $data['fix_deposit']['remarks'];		
+$remarks = $data['fix_deposit']['purpose'];		
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];

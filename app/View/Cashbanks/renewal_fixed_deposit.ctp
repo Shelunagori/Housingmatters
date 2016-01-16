@@ -10,7 +10,7 @@ $bank_name = $data['fix_deposit']['bank_name'];
 $branch = $data['fix_deposit']['bank_branch'];	
 $rate = $data['fix_deposit']['interest_rate'];	
 $mat_date = $data['fix_deposit']['maturity_date'];	
-$remarks = $data['fix_deposit']['remarks'];		
+$remarks = $data['fix_deposit']['purpose'];		
 $reference = $data['fix_deposit']['account_reference'];		
 $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
@@ -43,9 +43,18 @@ $mat_date	= date('d-m-Y',($mat_date));
 </div>
 <br />
 
-<label style="font-size:14px;">Remarks</label>
-<div class="controls">               
-<textarea class="m-wrap span7" rows="4" name="remarks"><?php echo $remarks; ?></textarea>
+<label style="font-size:14px;">Purpose</label>
+<div class="controls">
+<select class="m-wrap span7 chosen" id="purpose" name="purpose">
+<option value="" style="display:none;">Select</option>
+<option value="General Fund" <?php if($remarks == "General Fund") { ?>selected="selected" <?php } ?>>General Fund</option>
+<option value="Reserve Fund" <?php if($remarks == "Reserve Fund") { ?>selected="selected" <?php } ?>>Reserve Fund</option>
+<option value="Repairs and Maintenance Fund" <?php if($remarks == "Repairs and Maintenance Fund") { ?>selected="selected" <?php } ?>>Repairs and Maintenance Fund</option>
+<option value="Sinking Fund" <?php if($remarks == "Sinking Fund") { ?>selected="selected" <?php } ?>>Sinking Fund</option>
+<option value="Major Repair Fund" <?php if($remarks == "Major Repair Fund") { ?>selected="selected" <?php } ?>>Major Repair Fund</option>
+<option value="Education and Training Fund" <?php if($remarks == "Education and Training Fund") { ?>selected="selected" <?php } ?>>Education and Training Fund</option>
+</select>
+<label id="purpose"></label>
 </div>
 <br />   
 
@@ -144,7 +153,9 @@ error.appendTo('label#' + element.attr('id'));
 			required: true,
 			number: true
 			},
-	
+	        purpose: {
+			required: true
+	        }
 		},
 		highlight: function(element) {
 		$(element).closest('.control-group').removeClass('success').addClass('error');
