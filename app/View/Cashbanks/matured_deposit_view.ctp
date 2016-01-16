@@ -134,8 +134,9 @@ $amt = $data['fix_deposit']['principal_amount'];
 $file_name = $data['fix_deposit']['file_name'];
 $creation_date = $data['fix_deposit']['current_date'];
 $creater_id = (int)$data['fix_deposit']['prepaired_by'];
+$renewal = $data['fix_deposit']['renewal'];
 $creation_date = date('d-m-Y',strtotime($creation_date));
-$tt_amt = $tt_amt + $amt;
+
 $start_date	= date('d-m-Y',($start_date));	
 $mat_date	= date('d-m-Y',($mat_date));
 $result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($creater_id)));
@@ -143,7 +144,9 @@ foreach ($result_gh as $collection)
 {
 $prepaired_by_name = $collection['user']['user_name'];
 }	
-
+if($renewal != 'y')
+{
+$tt_amt = $tt_amt + $amt;
 ?>
 
 <tr>
@@ -173,7 +176,7 @@ $prepaired_by_name = $collection['user']['user_name'];
 </td>
 </tr>
 <?php
-}
+}}
 ?>
             <tr>
             <td colspan="7" style="text-align:right;"><b>Total</b></td>
