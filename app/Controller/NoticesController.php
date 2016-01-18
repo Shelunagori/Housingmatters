@@ -1504,7 +1504,7 @@ if($post_data['post_type']==1){
 		}
 		if(!empty($file_name))
 				{
-				@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
+				//@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
 				}
 
 		
@@ -1723,7 +1723,7 @@ if($post_data['post_type']==1){
 							<tbody>
 								
 								<tr>
-								<td  align="left" valign="middle" width="">'.@$file_att.' 
+								<td  align="left" valign="middle" width="">
 								Thank you <br/>HousingMatters (Support Team)<br/>www.housingmatters.in
 								
 								</td>

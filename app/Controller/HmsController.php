@@ -6299,7 +6299,7 @@ function notice_approval_ajax()
 		$file_name=$data['notice']['n_attachment'];
 		if(!empty($file_name))
 				{
-				@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
+				//@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
 				}
 		
 		
@@ -6607,7 +6607,7 @@ function notice_approval_ajax()
 							<tbody>
 								
 								<tr>
-								<td  align="left" valign="middle" width=""> '.@$file_att.'
+								<td  align="left" valign="middle" width=""> 
 								Thank you <br/>HousingMatters (Support Team)<br/>www.housingmatters.in
 								
 								</td>
