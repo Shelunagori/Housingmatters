@@ -17,7 +17,7 @@ $default_date = date('d-m-Y');
 <form method="POST">
 <div class="portlet box blue">
 <div class="portlet-title">
-<h4 class="block">Update Bank Receipt</h4>
+<h4 class="block">Update My Receipt</h4>
 </div>
 <div class="portlet-body form">
 <div id="validdn"></div>                 
@@ -182,7 +182,7 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]" i
 </tr>						
 </table>
 <div class="form-actions">
-<button type="submit" class="btn green" name="my_flat_receipt_update">Create Receipt</button>
+<button type="submit" class="btn green" name="my_flat_receipt_update">Update My Receipt</button>
 </div>
 </div>
 </div>
