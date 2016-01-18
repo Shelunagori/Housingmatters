@@ -6296,6 +6296,13 @@ function notice_approval_ajax()
 		$visible=(int)$data['notice']['visible'];
 		$sub_visible=$data['notice']['sub_visible'];
 		$message=$data['notice']['n_message'];
+		$file_name=$data['notice']['n_attachment'];
+		if(!empty($file_name))
+				{
+				@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
+				}
+		
+		
 		
 		if($visible==1)
 		{	
@@ -6600,7 +6607,7 @@ function notice_approval_ajax()
 							<tbody>
 								
 								<tr>
-								<td  align="left" valign="middle" width="">
+								<td  align="left" valign="middle" width=""> '.@$file_att.'
 								Thank you <br/>HousingMatters (Support Team)<br/>www.housingmatters.in
 								
 								</td>

@@ -1502,7 +1502,11 @@ if($post_data['post_type']==1){
 		$target=@$target.basename($file_name);
 		move_uploaded_file($file_tmp_name,@$target);
 		}
-		
+		if(!empty($file_name))
+				{
+				@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'notice_file/'.$file_name.'" download>Download attachment</a><br/><br/>';
+				}
+
 		
 		
 		
@@ -1645,7 +1649,7 @@ if($post_data['post_type']==1){
         </tbody>
 </table>';*/
 
-		$message_web='<div style="margin:0;padding:0" dir="ltr" bgcolor="#ffffff"><div class="adM">
+		 $message_web='<div style="margin:0;padding:0" dir="ltr" bgcolor="#ffffff"><div class="adM">
 	</div><table style="border-collapse:collapse" border="0" cellpadding="0" cellspacing="0" width="100%;">
 		<tbody>
 			<tr>
@@ -1719,7 +1723,7 @@ if($post_data['post_type']==1){
 							<tbody>
 								
 								<tr>
-								<td  align="left" valign="middle" width="">
+								<td  align="left" valign="middle" width="">'.@$file_att.' 
 								Thank you <br/>HousingMatters (Support Team)<br/>www.housingmatters.in
 								
 								</td>
