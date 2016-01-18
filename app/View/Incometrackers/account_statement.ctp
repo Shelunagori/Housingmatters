@@ -37,30 +37,8 @@ $default_to = date('d-m-Y');
 <div class="hide_at_print" align="center">
 	<table>
 		<tr>
-			<td>
-				<select class="m-wrap chosen" data-placeholder="Choose a Category" id="flat_select_box" tabindex="1">
-					<option value="">Select...</option>
-					<?php foreach($result_ledger_sub_account as $ledger_sub_account){
-							$flat=(int)$ledger_sub_account["ledger_sub_account"]["flat_id"];
-							$ledger_sub_account_id=$ledger_sub_account["ledger_sub_account"]["auto_id"];
-							$user_id = $ledger_sub_account["ledger_sub_account"]["user_id"];
-							//wing_id via flat_id//
-							$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat)));
-							foreach($result_flat_info as $flat_info){
-								$wing=$flat_info["flat"]["wing_id"];
-							} 
-							
-							
-							//user info via flat_id//
-							$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'user_fetch'),array('pass'=>array($user_id)));
-							foreach($result_user_info as $user_info){
-								$user_id=(int)$user_info["user"]["user_id"];
-								$user_name=$user_info["user"]["user_name"];
-							}
-							$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'), array('pass' => array($wing,$flat))); ?>
-						<option value="<?php echo $flat; ?>"><?php echo $user_name.' ( '.$wing_flat.' )'; ?></option>
-					<?php } ?>
-				</select>
+			<td><?php
+				$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down')); ?>
 			</td>
 			<td>
 <input class="date-picker m-wrap medium" id="from" data-date-format="dd-mm-yyyy" name="from" 
@@ -86,7 +64,7 @@ placeholder="From" style="background-color:white !important; margin-top:8px;" va
 <script>
 $(document).ready(function() {
 	$( "#go" ).click(function() {
-		var ledger_sub_account_id=$("#flat_select_box").val();
+		var ledger_sub_account_id=$(".resident_drop_down").val();
 		var from=$("#from").val();
 		var to=$("#to").val();
 		$("#result_statement").show();
