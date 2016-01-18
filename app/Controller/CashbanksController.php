@@ -8071,23 +8071,29 @@ $this->my_flat_receipt_update->updateAll(array("approval_id"=>2),array('society_
 <?php	
 }
 
-
-
-
-
-
-
-
-
 $this->loadmodel('my_flat_receipt_update');
 $conditions=array('society_id'=>$s_society_id,"approval_id"=>1);
 $cursor1=$this->my_flat_receipt_update->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 
-	
 }
 
 /////////////////////////////End bank_receipt_approve //////////////////////////////////////////////
+/////////////////////////////Start aprrove_bank_receipt_update ////////////////////////////////////
+function aprrove_bank_receipt_update()
+{
+if($this->RequestHandler->isAjax()){
+$this->layout='blank';
+}else{
+$this->layout='session';
+}
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');		
+	
+	
+}
+/////////////////////////////End aprrove_bank_receipt_update ////////////////////////////////////
 
 }
 ?>
