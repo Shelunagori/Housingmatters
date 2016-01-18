@@ -3298,7 +3298,7 @@ function fetch_user_info_via_flat_id($wing,$flat){
 	
 	$conditions=array('flat_id'=>$flat,'status'=>1,'active'=>0);
 	$result_user_flat=$this->user_flat->find('all',array('conditions'=>$conditions));
-	$user_id=$result_user_flat[0]['user_flat']['user_id'];
+	$user_id=@$result_user_flat[0]['user_flat']['user_id'];
 	return $this->profile_picture((int)$user_id);
 	
 }
