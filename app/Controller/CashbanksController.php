@@ -163,7 +163,7 @@ function convert_imported_data(){
 		
 
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' . trim($flat) . '$/i'), "society_id"=>$s_society_id);
+		$conditions=array("flat_name"=> new MongoRegex('/^' . trim($flat) . '$/i'), "society_id"=>$s_society_id, "wing_id"=>$wing_id);
 		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
 		if(sizeof($result_ac)>0){
 			foreach($result_ac as $collection){
@@ -225,12 +225,16 @@ function convert_imported_data(){
 }
 
 function modify_bank_receipt_csv_data($page=null){
+	
+	
 	if($this->RequestHandler->isAjax()){
 	$this->layout='blank';
 	}else{
 	$this->layout='session';
 	}
 	$this->ath();
+	
+	
 	$s_society_id = $this->Session->read('society_id');
 	$page=(int)$page;
 	$this->set('page',$page);
