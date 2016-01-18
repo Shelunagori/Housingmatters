@@ -2963,7 +2963,8 @@ function user_deactive_ajax()
 		date_default_timezone_set('Asia/kolkata');
 		$date=date("d-m-Y");
 		$time=date('h:i:a',time());
-		$exit_date1 = date('Y-m-d',strtotime($date));
+		//$exit_date1 = date('Y-m-d',strtotime($date));
+		$exit_date1 = "2015-4-5";
 		$exit_date = strtotime($exit_date1); 
 		$this->loadmodel('user_flat');
 		$this->user_flat->updateAll(array('active'=>1,'exit_date'=>$exit_date,'time'=>$time),array('user_flat_id'=>$user_flat_id));
@@ -2974,7 +2975,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'deactive_date'=>$date,'deactive_time'=>$time,'status'=>1));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>1),array('user_id'=>$user_id,'flat_id'=>$flat_id));
+		$this->ledger_sub_account->updateAll(array('deactive'=>1),array('user_id'=>$user_id,'flat_id'=>$flat_id,"exit_date"=>$exit_date));
 		
 		
 		$this->loadmodel('user_flat');
@@ -3014,7 +3015,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'active_date'=>$date,'active_time'=>$time,'status'=>2));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>0),array('user_id'=>$user_id,'flat_id'=>$flat_id)); 
+		$this->ledger_sub_account->updateAll(array('deactive'=>0),array('user_id'=>$user_id,'flat_id'=>$flat_id,"exit_date"=>$exit_date)); 
 		$output = json_encode(array('report_type'=>'done', 'text' => ''));
 		die($output);
 		
@@ -25910,31 +25911,58 @@ $this->set('result_ledger_sub_account',$result_ledger_sub_account);
 ////////////////////////// Start Resident drop down ////////////////////////////////////
 function resident_drop_down()
 {
-$s_society_id=$this->Session->read('society_id');
+$s_society_id=(int)$this->Session->read('society_id');
+
+$current_date = date('Y-m-d');
+$current_date2 = strtotime($current_date);
+$this->loadmodel('financial_year');
+$conditions=array("society_id"=>$s_society_id);
+$financial_data = $this->financial_year->find('all',array('conditions'=>$conditions));
+foreach($financial_data as $financial_dataaa)
+{
+$from = $financial_dataaa['financial_year']['from'];	
+$to = $financial_dataaa['financial_year']['to'];
+
+$from2 = date('Y-m-d',$from->sec);
+$to2 = date('Y-m-d',$to->sec);	
+$from3 = strtotime($from2);
+$to3 = strtotime($to2);
+if($current_date2 >= $from3 && $current_date2 <= $to3)
+{
+$financial_year_from = $from3;
+$financial_year_to = $to3;
+}
+}
+
+
+
+
 ?>
 <select class="m-wrap span12 chosen resident_drop_down">
 <option value="" style="display:none;">Select Sub Ledger A/c</option>
 	<?php
 	$this->loadmodel('ledger_sub_account');
-	$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id,"deactive"=>0);
+	$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id);
 	$cursor = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
     foreach($cursor as $data)
 	{
 	$flat_id = $data['ledger_sub_account']['flat_id'];
 	$name = $data['ledger_sub_account']['name'];
-       
-$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
-foreach($wing_detailll as $wing_dataaa)
-{
-$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
-}
+    $exit_date = $data['ledger_sub_account']['exit_date']; 
+	$deactive = (int)$data['ledger_sub_account']['deactive']; 
+	$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+	foreach($wing_detailll as $wing_dataaa)
+	{
+	$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
+	}
 
 $wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_id)));
-
+   if(($financial_year_from <= $exit_date && $financial_year_to >= $exit_date && $deactive == 1) || ($deactive == 0))
+   {
    ?>		
     <option value="<?php echo $flat_id; ?>"><?php echo $name; ?> <?php echo $wing_flat; ?></option>
 	<?php 
-	} 
+	} }
 	?>
 </select>
 <?php	

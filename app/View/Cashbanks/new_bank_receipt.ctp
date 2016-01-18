@@ -131,26 +131,8 @@ id="branchh1" style="background-color:#FFF !important; margin-top:3px;" data-pro
 					 
 					<td>
 					<div id="pppp_nnn1">
-					<select class="m-wrap chosen span12" id="fltt1" onchange="amtshw1(this.value,1)">
-					<option value="" style="display:none;">Select Resident</option>
 					<?php
-					foreach($cursor1 as $data)
-					{
-					$flat_iddd = (int)$data['ledger_sub_account']['flat_id'];	
-					$resident_name = $data['ledger_sub_account']['name'];
-
-					$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_iddd)));
-					foreach($wing_detailll as $wing_dataaa)
-					{
-					$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
-					}
-					$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_iddd)));
-					?>
-					<option value="<?php echo $flat_iddd; ?>"><?php echo $resident_name; ?> <?php echo $wing_flat; ?></option>
-					<?php
-					}
-					?>
-					</select>
+					$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down')); ?>
 							</div>
 				</td>
 								 

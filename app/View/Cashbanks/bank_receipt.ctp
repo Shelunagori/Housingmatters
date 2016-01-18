@@ -10,6 +10,15 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <a style="background-color:#D9D1FA "
 <!--  Start Bank Receipt form Front End  -->
 
+
+
+<?php
+$aaa= "4-1-2015";
+$aaa2 = date('Y-m-d',strtotime($aaa));
+echo $aaa3 = strtotime($aaa2);
+?>
+
+
 <!---- Start Import Code -->
     <?php /*    <div id='suces'>
         <div id="error_msg"></div>
@@ -666,38 +675,4 @@ return false;
 
 
 
-
-
-
-<form method="post">
-
-
-<input type="text" name="abc" />
-<button type="submit" name="sub555">Submit</button>
-</form>
-
-
-
-function bank_receipt()
-{
-		if($this->RequestHandler->isAjax())
-		{
-		$this->layout='blank';
-		}else{
-		$this->layout='session';
-		}
-
-		$this->ath();
-		//$this->check_user_privilages();
-
-if(isset($this->request->data['sub555']))
-{
- $value = $this->request->data['abc'];	
-	
-$this->loadmodel('hobbies_category');
-$auto_id=(int)$this->autoincrement('hobbies_category','hobbies_id');
-$this->hobbies_category->saveAll(array("hobbies_id" => $auto_id,"hobbies_name" => $value));
-}
-	
-}
 
