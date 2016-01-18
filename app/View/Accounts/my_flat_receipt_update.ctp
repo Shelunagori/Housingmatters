@@ -119,7 +119,7 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]">
 					<td>
 					
 					<select <?php if(sizeof($ledger_sub_account_data) <= 1)
-					 { ?>  class="m-wrap span12" <?php } else { ?> class="m-wrap span12 chosen" <?php } ?>>
+					 { ?> disabled="disabled" class="m-wrap span12" <?php } else { ?> class="m-wrap span12 chosen" <?php } ?>>
 					<option value="" style="display:none;">Select</option>
 					<?php
 					foreach($ledger_sub_account_data as $data)
