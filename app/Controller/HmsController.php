@@ -2972,9 +2972,9 @@ function user_deactive_ajax()
 		date_default_timezone_set('Asia/kolkata');
 		$date=date("d-m-Y");
 		$time=date('h:i:a',time());
-		$exit_date1 = date('Y-m-d',strtotime($date));
-		//$exit_date1 = "2015-4-5";
-		//$exit_date1 = date('Y-m-d',strtotime($exit_date1));
+		//$exit_date1 = date('Y-m-d',strtotime($date));
+		$exit_date1 = "2015-4-5";
+		$exit_date1 = date('Y-m-d',strtotime($exit_date1));
 		$exit_date = strtotime($exit_date1); 
 		$this->loadmodel('user_flat');
 		$this->user_flat->updateAll(array('active'=>1,'exit_date'=>$exit_date,'time'=>$time),array('user_flat_id'=>$user_flat_id));
@@ -2985,7 +2985,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'deactive_date'=>$date,'deactive_time'=>$time,'status'=>1));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>1),array('user_id'=>$user_id,'flat_id'=>$flat_id,"exit_date"=>$exit_date));
+		$this->ledger_sub_account->updateAll(array('deactive'=>1,"exit_date"=>$exit_date),array('user_id'=>$user_id,'flat_id'=>$flat_id));
 		
 		
 		$this->loadmodel('user_flat');
@@ -3025,7 +3025,7 @@ function user_deactive_ajax()
 		$this->log->save(array('log_id'=>$i,'user_id'=>$user_id,'society_id'=>$s_society_id,'active_date'=>$date,'active_time'=>$time,'status'=>2));
 		
 		$this->loadmodel('ledger_sub_account');
-		$this->ledger_sub_account->updateAll(array('deactive'=>0),array('user_id'=>$user_id,'flat_id'=>$flat_id,"exit_date"=>$exit_date)); 
+		$this->ledger_sub_account->updateAll(array('deactive'=>0,"exit_date"=>$exit_date),array('user_id'=>$user_id,'flat_id'=>$flat_id)); 
 		$output = json_encode(array('report_type'=>'done', 'text' => ''));
 		die($output);
 		
@@ -25959,7 +25959,7 @@ $financial_year_to = $to3;
 	$flat_id = $data['ledger_sub_account']['flat_id'];
 	$name = $data['ledger_sub_account']['name'];
     $exit_date = $data['ledger_sub_account']['exit_date']; 
-	$deactive = (int)$data['ledger_sub_account']['deactive']; 
+	$deactive = $data['ledger_sub_account']['deactive']; 
 	$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 	foreach($wing_detailll as $wing_dataaa)
 	{

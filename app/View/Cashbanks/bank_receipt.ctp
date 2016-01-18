@@ -13,9 +13,26 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 <?php
-$aaa = '31-3-2016';
-$m_from = date("Y-m-d", strtotime($aaa));
-echo $m_from = new MongoDate(strtotime($m_from));
+$current_date = date('Y-m-d');
+$current_date2 = strtotime($current_date);
+foreach($financial_data as $financial_dataaa)
+{
+$from = $financial_dataaa['financial_year']['from'];	
+$to = $financial_dataaa['financial_year']['to'];
+
+$from2 = date('Y-m-d',$from->sec);
+$to2 = date('Y-m-d',$to->sec);	
+$from3 = strtotime($from2);
+$to3 = strtotime($to2);
+if($current_date2 >= $from3 && $current_date2 <= $to3)
+{
+$financial_year_from = $from3;
+$financial_year_to = $to3;
+}
+}
+
+echo date('d-m-Y',$financial_year_from);
+echo date('d-m-Y',$financial_year_to);
 ?>
 
 

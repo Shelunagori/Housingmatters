@@ -1057,18 +1057,14 @@ function bank_receipt()
 		}else{
 		$this->layout='session';
 		}
-
+$s_society_id=(int)$this->Session->read('society_id');
 		$this->ath();
 		//$this->check_user_privilages();
 
-if(isset($this->request->data['sub555']))
-{
- $value = $this->request->data['abc'];	
-	
-$this->loadmodel('hobbies_category');
-$auto_id=(int)$this->autoincrement('hobbies_category','hobbies_id');
-$this->hobbies_category->saveAll(array("hobbies_id" => $auto_id,"hobbies_name" => $value));
-}
+$this->loadmodel('financial_year');
+$conditions=array("society_id"=>$s_society_id);
+$financial_data = $this->financial_year->find('all',array('conditions'=>$conditions));
+$this->set('financial_data',$financial_data);
 	
 }
 
