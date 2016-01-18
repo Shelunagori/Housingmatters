@@ -61,7 +61,7 @@ $default_date = date('d-m-Y');
 						
 						
 						<td>
-						<select class="span12 m-wrap chosen">
+						<select class="span12 m-wrap chosen" onchange="receipt_mode(this.value)">
 						<option value="" style="display:none;">receipt mode</option>    
 						<option value="Cheque">Cheque</option>
 						<option value="NEFT">NEFT</option>
@@ -69,7 +69,6 @@ $default_date = date('d-m-Y');
 						</select>
 						</td>
 	
-			  
 						  
 		<td>
 		<input type="text" placeholder="Cheque No." class="m-wrap span12" 
@@ -83,11 +82,14 @@ $default_date = date('d-m-Y');
 					placeholder="Date" style="background-color:#FFF !important; margin-top:3px;"/>
 					</td>
 							  
-							  
+				
+			
+
+  			  
 					<td>
 					<input type="text" class="m-wrap span12" placeholder="Drawn on which bank?" 
 					style="background-color:#FFF !important; margin-top:3px;" data-provide="typeahead" 
-			   data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]">
+			   data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" id="bnkkk">
 					</td>
 				 </tr>
 				 
@@ -105,7 +107,7 @@ $default_date = date('d-m-Y');
 <td>
 <input type="text" class="m-wrap span12" placeholder="Branch of Bank" 
 style="background-color:#FFF !important; margin-top:3px;" data-provide="typeahead" 
-data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]">
+data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]" id="branchh">
 </td>
 					
 					<td>
@@ -238,6 +240,26 @@ ar.push([transaction_date,mode,cheque_no,cheque_date,drawn_bank,branch,date,utr,
 });
 
 </script>	
+
+<script>
+function receipt_mode(value)
+{
+	
+		if(value == "Cheque")	
+		{
+		$("#bnkkk").removeAttr("readonly","readonly");
+		$("#branchh").removeAttr("readonly","readonly");		
+		}
+		else
+		{
+		$("#bnkkk").attr("readonly","readonly");
+		$("#branchh").attr("readonly","readonly");	
+		$("#bnkkk").val("");
+		$("#branchh").val("");
+		}	
+}
+
+</script>
 
 <div id="shwd" class="hide">
 <div class="modal-backdrop fade in"></div>
