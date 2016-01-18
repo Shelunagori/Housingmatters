@@ -198,14 +198,58 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]" i
 
 <script>
 $(document).ready(function() { 
-	$('form').submit( function(ev){
+	$('form').submit(function(ev){
+	ev.preventDefault();
+	
+	 var ar = [];
+	 
+	 var transaction_id = $('#trans_id').val();
+	
+		var transaction_date = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(1) input").val();
+	  	var bank_id = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(2) select").val();
+		var mode = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(3) select").val();
+			
+			if(mode == "Cheque")
+			{
+	var cheque_no = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(4) input").val();
+	var cheque_date = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(5) input").val();
+	var drawn_bank = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(6) input").val();
+	var branch = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(4) td:nth-child(1) input").val();
+			}
+			else
+			{
+			var utr = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(4) input").val();	
+			var date = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(5) input").val();
+			}
+	var flat_id = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(4) td:nth-child(3) select").val();
+	var amount = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(4) td:nth-child(5) input").val();
+	var narration = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(4) td:nth-child(6) input").val();
+	
+ar.push([transaction_date,mode,cheque_no,cheque_date,drawn_bank,branch,date,utr,amount,narration,bank_id,flat_id,transaction_id]);	
+	
+	var myJsonString = JSON.stringify(ar);
+			$.ajax({
+			url: "approve_receipt_update_json?q="+myJsonString,
+			dataType:'json',
+			}).done(function(response){
+		if(response.type == 'error'){
+		$("#validdn").html('<div class="alert alert-error" style="color:red;">'+response.text+'</div>');
+		}
+		if(response.type == 'success'){
+		$("#shwd").show();
+
+		}
+	
+	});
+	});
+});
+/*
+$(document).ready(function() { 
+	$('form').submit(function(ev){
+	alert();
 	ev.preventDefault();
 		
 		var ar = [];
-		
-		var transaction_id = $("#trans_id").val();
-		alert(transaction_id);
-		
 		var transaction_date = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(1) input").val();
 	  	var bank_id = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(2) select").val();
 		var mode = $("#main_table tr:nth-child(1) td:nth-child(1) #sub_table tr:nth-child(2) td:nth-child(3) select").val();
@@ -247,7 +291,7 @@ ar.push([transaction_date,mode,cheque_no,cheque_date,drawn_bank,branch,date,utr,
 });			
 });
 });
-
+*/
 </script>	
 
 <script>
@@ -275,10 +319,10 @@ function receipt_mode(value)
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
 <div class="modal-body">
 <h4><b>Thank You!</b></h4>
-<p>Your Receipt is gone for approval</p>
+<p>The Rceipt is Updated Successfully</p>
 </div>
 <div class="modal-footer">
-<a href="<?php echo $webroot_path; ?>Accounts/my_flat_receipt_update" class="btn red" rel='tab'>OK</a>
+<a href="bank_receipt_approve" class="btn red" rel='tab'>OK</a>
 </div>
 </div>
 </div> 

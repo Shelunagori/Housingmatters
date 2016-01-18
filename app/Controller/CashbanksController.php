@@ -8274,7 +8274,7 @@ $amount = $child[8];
 $narration = $child[9];
 $bank_id = (int)$child[10];
 $flat_id = (int)$child[11];
-
+$transaction_id = (int)$child[12];
 $current_date = date('d-m-Y');
 
 $this->loadmodel('my_flat_receipt_update');
