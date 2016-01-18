@@ -533,7 +533,7 @@ $this->layout=null;
 									<td align="right">
 									
 										<span style="font-weight: 100;">Created by: </span><span>
-										'.$user_name_created  $flat_info.'</span>
+										'.$user_name_created.'  '.$flat_info.'</span>
 									
 										</td>
 									</tr>
