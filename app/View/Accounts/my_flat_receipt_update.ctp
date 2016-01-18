@@ -265,8 +265,7 @@ function receipt_mode(value)
 <div class="modal-backdrop fade in"></div>
 <div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
 <div class="modal-body">
-<h4><b>Thank You!</b></h4>
-<p>Your Receipt is gone for approval</p>
+<p>Thank You for updating your payment details. After verification with bank records,a receipt will be issued to you</p>
 </div>
 <div class="modal-footer">
 <a href="<?php echo $webroot_path; ?>Accounts/my_flat_receipt_update" class="btn red" rel='tab'>OK</a>
