@@ -394,10 +394,13 @@ function final_import_user_info_ajax(){
 	}
 	$process_status= @$step1+@$step2+@$step3+@$step4;
 	if($process_status==4){
+		
 		$this->loadmodel('user_info_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
 		$result_import_converted = $this->user_info_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		
 		foreach($result_import_converted as $data){
+			
 			$auto_id=$data["user_info_csv_converted"]["auto_id"];
 			$user_id=$data["user_info_csv_converted"]["user_id"];
 			$email=$data["user_info_csv_converted"]["email"];
@@ -412,6 +415,7 @@ function final_import_user_info_ajax(){
 			}
 			
 			if($email!=$al_email){
+				
 				$this->loadmodel('user');
 				$this->user->updateAll(array("email" => $email),array("user_id" => (int)$user_id));
 			}
@@ -428,10 +432,13 @@ function final_import_user_info_ajax(){
 				$this->loadmodel('user');
 				$this->user->updateAll(array("login_id" => $login_id),array("user_id" => (int)$user_id));
 			}
+			
+			$this->loadmodel('user_info_csv_converted');
+			$this->user_info_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => (int)$auto_id));
+			
 		}
 		
-		$this->loadmodel('user_info_csv_converted');
-		$this->bank_receipt_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => $auto_id));
+		
 		
 		$this->loadmodel('user_info_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
@@ -442,6 +449,8 @@ function final_import_user_info_ajax(){
 		$total_records = $this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
 		
 		$converted_per=($total_converted_records*100)/$total_records;
+		
+		
 		if($converted_per==100){ $again_call_ajax="NO"; 
 			
 			$this->loadmodel('user_info_csv_converted');

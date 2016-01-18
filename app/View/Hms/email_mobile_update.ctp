@@ -1,3 +1,4 @@
+<div id="first_div">
 <?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;" id="myModal4">
 	<div class="portlet-title">
@@ -137,21 +138,20 @@ function final_import_user_info_ajax(){
 			url: "final_import_user_info_ajax",
 			dataType: 'json'
 		}).done(function(response){
-			alert(response.again_call_ajax);
 			if(response.again_call_ajax=="YES"){
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
 				final_import_user_info_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
-				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" >OK</a> </p></div>');
+				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Hms/email_mobile_update" >OK</a> </p></div>');
 			}
 		});
 	});
 }
 </script>
 <?php } ?>
-
+</div>
 <script>
 $('form#form1').submit( function(ev){
 	ev.preventDefault();
