@@ -13,9 +13,9 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 <?php
-$aaa= "4-1-2015";
-$aaa2 = date('Y-m-d',strtotime($aaa));
-echo $aaa3 = strtotime($aaa2);
+$aaa = '31-3-2016';
+$m_from = date("Y-m-d", strtotime($aaa));
+echo $m_from = new MongoDate(strtotime($m_from));
 ?>
 
 

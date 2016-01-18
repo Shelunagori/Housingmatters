@@ -2965,6 +2965,7 @@ function user_deactive_ajax()
 		$time=date('h:i:a',time());
 		//$exit_date1 = date('Y-m-d',strtotime($date));
 		$exit_date1 = "2015-4-5";
+		$exit_date1 = date('Y-m-d',strtotime($exit_date1));
 		$exit_date = strtotime($exit_date1); 
 		$this->loadmodel('user_flat');
 		$this->user_flat->updateAll(array('active'=>1,'exit_date'=>$exit_date,'time'=>$time),array('user_flat_id'=>$user_flat_id));
