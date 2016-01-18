@@ -117,26 +117,37 @@ data-source="[<?php if(!empty($kendo_implode2)) { echo $kendo_implode2; } ?>]">
 				    </td>
 										 
 					<td>
-					<select class="m-wrap span12 chosen">
+					
+					<select <?php if(sizeof($ledger_sub_account_data) <= 1)
+					 { ?> disabled="disabled" class="m-wrap span12" <?php } else { ?> class="m-wrap span12 chosen" <?php } ?>>
 					<option value="" style="display:none;">Select</option>
 					<?php
 					foreach($ledger_sub_account_data as $data)
 					{
+					 $flatt_iddd = "";
+									 
+						
 					$flat_iddd = (int)$data['ledger_sub_account']['flat_id'];	
 					$resident_name = $data['ledger_sub_account']['name'];
                     $user_id = (int)$data['ledger_sub_account']['user_id'];
+					
+					 if(sizeof($ledger_sub_account_data) == 1)
+					 {
+					 $flatt_iddd = $flat_iddd;
+					 }
+					
+					
 					$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_iddd)));
 					foreach($wing_detailll as $wing_dataaa)
 					{
 					$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
 					}
 					$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_iddd)));
-					if($user_id == $s_user_id)
-					{
+					
 					?>
-					<option value="<?php echo $flat_iddd; ?>"><?php echo $resident_name; ?> <?php echo $wing_flat; ?></option>
+					<option value="<?php echo $flat_iddd; ?>" <?php if($flatt_iddd == $flat_iddd) { ?> selected="selected"<?php } ?>><?php echo $resident_name; ?> <?php echo $wing_flat; ?></option>
 					<?php
-					}
+					
 					}
 					?>
 					</select>

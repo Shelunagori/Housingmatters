@@ -4908,13 +4908,13 @@ $this->check_user_privilages();
 
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
-$s_user_id=$this->Session->read('user_id');	
+$s_user_id=(int)$this->Session->read('user_id');	
 
 $this->set('s_user_id',$s_user_id);
 
 
 $this->loadmodel('ledger_sub_account');
-$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id,"deactive"=>0);
+$conditions=array("ledger_id" => 34,"society_id"=>$s_society_id,"deactive"=>0,'user_id'=>$s_user_id);
 $ledger_sub_account_data = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('ledger_sub_account_data',$ledger_sub_account_data);	
 
@@ -4923,19 +4923,6 @@ $this->loadmodel('ledger_sub_account');
 $conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
 $bank_detail=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('bank_detail',$bank_detail);
-
-
-
-
-
-
-
-
-
-
-
-
-	
 	
 }
 
