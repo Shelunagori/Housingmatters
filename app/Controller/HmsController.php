@@ -2973,7 +2973,7 @@ function user_deactive_ajax()
 		$date=date("d-m-Y");
 		$time=date('h:i:a',time());
 		//$exit_date1 = date('Y-m-d',strtotime($date));
-		$exit_date1 = "2015-4-5";
+		$exit_date1 = "2015-2-5";
 		$exit_date1 = date('Y-m-d',strtotime($exit_date1));
 		$exit_date = strtotime($exit_date1); 
 		$this->loadmodel('user_flat');
