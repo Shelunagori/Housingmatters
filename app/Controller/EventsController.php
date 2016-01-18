@@ -395,7 +395,7 @@ $this->layout=null;
 	$result_user_info=$this->profile_picture($s_user_id);
 	foreach($result_user_info as $collection2)
 	{
-	$user_name=$collection2["user"]["user_name"];
+	$user_name_created=$collection2["user"]["user_name"];
 	$profile_pic=$collection2["user"]["profile_pic"];
 	$wing=$collection2["user"]["wing"];
 	$flat=$collection2["user"]["flat"];
@@ -532,7 +532,7 @@ $this->layout=null;
 									<tr>
 									<td align="right">
 									
-										<span style="font-weight: 100;">Created by: </span><span>'.$user_name. $flat_info.'</span>
+										<span style="font-weight: 100;">Created by: </span><span>'.$user_name_created. $flat_info.'</span>
 									
 										</td>
 									</tr>
@@ -576,7 +576,7 @@ $this->layout=null;
 								
 								<tr>
 										<td style="padding:10px;" width="100%" align="center">
-										<a href="'.$ip.$this->webroot.'/Events/events" style="width: 100px; min-height: 30px; background-color: rgb(0, 142, 213); padding: 10px; font-family: Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif; white-space: nowrap; font-weight: bold; vertical-align: middle; font-size: 14px; line-height: 14px; color: rgb(255, 255, 255); border: 1px solid rgb(2, 106, 158); text-decoration: none;" target="_blank">view / vote on HousingMtters</a>
+										<a href="'.$ip.$this->webroot.'/Events/events" style="width: 100px; min-height: 30px; background-color: rgb(0, 142, 213); padding: 10px; font-family: Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif; white-space: nowrap; font-weight: bold; vertical-align: middle; font-size: 14px; line-height: 14px; color: rgb(255, 255, 255); border: 1px solid rgb(2, 106, 158); text-decoration: none;" target="_blank">view / on HousingMatters</a>
 										</td>
 								</tr>
 								
