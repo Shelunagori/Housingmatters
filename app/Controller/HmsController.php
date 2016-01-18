@@ -986,7 +986,7 @@ $this->redirect(array('action' => 'index'));
 function beforeFilter()
 {
 
-Configure::write('debug', 0);
+ //Configure::write('debug', 0);
 
 }
 
