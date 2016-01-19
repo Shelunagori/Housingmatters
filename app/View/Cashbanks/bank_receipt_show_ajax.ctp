@@ -70,6 +70,7 @@ if($nnn == 555)
        		 $n=0;
         	foreach ($cursor2 as $collection) 
         	{
+				$drawn_on_which_bank="";
        	 	$n++;
         	$receipt_no = $collection['new_cash_bank']['receipt_id'];
         	$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
