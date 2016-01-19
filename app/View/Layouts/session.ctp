@@ -816,15 +816,14 @@ foreach($soc_id2 as $data)
 @$complaints= $data['society']['help_desk'];
 
 }
-if(@$complaints==1)
-{
+
 ?>
 <li>
 	<a href="<?php echo $webroot_path; ?>Hms/feedback" rel='tab'>
 	<i class="icon-phone"></i> Contact Us
 	</a>					
 </li>
-<?php } ?>
+
 <!---------housingmatters------------->
 <?php if($s_role_id==0)	{?>
 <li>
