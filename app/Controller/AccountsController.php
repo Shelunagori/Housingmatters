@@ -5196,7 +5196,7 @@ $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
 
-$subject="[".$society_name."]- Receipt of Rs ".$amount."";
+$subject="[".$society_name."]- ".$wing_flat." payment update";
 //$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
 $email_content = "Dear ".$user_name.", Thanks for updating your payment details. (Receipt of ".$amount." via-".$mode." on ".$transaction_date.") This info has been sent to society for further verification & confirmation before issuing a formal receipt to you.";
 $this->send_email($user_email,'accounts@housingmatters.in','HousingMatters',$subject,$email_content,'donotreply@housingmatters.in');
@@ -5215,7 +5215,7 @@ $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
 
-$subject="[".$society_name."]- Receipt of Rs ".$amount."";
+$subject="[".$society_name."]- ".$wing_flat." payment update";
 //$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
 $email_content2 = "".$user_name."-".$wing_flat." has updated his/her payment details (Receipt of ".$amount." via-".$mode." on ".$transaction_date."). Please verify with bank statement & confirm for issuing formal receipt to resident.";
 
