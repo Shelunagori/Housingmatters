@@ -5152,6 +5152,82 @@ $narration = $child[9];
 $bank_id = (int)$child[10];
 $flat_id = (int)$child[11];
 
+
+$flatt_datta = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach ($flatt_datta as $fltt_datttaa) 
+{
+$wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
+}	
+
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_id,$flat_id)));
+
+
+
+
+$ledger_sub_accdetailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($flat_id)));
+foreach($ledger_sub_accdetailll as $subledger_dataaa) 
+{
+$user_id=(int)$subledger_dataaa['ledger_sub_account']['user_id'];
+$user_name = $subledger_dataaa['ledger_sub_account']['name'];
+}	
+
+$user_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($user_id)));
+foreach($user_detailll as $user_dataaa) 
+{
+$user_email=$user_dataaa['user']['email'];
+}	
+////////////Email ////////////////////////
+
+$this->loadmodel('society');
+$condition=array('society_id'=>$s_society_id);
+$result_society=$this->society->find('all',array('conditions'=>$condition)); 
+$this->set('result_society',$result_society);
+foreach($result_society as $data_society){
+	$society_name=$data_society["society"]["society_name"];
+	$email_is_on_off=(int)@$data_society["society"]["account_email"];
+	$sms_is_on_off=(int)@$data_society["society"]["account_sms"];
+    $admin_user_id = (int)$data_society["society"]["user_id"]; 
+  }
+
+if($email_is_on_off==1){
+////email code//
+$r_sms=$this->hms_sms_ip();
+$working_key=$r_sms->working_key;
+$sms_sender=$r_sms->sms_sender; 
+$sms_allow=(int)$r_sms->sms_allow;
+
+$subject="[".$society_name."]- Receipt of Rs ".$amount."";
+//$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
+$email_content = "Dear ".$user_name.", Thanks for updating your payment details. (Receipt of ".$amount." via-".$mode." on ".$transaction_date.") This info has been sent to society for further verification & confirmation before issuing a formal receipt to you.";
+$this->send_email($user_email,'accounts@housingmatters.in','HousingMatters',$subject,$email_content,'donotreply@housingmatters.in');
+}
+
+$user_detailll2 = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($admin_user_id)));
+foreach($user_detailll2 as $user_dataaa2) 
+{
+$admin_email=$user_dataaa2['user']['email'];
+}
+
+if($email_is_on_off==1){
+////email code//
+$r_sms=$this->hms_sms_ip();
+$working_key=$r_sms->working_key;
+$sms_sender=$r_sms->sms_sender; 
+$sms_allow=(int)$r_sms->sms_allow;
+
+$subject="[".$society_name."]- Receipt of Rs ".$amount."";
+//$subject = "[".$society_name."]- Receipt,"date('d-M-Y',$d_date).""; 
+$email_content2 = "".$user_name."-".$wing_flat." has updated his/her payment details (Receipt of ".$amount." via-".$mode." on ".$transaction_date."). Please verify with bank statement & confirm for issuing formal receipt to resident.";
+
+$this->send_email($admin_email,'accounts@housingmatters.in','HousingMatters',$subject,$email_content2,'donotreply@housingmatters.in');
+}
+
+
+
+
+
+	
+//////////////////////////////////////////
 $current_date = date('d-m-Y');
 
 $l=$this->autoincrement('my_flat_receipt_update','auto_id');
