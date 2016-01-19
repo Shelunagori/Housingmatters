@@ -5159,7 +5159,7 @@ foreach ($flatt_datta as $fltt_datttaa)
 $wnngg_idddd = (int)$fltt_datttaa['flat']['wing_id'];
 }	
 
-$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_id,$flat_id)));
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wnngg_idddd,$flat_id)));
 
 
 
