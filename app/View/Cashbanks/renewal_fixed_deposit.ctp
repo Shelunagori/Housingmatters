@@ -18,15 +18,39 @@ $tt_amt = $tt_amt + $amt;
 $start_date	= date('d-m-Y',($start_date));	
 $mat_date	= date('d-m-Y',($mat_date));
 }
-
 ?>
-<div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-money"></i>  Active deposit Renewal</h4>
+
+
+
+                       
+                       
+                          
+                          
+                          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <form method="post" enctype="multipart/form-data" id="contact-form">
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Active deposit Renewal</h4>
+</div>
+<div class="portlet-body form">
 <input type="hidden" value="<?php echo $transaction_idd; ?>" name="rriddd" />
-
-<div style="background-color:#FFF; width:48%; float:left; margin-left:1%;">
+<div class="row-fluid">
+<div class="span6">
 <label style="font-size:14px;"><b>Bank Name</b> : <?php echo $bank_name; ?></label>
 <br />          
 
@@ -61,7 +85,7 @@ $mat_date	= date('d-m-Y',($mat_date));
 
 
 </div>
-<div style="background-color:#FFF; width:50%; float:right;">
+<div class="span6">
 <label style="font-size:14px;">Start Date</label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="start_date" id="stdatt">
@@ -92,15 +116,17 @@ $mat_date	= date('d-m-Y',($mat_date));
 </div>
 <br />               
 
-<div style="overflow:auto;">
+</div>
+</div>
+<div class="form-actions">
 <a href="fix_deposit_view" class="btn green"><i class="icon-arrow-left"></i> Back</a>
 <button type="submit" class="btn green" name="subbb">Submit</button>
 </div>
-<br /><br />
 
-</form>
+
 </div>
-
+</div>
+</form>
 
 
 <script>
