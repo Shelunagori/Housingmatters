@@ -5243,6 +5243,10 @@ $multipleRowData = Array( Array("auto_id"=> $l,
 "narration"=>$narration,"prepaired_by"=>$s_user_id,"bank_branch"=>@$branch,"approval_id"=>1));
 $this->my_flat_receipt_update->saveAll($multipleRowData);
 
+
+$this->send_notification('<span class="label label-warning" ><i class="icon-money"></i></span>','New Receipt ('.$wing_flat.') Created for approval',28,$l,$this->webroot.'Cashbanks/bank_receipt_approve/'.$l,0,$admin_user_id);
+
+
 }
 
 $output = json_encode(array('type'=>'success', 'text' => 'Please Fill Numeric Amount '));

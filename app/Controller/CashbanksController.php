@@ -659,7 +659,7 @@ function final_import_bank_receipt_ajax(){
 			$t1=$this->autoincrement('new_cash_bank','transaction_id');
 			$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1); 
 			$this->loadmodel('new_cash_bank');
-			$multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k, "receipt_date" => $trajection_date, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_or_reference_no,"cheque_date" =>$date,"drawn_on_which_bank" =>@$drown_in_which_bank,"reference_utr" => @$cheque_or_reference_no,"deposited_bank_id" => $deposited_in,"member_type" => 1,"party_name_id"=>$flat_id,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,"bill_auto_id"=>$auto_id,"bill_one_time_id"=>$regular_bill_one_time_id,"narration"=>$narration,"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id));
+			$multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k, "receipt_date" => $trajection_date, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_or_reference_no,"cheque_date" =>$date,"drawn_on_which_bank" =>@$drown_in_which_bank,"reference_utr" => @$cheque_or_reference_no,"deposited_bank_id" => $deposited_in,"bank_branch" => $branch_of_bank,"member_type" => 1,"party_name_id"=>$flat_id,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,"bill_auto_id"=>$auto_id,"bill_one_time_id"=>$regular_bill_one_time_id,"narration"=>$narration,"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id));  
 			$this->new_cash_bank->saveAll($multipleRowData);
 			
 			$l=$this->autoincrement('ledger','auto_id');
@@ -916,7 +916,7 @@ function final_import_bank_receipt_ajax(){
 			$t2=$this->autoincrement('new_cash_bank','transaction_id');
 			$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1);
 			$this->loadmodel('new_cash_bank');
-			$multipleRowData = Array( Array("transaction_id"=>$t2, "receipt_id" => $k, "receipt_date" => $trajection_date, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_or_reference_no,"cheque_date" =>$date,"drawn_on_which_bank" =>@$drown_in_which_bank,"reference_utr" => @$cheque_or_reference_no,"deposited_bank_id" => $deposited_in,"member_type" => 1,"party_name_id"=>$flat_id,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,"narration"=>$narration,"receipt_source"=>1,"prepaired_by" => $s_user_id,"edit_status"=>"NO","auto_inc"=>"YES"));
+			$multipleRowData = Array( Array("transaction_id"=>$t2, "receipt_id" => $k, "receipt_date" => $trajection_date, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_or_reference_no,"cheque_date" =>$date,"drawn_on_which_bank" =>@$drown_in_which_bank,"bank_branch" => $branch_of_bank,"reference_utr" => @$cheque_or_reference_no,"deposited_bank_id" => $deposited_in,"member_type" => 1,"party_name_id"=>$flat_id,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,"narration"=>$narration,"receipt_source"=>1,"prepaired_by" => $s_user_id,"edit_status"=>"NO","auto_inc"=>"YES"));
 			$this->new_cash_bank->saveAll($multipleRowData);
 
 			
@@ -7623,7 +7623,7 @@ $this->set('cursor1',$cursor1);
 }
 ///////////////////////////// End fixed_deposit_renewal_show ///////////////////////////////////////////
 /////////////////////////// Start bank_receipt_approve //////////////////////////////////////////////
-function bank_receipt_approve()
+function bank_receipt_approve($rrr=null)
 {
 if($this->RequestHandler->isAjax()){
 	$this->layout='blank';
@@ -7637,7 +7637,7 @@ $this->set('s_role_id',$s_role_id);
 	
 $this->ath();		
 $this->check_user_privilages();	
-
+$this->seen_notification(28,$rrr);
 
 $auto_id22 = (int)$this->request->query('aa');
 
