@@ -14,11 +14,15 @@ $transaction_date = date('d-m-Y');
 }
 ?>
 <body onload="loaddajjax(<?php echo $account_type; ?>,<?php echo $user_id;  ?>)" style="overflow:hidden">
-<div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-money"></i> Update Petty Cash Payment</h4>	
 <form method="post">
-	
-<div style="background-color:#FFF; width:48%; float:left; margin-left:8px;">
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Update Petty Cash Payment</h4>
+</div>
+<div class="portlet-body form">
+
+<div class="row-fluid">
+<div class="span6">
 
 <label style="font-size:14px;">Transaction Date<span style="color:red;">*</span></label>
 <div class="controls">
@@ -50,9 +54,7 @@ $transaction_date = date('d-m-Y');
 </div>
 
 </div>
-<div style="background-color:#FFF; width:50%; float:right;">
-
-
+<div class="span6">
 <label style="font-size:14px;">Paid From<span style="color:red;">*</span> </label>
 <div class="controls">
 <select   name="account_head" class="m-wrap span9 chosen" id="ach">
@@ -79,9 +81,14 @@ $transaction_date = date('d-m-Y');
 <label id="nr"></label>
 </div>
 </div>
-
-</form>
 </div>
+<div class="form-actions">
+<button type="submit" class="btn blue">Save</button>
+<button type="button" class="btn">Cancel</button>
+</div>
+</div>
+</div>
+</form>
 </body>
 
 
