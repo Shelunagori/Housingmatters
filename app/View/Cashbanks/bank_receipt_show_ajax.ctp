@@ -87,7 +87,7 @@ foreach ($user_dataaaa as $user_detailll)
 $creater_name = $user_detailll['user']['user_name'];
 }	
 			
-			if($receipt_mode == "Cheque")
+			if($receipt_mode == "Cheque" || $receipt_mode=="cheque")
 					{
 						$reference_utr = $collection['new_cash_bank']['cheque_number'];
 						$cheque_date = $collection['new_cash_bank']['cheque_date'];
