@@ -7623,7 +7623,7 @@ $this->set('cursor1',$cursor1);
 }
 ///////////////////////////// End fixed_deposit_renewal_show ///////////////////////////////////////////
 /////////////////////////// Start bank_receipt_approve //////////////////////////////////////////////
-function bank_receipt_approve()
+function bank_receipt_approve($rrr=null)
 {
 if($this->RequestHandler->isAjax()){
 	$this->layout='blank';
@@ -7637,7 +7637,7 @@ $this->set('s_role_id',$s_role_id);
 	
 $this->ath();		
 $this->check_user_privilages();	
-
+$this->seen_notification(28,$rrr);
 
 $auto_id22 = (int)$this->request->query('aa');
 
