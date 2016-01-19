@@ -20,14 +20,18 @@ $mat_date	= date('d-m-Y',($mat_date));
 }
 
 ?>
-<div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-money"></i>  Active deposit Edit</h4>
-
 <form method="post" enctype="multipart/form-data" id="contact-form">
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Active deposit Edit</h4>
+</div>
+<div class="portlet-body form">
+
+
 <input type="hidden" value="<?php echo $receipt_id; ?>" name="rriddd" />
 <input type="hidden" value="<?php echo $tran_id; ?>" name="ttrcidd" />
-
-<div style="background-color:#FFF; width:48%; float:left; margin-left:1%;">
+<div class="row-fluid">
+<div class="span6">
 <label style="font-size:14px;">Bank Name</label>
 <div class="controls">
 <input type="text" class="m-wrap span7" data-provide="typeahead" data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" value="<?php echo $bank_name; ?>" name="bank_name" id="bank_naaamm">
@@ -79,7 +83,7 @@ $mat_date	= date('d-m-Y',($mat_date));
 
 
 </div>
-<div style="background-color:#FFF; width:50%; float:right;">
+<div class="span6">
 <label style="font-size:14px;">Start Date</label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" value="<?php echo $start_date; ?>" name="start_date" id="stdatt">
@@ -109,17 +113,17 @@ $mat_date	= date('d-m-Y',($mat_date));
         </span>
 </div>
 <br />               
- </div>              
-
-<div style="overflow:auto; width:100%;">
+</div>              
+</div>
+<div class="form-actions">
 <a href="fix_deposit_view" class="btn green" style="margin-left:70%;"><i class="icon-arrow-left"></i> Back</a>
 <button type="submit" class="btn green" name="subbb">Submit</button>
 </div>
-<br /><br />
+                       
 
-</form>
 </div>
-
+</div>
+</form>
 
 
 <script>
