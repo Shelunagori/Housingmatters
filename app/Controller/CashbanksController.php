@@ -1175,7 +1175,7 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 		}
 		
 		$this->loadmodel('new_regular_bill');
-		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>$new_arrear_intrest,"new_intrest_on_arrears"=>$new_intrest_on_arrears,"new_arrear_maintenance"=>$new_arrear_maintenance,"new_total"=>$new_total),array('auto_id'=>(int)$record_id));
+		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>$new_arrear_intrest,"new_intrest_on_arrears"=>$new_intrest_on_arrears,"new_arrear_maintenance"=>$new_arrear_maintenance,"new_total"=>$new_total),array('auto_id'=>(int)$bill_auto_id));
 	}
 	
 	if(sizeof($result_new_cash_bank)==0){
@@ -6679,7 +6679,7 @@ if($member_type == 1)
 		"party_name_id"=>$party_name,"receipt_type" => $receipt_type,"amount" => $amount,
 		"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name,
 		"bill_auto_id"=>$auto_id,"bill_one_time_id"=>$regular_bill_one_time_id,"narration"=>$narration,
-		"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id,"bank_branch"=>@$branch));
+		"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id,"bank_branch"=>@$branch,"is_cancel"=>"NO"));
 		$this->new_cash_bank->saveAll($multipleRowData);
 	    $receipt_arr[] = $k;
 	

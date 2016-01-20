@@ -240,6 +240,9 @@ foreach($result_society as $data){
 					}
 					////reciept info/////
 					$result_new_cash_bank = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_receipt_info_via_flat_id'),array('pass'=>array($flat,$last_bill_one_time_id)));
+					
+					
+					
 					if(sizeof($result_new_cash_bank)>=1){
 						foreach($result_new_cash_bank as $last_receipt){
 							$receipt_date=@$last_receipt["new_cash_bank"]["receipt_date"]; 
