@@ -80,6 +80,7 @@ if($nnn == 555)
             $current_date = $collection['new_cash_bank']['current_date']; 			
             $current_datttt = date('d-m-Y',strtotime($current_date));
             $creater_user_id =(int)@$collection['new_cash_bank']['prepaired_by'];
+			$is_cancel = $collection['new_cash_bank']['is_cancel'];
 			
 $user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_user_id)));
 foreach ($user_dataaaa as $user_detailll) 
@@ -199,10 +200,12 @@ echo $amount; ?></td>
 	<li><a href="bank_receipt_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
 	<li><a href="bank_receipt_pdf/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-file"></i>Pdf</a></li>
 	<li><?php
-if($maximum_one_time_id==$bill_one_time_id){ ?>
+if($is_cancel=="NO" && $maximum_one_time_id==$bill_one_time_id){ ?>
 <a href="b_receipt_edit/<?php echo $transaction_id; ?>" role="button" rel="tab"><i class="icon-edit"></i>Edit</a> 
 <?php } ?></li>
+	<?php if($is_cancel=="NO" && ($maximum_one_time_id==$bill_one_time_id)){ ?>
 	<li><a href="#" role="button" class="cancel_receipt" record_id="<?php echo $transaction_id; ?>"><i class="icon-remove"></i>Cancel</a></li>
+	<?php } ?>
 
 	</ul>
 	</div>
