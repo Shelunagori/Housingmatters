@@ -1052,6 +1052,55 @@ function bank_receipt_show_ajax()
 }
 ///////////////////////////////////End bank receipt show ajax//////////////////////////////////////////////////
 
+function cancel_receipt_due_to_check_bounce($record_id=null){
+	$this->ath();
+	$s_role_id=$this->Session->read('role_id');
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+		
+	$this->loadmodel('new_cash_bank');
+	$conditions=array("transaction_id"=>(int)$record_id);
+	$result_new_cash_bank = $this->new_cash_bank->find('all',array('conditions'=>$conditions));
+	foreach($result_new_cash_bank as $data){
+		$amount=$data["new_cash_bank"]["amount"];
+		$deposited_bank_id=$data["new_cash_bank"]["deposited_bank_id"];
+		$flat_id=$data["new_cash_bank"]["flat_id"];
+	}
+	
+	$this->loadmodel('ledger_sub_account');
+	$conditions=array("ledger_id"=>34,"flat_id"=>$flat_id);
+	$result_ledger_sub_account= $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+	foreach($result_ledger_sub_account as $data){
+		$ledger_sub_account_id=$data["ledger_sub_account"]["auto_id"];
+	}
+	
+	$current_date = date('Y-m-d');
+	$current_date = strtotime($current_date); 
+	
+	$voucher_id=$this->autoincrement_with_society_ticket('journal','voucher_id');
+	$journal_id=$this->autoincrement('journal','journal_id');
+	$this->loadmodel('journal');
+	$multipleRowData = Array( Array("journal_id" => $journal_id,"ledger_account_id" => 34,"ledger_sub_account_id"=>$ledger_sub_account_id,"user_id" => $s_user_id, "transaction_date" => $current_date,"current_date" => $current_date, "credit" => null,'debit'=>$amount, "remark" => "Receipt canceled due to cheque bounce" ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
+	$this->journal->saveAll($multipleRowData);
+	
+	$this->loadmodel('ledger');
+	$auto_id=$this->autoincrement('ledger','auto_id');
+	$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" =>$ledger_sub_account_id,"debit"=>$amount,"credit"=>null,"table_name"=>"journal","element_id"=>$journal_id,"society_id"=>$s_society_id,"transaction_date"=>$current_date));
+	
+	$journal_id=$this->autoincrement('journal','journal_id');
+	$this->loadmodel('journal');
+	$multipleRowData = Array( Array("journal_id" => $journal_id,"ledger_account_id" => 33,"ledger_sub_account_id"=>$deposited_bank_id,"user_id" => $s_user_id, "transaction_date" => $current_date,"current_date" => $current_date, "credit" => $amount,'debit'=>null, "remark" => "Receipt canceled due to cheque bounce" ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
+	$this->journal->saveAll($multipleRowData);
+	
+	$this->loadmodel('ledger');
+	$auto_id=$this->autoincrement('ledger','auto_id');
+	$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 33,"ledger_sub_account_id" =>$deposited_bank_id,"debit"=>null,"credit"=>$amount,"table_name"=>"journal","element_id"=>$journal_id,"society_id"=>$s_society_id,"transaction_date"=>$current_date));
+	
+	$this->loadmodel('new_cash_bank');
+	$this->new_cash_bank->updateAll(array('narration'=>'Receipt canceled due to cheque bounce'),array("transaction_id"=>(int)$record_id));	
+	
+	echo true;
+}
 //////////////////////// Start bank receipt ///////////////////////////////////////////////////////////
 function bank_receipt()
 {

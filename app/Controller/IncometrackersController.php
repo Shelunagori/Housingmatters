@@ -5446,7 +5446,7 @@ function regular_bill_edit2($auto_id=null){
 			$other_charges_array[$other_charge_id] = (int)@$this->request->data['other_charges'.$other_charge_id];
 			
 		}
-		
+		 
 		$total = (int)@$this->request->data['total'];
 		$interest_on_arrears = (int)@$this->request->data['interest_on_arrears'];
 		$arrear_maintenance = (int)@$this->request->data['arrear_maintenance'];
@@ -5655,6 +5655,7 @@ $bill_html='<div style="margin: 0px;">
 									</td>
 								</tr>
 							</tbody></table>';
+							
 							$due_for_payment = str_replace( ',', '', $due_for_payment );
 							if($due_for_payment<0){
 							$write_am_word="Nil";
@@ -5731,7 +5732,7 @@ $bill_html='<div style="margin: 0px;">
 ////END BILL HTML////
 
 $current_date = date('Y-m-d');
-			
+	$other_charges_insert=$other_charges_array;	
 	if(@$other_charges_insert==null){
 		$other_charges_insert=array();
 	}

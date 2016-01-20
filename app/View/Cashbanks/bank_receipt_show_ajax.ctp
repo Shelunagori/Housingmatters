@@ -70,7 +70,6 @@ if($nnn == 555)
        		 $n=0;
         	foreach ($cursor2 as $collection) 
         	{
-				$drawn_on_which_bank="";
        	 	$n++;
         	$receipt_no = $collection['new_cash_bank']['receipt_id'];
         	$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
@@ -130,7 +129,7 @@ $user_fetch = $this->requestAction(array('controller' => 'hms', 'action' => 'fet
 				$wing_id = $rrr['user']['wing'];
 			}
 			
-		$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_id,$party_name_id)));
+		$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array(@$wing_id,$party_name_id)));
 		}
 				else
 				{
@@ -177,7 +176,7 @@ $party_name = $dataaa['ledger_sub_account']['name'];
 <td><?php echo $receipt_no; ?> </td>
 <td><?php echo $TransactionDate; ?></td>
 <td><?php echo $receipt_tppp; ?></td>
-<td><?php echo $party_name; ?>&nbsp;(<?php echo $wing_flat; ?>)</td>
+<td><?php echo @$party_name; ?>&nbsp;(<?php echo $wing_flat; ?>)</td>
 <td><?php echo $receipt_mode; ?> - <?php echo @$drawn_on_which_bank; ?></td>
 <td><?php echo @$reference_utr; ?> </td>
 <td><?php echo $deposited_bank_name; ?>&nbsp;(<?php echo $bank_account; ?>)</td>
@@ -196,16 +195,18 @@ echo $amount; ?></td>
 	<i class="icon-chevron-down"></i>	
 	</a><a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
 	<?php echo $creater_name; ?> on: <?php echo $current_datttt; ?>">!</a>
-	<ul class="dropdown-menu" style="min-width:80px !important;">
+	<ul class="dropdown-menu" style="min-width:80px !important;left:-53px;padding: 3px 0px; box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3); font-size: 12px;">
 	<li><a href="bank_receipt_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
 	<li><a href="bank_receipt_pdf/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-file"></i>Pdf</a></li>
 	<li><?php
 if($maximum_one_time_id==$bill_one_time_id){ ?>
 <a href="b_receipt_edit/<?php echo $transaction_id; ?>" role="button" rel="tab"><i class="icon-edit"></i>Edit</a> 
 <?php } ?></li>
+	<li><a href="#" role="button" class="cancel_receipt" record_id="<?php echo $transaction_id; ?>"><i class="icon-remove"></i>Cancel</a></li>
+
 	</ul>
 	</div>
-	
+
 								
 								
 							
@@ -246,7 +247,44 @@ if($nnn == 55)
 <?php
 }
 ?>
-			 
+
+<div style="display: none;" id="cancel_popup">
+	<div class="modal-backdrop fade in"></div>
+	<div  class="modal fade in" align="left">
+		<div class="modal-body">
+			<button type="button" class="close" id="close_model" ></button>
+			<div style="font-size: 15px; font-weight: 600;">What is the resion for cancel this receipt?</div>
+			<div class="row-fluid">
+				<a href="#" role="button" class="icon-btn span3 call_cancel_receipt" record_id="0">
+					<i class="icon-credit-card"></i>
+					<div><b>Cheque Bounce</b></div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$( document ).ready(function() {
+	$( '.cancel_receipt' ).click(function() {
+		var record_id=$(this).attr("record_id");
+		$("#cancel_popup").show();
+		$(".call_cancel_receipt").attr("record_id",record_id);
+	});
+	$( '#close_model' ).click(function() {
+		$("#cancel_popup").hide();
+	});
+	$( '.call_cancel_receipt' ).click(function() {
+		var record_id=$(this).attr("record_id");
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/cancel_receipt_due_to_check_bounce/"+record_id,
+		}).done(function(response){
+			alert(response);
+		});
+	});
+});	
+</script>
+
 	<script>
     var $rows = $('#table tr');
     $('#search').keyup(function() {
