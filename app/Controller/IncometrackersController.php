@@ -5447,7 +5447,7 @@ function regular_bill_edit2($auto_id=null){
 			
 		}
 		 
-		$total = (int)@$this->request->data['total'];
+		$total = (int)@$this->request->data['total']; 
 		$interest_on_arrears = (int)@$this->request->data['interest_on_arrears'];
 		$arrear_maintenance = (int)@$this->request->data['arrear_maintenance'];
 		$arrear_intrest = (int)@$this->request->data['arrear_intrest'];
