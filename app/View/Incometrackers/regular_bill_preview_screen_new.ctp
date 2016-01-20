@@ -274,7 +274,7 @@ foreach($result_society as $data){
 							     $in_head_id = @$noc_charge[2];
 														
 								if($data4[0]==$income_head){
-									
+									$ih_charges = $data4[2];
 									
 									if($data4[1]==1){
 										
