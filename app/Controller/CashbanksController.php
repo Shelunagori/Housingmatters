@@ -1064,7 +1064,8 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 	foreach($result_new_cash_bank as $data){
 		$amount=$data["new_cash_bank"]["amount"];
 		$deposited_bank_id=$data["new_cash_bank"]["deposited_bank_id"];
-		$flat_id=$data["new_cash_bank"]["flat_id"];
+		$flat_id=(int)$data["new_cash_bank"]["flat_id"];
+		$bill_one_time_id=$data["new_cash_bank"]["bill_one_time_id"];
 	}
 	
 	$this->loadmodel('ledger_sub_account');
@@ -1097,7 +1098,95 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 	$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 33,"ledger_sub_account_id" =>$deposited_bank_id,"debit"=>null,"credit"=>$amount,"table_name"=>"journal","element_id"=>$journal_id,"society_id"=>$s_society_id,"transaction_date"=>$current_date));
 	
 	$this->loadmodel('new_cash_bank');
-	$this->new_cash_bank->updateAll(array('narration'=>'Receipt canceled due to cheque bounce'),array("transaction_id"=>(int)$record_id));	
+	$this->new_cash_bank->updateAll(array('narration'=>'Receipt canceled due to cheque bounce','is_cancel'=>'YES'),array("transaction_id"=>(int)$record_id));	
+	
+	
+	
+	
+	
+	//APPLY RECEIPT
+	$this->loadmodel('new_cash_bank');
+	$condition=array('society_id'=>$s_society_id,"flat_id"=>$flat_id,"bill_one_time_id"=>$bill_one_time_id,"edit_status"=>"NO","is_cancel"=>"NO");
+	$result_new_cash_bank=$this->new_cash_bank->find('all',array('conditions'=>$condition));
+	
+	
+	$q=0; foreach($result_new_cash_bank as $cash_bank){ $q++;
+		$amount=$cash_bank["new_cash_bank"]["amount"];
+		
+		
+		$this->loadmodel('new_regular_bill');
+		$condition=array("flat_id"=>$flat_id,"edit_status"=>"NO","one_time_id"=>$bill_one_time_id);
+		$result_new_regular_bill=$this->new_regular_bill->find('all',array('conditions'=>$condition)); 
+		
+		 foreach($result_new_regular_bill as $bill_data){ 
+			$bill_auto_id=$bill_data["new_regular_bill"]["auto_id"];
+			
+			if($q==1){
+				$arrear_intrest=$bill_data["new_regular_bill"]["arrear_intrest"];
+				$intrest_on_arrears=$bill_data["new_regular_bill"]["intrest_on_arrears"];
+				$total=$bill_data["new_regular_bill"]["total"];
+				$arrear_maintenance=$bill_data["new_regular_bill"]["arrear_maintenance"];
+			}else{
+				$arrear_intrest=$bill_data["new_regular_bill"]["new_arrear_intrest"];
+				$intrest_on_arrears=$bill_data["new_regular_bill"]["new_intrest_on_arrears"];
+				$total=$bill_data["new_regular_bill"]["new_total"];
+				$arrear_maintenance=$bill_data["new_regular_bill"]["new_arrear_maintenance"];
+			}
+			
+		}
+		
+		$amount_after_arrear_intrest=$amount-$arrear_intrest;
+		if($amount_after_arrear_intrest<0)
+		{
+		$new_arrear_intrest=abs($amount_after_arrear_intrest);
+		$new_intrest_on_arrears=$intrest_on_arrears;
+		$new_arrear_maintenance=$arrear_maintenance;
+		$new_total=$total;
+		}
+		else
+		{
+		$new_arrear_intrest=0;
+		$amount_after_intrest_on_arrears=$amount_after_arrear_intrest-$intrest_on_arrears;
+			if($amount_after_intrest_on_arrears<0)
+			{
+			$new_intrest_on_arrears=abs($amount_after_intrest_on_arrears);
+			$new_arrear_maintenance=$arrear_maintenance;
+			$new_total=$total;
+			}
+			else
+			{
+			$new_intrest_on_arrears=0;
+			$amount_after_arrear_maintenance=$amount_after_intrest_on_arrears-$arrear_maintenance;
+				if($amount_after_arrear_maintenance<0){
+				$new_arrear_maintenance=abs($amount_after_arrear_maintenance);
+				$new_total=$total;
+				}else{
+				$new_arrear_maintenance=0;
+				$amount_after_total=$amount_after_arrear_maintenance-$total; 
+				if($amount_after_total>0){
+				$new_total=0;
+				$new_arrear_maintenance=-$amount_after_total;
+				}else{
+							$new_total=abs($amount_after_total);
+							
+					}
+				}
+			}
+		}
+		
+		$this->loadmodel('new_regular_bill');
+		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>$new_arrear_intrest,"new_intrest_on_arrears"=>$new_intrest_on_arrears,"new_arrear_maintenance"=>$new_arrear_maintenance,"new_total"=>$new_total),array('auto_id'=>(int)$record_id));
+	}
+	
+	if(sizeof($result_new_cash_bank)==0){
+		$this->loadmodel('new_regular_bill');
+		$this->new_regular_bill->updateAll(array('new_arrear_intrest'=>null,"new_intrest_on_arrears"=>null,"new_arrear_maintenance"=>null,"new_total"=>null),array('auto_id'=>(int)$record_id));
+	}
+	
+	
+	
+	
+	
 	
 	echo true;
 }
