@@ -138,8 +138,8 @@ foreach($result_society as $data){
 				</tr>
 			</thead>
 			<tbody>
-				<?php 
-				$inc=0; 
+				<?php
+				$inc=0;
 				 $bill_number = $this->requestAction(array('controller' => 'Hms', 'action' => 'autoincrement_with_society_ticket'),array('pass'=>array('new_regular_bill','bill_no')));  $bill_number--;
 				
 				foreach($new_flats_for_bill as $flat){ $inc++;  $total=0; $due_for_payment=0;
@@ -177,6 +177,7 @@ foreach($result_society as $data){
 					////last bill info////////
 					$result_new_regular_bill = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_bill_info_via_flat_id'),array('pass'=>array($flat)));
 					
+					$credit_adjustment=0;
 					if(sizeof($result_new_regular_bill)==1){
 						foreach($result_new_regular_bill as $last_bill){
 							$last_arrear_intrest=$last_bill["arrear_intrest"];
@@ -190,6 +191,8 @@ foreach($result_society as $data){
 							
 							$last_new_arrear_intrest=(int)@$last_bill["new_arrear_intrest"];
 							$last_new_intrest_on_arrears=(int)@$last_bill["new_intrest_on_arrears"];
+							$credit_adjustment=(int)@$last_bill["credit_stock"];
+							
 						}
 					}else{
 						$result_opening_balance= $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_opening_balance_via_user_id'),array('pass'=>array($flat)));
@@ -422,7 +425,10 @@ foreach($result_society as $data){
 						<?php $column_id++;
 						$arrear_maintenance=$last_arrear_maintenance+$last_total;
 						$arrear_maintenance-=@$advance_receipt;
+						$arrear_maintenance+=@$credit_adjustment;
+						
 						$due_for_payment+=$arrear_maintenance; 
+						
 						echo '<input type="text" class="text_rdoff call_calculation" name="arrear_maintenance'.$inc.'" value='.$arrear_maintenance.' column_id="'.$column_id.'"  row_id="'.$inc.'" readonly />'; ?>
 						</td>
 						<td style="background-color:#DEE6FF;">
