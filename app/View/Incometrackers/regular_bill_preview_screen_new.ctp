@@ -38,6 +38,7 @@ th{
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 10px;
+	background-color: transparent;
 }
 table#fixed_hdr1 tr:hover td {
 background-color: #E6ECE7 !important;
