@@ -3715,7 +3715,14 @@ $flats_for_bill[]=$ledger_sub_account_flat_id;
 }
 $this->set('flats_for_bill',$flats_for_bill);
 
+$this->loadmodel('wing');
+$condition=array('society_id'=>$s_society_id);
+$order=array('wing.wing_name'=>'ASC');
+$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+$this->set('result_wing',$result_wing);
 
+
+		
 }
 ///////////////////////// End In head report (Accounts)//////////////////////////
 

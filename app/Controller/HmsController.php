@@ -3203,7 +3203,16 @@ function multiple_flat_ajax()
 
 }	
 
+function flat_name_via_wing_id($wing_id)
+{
+$s_society_id=(int)$this->Session->read('society_id');
 
+$this->loadmodel('flat');
+$conditions=array("wing_id" =>(int)$wing_id,"society_id"=>$s_society_id);
+$order=array('flat.flat_name'=>'ASC');
+return $this->flat->find('all',array('conditions'=>$conditions,'order'=>$order));
+
+}
 
 
 function profile_picture($user_id)
@@ -5411,8 +5420,6 @@ $this->loadmodel('fix_deposit');
 $conditions=array("society_id" =>$s_society_id,"matured_status"=>1,'fix_deposit.maturity_date'=>array('$gte'=>$from,'$lte'=>$to));
 return $this->fix_deposit->find('all',array('conditions'=>$conditions));
 }
-
-
 
 
 function return_flat_via_wing_id()
