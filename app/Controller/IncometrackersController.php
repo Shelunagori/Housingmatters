@@ -5027,7 +5027,15 @@ $one_time_id = (int)$this->request->query('one');
 	$condition=array('society_id'=>$s_society_id);
 	$result_society=$this->society->find('all',array('conditions'=>$condition)); 
 	$this->set('result_society',$result_society);
-			
+
+$this->loadmodel('wing');
+$condition=array('society_id'=>$s_society_id);
+$order=array('wing.wing_name'=>'ASC');
+$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+$this->set('result_wing',$result_wing);
+
+
+	
 }
 ///////////////////////// End In Head Excel///////////////////////////////////////
 
