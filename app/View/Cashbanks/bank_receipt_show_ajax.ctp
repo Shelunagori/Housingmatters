@@ -254,14 +254,16 @@ if($nnn == 55)
 <div style="display: none;" id="cancel_popup">
 	<div class="modal-backdrop fade in"></div>
 	<div  class="modal fade in" align="left">
-		<div class="modal-body" id="success_msg">
+		<div class="modal-body" >
 			<button type="button" class="close" id="close_model" ></button>
-			<div style="font-size: 15px; font-weight: 600;">What is the resion for cancel this receipt?</div>
-			<div class="row-fluid">
-				<a href="#" role="button" class="icon-btn span3 call_cancel_receipt" record_id="0">
-					<i class="icon-credit-card"></i>
-					<div><b>Cheque Bounce</b></div>
-				</a>
+			<div id="success_msg">
+				<div style="font-size: 15px; font-weight: 600;">What is the resion for cancel this receipt?</div>
+				<div class="row-fluid">
+					<a href="#" role="button" class="icon-btn span3 call_cancel_receipt" record_id="0">
+						<i class="icon-credit-card"></i>
+						<div><b>Cheque Bounce</b></div>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
