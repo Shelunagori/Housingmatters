@@ -282,7 +282,6 @@ $( document ).ready(function() {
 		$.ajax({
 			url: "<?php echo $webroot_path; ?>Cashbanks/cancel_receipt_due_to_check_bounce/"+record_id,
 		}).done(function(response){
-			alert(response);
 			$("#success_msg").html(response);
 		});
 	});

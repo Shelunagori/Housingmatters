@@ -1225,45 +1225,7 @@ $credit_dc=0; $debit_dc=0;
 
 
 
-	//$this->check_user_privilages();
-/*
-$this->loadmodel('financial_year');
-$conditions=array("society_id"=>$s_society_id);
-$financial_data = $this->financial_year->find('all',array('conditions'=>$conditions));
-$this->set('financial_data',$financial_data);
-	
-}
 
-
-
-function upload_csv_cash_bank(){
-	$this->layout=null;
-	if(isset($_FILES['file'])){
-		echo "hello"; exit;
-		$file_name=$_FILES['file']['name'];
-		$file_tmp_name =$_FILES['file']['tmp_name'];
-		$target = "csv_file/cashbank/";
-		$target=@$target.basename($file_name);
-		move_uploaded_file($file_tmp_name,@$target);
-		
-		$f = fopen('csv_file/cashbank/'.$file_name, 'r') or die("ERROR OPENING DATA");
-		$batchcount=0;
-		$records=0;
-		while (($line = fgetcsv($f, 4096, ';')) !== false) {
-		// skip first record and empty ones
-		$numcols = count($line);
-
-		$test[]=$line;
-
-		//echo $col = $line[0];
-		//echo $batchcount++.". ".$col."\n";
-
-
-		++$records;
-		}
-		fclose($f);
-		$records;
-	} */
 }
 //////////////////////// End bank receipt email code ////////////////////////////////////////////
 
