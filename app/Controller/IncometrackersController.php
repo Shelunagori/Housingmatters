@@ -3557,14 +3557,6 @@ $valllll = (int)@$collection['society']['area_scale'];
 $this->set('society_name',$society_name);
 $this->set('valllll',$valllll);
 
-//$from = $this->request->query('date1');
-//$to = $this->request->query('date2');
-
-//$from_date2 = date('Y-m-d',strtotime($from));
-//$to_date2 = date('Y-m-d',strtotime($to));
-
-//$from_date3 = strtotime($from_date2);
-//$to_date3 = strtotime($to_date2);
 
 $wise = (int)$this->request->query('wise'); 
 if($wise == 1)
@@ -3583,12 +3575,8 @@ else if($wise == 3)
 $bill_number = $this->request->query('user');
 $this->set('bill_number',$bill_number);
 }
-
 $this->set('wise',$wise);
-//$this->set('from',$from);
-//$this->set('to',$to);
-
-
+/*
 $this->loadmodel('new_regular_bill');
 $order=array('new_regular_bill.bill_start_date'=> 'ASC');
 $conditions=array('society_id'=>$s_society_id,"approval_status"=>1,'new_regular_bill.edit_status'=>array('$ne'=>"YES"));
@@ -3606,6 +3594,62 @@ $conditions=array('society_id'=>$s_society_id,"approval_status"=>1,"bill_no"=>$b
 $cursor2=$this->new_regular_bill->find('all',array('conditions'=>$conditions,'order'=>$order));
 $this->set('cursor2',$cursor2);	
 }
+*/
+
+$this->loadmodel('new_regular_bill');
+$conditions=array("society_id" => $s_society_id,"approval_status" => 1,'new_regular_bill.edit_status'=>array('$ne'=>"YES"));
+$order=array('new_regular_bill.one_time_id'=> 'DESC');
+$result_new_regular_bill = $this->new_regular_bill->find('all',array('conditions'=>$conditions,'order'=>$order));
+$this->set("result_new_regular_bill",$result_new_regular_bill);
+foreach($result_new_regular_bill as $regular_bill){
+$other_charges_array=@$regular_bill["new_regular_bill"]["other_charges_array"];
+if(!empty($other_charges_array)){
+foreach($other_charges_array as $key=>$value){
+$other_charges_ids[]=$key;
+}
+}
+}
+	if(sizeof(@$other_charges_ids)>0){
+	$other_charges_ids=array_unique($other_charges_ids);
+	$this->set('other_charges_ids',$other_charges_ids);
+	}
+	
+	$this->loadmodel('society');
+	$condition=array('society_id'=>$s_society_id);
+	$result_society=$this->society->find('all',array('conditions'=>$condition)); 
+	$this->set('result_society',$result_society);
+	
+
+$this->loadmodel('wing');
+$conditions=array("society_id"=> $s_society_id);
+$cursor2=$this->wing->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);	
+
+$this->loadmodel('ledger_sub_account');
+$condition=array('society_id'=>$s_society_id,'ledger_id'=>34);
+$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$condition));
+$this->set('result_ledger_sub_account',$result_ledger_sub_account);
+foreach($result_ledger_sub_account as $ledger_sub_account){
+$ledger_sub_account_user_id=$ledger_sub_account["ledger_sub_account"]["user_id"];
+$ledger_sub_account_flat_id=$ledger_sub_account["ledger_sub_account"]["flat_id"];
+$flats_for_bill[]=$ledger_sub_account_flat_id;
+}
+$this->set('flats_for_bill',$flats_for_bill);
+
+$this->loadmodel('wing');
+$condition=array('society_id'=>$s_society_id,"wing_id"=>@$wing);
+$order=array('wing.wing_name'=>'ASC');
+$result_wing2=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+$this->set('result_wing2',$result_wing2);
+
+
+$this->loadmodel('wing');
+$condition=array('society_id'=>$s_society_id);
+$order=array('wing.wing_name'=>'ASC');
+$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+$this->set('result_wing',$result_wing);
+
+
 
 }
 ///////////////////////// End regular report show ajax///////////////////////////////

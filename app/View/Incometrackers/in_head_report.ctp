@@ -454,11 +454,13 @@ $("#three").hide();
 }	
 function second()
 {
+	$("#one").hide();
 $("#two").show();
 $("#three").hide();	
 }	
 function third()	
 {
+$("#one").hide();
 $("#two").hide();
 $("#three").show();	
 }
