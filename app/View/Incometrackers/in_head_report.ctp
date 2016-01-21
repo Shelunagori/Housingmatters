@@ -122,27 +122,9 @@ if(sizeof($result_new_regular_bill)>0){
 		    </select>
 		   </td>
 		   <td class="hide" id="three">
-		  
-		  <select class="m-wrap medium chosen" id="mmbr">
-		  <option value="" style="display:none;">Select member</option>
-<?php 
-foreach($flats_for_bill as $flat_fetch_id){
-//wing_id via flat_id//
-$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_fetch_id)));
-foreach($result_flat_info as $flat_info){
-$wing=$flat_info["flat"]["wing_id"];
-} 
-//user info via flat_id//
-$result_user_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array($wing,$flat_fetch_id)));
-foreach($result_user_info as $user_info){
-$user_id=(int)$user_info["user"]["user_id"];
-$user_name=$user_info["user"]["user_name"];
-} 
-$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>			array($wing,$flat_fetch_id)));	
-?>
-<option value="<?php echo $flat_fetch_id; ?>"><?php echo $user_name; ?> <?php echo $wing_flat; ?></option>
-<?php } ?>
-		   </select>
+		<?php
+		$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down')); ?>  
+		
 		   
 		   </td>
 		   
@@ -410,7 +392,7 @@ $(document).ready(function() {
 	}
 	if(type == 3)
 	{
-	var mem = $("#mmbr").val();		
+	var mem = $(".resident_drop_down").val();		
 	$("#result").html('<div align="center" style="padding:10px;"><img src="as/loding.gif" />Loading....</div>').load("regular_report_show_ajax?wise=" +2+ "&user=" +mem+ "");	
 	}
 	

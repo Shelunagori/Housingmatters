@@ -25960,7 +25960,7 @@ $financial_year_to = $to3;
 
 
 ?>
-<select class="m-wrap span12 chosen resident_drop_down">
+<select class="m-wrap medium chosen resident_drop_down">
 <option value="" style="display:none;">Select Sub Ledger A/c</option>
 	<?php
 	$this->loadmodel('ledger_sub_account');
