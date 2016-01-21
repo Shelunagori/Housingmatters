@@ -145,10 +145,11 @@ foreach($result_new_regular_bill as $regular_bill){
 			$sq_feet = $data2['flat']['flat_area'];
 		}
 		
-					
+		if($wing_id == $wing)
+		{			
  		?>
 		<tr>
-			<td><?php echo $wingg_flat; ?></td>
+			<td><?php echo $wing_flat; ?></td>
 			<td><?php echo $user_name; ?></td>
 			<td><?php echo $sq_feet; ?></td>
 			<td><?php echo $bill_no; ?></td>
@@ -200,7 +201,7 @@ foreach($result_new_regular_bill as $regular_bill){
 		</tr>
 			
 		<?php
-		}
+}}
 		
 ?>
 	</tbody>
@@ -368,10 +369,11 @@ foreach($result_new_regular_bill as $regular_bill){
 			$noc_ch_id = (int)@$data2['flat']['noc_ch_tp'];
 			$sq_feet = $data2['flat']['flat_area'];
 		}
-							
+		if($flat_id == $user_id)
+		{			
  		?>
 		<tr>
-			<td><?php echo $wingg_flat; ?></td>
+			<td><?php echo $wing_flat; ?></td>
 			<td><?php echo $user_name; ?></td>
 			<td><?php echo $sq_feet; ?></td>
 			<td><?php echo $bill_no; ?></td>
@@ -423,7 +425,7 @@ foreach($result_new_regular_bill as $regular_bill){
 		</tr>
 			
 		<?php
-		}
+}}
 		
 ?>
 	</tbody>
