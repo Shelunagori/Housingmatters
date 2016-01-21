@@ -178,7 +178,6 @@ else
 <table id="report_tb">
 	        <thead>
 		    <tr>
-			<th>Wing Name</th>
 			<th>Unit Number</th>
 			<th>Name</th>
 			<th>Area <?php if($vallllll == 0) { ?>(sq. feet)<?php } else {?> (sq. mtr) <?php } ?></th>
@@ -217,15 +216,6 @@ else
 	<tbody id="table">
 <?php
 $total_noc_charges=0; $total_total=0; $total_arrear_maintenance=0; $total_arrear_intrest=0; $total_intrest_on_arrears=0; $total_credit_stock=0; $total_due_for_payment=0;
-foreach($result_wing as $wingggg)
-		{
-	$wing_id = (int)$wingggg['wing']['wing_id'];
-	
-$flat_dataaa=$this->requestAction(array('controller' => 'hms', 'action' => 'flat_name_via_wing_id'), array('pass' => array($wing_id)));	
-foreach($flat_dataaa as $flattt)
-{
-$flat_name_asc = $flattt['flat']['flat_name'];
-	
 	
 foreach($result_new_regular_bill as $regular_bill){
 	$one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
@@ -270,13 +260,11 @@ foreach($result_new_regular_bill as $regular_bill){
 			$noc_ch_id = (int)@$data2['flat']['noc_ch_tp'];
 			$sq_feet = $data2['flat']['flat_area'];
 		}
-		if($flat_name == $flat_name_asc)
-		{
+		
 					
  		?>
 		<tr>
-			<td><?php echo $wing_name; ?></td>
-			<td><?php echo $flat_name; ?></td>
+			<td><?php echo $wing_flat; ?></td>
 			<td><?php echo $user_name; ?></td>
 			<td><?php echo $sq_feet; ?></td>
 			<td><?php echo $bill_no; ?></td>
@@ -329,12 +317,12 @@ foreach($result_new_regular_bill as $regular_bill){
 		</tr>
 			
 		<?php
-		}}}}}
+		}}
 		
 ?>
 	</tbody>
 		<tr>
-			<td colspan="5" align="right"><b>Total<b/></td>
+			<td colspan="4" align="right"><b>Total<b/></td>
 			<?php foreach($income_head_array_size as $income_head=>$value){ $total_income_heads_am=0;
 				foreach($total_income_heads[$income_head] as $data5){
 					$total_income_heads_am+=$data5;
