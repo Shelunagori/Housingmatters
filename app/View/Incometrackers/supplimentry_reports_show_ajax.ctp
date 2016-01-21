@@ -171,7 +171,7 @@ $flat_id = (int)$collection['adhoc_bill']['person_name'];
 $ledger_subacc_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($flat_id)));
 foreach ($ledger_subacc_detaill as $dataaa) 
 {
-$user_name = $dataaa['ledger_sub_account']['name'];  
+$user_name = @$dataaa['ledger_sub_account']['name'];  
 }	
 	
 $bill_type = "Non-residential";

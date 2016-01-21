@@ -1201,8 +1201,30 @@ function bank_receipt()
 		}
 $s_society_id=(int)$this->Session->read('society_id');
 		$this->ath();
-		//$this->check_user_privilages();
+	
+$credit_dc=0; $debit_dc=0;
+	$this->loadmodel('ledger_sub_account');
+	$conditions=array('society_id'=>$s_society_id,'ledger_id'=>33);	
+	$aaaa=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+	foreach($aaaa as $dataa)
+	{
+	$bank_id = (int)$dataa['ledger_sub_account']['auto_id'];	
+	
+    $this->loadmodel('ledger');
+	$conditions2=array('society_id'=>$s_society_id,'ledger_account_id'=>33,'ledger_sub_account_id'=>$bank_id);	
+	$ledger_result_dc=$this->ledger->find('all',array('conditions'=>$conditions2));
+	
+	foreach($ledger_result_dc as $data_dc){
+		$debit_dc+=$data_dc["ledger"]["debit"];
+		$credit_dc+=$data_dc["ledger"]["credit"];
+}}
+	echo $debit_dc;
+	exit;
 
+
+
+	//$this->check_user_privilages();
+/*
 $this->loadmodel('financial_year');
 $conditions=array("society_id"=>$s_society_id);
 $financial_data = $this->financial_year->find('all',array('conditions'=>$conditions));
@@ -1239,7 +1261,7 @@ function upload_csv_cash_bank(){
 		}
 		fclose($f);
 		$records;
-	}
+	} */
 }
 //////////////////////// End bank receipt email code ////////////////////////////////////////////
 
@@ -3000,7 +3022,7 @@ function b_receipt_edit($transaction_id=null){
 	if(isset($this->request->data['bank_receipt_update'])){
 		$tranjection_date = $this->request->data['transaction_date']; 
 		$tranjection_date=date('Y-m-d',strtotime($tranjection_date));
-		$deposited_bank_id = $this->request->data['deposited_bank_id'];
+		$deposited_bank_id = (int)$this->request->data['deposited_bank_id'];
 		$receipt_mode = $this->request->data['receipt_mode'];
 		
 		$cheque_number = null;
