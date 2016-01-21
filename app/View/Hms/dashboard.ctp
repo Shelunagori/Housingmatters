@@ -16,7 +16,7 @@
 	background-color: #DDD;
 }
 </style>
-<div style="position:relative;">
+<!--<div style="position:relative;">
 	<input class="span6 m-wrap" type="text" id="auto_list">
 	<div style="position: absolute; top: 35px; border: 1px solid blue; background-color: #FFF;min-width: 300px;">
 	<ul style="list-style-type: none; padding: 0px; margin: 0px;">
@@ -25,7 +25,7 @@
 	  <li class="elements">23234</li>
 	  </ul>
 	</div>
-</div>
+</div>-->
 <script>
 $( document ).ready(function() {
 	$('#auto_list').bind('click keyup',function() {

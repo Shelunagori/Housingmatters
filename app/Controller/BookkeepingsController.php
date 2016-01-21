@@ -641,6 +641,7 @@ function journal_validation(){
 		$c=0;
 		$total_debit = 0;
 		$total_credit = 0;
+		
 foreach($myArray as $child){
 	$c++;
 	if(empty($child[0])){
@@ -711,7 +712,7 @@ foreach($myArray as $child){
 				
 			}
 			
-			if($ledger == 15 || $ledger == 33 || $ledger == 34 || $ledger == 35 || $ledger == 112){
+			if($ledger == 15 || $ledger == 33 ||  $ledger == 35 || $ledger == 112){
 				
 				$ledger_sub_account = (int)$child[1];
 				}else{
@@ -719,12 +720,20 @@ foreach($myArray as $child){
 					$ledger_sub_account=null;
 					
 				}
-			 
-		
+				if($ledger == 34){
+				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array((int)$child[1])));
+				foreach($result_flat_info as $flat_info){
+				$ledger_sub_account = (int)$flat_info["ledger_sub_account"]["auto_id"];
+				}
+				}else{
+
+				  $ledger_sub_account=null;
+
+				}
 		$journal_id=$this->autoincrement('journal','journal_id');
 		$this->loadmodel('journal');
 		$multipleRowData = Array( Array("journal_id" => $journal_id, 
-		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>$ledger_sub_account,"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
+		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>(int)$child[1],"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
 		$this->journal->saveAll($multipleRowData);
 		
 		$this->loadmodel('ledger');
