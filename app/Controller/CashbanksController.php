@@ -1185,10 +1185,12 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 	
 	
 	
-	
-	
-	
-	echo true;
+	?>
+	<button type="button" class="close" id="close_model" ></button>
+	<div style="font-size: 14px;">
+		<strong>Success!</strong> <span>Receipt canceled successfully.</span>
+	</div>
+	<?php
 }
 //////////////////////// Start bank receipt ///////////////////////////////////////////////////////////
 function bank_receipt()
