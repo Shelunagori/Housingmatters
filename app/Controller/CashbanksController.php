@@ -7907,7 +7907,7 @@ $multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k,
 "party_name_id"=>$party_name_id,"receipt_type" => 1,"amount" => $amount,
 "current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name_id,
 "bill_auto_id"=>$auto_id,"bill_one_time_id"=>@$regular_bill_one_time_id,"narration"=>$narration,
-"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $prepaired_by,"bank_branch"=>@$branch,"approved_by"=>$s_user_id,"approved_date"=>$approved_date));
+"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $prepaired_by,"bank_branch"=>@$branch,"approved_by"=>$s_user_id,"approved_date"=>$approved_date,"is_cancel"=>"NO"));
 $this->new_cash_bank->saveAll($multipleRowData);
 
 	
