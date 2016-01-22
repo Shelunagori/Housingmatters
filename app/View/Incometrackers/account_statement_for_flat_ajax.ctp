@@ -313,12 +313,12 @@ foreach($result_ledger as $ledger_data){
 			   $account_balance=$account_balance+(int)$maint_charges;
 				}				
 				
-	$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+	$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array(@$prepaired_by)));
 	foreach ($user_dataaaa as $user_detailll) 
 	{
-	$creater_name = $user_detailll['user']['user_name'];
+	@$creater_name = @$user_detailll['user']['user_name'];
 	}	
-	$dattt = date('d-m-Y',strtotime($date));			
+	@$dattt = date('d-m-Y',strtotime(@$date));			
 				
 				$total_maint_charges=$total_maint_charges+(int)$maint_charges;
 				$total_interest=$total_interest+(int)$interest;
