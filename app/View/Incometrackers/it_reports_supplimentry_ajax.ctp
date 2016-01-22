@@ -34,7 +34,17 @@ if($c == 2)
 							$g_total=$collection['adhoc_bill']["g_total"];
 			                $d_user_id=(int)$collection['adhoc_bill']["person_name"];
 					        $pay_status = (int)$collection['adhoc_bill']['pay_status'];
-					                $result_user = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($d_user_id)));
+                            $prepaired_by = (int)$collection['adhoc_bill']['created_by'];
+
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = $user_detailll['user']['user_name'];
+}	
+$datett = date('d-m-Y',strtotime($date));
+							
+
+							 $result_user = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($d_user_id)));
 									foreach ($result_user as $collection) 
 									{
 									$wing_id = (int)$collection['user']['wing'];  

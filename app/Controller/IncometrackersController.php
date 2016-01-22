@@ -3514,7 +3514,7 @@ $multipleRowData = Array( Array("adhoc_bill_id"=>$adhoc_bill_id,"receipt_id" => 
 "company_name"=>"",
 "person_name"=>$res_id,"description"=>$desc,"date"=>$cur_date,"society_id"=>$s_society_id,
 "residential"=>"n","g_total"=> $amount,"bill_daterange_from"=>strtotime($from2),
-"html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih));
+"html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih,"created_by"=>$s_user_id));
 $this->adhoc_bill->saveAll($multipleRowData);
 }
 
