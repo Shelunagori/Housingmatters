@@ -7757,18 +7757,18 @@ if($this->RequestHandler->isAjax()){
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');	
+
+$approved_date = date('d-m-Y');
+
 $this->set('s_role_id',$s_role_id);
-	
 $this->ath();		
 $this->check_user_privilages();	
 $this->seen_notification(28,$rrr);
-
 $auto_id22 = (int)$this->request->query('aa');
 
 if(!empty($auto_id22))
 {
-	
-	
+
 $this->loadmodel('my_flat_receipt_update');
 $conditions=array('society_id'=>$s_society_id,"approval_id"=>1,"auto_id"=>$auto_id22);
 $cursor=$this->my_flat_receipt_update->find('all',array('conditions'=>$conditions));
@@ -7776,8 +7776,8 @@ foreach($cursor as $data)
 {
 $transaction_date = $data['my_flat_receipt_update']['receipt_date'];
 $transaction_date = date('Y-m-d',strtotime($transaction_date));
-  $transaction_date = strtotime($transaction_date);
-  $mode = $data['my_flat_receipt_update']['receipt_mode'];
+$transaction_date = strtotime($transaction_date);
+$mode = $data['my_flat_receipt_update']['receipt_mode'];
 if($mode == "Cheque" || $mode == "cheque")
 {
   $cheque_number = @$data['my_flat_receipt_update']['cheque_number'];
@@ -7907,7 +7907,7 @@ $multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k,
 "party_name_id"=>$party_name_id,"receipt_type" => 1,"amount" => $amount,
 "current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$party_name_id,
 "bill_auto_id"=>$auto_id,"bill_one_time_id"=>@$regular_bill_one_time_id,"narration"=>$narration,
-"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $prepaired_by,"bank_branch"=>@$branch));
+"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $prepaired_by,"bank_branch"=>@$branch,"approved_by"=>$s_user_id,"approved_date"=>$approved_date));
 $this->new_cash_bank->saveAll($multipleRowData);
 
 	

@@ -29,8 +29,10 @@ foreach ($cursor2 as $collection)
 $receipt_date = $collection['new_cash_bank']['receipt_date'];
 $nnn = 555;
 
-}			
-?>
+}
+
+//Approved by:<?php echo @$approver_name;  on:<?php echo @$approved_date; ?>			
+
 <?php ////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <?php
 if($nnn == 555)
@@ -70,6 +72,9 @@ if($nnn == 555)
        		 $n=0;
         	foreach ($cursor2 as $collection) 
         	{
+			$approver_name = "";
+			$approved_by = "";
+			$approved_date="";
        	 	$n++;
         	$receipt_no = $collection['new_cash_bank']['receipt_id'];
         	$receipt_mode = $collection['new_cash_bank']['receipt_mode'];
@@ -81,6 +86,16 @@ if($nnn == 555)
             $current_datttt = date('d-m-Y',strtotime($current_date));
             $creater_user_id =(int)@$collection['new_cash_bank']['prepaired_by'];
 			$is_cancel = $collection['new_cash_bank']['is_cancel'];
+			$approved_by = (int)@$collection['new_cash_bank']['approved_by'];
+			$approved_date = @$collection['new_cash_bank']['approved_date'];
+			
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($approved_by)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$approver_name = @$user_detailll['user']['user_name'];
+}	
+			
+			
 			
 $user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_user_id)));
 foreach ($user_dataaaa as $user_detailll) 
