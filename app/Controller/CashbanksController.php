@@ -1203,25 +1203,54 @@ function bank_receipt()
 		}
 $s_society_id=(int)$this->Session->read('society_id');
 		$this->ath();
-	
-$credit_dc=0; $debit_dc=0;
-	$this->loadmodel('ledger_sub_account');
-	$conditions=array('society_id'=>$s_society_id,'ledger_id'=>33);	
-	$aaaa=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
-	foreach($aaaa as $dataa)
-	{
-	$bank_id = (int)$dataa['ledger_sub_account']['auto_id'];	
+
+    $credit_dc=0; $debit_dc=0;
+	//$this->loadmodel('ledger_sub_account');
+	//$conditions=array('society_id'=>$s_society_id,'ledger_id'=>34);	
+	//$aaaa=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+	//foreach($aaaa as $dataa)
+	//{
+	//$bank_id = (int)$dataa['ledger_sub_account']['auto_id'];	
 	
     $this->loadmodel('ledger');
-	$conditions2=array('society_id'=>$s_society_id,'ledger_account_id'=>33,'ledger_sub_account_id'=>$bank_id);	
+	$conditions2=array('society_id'=>$s_society_id,'ledger_account_id'=>34);	
 	$ledger_result_dc=$this->ledger->find('all',array('conditions'=>$conditions2));
 	
 	foreach($ledger_result_dc as $data_dc){
 		$debit_dc+=$data_dc["ledger"]["debit"];
 		$credit_dc+=$data_dc["ledger"]["credit"];
-}}
-	echo $debit_dc;
+}
+	echo $credit_dc;
 	exit;
+
+
+/*
+$this->loadmodel('new_cash_bank');
+$conditions=array('society_id'=>$s_society_id,"receipt_source"=>1);	
+$aaaa=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+foreach($aaaa as $dataa)
+{
+$element = (int)$dataa['new_cash_bank']['transaction_id'];
+$n=0;
+$this->loadmodel('ledger');
+$conditions=array('society_id'=>$s_society_id,"element_id"=>$element,"table_name"=>"new_cash_bank");	
+$aaaaa=$this->ledger->find('all',array('conditions'=>$conditions));
+foreach($aaaaa as $dataaa)
+{
+$n++;	
+}
+if($n == 3)
+{
+echo "three";
+break;	
+}	
+}
+echo"sdgdsg";
+exit;
+
+*/
+
+
 
 
 
