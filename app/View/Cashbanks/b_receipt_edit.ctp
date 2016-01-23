@@ -1,4 +1,4 @@
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" role="button" rel="tab" class="btn"><i class="icon-arrow-left"></i> Back</a>
+
 <?php
 foreach($cursor1 as $data){
 $receipt_id=$data["new_cash_bank"]["receipt_id"];
@@ -50,15 +50,23 @@ $narration = @$data["new_cash_bank"]["narration"];
 }
 	
 ?>
-  
-<div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-edit"></i> Edit Receipt - <?php echo $receipt_id; ?></h4>	
-	<form method="post">
+
+<form method="post">
+<div class="portlet box blue">
+	<div class="portlet-title">
+	<h4 class="block"><i class="icon-reorder"></i>Edit Receipt - <?php echo $receipt_id; ?></h4>
+	</div>
+	<div class="portlet-body form">
+
+
+
+<div class="row-fluid">
+
 	
 	
-<div style="background-color:#FFF; width:48%; float:left; margin-left:8px;">
-      
-   
+	
+	
+<div class="span6">
 <label style="font-size:14px;">Transaction date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="transaction_date" placeholder="Transaction Date" style="background-color:white !important;" id="date" value="<?php echo $transaction_date; ?>">
@@ -131,7 +139,7 @@ PG
 <br />
 </div>
 </div>
-<div style="background-color:#FFF; width:50%; float:right;">		
+<div class="span6">		
 <?php if($member_type == 1) { ?>		
 <h5><b>Receipt For : Residential</b></h5>	
 <input type="hidden" name="member_type" value="1" />	
@@ -167,7 +175,7 @@ PG
 
 <?php } ?>	
 
-<label style="font-size:14px;">Amount Applied<span="color:red;">*</span></label>
+<label style="font-size:14px;">Amount Applied<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" name="amount" id="amtttt" class="m-wrap span5" value="<?php echo $amount; ?>"/>
 <label id="amtttt"></label>
@@ -183,7 +191,7 @@ PG
 	
  
 </div> 
-<br />
+</div>
 
 		<div class="confirm_div" style="display: none;">
 			<div class="modal-backdrop fade in"></div>
@@ -198,15 +206,13 @@ PG
 			</div>
 		</div>
 		
-		
-<div style="width:100%; overflow:auto;">
-<hr />
+<div class="form-actions">
+<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" role="button" rel="tab" class="btn green"><i class="icon-arrow-left"></i> Back</a>
 <a href="#" role="button" class="btn green submit_button">UPDATE RECEIPT</a>
-
+</div>
+</div>
 </div>
 </form>
-
-</div>
 
 <script>
 $(document).ready(function() {
