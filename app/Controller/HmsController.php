@@ -5917,6 +5917,18 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
+	$s_society_id = $this->Session->read('society_id');
+	$this->loadmodel('flat');
+	$conditions=array("society_id" => $s_society_id);
+	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
+	foreach($result_flat as $data){
+		$flat_id=(int)$data["flat"]["flat_id"];
+		$flat_name=$data["flat"]["flat_name"];
+		
+		$this->loadmodel('flat');
+		$this->flat->updateAll(array("flat_name" => (int)$flat_name),array("flat_id" => $flat_id));
+	}
+	
 	//echo "hello";
 	//exit;
 	//$sms='You one Product is liked by some one. Kindly login into the portal for more details.';
