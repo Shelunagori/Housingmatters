@@ -5918,7 +5918,7 @@ if($this->RequestHandler->isAjax()){
 	}
 	
 	$s_society_id = $this->Session->read('society_id');
-	$this->loadmodel('flat');
+	/*$this->loadmodel('flat');
 	$conditions=array("society_id" => $s_society_id);
 	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
 	foreach($result_flat as $data){
@@ -5927,7 +5927,7 @@ if($this->RequestHandler->isAjax()){
 		
 		$this->loadmodel('flat');
 		$this->flat->updateAll(array("flat_name" => (int)$flat_name),array("flat_id" => $flat_id));
-	}
+	}*/
 	
 	//echo "hello";
 	//exit;
