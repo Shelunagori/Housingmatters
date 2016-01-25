@@ -218,6 +218,7 @@ foreach($result_ledger as $ledger_data){
 				<th>Interest</th>
 				<th>Credits</th>
 				<th>Account Balance</th>
+				<th></th>
 			</tr>
 			<?php 
 			if(sizeof($result_ledger)==0){
@@ -234,6 +235,8 @@ foreach($result_ledger as $ledger_data){
 		<?php	$account_balance=0; $total_maint_charges=0; $total_interest=0; $total_credits=0;  $total_account_balance=0; 
 			foreach($result_ledger as $ledger_data){ 
 			$credits = "";
+			$creater_name = "";
+			$prepaired_by = "";
 				$transaction_date=$ledger_data["ledger"]["transaction_date"];
 				$table_name=$ledger_data["ledger"]["table_name"];
 				$element_id=$ledger_data["ledger"]["element_id"];
@@ -286,8 +289,9 @@ foreach($result_ledger as $ledger_data){
 					$refrence_no=@$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
 					$flat_id = (int)@$result_cash_bank[0]["new_cash_bank"]["party_name_id"];
 					$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
-			
-					
+					$date = $result_cash_bank[0]["new_cash_bank"]["current_date"];	
+					$prepaired_by = (int)$result_cash_bank[0]["new_cash_bank"]["prepaired_by"];	
+							
 					$interest="";
 					$maint_charges="";
 					$credits=$debit+$credit;
@@ -300,11 +304,21 @@ foreach($result_ledger as $ledger_data){
 			$refrence_no=@$result_adhoc[0]["adhoc_bill"]["receipt_id"]; 
 			$flat_id = (int)@$result_adhoc[0]["adhoc_bill"]["person_name"];
 			$description = @$result_adhoc[0]["adhoc_bill"]["description"];
+			$date = $result_adhoc[0]["adhoc_bill"]["date"];	
+			$prepaired_by = (int)$result_adhoc[0]["adhoc_bill"]["created_by"];		
+				
 				
                $maint_charges=$debit+$credit;
 			   $interest="";
 			   $account_balance=$account_balance+(int)$maint_charges;
 				}				
+				
+	$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array(@$prepaired_by)));
+	foreach ($user_dataaaa as $user_detailll) 
+	{
+	@$creater_name = @$user_detailll['user']['user_name'];
+	}	
+	@$dattt = date('d-m-Y',strtotime(@$date));			
 				
 				$total_maint_charges=$total_maint_charges+(int)$maint_charges;
 				$total_interest=$total_interest+(int)$interest;
@@ -343,6 +357,15 @@ foreach($result_ledger as $ledger_data){
 						<td style="text-align:right;"><?php echo $interest; ?></td>
 						<td style="text-align:right;"><?php echo $credits; ?></td>
 						<td style="text-align:right;"><?php echo $account_balance; ?></td>
+					    <td>
+						<?php if(!empty($creater_name))
+						{
+							?>
+						<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
+						<?php echo $creater_name; ?> on: <?php echo $dattt; ?>">!</a>
+						 <?php } ?>
+						
+						</td>              
 					</tr>
 				
 			<?php } ?>
@@ -352,10 +375,12 @@ foreach($result_ledger as $ledger_data){
 						<td style="text-align:right;"><b><?php echo $total_interest; ?></b></td>
 						<td style="text-align:right;"><b><?php echo $total_credits; ?></b></td>
 						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td colspan="7" align="right" style="color:#33773E;"><b>Closing Balance</b></td>
 						<td style="color:#33773E; text-align:right;"><b><?php echo $account_balance; ?></b></td>
+						<td></td>
 					</tr>
                     </tbody>
 		</table>

@@ -13,12 +13,19 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 <table border="1" width="100%">
 	<thead>
 		<tr>
+		<?php if($ledger_account_id == 34)
+		{ ?>
+	<th></th>
+		<?php } ?>
 			<th></th>
 			<th style="text-align: center;" colspan="2">Opening Balance</th>
             <th style="text-align: center;" colspan="2">Transactions</th>
 			<th style="text-align: center;" colspan="2">Closing Balance</th>
 		</tr>
-		<tr>
+		<tr><?php if($ledger_account_id == 34)
+		{ ?>
+	     <th>Unit Number</th>
+		<?php } ?>
 			<th>Ledger Accounts</th>
 			<th style="text-align: right;width: 10%;">Debit</th>
 			<th style="text-align: right;width: 10%;">Credit</th>
@@ -59,7 +66,10 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 			
 			if($trail_balance["opening_balance"][0]==0 && $trail_balance["debit"]==0 && $trail_balance["credit"]==0 && $trail_balance["closing_balance"][0]==0){ continue; }
 			?>
-			<tr>
+			<tr><?php if($ledger_account_id == 34)
+		{ ?>
+	    <td><?php echo $wing_flat; ?></td>
+		<?php } ?> 
 				<td><?php echo $ledger_sub_account_name; ?> <span style="padding-left: 10px;font-weight: 100;"><?php echo $ledger_extra_info; ?></span></td>
 				<?php if($trail_balance["opening_balance"][1]=="Dr"){
 					?>
@@ -123,7 +133,10 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 			<?php
 		} ?>
 		
-		<tr>
+		<tr><?php if($ledger_account_id == 34)
+		{ ?>
+        <th></th>
+		<?php } ?>
 			<th><b>TOTAL</b></th>
 			<th style="text-align: right;"><?php echo $total_ob_debit; ?></th>
 			<th style="text-align: right;"><?php echo $total_ob_credit; ?></th>

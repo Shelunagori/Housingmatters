@@ -142,6 +142,16 @@ $g_total=$collection['adhoc_bill']["g_total"];
 $html_bill = $collection['adhoc_bill']['html_bill'];
 $bill_date_from = $collection['adhoc_bill']['bill_daterange_from'];
 $description = $collection['adhoc_bill']['description'];
+$creater_id = (int)$collection['adhoc_bill']['created_by'];
+
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_id)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = $user_detailll['user']['user_name'];
+}	
+$datett = date('d-m-Y',strtotime($date));	
+
+
 $bill_date_from2 = date('d-m-Y',($bill_date_from));
 if($residential=="y")
 {
@@ -201,7 +211,10 @@ echo $g_total; ?></td>
 		<div class="btn-group">
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
-		</a><ul class="dropdown-menu" style="min-width:75px !important;">
+		</a>
+		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
+	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>" target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
@@ -265,7 +278,14 @@ $html_bill = $collection['adhoc_bill']['html_bill'];
 $bill_date_from = $collection['adhoc_bill']['bill_daterange_from'];
 $description = $collection['adhoc_bill']['description']; 
 $bill_date_from2 = date('d-m-Y',($bill_date_from));
+$creater_id = (int)$collection['adhoc_bill']['created_by'];
 
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_id)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = $user_detailll['user']['user_name'];
+}	
+$datett = date('d-m-Y',strtotime($date));	
 if($residential=="y")
 {
 $flat_id = (int)$collection['adhoc_bill']['person_name'];	
@@ -306,7 +326,10 @@ $g_total = number_format($g_total);
 <div class="btn-group">
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
-		</a><ul class="dropdown-menu" style="min-width:75px !important;">
+		</a>
+		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
+	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>" target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
@@ -368,6 +391,14 @@ $html_bill = $collection['adhoc_bill']['html_bill'];
 $bill_date_from = $collection['adhoc_bill']['bill_daterange_from'];
 $description = $collection['adhoc_bill']['description'];
 $bill_date_from2 = date('d-m-Y',($bill_date_from));
+$creater_id = (int)$collection['adhoc_bill']['created_by'];
+
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_id)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = $user_detailll['user']['user_name'];
+}	
+$datett = date('d-m-Y',strtotime($date));	
 if($residential=="n")
 {
 $flat_id = (int)$collection['adhoc_bill']['person_name'];	
@@ -403,7 +434,10 @@ echo $g_total; ?></td>
 <div class="btn-group">
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
-		</a><ul class="dropdown-menu" style="min-width:75px !important;">
+		</a>
+		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
+	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>"  target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
