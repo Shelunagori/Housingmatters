@@ -98,6 +98,7 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
             <th>Reference</th>
 			<th>Debit</th>
 			<th>Credit</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody id="table">
@@ -105,8 +106,13 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 	
 	$i=0; $total_debit=0; $total_credit=0;
 	foreach($result_ledger as $data){ $i++;
-	
-	
+	     $created_by = "";
+		 $created_on = "";
+	 
+		$creater_name = "";	
+		$approver_name = "";
+	 
+	 
 		$debit=$data["ledger"]["debit"];
 		$credit=$data["ledger"]["credit"];
 		$transaction_date=$data["ledger"]["transaction_date"];
@@ -162,8 +168,29 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 	$refrence_no=$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
 	$flat_id = (int)$result_cash_bank[0]["new_cash_bank"]["party_name_id"];
 	$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
+	$current_date = $result_cash_bank[0]['new_cash_bank']['current_date']; 	
+	$current_datttt = date('d-m-Y',strtotime($current_date));
+    $creater_user_id =(int)@$result_cash_bank[0]['new_cash_bank']['prepaired_by'];
+	$approved_by = (int)@$result_cash_bank[0]['new_cash_bank']['approved_by'];
+	$approved_date = @$result_cash_bank[0]['new_cash_bank']['approved_date'];
 	$description=substrwords($description,200,'...');
-		
+	
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($approved_by)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$approver_name = @$user_detailll['user']['user_name'];
+}	
+	
+	
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_user_id)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = $user_detailll['user']['user_name'];
+}	
+	
+
+
+	
 		if($subledger_id != 0)
 		{
 			$subleddger_detaill=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'ledger_sub_account_detail_via_auto_id'), array('pass' => array($subledger_id)));
@@ -213,7 +240,15 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 		$account_type = (int)$result_cash_bank[0]["new_cash_bank"]["account_type"];	
 		$amttt = $result_cash_bank[0]["new_cash_bank"]["amount"];			
 		$tds = (int)$result_cash_bank[0]["new_cash_bank"]["tds_id"];		
-			
+		$current_date = $result_cash_bank[0]['new_cash_bank']['current_date'];
+		$prepaired_by_id = (int)$result_cash_bank[0]['new_cash_bank']['prepaired_by'];
+		
+$current_datttt = date('d-m-Y',strtotime($current_date));									
+$ussr_dataa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));  
+foreach ($ussr_dataa as $ussrrr) 
+{
+$creater_name = $ussrrr['user']['user_name'];  
+}		
 			
 			if($subledger_id != 0)
 			{
@@ -253,8 +288,8 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 			$tds_amount = (round(($tds_tax/100)*$debit));
 			$total_tds_amount = ($debit - $tds_amount);				
 			
-			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable");
-            $tds_array_for_bank_payment[] = array($total_tds_amount,$description);			
+			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
+            $tds_array_for_bank_payment[] = array($total_tds_amount,$description,$creater_name,$current_datttt);			
 							
 			}
 			
@@ -306,8 +341,8 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 			$tds_amount = (round(($tds_tax/100)*$debit));
 			$total_tds_amount = ($debit - $tds_amount);				
 			
-			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable");
-            $tds_array_for_bank_payment[] = array($total_tds_amount,$description);	
+			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
+            $tds_array_for_bank_payment[] = array($total_tds_amount,$description,$creater_name,$current_datttt);	
 
 			}
 		}
@@ -319,6 +354,21 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 		$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
 		$description=substrwords($description,200,'...');
 		$refrence_no=$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
+		$prepaired_by = (int)$result_cash_bank[0]['new_cash_bank']['prepaired_by'];   
+        $current_date = $result_cash_bank[0]['new_cash_bank']['current_date'];	
+			
+			
+		$current_datttt = date('d-m-Y',strtotime($current_date));
+
+		$result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($prepaired_by)));
+		foreach ($result_gh as $collection) 
+		{
+		$creater_name = (int)$collection['user']['user_name'];
+		}		
+
+			
+			
+			
 			if($subledger_id != 0)
 			{
 				$subleddger_detaill=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'ledger_sub_account_detail_via_auto_id'), array('pass' => array($subledger_id)));
@@ -571,10 +621,13 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 		
 		if($tds_ledger_id == 15)
 		{
+			
 		  foreach($tds_array_for_bank_payment as $tdssss_daaataa)
 		  {
 			$amttt = $tdssss_daaataa[0];  
-			$description = $tdssss_daaataa[1]; 
+			$description = $tdssss_daaataa[1];
+		    $creater_name = $tdssss_daaataa[2];
+			$current_datttt = $tdssss_daaataa[3];
 			?> 
             <tr>
 			<td><?php echo date("d-m-Y",$transaction_date); ?></td>
@@ -587,9 +640,17 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
            </td>
             <td style="text-align:right;"><?php echo $amttt; ?></td>
 			<td style="text-align:right;"><?php echo $credit; ?></td>
+			<td>
+			<?php if(!empty($creater_name))
+			{ ?>
+			<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+			<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>
+			<?php } ?>
+			
+			</td>
            </tr>
 			<?php
-		  }		  
+		  } 		  
 		}
 		else
 		{
@@ -630,12 +691,20 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 			</td>
 			<td style="text-align:right;"><?php echo $debit; ?></td>
 			<td style="text-align:right;"><?php echo $credit; ?></td>
+			<td>
+			<?php if(!empty($creater_name))
+			{ ?>
+			<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+			<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>
+			<?php } ?>
+			</td>
 		</tr>
 	<?php } } } ?>
 		<tr>
 			<td colspan="5" align="right"><b>Total</b></td>
 			<td style="text-align:right;"><b><?php echo $total_debit; ?></b></td>
 			<td style="text-align:right;"><b><?php echo $total_credit; ?></b></td>
+			<td></td>
 		</tr>
 	</tbody>
 </table>
