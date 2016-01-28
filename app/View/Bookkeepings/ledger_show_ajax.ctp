@@ -403,8 +403,7 @@ $creater_name = $ussrrr['user']['user_name'];
 		{
 		$creater_name = $collection['user']['user_name'];
 		}	
-
-			
+		
 			
 			
 			
@@ -540,6 +539,18 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 				$journal_voucher_id=$data['journal']['voucher_id'];
 			    //$ledger_sub_acc = (int)$data['journal']['ledger_sub_account_id'];
 			    //$ledger_acc = (int)$data['journal']['ledger_account_id'];
+			$user_id22=$data['journal']['user_id'];
+	
+	    $current_datttt=$data['journal']['current_date'];
+			
+		$user_detaillll = $this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'user_fetch'), array('pass' => array($user_id22)));		
+		foreach($user_detaillll as $dataaaa){
+		$creater_name = $dataaaa['user']['user_name'];
+		}
+			
+			
+	
+			
 			
 			   if($subledger_id != 0)
 		{
