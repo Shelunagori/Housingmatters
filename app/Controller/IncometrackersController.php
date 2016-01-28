@@ -839,7 +839,10 @@ $bill_html='<div style="margin: 0px;">
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <td  align="center" colspan="7"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /> <b>
+										+91-9869157561 </b></td>
+                                    </tr>
                                     
                                 </tbody>
 							</table>
@@ -5778,7 +5781,10 @@ $bill_html='<div style="margin: 0px;">
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
-                                    
+                                     <tr>
+                                        <td  align="center" colspan="7"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /> <b>
+										+91-9869157561 </b></td>
+                                    </tr>
                                     
                                 </tbody>
 							</table>
