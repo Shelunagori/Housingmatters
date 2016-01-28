@@ -985,7 +985,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+Configure::write('debug', 0);
 }
 
 
@@ -2922,6 +2922,26 @@ $this->layout='session';
 		}
 		
 	} */
+	
+	/*
+	$this->loadmodel('flat');
+	
+	$result_flat=$this->flat->find('all');
+	//pr($result_flat);
+	foreach($result_flat as $data){
+		
+		   $flat_id=(int)$data['flat']['flat_id'];
+		   $flat_name=$data['flat']['flat_name'];
+		   $this->loadmodel('flat');
+		  $this->flat->updateAll(array('flat_name'=>(int)$flat_name),array('flat_id'=>$flat_id));
+		  
+		  //$this->flat->updateAll(array('flat_name'=>$flat_name),array('flat_id'=>$flat_id));
+		
+	}
+	
+	*/
+	
+	
 	exit; 
 }
 
@@ -5896,6 +5916,18 @@ if($this->RequestHandler->isAjax()){
 	}else{
 	$this->layout='session';
 	}
+	
+	$s_society_id = $this->Session->read('society_id');
+	/*$this->loadmodel('flat');
+	$conditions=array("society_id" => $s_society_id);
+	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
+	foreach($result_flat as $data){
+		$flat_id=(int)$data["flat"]["flat_id"];
+		$flat_name=$data["flat"]["flat_name"];
+		
+		$this->loadmodel('flat');
+		$this->flat->updateAll(array("flat_name" => (int)$flat_name),array("flat_id" => $flat_id));
+	}*/
 	
 	//echo "hello";
 	//exit;
@@ -22563,7 +22595,7 @@ $k=$last;
 }
 $k++;
 $this->loadmodel('flat');
-$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>$flat_name, "society_id"=>$s_society_id));
+$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>(int)$flat_name, "society_id"=>$s_society_id));
 $this->flat->saveAll($multipleRowData);	
 
 }
@@ -24815,7 +24847,7 @@ $k=$last;
 }
 $k++;
 $this->loadmodel('flat');
-$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>$flat_number, "society_id"=>$s_society_id));
+$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>(int)$flat_number, "society_id"=>$s_society_id));
 $this->flat->saveAll($multipleRowData);
 
 }
