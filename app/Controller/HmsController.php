@@ -20544,7 +20544,7 @@ foreach($myArray as $child)
  $warranty_to = $child[6];
  $description = $child[7];
  $maintanance_schedule = $child[8]; 
-
+ $current_date = date('d-m-Y');
  
  $file_name=@$_FILES["file".$z]["name"];
 		if(!empty($file_name)){
@@ -20572,7 +20572,7 @@ $purchase_date2 = date('Y-m-d',strtotime($purchase_date));
 	"purchase_date" => strtotime($purchase_date2), "cost_of_purchase" => $cost_of_purchase, 
 	"asset_supplier_id" => $assert_supplier_id,"warranty_period_from" => $warranty_from,
 	"warranty_period_to" => $warranty_to, "maintanance_schedule" => $maintanance_schedule, 
-	"society_id" => $s_society_id,'user_id'=>$s_user_id,"file_name"=>$file_name));
+	"society_id" => $s_society_id,'user_id'=>$s_user_id,"file_name"=>$file_name,"current_date"=>$current_date));
 	$this->fix_asset->saveAll($multipleRowData);   
     $rrrr[] = $fix_receipt_id;
 
@@ -20597,10 +20597,8 @@ $output=json_encode(array('type'=>'success','text'=>'Fixed Asset Voucher No. #'.
 die($output);   
 
 }
-/////////////////////////////////// End Fix asset Json //////////////////////////////////////////////////////
-
-
-//////////////////////////////// Start Fix Asset Excel ///////////////////////////////////////////////////////
+/////////////////////////////////// End Fix asset Json //////////////////////////////////
+////////////////////////// Start Fix Asset Excel ////////////////////////////////////////
 function fix_asset_excel()
 {
 	$this->layout=null;

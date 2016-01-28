@@ -418,7 +418,7 @@ else
 <br />
 <div style="width:100%;">
 <a href="it_supplimentry_bill" class="btn green" style="margin-left:68%;"><i class="icon-arrow-left"></i>Back</a>
-<button type="submit" name="sub_sup" class="btn red"  value="sada">Submit</button>
+<button type="submit" name="sub_sup" class="btn red"  value="ssss">Submit</button>
 </div>
 </form>
 

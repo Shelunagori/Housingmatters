@@ -3420,7 +3420,7 @@ $this->loadmodel('adhoc_bill');
 $multipleRowData = Array( Array("adhoc_bill_id" => $adhoc_bill_id, "receipt_id" => $receipt_id3, "company_name"=> "",
 "person_name"=>$res_id,"description"=>$desc,"date"=>$cur_date,"society_id"=>$s_society_id,"residential"=>"y" 
 ,"g_total"=> $amount,"bill_daterange_from"=>strtotime($from2),
-"html_bill"=>$html_bill,"pay_status"=>0,"income_head"=>$ih,"created_by"=>$s_user_id));
+"html_bill"=>$html_bill,"pay_status"=>0,"income_head"=>$ih,"created_by"=>$s_user_id,"due_date"=>$due_date));
 $this->adhoc_bill->saveAll($multipleRowData);
 
 
@@ -3514,7 +3514,7 @@ $multipleRowData = Array( Array("adhoc_bill_id"=>$adhoc_bill_id,"receipt_id" => 
 "company_name"=>"",
 "person_name"=>$res_id,"description"=>$desc,"date"=>$cur_date,"society_id"=>$s_society_id,
 "residential"=>"n","g_total"=> $amount,"bill_daterange_from"=>strtotime($from2),
-"html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih,"created_by"=>$s_user_id));
+"html_bill"=>$html_bill,"pay_status"=>0,"ih_detail"=>$ih,"created_by"=>$s_user_id,"due_date"=>$due_date));
 $this->adhoc_bill->saveAll($multipleRowData);
 }
 

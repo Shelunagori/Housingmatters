@@ -581,10 +581,17 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 			$source="Fixed Asset";
 			$result_fix_asset=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_fix_asset_table'), array('pass' => array($element_id)));
 			foreach($result_fix_asset as $data){
-				$description=$data['fix_asset']['description'];
-				$expense_id=$data['fix_asset']['fix_receipt_id'];
-				
-				
+			$description=$data['fix_asset']['description'];
+			$expense_id=$data['fix_asset']['fix_receipt_id'];
+			$prepaired_by_id = (int)$data['fix_asset']['user_id'];	
+		    $current_datttt = $data['fix_asset']['current_date'];
+
+		$user_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));
+		foreach($user_detaill as $data)
+		{
+		$creater_name = $data['user']['user_name'];
+		}
+		
 		if($subledger_id != 0)
 		{
 			$subleddger_detaill=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'ledger_sub_account_detail_via_auto_id'), array('pass' => array($subledger_id)));
@@ -622,8 +629,18 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 				$description=$data['adhoc_bill']['description'];
 				$supplimentry_receipt=$data['adhoc_bill']['receipt_id'];
 				$adhoc_id= (int)$data['adhoc_bill']['adhoc_bill_id'];
+			    $date=$data['adhoc_bill']["date"];
+			    $creater_id = (int)$data['adhoc_bill']['created_by'];
+			
+	$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($creater_id)));
+	foreach ($user_dataaaa as $user_detailll) 
+	{
+	$creater_name = $user_detailll['user']['user_name'];
+	}	
+	$current_datttt = date('d-m-Y',strtotime($date));	
 			}
 			
+
 			
 			if($subledger_id != 0)
 		{
