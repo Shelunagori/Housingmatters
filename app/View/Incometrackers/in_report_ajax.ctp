@@ -76,7 +76,7 @@ $income_head_array=$regular_bill["new_regular_bill"]["income_head_array"];
 			<th>Arrears-Principal</th>
 			<th>Arrears-Interest</th>
 			<th>Interest on Arrears</th>
-			<th>Credit/Rebates</th>
+			<th>Credit/Adjustment</th>
 			<th>Due For Payment</th>
 			<th>View
 			<?php if($maximum_one_time_id==$one_time_id){ ?>
