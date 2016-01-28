@@ -212,7 +212,7 @@ function bill_calculation(){
 		
 		var credit_stock=parseInt($('input[name=credit_stock]').val());
 		if($.isNumeric(credit_stock)==false){ credit_stock=0; }
-		due_for_payment=due_for_payment-credit_stock;
+		due_for_payment=due_for_payment+credit_stock;
 		
 		due_for_payment=Math.round(due_for_payment);
 		$('input[name=due_for_payment]').val(due_for_payment);
