@@ -770,7 +770,7 @@ $bill_html='<div style="margin: 0px;">
 								
 								$credit_stock_text=$credit_stock;
 								$bill_html.='<tr>
-												<td align="right" width="60%">Credit/Rebates:</td>
+												<td align="right" width="60%">Credit/Adjustment:</td>
 												<td align="right" width="40%" style="padding: 0 5px 0 0;">'.$credit_stock_text.'</td>
 											</tr>';
 								$bill_html.='<tr>
@@ -5708,7 +5708,7 @@ $bill_html='<div style="margin: 0px;">
 								
 								$credit_stock_text=$credit_stock;
 								$bill_html.='<tr>
-												<td align="right" width="60%">Credit/Rebates:</td>
+												<td align="right" width="60%">Credit/Adjustment:</td>
 												<td align="right" width="40%" style="padding: 0 5px 0 0;">'.$credit_stock_text.'</td>
 											</tr>';
 								$bill_html.='<tr>

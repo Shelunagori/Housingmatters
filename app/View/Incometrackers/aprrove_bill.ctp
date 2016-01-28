@@ -76,7 +76,7 @@ if(sizeof($result_new_regular_bill)==0){
 			<th width="120px">Arrears-Principal</th>
 			<th width="120px">Arrears-Interest</th>
 			<th width="120px">Interest on Arrears </th>
-			<th>Credit/Rebates</th>
+			<th>Credit/Adjustment</th>
 			<th width="120px">Due For Payment</th>
 			<th><input style="opacity: 0;" value="" type="checkbox" id="select_all" onclick="select_all_check()"></th>
 		</tr>

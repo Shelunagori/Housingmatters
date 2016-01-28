@@ -93,7 +93,7 @@ else
 			<th>Arrears-Principal</th>
 			<th>Arrears-Interest</th>
 			<th>Interest on Arrears</th>
-			<th>Credit/Rebates</th>
+			<th>Credit/Adjustment</th>
 			<th>Due For Payment</th>
 			<th>View|Edit</th>
 		</tr>
@@ -317,7 +317,7 @@ else
 			<th>Arrears-Principal</th>
 			<th>Arrears-Interest</th>
 			<th>Interest on Arrears</th>
-			<th>Credit/Rebates</th>
+			<th>Credit/Adjustment</th>
 			<th>Due For Payment</th>
 			<th>View|Edit</th>
 		</tr>

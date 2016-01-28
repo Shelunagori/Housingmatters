@@ -119,7 +119,7 @@ foreach($result_new_regular_bill as $regular_bill){
 						<td><input type="text" class="m-wrap textbx call_calculation" value="<?php echo $arrear_intrest; ?>" name="arrear_intrest" /></td>
 					</tr>
 					<tr>
-						<td style="text-align: right;">Credit/Rebates</td>
+						<td style="text-align: right;">Credit/Adjustment</td>
 						<td><input type="text" class="m-wrap textbx call_calculation" value="<?php echo $credit_stock; ?>" name="credit_stock" /></td>
 					</tr>
 					<tr>
