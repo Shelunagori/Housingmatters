@@ -121,6 +121,7 @@ if($nnn == 5555)
 $tt_amt = 0;
 foreach($cursor1 as $data)
 {
+$move_by = "";
 $transaction_id = (int)$data['fix_deposit']['transaction_id'];
 $receipt_id = $data['fix_deposit']['receipt_id'];
 $start_date = $data['fix_deposit']['start_date'];	
@@ -135,6 +136,19 @@ $file_name = $data['fix_deposit']['file_name'];
 $creation_date = $data['fix_deposit']['current_date'];
 $creater_id = (int)$data['fix_deposit']['prepaired_by'];
 @$renewal = @$data['fix_deposit']['renewal'];
+$move_by_id = (int)$data['fix_deposit']['move_by'];
+$move_on_date = $data['fix_deposit']['move_on'];
+
+$move_on = date('d-m-Y',strtotime($move_on_date));
+$result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($move_by_id)));
+foreach ($result_gh as $collection) 
+{
+$move_by = $collection['user']['user_name'];
+}	
+
+
+
+
 $creation_date = date('d-m-Y',strtotime($creation_date));
 
 $start_date	= date('d-m-Y',($start_date));	
@@ -165,14 +179,19 @@ $tt_amt = $tt_amt + $amt;
 <div class="btn-group">
 	<a class="btn blue mini" href="#" data-toggle="dropdown">
 	<i class="icon-chevron-down"></i>	
-	</a><a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>">!</a>
+	</a>
 	<ul class="dropdown-menu" style="min-width:70px !important;">
 	<li><a href="matured_deposit_view?aa=<?php echo $transaction_id; ?>">Reverse</a>
 	
 </li>
 	</ul>
 	</div>
+	
+<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+	<?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; if(!empty($move_by)) {?>, Moved by: <?php echo $move_by; ?> on: <?php echo $move_on; } ?>"></i>	
+	
+	
+	
 </td>
 </tr>
 <?php

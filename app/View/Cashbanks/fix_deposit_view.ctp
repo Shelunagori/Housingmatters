@@ -172,8 +172,7 @@ $prepaired_by_name = $collection['user']['user_name'];
      <div class="btn-group">
 	<a class="btn blue mini" href="#" data-toggle="dropdown">
 	<i class="icon-chevron-down"></i>	
-	</a><a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>">!</a>
+	</a>
 	<ul class="dropdown-menu" style="min-width:100px !important;">
 	<li><a href="fix_deposit_view?aa=<?php echo $transaction_id; ?>">Reading</a></li>
 	<li><a href="renewal_fixed_deposit?nn=<?php echo $transaction_id; ?>">Renewal</a></li>
@@ -182,7 +181,14 @@ $prepaired_by_name = $collection['user']['user_name'];
 </li>
 	</ul>
 	</div>
-<?php if(!empty($file_name)){ ?><a href="<?php echo $webroot_path ; ?>/fix_deposit/<?php echo $file_name; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
+
+	<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+	<?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>"></i>
+	
+	
+	<?php if(!empty($file_name)){ ?><a href="<?php echo $webroot_path ; ?>/fix_deposit/<?php echo $file_name; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
+
+
 
 </td>
 </tr>
