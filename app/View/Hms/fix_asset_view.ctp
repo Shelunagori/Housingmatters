@@ -86,7 +86,7 @@ foreach($result_fix_asset as $data){
 	$warranty_period_from=$data['fix_asset']['warranty_period_from'];
 	$maintanance_schedule=$data['fix_asset']['maintanance_schedule'];
 	$prepaired_by_id = (int)$data['fix_asset']['user_id'];
-	
+	$current_date22 = $data['fix_asset']['current_date'];
 	$user_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));
 foreach($user_detaill as $data)
 {
@@ -119,7 +119,7 @@ $prepaired_by = $data['user']['user_name'];
 <td><?php echo $warranty_period_to; ?></td>
 <td><?php echo $maintanance_schedule; ?></td>
 <td><?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
-<a class="btn mini black tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date; ?>">
+<a class="btn mini black tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date22; ?>">
   !</a>
 </td>
 </tr>
