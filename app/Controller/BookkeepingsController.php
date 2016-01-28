@@ -725,11 +725,7 @@ foreach($myArray as $child){
 				foreach($result_flat_info as $flat_info){
 				$ledger_sub_account = (int)$flat_info["ledger_sub_account"]["auto_id"];
 				}
-				}else{
-
-				  $ledger_sub_account=null;
-
-				}
+				
 		$journal_id=$this->autoincrement('journal','journal_id');
 		$this->loadmodel('journal');
 		$multipleRowData = Array( Array("journal_id" => $journal_id, 
