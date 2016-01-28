@@ -102,7 +102,9 @@ else
 <?php
 $total_noc_charges=0; $total_total=0; $total_arrear_maintenance=0; $total_arrear_intrest=0; $total_intrest_on_arrears=0; $total_credit_stock=0; $total_due_for_payment=0;
 foreach($result_new_regular_bill as $regular_bill){
-	$one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
+	
+	    $creater_name = "";
+	    $one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
 	
 		$auto_id=$regular_bill["new_regular_bill"]["auto_id"];
 		$bill_start_date=$regular_bill["new_regular_bill"]["bill_start_date"];
@@ -118,6 +120,20 @@ foreach($result_new_regular_bill as $regular_bill){
 		$intrest_on_arrears=$regular_bill["new_regular_bill"]["intrest_on_arrears"];
 		$credit_stock=$regular_bill["new_regular_bill"]["credit_stock"];
 		$due_for_payment=$regular_bill["new_regular_bill"]["due_for_payment"];
+		$prepaired_by = (int)$regular_bill["new_regular_bill"]["created_by"]; 
+		$current_date = $regular_bill["new_regular_bill"]["current_date"];
+
+			$current_datttt = date('d-m-Y',($current_date));
+		
+		$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+		foreach ($user_dataaaa as $user_detailll) 
+		{
+		$creater_name = @$user_detailll['user']['user_name'];
+		}	
+		
+		
+		
+		
 		//wing_id via flat_id//
 		$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 		foreach($result_flat_info as $flat_info){
@@ -193,7 +209,11 @@ foreach($result_new_regular_bill as $regular_bill){
 		</div>
   
   
-  
+  <?php if(!empty($creater_name))
+		{ ?>
+		<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+		<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>
+		<?php } ?>
   
   
   
@@ -327,6 +347,7 @@ else
 $total_noc_charges=0; $total_total=0; $total_arrear_maintenance=0; $total_arrear_intrest=0; $total_intrest_on_arrears=0; $total_credit_stock=0; $total_due_for_payment=0;
 
 foreach($result_new_regular_bill as $regular_bill){
+	$creater_name = "";
 	$one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
 	
 		$auto_id=$regular_bill["new_regular_bill"]["auto_id"];
@@ -343,6 +364,19 @@ foreach($result_new_regular_bill as $regular_bill){
 		$intrest_on_arrears=$regular_bill["new_regular_bill"]["intrest_on_arrears"];
 		$credit_stock=$regular_bill["new_regular_bill"]["credit_stock"];
 		$due_for_payment=$regular_bill["new_regular_bill"]["due_for_payment"];
+		$prepaired_by = (int)$regular_bill["new_regular_bill"]["created_by"]; 
+		$current_date = $regular_bill["new_regular_bill"]["current_date"];
+
+			$current_datttt = date('d-m-Y',($current_date));
+		
+		$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+		foreach ($user_dataaaa as $user_detailll) 
+		{
+		$creater_name = @$user_detailll['user']['user_name'];
+		}	
+		
+		
+		
 		//wing_id via flat_id//
 		$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 		foreach($result_flat_info as $flat_info){
@@ -417,7 +451,11 @@ foreach($result_new_regular_bill as $regular_bill){
 		</div>
   
   
-  
+  <?php if(!empty($creater_name))
+		{ ?>
+		<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+		<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>
+		<?php } ?>
   
   
   
