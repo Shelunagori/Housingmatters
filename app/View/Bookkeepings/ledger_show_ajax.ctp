@@ -125,6 +125,8 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 		$refrence_no="";
 		$total_debit=$total_debit+$debit;
 		$total_credit=$total_credit+$credit;
+		
+		
 		if($table_name=="new_regular_bill"){
 			$source="Regular Bill";
 			$result_regular_bill=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'regular_bill_info_via_auto_id'), array('pass' => array($element_id)));
@@ -136,6 +138,16 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 			    $description = $result_regular_bill[0]["new_regular_bill"]["description"];
 				$description=substrwords($description,200,'...');
 			    $flat_id = (int)$result_regular_bill[0]["new_regular_bill"]["flat_id"]; 
+			    $prepaired_by = (int)$result_regular_bill[0]["new_regular_bill"]["created_by"]; 
+			    $current_date = $result_regular_bill[0]["new_regular_bill"]["current_date"];
+	
+$current_datttt = date('d-m-Y',($current_date));
+	
+$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+foreach ($user_dataaaa as $user_detailll) 
+{
+$creater_name = @$user_detailll['user']['user_name'];
+}	
 			
 				//wing_id via flat_id//
 				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
