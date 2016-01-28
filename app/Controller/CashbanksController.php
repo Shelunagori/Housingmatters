@@ -4086,11 +4086,19 @@ $multipleRowData = Array( Array("transaction_id" => $auto, "receipt_id" => $i,  
 "current_date" => $current_date, "account_type" => $ac_group,"transaction_date" => strtotime($transaction_date), "prepaired_by" => $s_user_id,"narration" => $narration, "account_head" => $ac_head,  "amount"=>$amount,"society_id" => $s_society_id,"receipt_source"=>3,"auto_inc"=>"YES"));
 $this->new_cash_bank->saveAll($multipleRowData);  
 
+
+$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array($party_ac)));
+foreach($result_flat_info as $flat_info){
+$account_id = (int)$flat_info["ledger_sub_account"]["auto_id"];
+}
+
+
+
 if($ac_group == 1)
 {
 $l=$this->autoincrement('ledger','auto_id');
 $this->loadmodel('ledger');
-$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date),"debit"=>null, "credit" =>$amount,"ledger_account_id" => 34, "ledger_sub_account_id" =>$party_ac,"table_name" =>"new_cash_bank","element_id"=>$auto, "society_id" => $s_society_id));
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date),"debit"=>null, "credit" =>$amount,"ledger_account_id" => 34, "ledger_sub_account_id" =>$account_id,"table_name" =>"new_cash_bank","element_id"=>$auto, "society_id" => $s_society_id));
 $this->ledger->saveAll($multipleRowData);
 }
 else
