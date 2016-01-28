@@ -229,8 +229,7 @@ $amount = number_format($amount);
    <div class="btn-group">
 	<a class="btn blue mini" href="#" data-toggle="dropdown">
 	<i class="icon-chevron-down"></i>	
-	</a><a class="btn mini black tooltips" data-original-title="Created by: <?php echo $prepaired_by_name; ?>,on: <?php echo $creation_date; ?>"  data-placement="left">
-  !</a>
+	</a>
 	<ul class="dropdown-menu" style="min-width:80px !important;">
 	<li><a href="petty_cash_receipt_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
 	<li><a href="petty_cash_receipt_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
@@ -241,7 +240,8 @@ $amount = number_format($amount);
   
   
   
-  
+  <i class="icon-info-sign tooltips" data-original-title="Created by: <?php echo $prepaired_by_name; ?>  on: <?php echo $creation_date; ?>"  data-placement="left">
+  </i>
   
   
   
