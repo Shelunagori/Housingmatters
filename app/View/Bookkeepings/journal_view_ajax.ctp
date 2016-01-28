@@ -151,15 +151,15 @@ $prepaired_by = $dataaaa['user']['user_name'];
 <div class="btn-group">
 <a class="btn blue mini" href="#" data-toggle="dropdown">
 <i class="icon-chevron-down"></i>	
-</a><a class="btn mini black tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?>,on: <?php echo $current_date; ?>">
-  !</a>	
+</a>
 <ul class="dropdown-menu" style="min-width:80px !important;">
 <li><a href="journal_voucher_view/<?php echo $voucher_id; ?>" target="_blank" ><i class="icon-search"></i> View</a>  </li>
 </ul>
 </div> 
 
 
-
+<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date; ?>">
+ </i>	
 
 
 
