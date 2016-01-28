@@ -840,8 +840,16 @@ $bill_html='<div style="margin: 0px;">
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
                                     <tr>
-                                        <td  align="center" colspan="7"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /> <b>
+                                        <td  align="center" colspan="7">
+										<table>
+										<tr>
+										<td><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></td>
+										<td>
+										<b>
 										+91-9869157561 </b></td>
+										</tr>
+										</table>
+										 </td>
                                     </tr>
                                     
                                 </tbody>
@@ -5782,8 +5790,17 @@ $bill_html='<div style="margin: 0px;">
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
                                      <tr>
-                                        <td  align="center" colspan="7"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /> <b>
+                                        <td  align="center" colspan="7">
+										<table>
+										<tr>
+										<td><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></td>
+										<td>
+										<b>
 										+91-9869157561 </b></td>
+										</tr>
+										</table>
+										
+										</td>
                                     </tr>
                                     
                                 </tbody>
