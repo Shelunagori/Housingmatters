@@ -357,13 +357,12 @@ $creater_name = $ussrrr['user']['user_name'];
 		$prepaired_by = (int)$result_cash_bank[0]['new_cash_bank']['prepaired_by'];   
         $current_date = $result_cash_bank[0]['new_cash_bank']['current_date'];	
 			
-			
 		$current_datttt = date('d-m-Y',strtotime($current_date));
 
 		$result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($prepaired_by)));
 		foreach ($result_gh as $collection) 
 		{
-		$creater_name = (int)$collection['user']['user_name'];
+		$creater_name = $collection['user']['user_name'];
 		}		
 
 			
@@ -394,6 +393,21 @@ $creater_name = $ussrrr['user']['user_name'];
 			$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
 			$description=substrwords($description,200,'...');
 			$refrence_no=$result_cash_bank[0]["new_cash_bank"]["receipt_id"]; 
+			$prepaired_by = (int)$result_cash_bank[0]['new_cash_bank']['prepaired_by'];
+			$current_date = $result_cash_bank[0]['new_cash_bank']['current_date'];
+      
+	     $current_datttt = date('d-m-Y',strtotime($current_date));
+			
+		$result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($prepaired_by)));
+		foreach ($result_gh as $collection) 
+		{
+		$creater_name = $collection['user']['user_name'];
+		}	
+
+			
+			
+			
+			
 			if($subledger_id != 0)
 			{
 			$subleddger_detaill=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'ledger_sub_account_detail_via_auto_id'), array('pass' => array($subledger_id)));
@@ -473,13 +487,20 @@ $creater_name = $ussrrr['user']['user_name'];
 		if($table_name=="expense_tracker"){
 			
 			$source="Expenses";
+			 
 			
-			$result_expense_tracker=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_expense_tracker'), array('pass' => array($element_id)));
-			foreach($result_expense_tracker as $data){
-				$description=$data['expense_tracker']['description'];
-				$refrence_no=$data['expense_tracker']['expense_id'];
-			    //$refrence_no=$data['expense_tracker']['expense_id'];
-			     $expense_user_id = (int)$data['expense_tracker']['party_ac_head'];
+		$result_expense_tracker=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_expense_tracker'), array('pass' => array($element_id)));
+		foreach($result_expense_tracker as $data){
+		$description=$data['expense_tracker']['description'];
+		$refrence_no=$data['expense_tracker']['expense_id'];
+		//$refrence_no=$data['expense_tracker']['expense_id'];
+		$expense_user_id = (int)$data['expense_tracker']['party_ac_head'];
+		$user_id22=(int)$data['expense_tracker']['user_id'];	
+		$current_datttt = $data['expense_tracker']['current_date'];	
+			
+		$result_user = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($user_id22)));
+		$creater_name=$result_user[0]['user']['user_name'];	
+			
 			
              if($subledger_id != 0)
 			 {
