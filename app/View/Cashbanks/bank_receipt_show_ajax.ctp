@@ -209,8 +209,7 @@ echo $amount; ?></td>
     <div class="btn-group">
 	<a class="btn blue mini" href="#" data-toggle="dropdown">
 	<i class="icon-chevron-down"></i>	
-	</a><a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $creater_name; ?> on: <?php echo $current_datttt; ?>">!</a>
+	</a>
 	<ul class="dropdown-menu" style="min-width:80px !important;left:-53px;padding: 3px 0px; box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3); font-size: 12px;">
 	<li><a href="bank_receipt_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
 	<li><a href="bank_receipt_pdf/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-file"></i>Pdf</a></li>
@@ -226,7 +225,8 @@ if($is_cancel=="NO" && $maximum_one_time_id==$bill_one_time_id){ ?>
 	</div>
 
 								
-								
+<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+	<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>								
 							
 
 
