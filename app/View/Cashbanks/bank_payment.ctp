@@ -21,6 +21,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </center>
 
 <!------------------------- Start Bank Payment Form ----------------------------------->
+<div id="url_main">
 <form method="post" id="form2">
 <div class="portlet box blue">
 <div class="portlet-title">
@@ -183,6 +184,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </div>
 </div>
 </form>
+</div>
 <!----------------------------------- End Bank Payment Form ----------------------------------->	
 <?php ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <?php
