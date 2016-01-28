@@ -81,9 +81,9 @@ $prepaired_by_name=$result_user[0]['user']['user_name'];
 <td><?php echo $description; ?></td>
 <td align="right"><?php echo $ammount_of_invoice; ?> <?php $total+=$ammount_of_invoice ; ?></td>
 <td class="hide_at_print">
-<span>
-<a class=" btn mini black tooltips " data-placement="left" data-original-title="Created By: <?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>">! </a> 
-</span>
+
+<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created By: <?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>"></i> 
+
 <?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/expenset/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i></a><?php } ?>
 
 </td>

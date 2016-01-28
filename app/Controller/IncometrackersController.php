@@ -6818,7 +6818,7 @@ $this->society->updateAll(array('terms_conditions'=>$terms_arr),array("society_i
 }
 //////////////////////// End Edit Terms ////////////////////////////////////////////////////////////////
 
-//////////////////////////////////// Start Approve Bill /////////////////////////////////////////////////////////////////
+///////////////////////////////// Start Approve Bill //////////////////////////////////////
 function aprrove_bill(){
 if($this->RequestHandler->isAjax()){
 $this->layout='blank';
@@ -6878,13 +6878,14 @@ foreach($result_new_regular_bill as $regular_bill){
 	}
 
 if(isset($this->request->data['approve'])){
+	$date = date('d-m-Y');
 	if(sizeof($result_new_regular_bill)>0){
 		foreach($result_new_regular_bill as $data5){
 			$auto_id=$data5["new_regular_bill"]["auto_id"];
 			$chk_value = (int)@$this->request->data['check'.$auto_id];
 			if($chk_value==1){
 				$this->loadmodel('new_regular_bill');
-				$this->new_regular_bill->updateAll(array('approval_status'=>1),array('auto_id'=>$auto_id));
+				$this->new_regular_bill->updateAll(array('approval_status'=>1,"approved_by"=>$s_user_id,"approved_date"=>$date),array('auto_id'=>$auto_id));
 				
 				//fetch bill info via auto_id//
 				$this->loadmodel('new_regular_bill');
