@@ -134,6 +134,7 @@ $grand_total = 0;
 $i=0;
 foreach ($cursor1 as $collection) 
 {
+	$creater_name = "";
 $adhoc_bill= (int)$collection['adhoc_bill']["adhoc_bill_id"];
 $receipt_id = $collection['adhoc_bill']['receipt_id'];
 $date=$collection['adhoc_bill']["date"];
@@ -212,14 +213,18 @@ echo $g_total; ?></td>
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
 		</a>
-		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		
+		
 		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>" target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
 
-
+         <?php if(!empty($creater_name))
+			{ ?>
+			<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+			<?php echo $creater_name; ?> on: <?php echo $datett; ?>"></i>
+			<?php } ?>
 
 
 
@@ -268,6 +273,7 @@ $grand_total = 0;
 $i=0;
 foreach ($cursor1 as $collection) 
 {
+	$creater_name = "";
 $adhoc_bill= (int)$collection['adhoc_bill']["adhoc_bill_id"];
 $receipt_id = $collection['adhoc_bill']['receipt_id'];
 $pay_status=$collection['adhoc_bill']["pay_status"];
@@ -327,13 +333,16 @@ $g_total = number_format($g_total);
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
 		</a>
-		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		
 		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>" target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
-
+		<?php if(!empty($creater_name))
+		{ ?>
+		<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+		<?php echo $creater_name; ?> on: <?php echo $datett; ?>"></i>
+		<?php } ?>
 </td>
 </tr>
 <?php }}} ?>
@@ -381,6 +390,7 @@ $grand_total = 0;
 $i=0;
 foreach ($cursor1 as $collection) 
 {
+$creater_name = "";
 $adhoc_bill= (int)$collection['adhoc_bill']["adhoc_bill_id"];
 $receipt_id = $collection['adhoc_bill']['receipt_id'];
 $pay_status=$collection['adhoc_bill']["pay_status"];
@@ -435,13 +445,17 @@ echo $g_total; ?></td>
 		<a class="btn blue mini" href="#" data-toggle="dropdown">
 		<i class="icon-chevron-down"></i>	
 		</a>
-		<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-	<?php echo $creater_name; ?> on: <?php echo $datett; ?>">!</a>
+		
 		<ul class="dropdown-menu" style="min-width:75px !important;">
 		<li><a href="supplimentry_view/<?php echo $adhoc_bill; ?>"  target="_blank"><i class="icon-search"></i> View</a></li>
 		</ul>
 		</div>
 
+		<?php if(!empty($creater_name))
+		{ ?>
+		<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+		<?php echo $creater_name; ?> on: <?php echo $datett; ?>"></i>
+		<?php } ?>
 
 </td>
 </tr>

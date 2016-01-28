@@ -267,6 +267,17 @@ foreach($result_ledger as $ledger_data){
 						$bill_approved="yes";
 						$refrence_no = $result_regular_bill[0]["new_regular_bill"]["bill_no"];
 						$description = $result_regular_bill[0]["new_regular_bill"]["description"];
+						$prepaired_by = (int)$result_regular_bill[0]["new_regular_bill"]["created_by"]; 
+						$current_date = $result_regular_bill[0]["new_regular_bill"]["current_date"];
+	
+				$date = date('d-m-Y',($current_date));
+					
+				$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
+				foreach ($user_dataaaa as $user_detailll) 
+				{
+				$creater_name = @$user_detailll['user']['user_name'];
+				}	
+					
 					}
 					
 					
@@ -361,9 +372,13 @@ foreach($result_ledger as $ledger_data){
 						<?php if(!empty($creater_name))
 						{
 							?>
-						<a class="btn tooltips mini black" data-placement="left" data-original-title="Created by: 
-						<?php echo $creater_name; ?> on: <?php echo $dattt; ?>">!</a>
+						<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
+						<?php echo $creater_name; ?> on: <?php echo $dattt; ?>"></i>
 						 <?php } ?>
+						
+						
+						
+						
 						
 						</td>              
 					</tr>
