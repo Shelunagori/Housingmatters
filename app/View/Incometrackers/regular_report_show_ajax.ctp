@@ -468,7 +468,7 @@ foreach($result_new_regular_bill as $regular_bill){
 ?>
 	</tbody>
 		<tr>
-			<td colspan="5" align="right"><b>Total<b/></td>
+			<td colspan="4" align="right"><b>Total<b/></td>
 			<?php foreach($income_head_array_size as $income_head=>$value){ $total_income_heads_am=0;
 				foreach($total_income_heads[$income_head] as $data5){
 					$total_income_heads_am+=$data5;

@@ -219,6 +219,7 @@ $total_noc_charges=0; $total_total=0; $total_arrear_maintenance=0; $total_arrear
 	
 foreach($result_new_regular_bill as $regular_bill){
 	$creater_name = "";
+	$approve_by = "";
 	$one_time_id=$regular_bill["new_regular_bill"]["one_time_id"];
 	if($one_time_id==$last_one_time_id){
 		$auto_id=$regular_bill["new_regular_bill"]["auto_id"];
@@ -235,9 +236,19 @@ foreach($result_new_regular_bill as $regular_bill){
 		$intrest_on_arrears=$regular_bill["new_regular_bill"]["intrest_on_arrears"];
 		$credit_stock=$regular_bill["new_regular_bill"]["credit_stock"];
 		$due_for_payment=$regular_bill["new_regular_bill"]["due_for_payment"];
-			$prepaired_by = (int)$regular_bill["new_regular_bill"]["created_by"]; 
-			$current_date = $regular_bill["new_regular_bill"]["current_date"];
-
+		$prepaired_by = (int)$regular_bill["new_regular_bill"]["created_by"]; 
+		$current_date = $regular_bill["new_regular_bill"]["current_date"];
+        $approved_by_id = (int)$regular_bill["new_regular_bill"]["approved_by"]; 
+        $approved_date = $regular_bill["new_regular_bill"]["approved_date"]; 
+		
+		
+		$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($approved_by_id)));
+		foreach ($user_dataaaa as $user_detailll) 
+		{
+		$approved_by = @$user_detailll['user']['user_name'];
+		}	
+		
+		
 			$current_datttt = date('d-m-Y',($current_date));
 		
 		$user_dataaaa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by)));
@@ -324,7 +335,7 @@ foreach($result_new_regular_bill as $regular_bill){
 		<?php if(!empty($creater_name))
 		{ ?>
 		<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
-		<?php echo $creater_name; ?> on: <?php echo $current_datttt; if(!empty($approver_name)) { ?>, Approved by: <?php echo $approver_name; ?> on: <?php echo $approved_date; }?>"></i>
+		<?php echo $creater_name; ?> on: <?php echo $current_datttt; ?>"></i>
 		<?php } ?>
   
   
