@@ -223,7 +223,8 @@ foreach($result_account_group as $data){
 -->
 
 <!-------------------------------- Start New Expense Tracker Form ------------------------------------->
-<form method="post">
+<form method="post" id="form2">
+<div id="main_url">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block">Create New Expense Tracker Vouchers</h4>
@@ -231,6 +232,7 @@ foreach($result_account_group as $data){
 <div class="portlet-body form">
 <div id="output"></div>                    
 <table class="table table-hover" style="background-color:#CDE9FE;" id="main_table">
+<tbody id="show_import_data">
 <tr>
 <td style="border:solid 1px blue;">
                     
@@ -350,6 +352,7 @@ foreach($result_account_group as $data){
 <a class="btn green mini adrww" onclick="add_rowwwww()"><i class="icon-plus"></i></a><br>
 </td>
 </tr>
+</tbody>
 </table>
        
                           
@@ -359,9 +362,8 @@ foreach($result_account_group as $data){
 </div>
 </div>
 </div>
+</div>
 </form>
-
-
 <!------------------------------ End New Expense Tracker Form ----------------------------------------->
 
 <script>
@@ -470,7 +472,7 @@ m_data.append( 'file', $('input[name=file]')[0].files[0]);
 		}).done(function(response) {
 			
 		$("#myModal3").hide();
-		$('tbody#count_row').html(response);
+		$('#show_import_data').html(response);
 
 });
 });
@@ -478,7 +480,7 @@ m_data.append( 'file', $('input[name=file]')[0].files[0]);
 
 
 
-$('form').submit( function(ev){ 
+$('form#form2').submit( function(ev){ 
 	ev.preventDefault();	
 	var m_data = new FormData(); 
 	var count = $("#main_table")[0].rows.length;
