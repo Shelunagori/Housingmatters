@@ -132,8 +132,8 @@ function convert_imported_data(){
 		$drown_in_which_bank=trim($import_record["bank_receipt_csv"]["drown_in_which_bank"]);
 		$branch_of_bank=trim($import_record["bank_receipt_csv"]["branch_of_bank"]);
 		$member_name=$import_record["bank_receipt_csv"]["member_name"];
-		$wing=trim($import_record["bank_receipt_csv"]["wing"]);
-		$flat=trim($import_record["bank_receipt_csv"]["flat"]);
+		 $wing=trim($import_record["bank_receipt_csv"]["wing"]);
+		 $flat=(int)trim($import_record["bank_receipt_csv"]["flat"]);
 		$receipt_type=trim(strtolower($import_record["bank_receipt_csv"]["receipt_type"]));
 		$amount=trim($import_record["bank_receipt_csv"]["amount"]);
 		$narration=trim($import_record["bank_receipt_csv"]["narration"]);
@@ -163,7 +163,7 @@ function convert_imported_data(){
 		
 
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' . trim($flat) . '$/i'), "society_id"=>$s_society_id, "wing_id"=>$wing_id);
+		$conditions=array("flat_name"=>$flat, "society_id"=>$s_society_id, "wing_id"=>$wing_id);
 		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
 		if(sizeof($result_ac)>0){
 			foreach($result_ac as $collection){
@@ -177,7 +177,7 @@ function convert_imported_data(){
 		
 		if($true_wing_id==$wing_id && ($true_wing_id!=0)){
 			$this->loadmodel('ledger_sub_account'); 
-			$conditions=array("flat_id"=> $flat_id, "society_id"=>$s_society_id);
+			$conditions=array("flat_id"=> (int)$flat_id, "society_id"=>$s_society_id);
 			$result_ac=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 			foreach($result_ac as $collection){
 				$ledger_sub_account_id = (int)$collection['ledger_sub_account']['auto_id'];
