@@ -177,11 +177,11 @@ $prepaired_by = $dataaaa['user']['user_name'];
 </table>
 
 <?php if(empty($page)){ $page=1;} ?>
-<div >
+<div class="hide_at_print">
 	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
 	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
 </div>
-<div class="pagination pagination-medium">
+<div class="pagination pagination-medium hide_at_print">
 <ul>
 <?php 
 $loop=(int)($count_bank_receipt_converted/10);
