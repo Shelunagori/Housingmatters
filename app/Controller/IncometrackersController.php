@@ -829,13 +829,13 @@ $bill_html='<div style="margin: 0px;">
 										</td>
                                     </tr>
 									<tr>
-                                        <td width="50" align="right"><b></b></td>
+                                        <td width="20" align="right"><b></b></td>
                                         <td  width="120" style="color:#FFF !important;"> 
 										<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
                                         </td>
 										<td align="center"></td>
                                         <td align="right" width="50"><b><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></b></td>
-                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
+                                        <td width="104" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
@@ -5767,13 +5767,13 @@ $bill_html='<div style="margin: 0px;">
 										</td>
                                     </tr>
 									<tr>
-                                        <td width="50" align="right"><b></b></td>
+                                        <td width="20" align="right"><b></b></td>
                                         <td  width="120" style="color:#FFF !important;"> 
 										<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
                                         </td>
 										<td align="center"></td>
                                         <td align="right" width="50"><b><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></b></td>
-                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
+                                        <td width="104" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
