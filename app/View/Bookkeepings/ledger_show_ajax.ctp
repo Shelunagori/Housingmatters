@@ -39,7 +39,7 @@ function substrwords($text, $maxchar, $end='...') {
 }
 
 ?>
-<div style="overflow:auto;"> 
+<div style="overflow:auto;" class="hide_at_print"> 
 <a href="ledger_excel?l=<?php echo $ledger_account_id; ?>&sl=<?php echo $ledger_sub_account_id; ?>&f=<?php echo $from; ?>&t=<?php echo $to; ?>" class="btn blue mini pull-right" target="_blank" style="margin-left:1%;"><i class="icon-download"></i></a>
 <a href="#" class="btn green mini pull-right" onclick="window.print()"> <i class="icon-print"></i> </a>
 </div>
@@ -772,11 +772,11 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 </div>
 
 <?php if(empty($page)){ $page=1;} ?>
-<div >
+<div class="hide_at_print">
 	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
 	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
 </div>
-<div class="pagination pagination-medium">
+<div class="pagination pagination-medium hide_at_print">
 <ul>
 <?php 
 $loop=(int)($count_bank_receipt_converted/10);
