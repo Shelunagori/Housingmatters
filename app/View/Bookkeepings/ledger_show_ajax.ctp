@@ -98,7 +98,7 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
             <th>Reference</th>
 			<th>Debit</th>
 			<th>Credit</th>
-			<th></th>
+			<th class="hide_at_print"></th>
 		</tr>
 	</thead>
 	<tbody id="table">
@@ -701,7 +701,7 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
            </td>
             <td style="text-align:right;"><?php echo $amttt; ?></td>
 			<td style="text-align:right;"><?php echo $credit; ?></td>
-			<td>
+			<td class="hide_at_print">
 			<?php if(!empty($creater_name))
 			{ ?>
 			<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
@@ -752,7 +752,7 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 			</td>
 			<td style="text-align:right;"><?php echo $debit; ?></td>
 			<td style="text-align:right;"><?php echo $credit; ?></td>
-			<td>
+			<td class="hide_at_print">
 			<?php if(!empty($creater_name))
 			{ ?>
 			<i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
@@ -765,7 +765,7 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 			<td colspan="5" align="right"><b>Total</b></td>
 			<td style="text-align:right;"><b><?php echo $total_debit; ?></b></td>
 			<td style="text-align:right;"><b><?php echo $total_credit; ?></b></td>
-			<td></td>
+			<td class="hide_at_print"></td>
 		</tr>
 	</tbody>
 </table>
