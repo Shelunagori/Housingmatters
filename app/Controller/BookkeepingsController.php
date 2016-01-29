@@ -571,14 +571,27 @@ foreach($ledger_sub_detail as $dataa)
 $ledger_sub_account_id= (int)$dataa['ledger_sub_account']['auto_id'];
 }
 }
-
-		$this->loadmodel('ledger');
+$this->loadmodel('ledger');
 		$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,
 		"ledger_sub_account_id"=>$ledger_sub_account_id,
 		'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
 		$order=array('ledger.transaction_date'=>'ASC');
 		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>10,"page"=>$page)); 
 		$this->set('result_ledger',$result_ledger);
+
+
+if($ledger_account_id == 15)
+{
+$this->loadmodel('ledger');
+$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,
+"ledger_sub_account_id"=>$ledger_sub_account_id,
+'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
+$order=array('ledger.transaction_date'=>'ASC');
+$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>5,"page"=>$page)); 
+$this->set('result_ledger',$result_ledger);	
+
+}
+		
 		
 		$this->loadmodel('ledger');
 		$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,
