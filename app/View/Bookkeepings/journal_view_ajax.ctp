@@ -35,14 +35,14 @@ font-size: 12px;
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
-<table id="report_tb" width="100%" style="background-color:white;">
+<table width="100%" style="background-color:white;" class="table table-bordered table-striped">
 <thead>
 <tr>
 <th colspan="8" style="text-align:center;"><b>
 <?php echo $society_name; ?> Journal: <?php echo $from; ?> to <?php echo $to; ?></b>
 </th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Journal voucher Id </th>
 <th>Transaction Date</th>
 <th>Ledger A/c</th>
@@ -175,6 +175,24 @@ $prepaired_by = $dataaaa['user']['user_name'];
 </tr>
 </tbody>
 </table>
+
+<?php if(empty($page)){ $page=1;} ?>
+<div >
+	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
+	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
+</div>
+<div class="pagination pagination-medium">
+<ul>
+<?php 
+$loop=(int)($count_bank_receipt_converted/10);
+if($count_bank_receipt_converted%10>0){
+	$loop++;
+}
+for($ii=1;$ii<=$loop;$ii++){ ?>
+	<li><a href="#" onclick="paginttion(<?php echo $ii; ?>,<?php echo $from; ?>,<?php echo $to; ?>)" role="button" ><?php echo $ii; ?></a></li>
+<?php } ?>
+</ul>
+</div>
 
 
 <script>
