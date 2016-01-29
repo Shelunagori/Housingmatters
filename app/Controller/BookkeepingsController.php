@@ -218,7 +218,7 @@ $s_user_id=$this->Session->read('user_id');
 
 //////////////////////////////////////////////// Start Journal View Ajax(Accounts)///////////////////////////////////////////////////////////////////////
 
-function journal_view_ajax(){
+function journal_view_ajax($page=null,$from=null,$to=null){
 if($this->RequestHandler->isAjax()){
 		$this->layout='blank';
 		}else{
@@ -226,13 +226,16 @@ if($this->RequestHandler->isAjax()){
 		}
 		$this->ath();
 		$s_society_id = (int)$this->Session->read('society_id');
+		$page=(int)$page;
+	    $this->set('page',$page);
+		
 		$result_society=$this->society_name($s_society_id);
 		foreach($result_society as $data){
 			$this->set('society_name',$data['society']['society_name']);
 			
 		}
-		$from = $this->request->query('date1');
-		$to = $this->request->query('date2');
+		//$from = $this->request->query('date1');
+		//$to = $this->request->query('date2');
 		//$search_voucher=$this->request->query('search');	
 		$this->set('from',$from);
 		$this->set('to',$to);
@@ -245,12 +248,25 @@ if($this->RequestHandler->isAjax()){
 		$this->loadmodel('journal');
 		
 		$conditions=array("society_id" => $s_society_id,'journal.transaction_date'=>array('$gte'=>$from1,'$lte'=>$to1));
-			
 		$order=array('journal.transaction_date'=> 'ASC');
-		$result_journal=$this->journal->find('all',array('conditions'=>$conditions));
+		$result_journal=$this->journal->find('all',array('conditions'=>$conditions,'limit'=>10,"page"=>$page));
 		$this->set('result_journal',$result_journal);
 
-
+		
+		$this->loadmodel('journal');
+		
+		$conditions=array("society_id" => $s_society_id,'journal.transaction_date'=>array('$gte'=>$from1,'$lte'=>$to1));
+		$order=array('journal.transaction_date'=> 'ASC');
+		$result_journal2=$this->journal->find('all',array('conditions'=>$conditions));
+		$this->set('result_journal2',$result_journal2);
+		$count_bank_receipt_converted=0;
+		foreach($result_journal2 as $ddd)
+		{
+		$count_bank_receipt_converted++;	
+		}
+		
+		$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+		
 
 }
 
