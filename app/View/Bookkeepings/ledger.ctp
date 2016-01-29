@@ -92,7 +92,7 @@ $(document).ready(function() {
 			
 		var date1=$('#date1').val();
 		var date2=$('#date2').val();
-		$("#ledger_view").html('<div align="center" style="padding:10px;"><img src="<?php echo $webroot_path; ?>as/loding.gif" />Loading....</div>').load("ledger_show_ajax?date1=" +date1+ "&date2=" +date2+ "&ledger_id=" +ledger_account_id+ "&subledger_id=" +sub_ledger_id+"");
+		$("#ledger_view").html('<div align="center" style="padding:10px;"><img src="<?php echo $webroot_path; ?>as/loding.gif" />Loading....</div>').load("ledger_show_ajax/"+1+"/" +ledger_account_id+ "/" +sub_ledger_id+ "/" +date1+ "/" +date2+"");
 	});
 });
 </script>			

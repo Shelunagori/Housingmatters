@@ -511,7 +511,7 @@ $this->set("tds_arr",$tds_arr);
 //////////////////////////// End Ledger Excel (Accounts)/////////////////////////////
 
 ////////////////////////////////////////////// Start Ledger Show Ajax (Accounts)////////////////////////////////////////////////////////////////////////
-function ledger_show_ajax(){
+function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account_id=null,$from=null,$to=null){
 	$this->layout='blank';
 	$this->ath();
 	$s_role_id=$this->Session->read('role_id');
@@ -520,10 +520,10 @@ function ledger_show_ajax(){
 	$this->set('s_role_id',$s_role_id);
 
 
-	$ledger_account_id = (int)$this->request->query('ledger_id');
-	$ledger_sub_account_id = (int)$this->request->query('subledger_id');
-	$from = date("Y-m-d",strtotime($this->request->query('date1')));
-	$to = date("Y-m-d",strtotime($this->request->query('date2')));
+	$ledger_account_id = (int)$ledger_account_id;
+	$ledger_sub_account_id = (int)$ledger_sub_account_id;
+	$from = date("Y-m-d",strtotime($from));
+	$to = date("Y-m-d",strtotime($to));
 	$this->set('ledger_account_id',$ledger_account_id);
 	$this->set('ledger_sub_account_id',$ledger_sub_account_id);
 	$this->set('from',$from);
@@ -546,8 +546,21 @@ function ledger_show_ajax(){
 	$this->loadmodel('ledger');
 	$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
 	$order=array('ledger.transaction_date'=>'ASC');
-	$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
+	$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>10,"page"=>$page)); 
 	$this->set('result_ledger',$result_ledger);
+	
+	
+	$count_bank_receipt_converted=0;
+	$this->loadmodel('ledger');
+	$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
+	$order=array('ledger.transaction_date'=>'ASC');
+	$result_ledger2=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
+	foreach($result_ledger2 as $rrr)
+	{
+	$count_bank_receipt_converted++;	
+	}
+	$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+	
 	
 	if($ledger_account_id == 15 || $ledger_account_id == 33 || $ledger_account_id == 34 || $ledger_account_id == 35 || $ledger_account_id == 112){
 
@@ -564,8 +577,22 @@ $ledger_sub_account_id= (int)$dataa['ledger_sub_account']['auto_id'];
 		"ledger_sub_account_id"=>$ledger_sub_account_id,
 		'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
 		$order=array('ledger.transaction_date'=>'ASC');
-		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
+		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>10,"page"=>$page)); 
 		$this->set('result_ledger',$result_ledger);
+		
+		$this->loadmodel('ledger');
+		$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,
+		"ledger_sub_account_id"=>$ledger_sub_account_id,
+		'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
+		$order=array('ledger.transaction_date'=>'ASC');
+		$result_ledger2=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
+	$count_bank_receipt_converted=0;
+	foreach($result_ledger2 as $rrr)
+	{
+	$count_bank_receipt_converted++;	
+	}
+	$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+		
 		}
 	
 	
