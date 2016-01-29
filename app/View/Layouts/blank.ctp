@@ -1,6 +1,6 @@
 <?php echo $this->fetch('content'); ?>
 <script>
-var test = $("input[type=radio]:not(.toggle)");
+var test = $("input[type=radio]:not(.toggle),input[type=checkbox]:not(.toggle)");
 if (test) {
 	test.uniform();
 }
