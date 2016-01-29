@@ -15,6 +15,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <a href="<?php echo $webroot_path; ?>Bookkeepings/journal_add" class="btn" rel='tab'> Create</a>
 <a href="<?php echo $webroot_path; ?>Bookkeepings/journal_view" class="btn yellow" rel='tab'> View</a>
 </div>
+</center>
 <?php ///////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 
 <?php
