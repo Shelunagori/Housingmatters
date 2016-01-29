@@ -189,7 +189,7 @@ if($count_bank_receipt_converted%10>0){
 	$loop++;
 }
 for($ii=1;$ii<=$loop;$ii++){ ?>
-	<li><a href="#" onclick="paginttion(<?php echo $ii; ?>,<?php echo $from; ?>,<?php echo $to; ?>)" role="button" ><?php echo $ii; ?></a></li>
+	<li><a href="#" onclick="paginttion(<?php echo $ii; ?>)" role="button" ><?php echo $ii; ?></a></li>
 <?php } ?>
 </ul>
 </div>
