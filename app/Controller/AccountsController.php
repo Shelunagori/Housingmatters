@@ -3181,6 +3181,30 @@ function trial_balance_ajax_show_sub_ledger($from=null,$to=null,$wise=null)
 	$this->set('ledger_account_id',112);	
 	}
 
+	$new_flats_for_bill = array();
+	$this->loadmodel('wing');
+	$condition=array('society_id'=>$s_society_id);
+	$order=array('wing.wing_name'=>'ASC');
+	$result_wing=$this->wing->find('all',array('conditions'=>$condition,'order'=>$order));
+	foreach($result_wing as $wing_info){
+		
+			$wing_id=$wing_info["wing"]["wing_id"];
+			
+	$this->loadmodel('flat');
+	$condition=array('wing_id'=>(int)$wing_id);
+	$order=array('flat.flat_name'=>'ASC');
+	$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
+	foreach($result_flat as $flat_info){
+		
+			$flat_id=$flat_info["flat"]["flat_id"];
+				
+					$new_flats_for_bill[]=$flat_id;
+	
+		}
+		}
+	
+	$this->set('new_flats_for_bill',$new_flats_for_bill);
+	
 	$this->loadmodel('ledger_sub_account');
 	$order=array('ledger_sub_account.name'=> 'ASC');
 	$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions,'order' =>$order));
