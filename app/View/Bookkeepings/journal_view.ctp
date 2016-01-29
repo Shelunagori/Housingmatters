@@ -75,6 +75,19 @@ $(document).ready(function() {
 	
 });
 </script>
+<script>
+function paginttion(ii)
+{
+var date1=document.getElementById('date1').value;
+var date2=document.getElementById('date2').value;	
+if((date1=='')) { alert('Please Input Date-from'); }
+if((date2=='')) { alert('Please Input Date-to'); }
+else
+{
+$("#result").html('<div align="center" style="padding:10px;"><img src="<?php echo $webroot_path; ?>as/loding.gif" />Loading....</div>').load("journal_view_ajax/"+ii+"/" +date1+ "/" + date2);	
+}
+}
+</script>
 <!--
 <script>
 $(document).ready(function() {
