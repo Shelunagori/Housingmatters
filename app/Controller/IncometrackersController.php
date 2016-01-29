@@ -829,29 +829,17 @@ $bill_html='<div style="margin: 0px;">
 										</td>
                                     </tr>
 									<tr>
-                                        <td width="50" align="right"><b>Email :</b></td>
+                                        <td width="50" align="right"><b></b></td>
                                         <td  width="120" style="color:#FFF !important;"> 
 										<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
                                         </td>
 										<td align="center"></td>
-                                        <td align="right" width="50"><b>Phone :</b></td>
-                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>022-41235568</b></td>
+                                        <td align="right" width="50"><b><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></b></td>
+                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
-                                    <tr>
-                                        <td  align="center" colspan="7">
-										<table>
-										<tr>
-										<td><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></td>
-										<td>
-										<b>
-										+91-9869157561 </b></td>
-										</tr>
-										</table>
-										 </td>
-                                    </tr>
-                                    
+                                                                       
                                 </tbody>
 							</table>
                             </td>
@@ -5779,30 +5767,17 @@ $bill_html='<div style="margin: 0px;">
 										</td>
                                     </tr>
 									<tr>
-                                        <td width="50" align="right"><b>Email :</b></td>
+                                        <td width="50" align="right"><b></b></td>
                                         <td  width="120" style="color:#FFF !important;"> 
 										<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
                                         </td>
 										<td align="center"></td>
-                                        <td align="right" width="50"><b>Phone :</b></td>
-                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>022-41235568</b></td>
+                                        <td align="right" width="50"><b><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></b></td>
+                                        <td width="84" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
 										<td align="center"></td>
                                         <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
                                     </tr>
-                                     <tr>
-                                        <td  align="center" colspan="7">
-										<table>
-										<tr>
-										<td><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></td>
-										<td>
-										<b>
-										+91-9869157561 </b></td>
-										</tr>
-										</table>
-										
-										</td>
-                                    </tr>
-                                    
+                                                                        
                                 </tbody>
 							</table>
                             </td>
