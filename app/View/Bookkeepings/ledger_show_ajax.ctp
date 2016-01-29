@@ -88,7 +88,7 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>-->
 	<span>From: <?php echo date("d-m-Y",strtotime($from)); ?> To: <?php echo date("d-m-Y",strtotime($to)); ?></span>
 </div>
-<table id="report_tb" width="100%">
+<table width="100%" class="table table-bordered table stripped">
 	<thead>
 		<tr>
 			<th>Transaction Date</th>
