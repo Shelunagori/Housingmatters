@@ -88,7 +88,7 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>-->
 	<span>From: <?php echo date("d-m-Y",strtotime($from)); ?> To: <?php echo date("d-m-Y",strtotime($to)); ?></span>
 </div>
-<table width="100%" class="table table-bordered table stripped">
+<table width="100%" class="table table-bordered table-striped">
 	<thead>
 		<tr>
 			<th>Transaction Date</th>
@@ -771,7 +771,23 @@ $ledger_id = (int)@$data["ledger"]["ledger_account_id"];
 </table>
 </div>
 
-
+<?php if(empty($page)){ $page=1;} ?>
+<div >
+	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
+	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
+</div>
+<div class="pagination pagination-medium">
+<ul>
+<?php 
+$loop=(int)($count_bank_receipt_converted/10);
+if($count_bank_receipt_converted%10>0){
+	$loop++;
+}
+for($ii=1;$ii<=$loop;$ii++){ ?>
+	<li><a href="#" onclick="paginttion(<?php echo $ii; ?>,<?php echo $from; ?>,<?php echo $to; ?>)" role="button" ><?php echo $ii; ?></a></li>
+<?php } ?>
+</ul>
+</div>
 
 <script>
   var $rows = $('#table tr');
