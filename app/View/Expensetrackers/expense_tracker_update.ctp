@@ -140,6 +140,7 @@ foreach($result_expense_tracker as $data)
        
                           
 <div class="form-actions">
+<a href="<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_view" class="btn green" rel="tab"><i class="icon-arrow-left"></i> Back</a>
 <button type="submit" class="btn blue">Save</button>
 <button type="button" class="btn">Cancel</button>
 </div>
