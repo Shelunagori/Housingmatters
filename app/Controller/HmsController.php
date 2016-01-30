@@ -9751,7 +9751,8 @@ $tenant=(int)$collection['user_temp']['tenant'];
 ///// flat already exit checked code start ////////////////
 
 $this->loadmodel('user_flat');
-$conditions=array('flat_id'=>$flat,'society_id'=>$society_id);
+
+$conditions=array('flat_id'=>$flat,'society_id'=>$society_id,'active'=>0,'family_member'=>array('$ne'=>1));
 $result_user=$this->user_flat->find('all',array('conditions'=>$conditions));
 $n5=sizeof($result_user);
 if($n5==1){
@@ -24218,13 +24219,14 @@ if($family_member==1 || $s_role_id==3 )
 			
 		  			
 			////////////////////////// insert user table //////////////////////////
-
-$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'residing' => $residing, 'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>'','role_id'=>2,'default_role_id'=>2,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
+$role_id[]=2;
+$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'residing' => $residing, 'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>'','role_id'=>$role_id,'default_role_id'=>2,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
 
 			////////////////////// End user table ///////////////////////////////////////////////////
 
-
-
+$user_flat_id=$this->autoincrement('user_flat','user_flat_id');
+$this->user_flat->saveAll(array('user_flat_id'=>$user_flat_id,'user_id'=>$i,'society_id'=>$s_society_id,'flat_id'=>$flat,'status'=>$tenant,'active'=>0,'exit_date'=>'','time'=>'','family_member'=>1));
+unset($role_id);
 if(!empty($email) && !empty($mobile))
 		{
 			$login_user=$email;	
@@ -24298,8 +24300,7 @@ if(!empty($email) && !empty($mobile))
 			
 			////////////////////////////////// insert login table /////////////////////////////////////
 
-			$this->loadmodel('login');
-
+$this->loadmodel('login');
 $this->login->saveAll(array('login_id'=>$log_i,'user_name'=>$login_user,'password'=>$random,'signup_random'=>$random,'mobile'=>$mobile));
 
 			/////////////////////////  End login table /////////////////////////////////////////
@@ -24438,11 +24439,11 @@ foreach($myArray as $child){
 	if(!empty($child[2])) {
 		
 		$this->loadmodel('user_flat');
-		$conditions=array("flat_id" => (int)$child[2]);
+		$conditions=array("flat_id" => (int)$child[2],'active'=>0,'family_member'=>array('$ne'=>1));
 		$result4 = $this->user_flat->find('all',array('conditions'=>$conditions));
 		
 		
-		$n4 = sizeof($result4);
+		 $n4 = sizeof($result4); 
 		if($n4==1){
 			
 			$tenant=$result4[0]['user_flat']['status'];
