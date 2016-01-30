@@ -87,7 +87,7 @@ $prepaired_by_name=$result_user[0]['user']['user_name'];
 <i class="icon-chevron-down"></i>	
 </a>
 <ul class="dropdown-menu" style="min-width:80px !important;">
-<li><a href="expense_tracker_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
+<li><a href="expense_tracker_update/<?php echo $expense_tracker_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
 
 </ul>
 </div>
