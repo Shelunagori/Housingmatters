@@ -23,6 +23,15 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
+<!-----------------new code --------------------------------------->
+
+
+
+
+
+<!--------------------End new code ----------------------------------->
+
+
 <div style="background-color:#FFF;">
 <table class="table table-bordered table-striped table-hover" width="100%">
 	<thead>
@@ -161,11 +170,6 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 	</tbody>
 </table>
 </div>
-
-
-
-
-
 
 
 <script>

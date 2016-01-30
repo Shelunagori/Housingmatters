@@ -3182,8 +3182,6 @@ function trial_balance_ajax_show_sub_ledger($from=null,$to=null,$wise=null)
 	}
 
 	
-	
-	
 	$this->loadmodel('ledger_sub_account');
 	$order=array('ledger_sub_account.name'=> 'ASC');
 	$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions,'order' =>$order));
