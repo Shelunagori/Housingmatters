@@ -22,6 +22,7 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 <div style="width:100%; overflow:auto; margin-top:10px;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
+
 <!-----------------new code --------------------------------------->
 
 
@@ -29,6 +30,7 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 
 
 <!--------------------End new code ----------------------------------->
+
 
 <div style="background-color:#FFF;">
 <table class="table table-bordered table-striped table-hover" width="100%">
@@ -168,10 +170,6 @@ From: <?php echo $from; ?> To: <?php echo $to; ?>
 	</tbody>
 </table>
 </div>
-
-
-
-
 
 
 <script>
