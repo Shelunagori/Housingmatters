@@ -511,6 +511,27 @@ function expense_tracker_pdf(){
 	$this->set('result_expense_tracker',$result_expense_tracker);
 	
 }
+///////////////////////////// Start expense_tracker_update //////////////////////////////
+function expense_tracker_update()
+{
+		if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+		}else{
+		$this->layout='session';
+		}	
 
+$this->ath();
+$s_society_id = $this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+////////////////////////////End expense_tracker_update /////////////////////////////////////
 }
 ?>
