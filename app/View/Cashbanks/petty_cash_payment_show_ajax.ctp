@@ -188,17 +188,17 @@ $user_name = $collection['ledger_account']['ledger_name'];
 
 
 
- <div class="btn-group">
-	<a class="btn blue mini" href="#" data-toggle="dropdown">
-	<i class="icon-chevron-down"></i>	
-	</a>
-	<ul class="dropdown-menu" style="min-width:80px !important;">
-	<li><a href="petty_cash_payment_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
-	<li><a href="petty_cash_payment_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
-	<li><a href="" target="_blank"><i class="icon-file"></i>Pdf</a>
+<div class="btn-group">
+<a class="btn blue mini" href="#" data-toggle="dropdown">
+<i class="icon-chevron-down"></i>	
+</a>
+<ul class="dropdown-menu" style="min-width:80px !important;">
+<li><a href="petty_cash_payment_html_view/<?php echo $transaction_id; ?>" target="_blank"><i class="icon-search"></i>View</a></li>
+<li><a href="petty_cash_payment_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
+<li><a href="" target="_blank"><i class="icon-file"></i>Pdf</a>
 </li>
-	</ul>
-	</div>
+</ul>
+</div>
 
 
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>">

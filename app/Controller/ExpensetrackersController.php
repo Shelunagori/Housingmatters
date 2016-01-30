@@ -511,6 +511,29 @@ function expense_tracker_pdf(){
 	$this->set('result_expense_tracker',$result_expense_tracker);
 	
 }
+///////////////////////////// Start expense_tracker_update //////////////////////////////
+function expense_tracker_update($auto_id=null)
+{
+		if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+		}else{
+		$this->layout='session';
+		}	
 
+$this->ath();
+$s_society_id=(int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+	
+$auto_id = (int)$auto_id;
+$this->set('auto_id',$auto_id);	
+	
+$this->loadmodel('expense_tracker');
+$conditions=array("expense_tracker_id"=>$auto_id,"society_id"=>$s_society_id);
+$result_expense_tracker=$this->expense_tracker->find('all',array('conditions'=>$conditions));
+$this->set('result_expense_tracker',$result_expense_tracker);	
+	
+	
+}
+////////////////////////////End expense_tracker_update /////////////////////////////////////
 }
 ?>

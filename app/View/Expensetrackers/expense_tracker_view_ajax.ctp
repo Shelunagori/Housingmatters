@@ -82,6 +82,16 @@ $prepaired_by_name=$result_user[0]['user']['user_name'];
 <td align="right"><?php echo $ammount_of_invoice; ?> <?php $total+=$ammount_of_invoice ; ?></td>
 <td class="hide_at_print">
 
+<div class="btn-group">
+<a class="btn blue mini" href="#" data-toggle="dropdown">
+<i class="icon-chevron-down"></i>	
+</a>
+<ul class="dropdown-menu" style="min-width:80px !important;">
+<li><a href="expense_tracker_update/<?php echo $expense_tracker_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
+
+</ul>
+</div>
+
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created By: <?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>"></i> 
 
 <?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/expenset/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i></a><?php } ?>
