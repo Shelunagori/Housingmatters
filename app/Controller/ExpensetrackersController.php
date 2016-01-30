@@ -87,6 +87,7 @@ function expense_tracker_add(){
 		$s_role_id=$this->Session->read('role_id');
 		$s_society_id = (int)$this->Session->read('society_id');
 		$s_user_id=$this->Session->read('user_id');
+		
 		$this->loadmodel('accounts_group');
 		$conditions=array("accounts_id" => 4);
 		$result_account_group=$this->accounts_group->find('all',array('conditions'=>$conditions));
@@ -524,16 +525,225 @@ $this->ath();
 $s_society_id=(int)$this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');	
 	
-$auto_id = (int)$auto_id;
-$this->set('auto_id',$auto_id);	
+$auto_idddddd = (int)$auto_id;
+$this->set('auto_iddddd',$auto_idddddd);	
 	
 $this->loadmodel('expense_tracker');
-$conditions=array("expense_tracker_id"=>$auto_id,"society_id"=>$s_society_id);
+$conditions=array("expense_tracker_id"=>$auto_idddddd,"society_id"=>$s_society_id);
 $result_expense_tracker=$this->expense_tracker->find('all',array('conditions'=>$conditions));
 $this->set('result_expense_tracker',$result_expense_tracker);	
+
+$this->loadmodel('accounts_group');
+		$conditions=array("accounts_id" => 4);
+		$result_account_group=$this->accounts_group->find('all',array('conditions'=>$conditions));
+		$this->set('result_account_group',$result_account_group);
+			$this->loadmodel('ledger_sub_account');
+			$conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
+			$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+			$this->set('result_ledger_sub_account',$result_ledger_sub_account);
 	
 	
 }
 ////////////////////////////End expense_tracker_update /////////////////////////////////////
+//////////////////////////// Start expense_tracker_update_json ///////////////////////////
+function expense_tracker_update_json()
+{
+$this->layout='blank';
+	$this->ath();
+	$s_role_id=$this->Session->read('role_id');
+	$s_society_id = (int)$this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$post_data=$this->request->data;
+	
+	$q=$post_data['myJsonString'];
+	 
+	$myArray = json_decode($q, true);
+
+	$c=0;
+	foreach($myArray as $child){
+		$c++;
+		
+		$posting_date1 = $child[0];
+		$posting_date1 = date('Y-m-d',strtotime($posting_date1));
+		$posting_date = strtotime($posting_date1); 
+		
+		$date_of_invoice1 = $child[1];
+		$date_of_invoice1 = date('Y-m-d',strtotime($date_of_invoice1));
+		$date_of_invoice = strtotime($date_of_invoice1);
+				
+		$payment_due_date1 = $child[2];
+		$payment_due_date1 = date('Y-m-d',strtotime($payment_due_date1));
+		$payment_due_date = strtotime($payment_due_date1);
+		
+		$part_ac = (int)$child[3];
+		$invoice_ref = $child[4];
+		$expense_head = (int)$child[5];
+		$amt_inv = $child[6];
+		$description = $child[7];
+		
+////////////////   Validation code ///////////////////////////////		
+		if(empty($child[0])){
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting Date is Required in row '.$c));
+		die($output);
+		}
+				
+				
+		$TransactionDate = $child[0];
+		$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($TransactionDate));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
+					break;
+					}	
+		}
+	if($abc == 555){
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting date Should be in Open Financial Year in row '.$c));
+		die($output);
+	}					
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				/*if(empty($child[1])){
+					
+						$output=json_encode(array('report_type'=>'error','text'=>'Please Select Due Date in row'.$c));
+						die($output);
+				} */
+				if(empty($child[1])){
+					
+						$output=json_encode(array('report_type'=>'error','text'=>'Invoice Date is Required in row '.$c));
+						die($output);
+				}
+	
+	if(empty($child[2])){
+					
+						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required in row '.$c));
+						die($output);
+				}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		if(empty($part_ac)){
+		$output=json_encode(array('report_type'=>'error','text'=>'Party Account Head is Required in row '.$c));
+		die($output);
+		}
+		
+		
+		if(empty($invoice_ref)){
+		$output=json_encode(array('report_type'=>'error','text'=>'Invoice Reference is Required in row '.$c));
+		die($output);
+		}
+		
+		
+		if(empty($expense_head)){
+		$output=json_encode(array('report_type'=>'error','text'=>'Expense Head is Required in row '.$c));
+		die($output);
+		}
+		
+		if(empty($amt_inv)){
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required in row '.$c));
+		die($output);
+		}
+		
+		if(is_numeric($amt_inv))
+		{
+		}
+		else
+		{
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric Value in row '.$c));
+		die($output);
+		}
+		
+		
+		///////////////////////////////// End code ///////////////////////
+	}
+	
+	$current_date=date("d-m-Y");
+	
+$z=0;
+foreach($myArray as $child){
+		$z++;
+		
+		$posting_date1 = $child[0];
+		$posting_date1 = date('Y-m-d',strtotime($posting_date1));
+		$posting_date = strtotime($posting_date1); 
+				
+		$date_of_invoice1 = $child[1];
+		$date_of_invoice1 = date('Y-m-d',strtotime($date_of_invoice1));
+		$date_of_invoice = strtotime($date_of_invoice1);
+		
+		$payment_due_date1 = $child[2];
+		if(!empty($payment_due_date1)){
+		$payment_due_date1 = date('Y-m-d',strtotime($payment_due_date1));
+		$payment_due_date = strtotime($payment_due_date1);
+		}else{
+			$payment_due_date=null;
+		}
+		$part_ac = (int)$child[3];
+		$invoice_ref = $child[4];
+			
+		$expense_head = (int)$child[5];
+		$amt_inv = $child[6];
+		$description = $child[7];
+	   $auto_id = (int)$child[8];
+			
+		///////////// add Expense tracker code /////////////////////
+		
+
+			
+///////////////////////////// End ///////////////////////////////////
+$this->loadmodel('expense_tracker');
+$this->expense_tracker->updateAll(array('posting_date'=>$posting_date,'due_date'=>$payment_due_date,'date_of_invoice'=>$date_of_invoice,'expense_head'=>$expense_head,'invoice_reference'=>$invoice_ref,'party_ac_head'=>$part_ac,'ammount_of_invoice'=>$amt_inv,'description'=>$description),array("society_id" => (int)$s_society_id, "expense_tracker_id" => (int)$auto_id));	
+			
+///////////// Start Ledger Code ////////////////////////////////////////////////
+			
+			
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("ledger_account_id" => $expense_head,"debit"=>$amt_inv,"credit"=>null,"transaction_date"=>$posting_date),array("society_id" => (int)$s_society_id, "element_id" => (int)$auto_id,"table_name"=>"expense_tracker","ledger_sub_account_id" => null));
+			
+			
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("ledger_sub_account_id" => $part_ac,"debit"=>null,"credit"=>$amt_inv,"transaction_date"=>$posting_date),array("society_id" => (int)$s_society_id, "element_id" => (int)$auto_id,"table_name"=>"expense_tracker","ledger_account_id" => 15));		
+			
+			
+		}
+	
+$output=json_encode(array('report_type'=>'submit','text'=>'Expense vouche generated successfully.'));
+die($output);	
+	
+	
+}
+//////////////////////End expense_tracker_update_json /////////////////////////////////////
 }
 ?>

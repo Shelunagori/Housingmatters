@@ -144,7 +144,7 @@ $wing_id = (int)$data['wing']['wing_id'];
 
 <label style="font-size:14px;">IFSC Code<span style="color:red;">*</span></label>
 <div class="controls">
-<input type="text" class="m-wrap span9" name="ifsc" id="cdd" value="<?php echo $ifsc_code; ?>"/>
+<input type="text" class="m-wrap span9" name="ifsc" id="cdd" maxlength="11" value="<?php echo $ifsc_code; ?>"/>
 <label id="cdd"></label>
 </div>
 <br />
@@ -164,6 +164,10 @@ $wing_id = (int)$data['wing']['wing_id'];
 
 <script>
 $(document).ready(function(){
+
+$.validator.addMethod("loginRegex", function(value, element) {
+        return this.optional(element) || /^[a-z0-9\-\s]+$/i.test(value);
+    }, "Only enter alphanumeric letters.");
 
 jQuery.validator.addMethod("notEqual", function(value, element, param) {
 return this.optional(element) || value !== param;
@@ -203,7 +207,7 @@ required: true
 
 ifsc: {
 required: true,
-maxlength: 11
+loginRegex : true 
 },
 
 },
