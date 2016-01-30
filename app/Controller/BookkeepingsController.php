@@ -493,20 +493,6 @@ $tds_arr = $collection['reference']['reference'];
 }
 $this->set("tds_arr",$tds_arr);	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
 //////////////////////////// End Ledger Excel (Accounts)/////////////////////////////
 
@@ -559,6 +545,7 @@ function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account
 	{
 	$count_bank_receipt_converted++;	
 	}
+	
 	$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
 	
 	
@@ -623,9 +610,9 @@ $tds_arr = $collection['reference']['reference'];
 $this->set("tds_arr",$tds_arr);	
 }
 
-/////////////////////////////////////// End Ledger Show Ajax (Accounts)//////////////////////////////////////////////
+/////////////////////////////// End Ledger Show Ajax (Accounts)//////////////////////////
 
-//////////////////////////////// Start Jounal add new /////////////////////////////////////////////////////////////
+//////////////////////////// Start Jounal add new /////////////////////////////////////////
 function journal_add_new()
 {
 if($this->RequestHandler->isAjax()){
