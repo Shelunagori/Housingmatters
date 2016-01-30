@@ -5677,7 +5677,7 @@ $society=(int)$this->request->data['society'];
 $flat=(int)$this->request->data['flat'];
 $tenant_fetch=(int)$this->request->data['tenant'];
 $this->loadmodel('user_flat');
-$conditions=array("flat_id" => $flat,'society_id'=>$society);
+$conditions=array("flat_id" => $flat,'society_id'=>$society,'active'=>0,'family_member'=>array('$ne'=>1));
 $result4 = $this->user_flat->find('all',array('conditions'=>$conditions));
 $n4 = sizeof($result4);
 
@@ -17738,7 +17738,7 @@ $tenant=(int)$this->request->data['tenant'];
 
 
 $this->loadmodel('user_flat');
-$conditions2=array('flat_id'=>$flat,'society_id'=>$society_id);
+$conditions2=array('flat_id'=>$flat,'society_id'=>$society_id,'active'=>0,'family_member'=>array('$ne'=>1));
 $result_user=$this->user_flat->find('all',array('conditions'=>$conditions2));
 $n5=sizeof($result_user);
 if($n5==1){
