@@ -445,8 +445,7 @@ function master_ledger_sub_accounts_coa()
 		
 		$this->loadmodel('ledger_sub_account');
 		$i=$this->autoincrement('ledger_sub_account','auto_id');
-		$multipleRowData = Array( Array("auto_id" => $i, "ledger_id" => $main_id, "name" => $name, 
-		"society_id" => $s_society_id,"delete_id"=>0,"sp_id"=>$sp_id2));
+		$multipleRowData = Array( Array("auto_id"=>$i,"ledger_id"=>$main_id,"name"=>$name,"society_id" => $s_society_id,"delete_id"=>0,"sp_id"=>$sp_id2));
 		$this->ledger_sub_account->saveAll($multipleRowData);	
 		
 		

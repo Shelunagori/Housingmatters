@@ -143,7 +143,7 @@ $('#hid').val(c);
 												<td>Relation</td>
 												<td>Age</td>
 												<td>Blood Group</td>
-												<td>Action</td>
+												<!--<td>Action</td>-->
 												</tr>
 												</thead>
 <tbody>
@@ -209,7 +209,7 @@ $('#hid').val(c);
 												<td><?php echo $relation; ?></td>
 												<td><?php echo $dob; ?></td>
 												<td><?php echo @$b_group; ?></td>
-                                <td>
+                               <!-- <td>
 								
 
 										<div class="btn-group">
@@ -225,7 +225,7 @@ $('#hid').val(c);
 										</div>
 
 								
-								</td>
+								</td>-->
 												</tr>
 									  <?php } ?>
 												</tbody>
