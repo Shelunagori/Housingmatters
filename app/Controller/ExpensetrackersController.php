@@ -588,7 +588,7 @@ $this->layout='blank';
 		
 ////////////////   Validation code ///////////////////////////////		
 		if(empty($child[0])){
-		$output=json_encode(array('report_type'=>'error','text'=>'Posting Date is Required in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting Date is Required'));
 		die($output);
 		}
 				
@@ -613,7 +613,7 @@ $this->layout='blank';
 					}	
 		}
 	if($abc == 555){
-		$output=json_encode(array('report_type'=>'error','text'=>'Posting date Should be in Open Financial Year in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Posting date Should be in Open Financial Year'));
 		die($output);
 	}					
 				
@@ -636,19 +636,30 @@ $this->layout='blank';
 				} */
 				if(empty($child[1])){
 					
-						$output=json_encode(array('report_type'=>'error','text'=>'Invoice Date is Required in row '.$c));
+						$output=json_encode(array('report_type'=>'error','text'=>'Invoice Date is Required'));
 						die($output);
 				}
 	
 	if(empty($child[2])){
 					
-						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required in row '.$c));
+						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required'));
 						die($output);
 				}
 	
 	
 	
+	$invoice_date = $child[1];
+	$due_date = $child[2];
+	$invoice_date = date('Y-m-d',strtotime($invoice_date));
+	$due_date = date('Y-m-d',strtotime($due_date));
+	$invoice_date = strtotime($invoice_date);
+	$due_date = strtotime($due_date);
 	
+	if($due_date < $invoice_date)
+	{
+	$output=json_encode(array('report_type'=>'error','text'=>'Due Date should be Greater Than Invoice date'));
+	die($output);	
+	}
 	
 	
 	
@@ -660,24 +671,24 @@ $this->layout='blank';
 	
 	
 		if(empty($part_ac)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Party Account Head is Required in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Party Account Head is Required'));
 		die($output);
 		}
 		
 		
 		if(empty($invoice_ref)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Invoice Reference is Required in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Invoice Reference is Required'));
 		die($output);
 		}
 		
 		
 		if(empty($expense_head)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Expense Head is Required in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Expense Head is Required'));
 		die($output);
 		}
 		
 		if(empty($amt_inv)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required '));
 		die($output);
 		}
 		
@@ -686,7 +697,7 @@ $this->layout='blank';
 		}
 		else
 		{
-		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric Value in row '.$c));
+		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric Value'));
 		die($output);
 		}
 		
