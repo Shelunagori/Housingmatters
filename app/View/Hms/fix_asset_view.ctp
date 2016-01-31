@@ -72,7 +72,7 @@ $current_date = date('d-m-Y');
 <?php 
 $total_amount=0;
 foreach($result_fix_asset as $data){
-	$fix_asset_id=$data['fix_asset']['fix_asset_id'];
+	$fix_asset_id=(int)$data['fix_asset']['fix_asset_id'];
 	$fix_receipt_id=(int)$data['fix_asset']['fix_receipt_id'];
 	$asset_category_id=$data['fix_asset']['asset_category_id'];
 	$asset_supplier_id=$data['fix_asset']['asset_supplier_id'];
@@ -124,7 +124,7 @@ $prepaired_by = $data['user']['user_name'];
 <i class="icon-chevron-down"></i>	
 </a>
 <ul class="dropdown-menu" style="min-width:70px !important;">
-<li><a href="fix_asset_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
+<li><a href="fix_asset_update/<?php echo $fix_asset_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
 </ul>
 </div>
 

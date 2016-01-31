@@ -26224,6 +26224,26 @@ $wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_
 <?php	
 }
 ////////////////////////// End Resident drop down ////////////////////////////////////	
+////////////////////// Start fix_asset_update ////////////////////////////////////////
+function fix_asset_update($fix_asset_id = null)
+{
+		if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+		}else{
+		$this->layout='session';
+		}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+
+$fix_asset_id=(int)$fix_asset_id;
+$this->set('fix_asset_id',$fix_asset_id);
+
+
+
+
 	
+}
+////////////////////////End fix_asset_update ///////////////////////////////////////////	
 }
 ?>
