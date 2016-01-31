@@ -985,7 +985,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
-Configure::write('debug', 0);
+//Configure::write('debug', 0);
 }
 
 
@@ -26224,6 +26224,181 @@ $wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_
 <?php	
 }
 ////////////////////////// End Resident drop down ////////////////////////////////////	
+////////////////////// Start fix_asset_update ////////////////////////////////////////
+function fix_asset_update($fix_asset_id = null)
+{
+		if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+		}else{
+		$this->layout='session';
+		}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+
+$fix_asset_id=(int)$fix_asset_id;
+$this->set('fix_asset_id',$fix_asset_id);
+
+
+$this->loadmodel('fix_asset');
+$conditions=array("society_id"=>$s_society_id,"fix_asset_id"=>$fix_asset_id);
+$result_fix_assets=$this->fix_asset->find('all',array('conditions'=>$conditions));
+$this->set('result_fix_assets',$result_fix_assets);
+
+
+$this->loadmodel('ledger_account');
+$conditions=array("group_id" => 4);
+$result_ledger_account=$this->ledger_account->find('all',array('conditions'=>$conditions));
+$this->set('result_ledger_account',$result_ledger_account);
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 15);
+$result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('result_ledger_sub_account',$result_ledger_sub_account);
 	
+}
+////////////////////////End fix_asset_update ///////////////////////////////////////////
+////////////////////// Start fix_asset_update_json ///////////////////////////////////
+function fix_asset_update_json()
+{
+$this->layout='blank';
+	
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id = (int)$this->Session->read('user_id');
+$post_data=$this->request->data;
+
+     $this->ath();
+
+$q=$post_data['myJsonString'];
+$myArray = json_decode($q, true);
+
+$c=0;
+foreach($myArray as $child)
+{
+$c++;
+
+
+	if(empty($child[0])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Category is Required in row '.$c));
+		die($output);
+		}	
+		
+		
+			if(empty($child[1])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Date of Purchase is Required in row '.$c));
+		die($output);
+		}	
+		
+		
+		$TransactionDate = $child[1];
+		$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($TransactionDate));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
+					break;
+					}	
+		}
+	if($abc == 555){
+		$output=json_encode(array('type'=>'error','text'=>'Date of Purchase Should be in Open Financial Year in row '.$c));
+		die($output);
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+			if(empty($child[2])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Name of Supplier is Required in row '.$c));
+		die($output);
+		}	
+		
+		
+			if(empty($child[3])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Rupees is Required in row '.$c));
+		die($output);
+		}	
+		
+		
+		if(empty($child[4])){
+		$output = json_encode(array('type'=>'error', 'text' => 'Asset Name is Required in row '.$c));
+		die($output);
+		}	
+		
+		
+		if(!empty($child[5]) && !empty($child[6]))
+		{
+		$frmm = date('Y-m-d',strtotime($child[5]));
+		$tttm = date('Y-m-d',strtotime($child[6]));
+		$frmm2 = strtotime($frmm);
+		$tttm2 = strtotime($tttm);
+		if($tttm2 < $frmm2)
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Warranty Period To can not be Small Than Warranty Period From  in row '.$c));
+		die($output);	
+			
+		}
+		}	
+		
+		
+}
+
+$rrrr = array();
+$z=0;
+foreach($myArray as $child)
+{
+ $z++;
+ $asset_category_id = (int)$child[0];
+ $purchase_date = $child[1];
+ $assert_supplier_id = (int)$child[2];
+ $cost_of_purchase = $child[3];
+ $asset_name = $child[4];
+ $warranty_from = $child[5];
+ $warranty_to = $child[6];
+ $description = $child[7];
+ $maintanance_schedule = $child[8]; 
+ $current_date = date('d-m-Y');
+ $asset_id = (int)$child[9];
+ 
+ 
+$purchase_date2 = date('Y-m-d',strtotime($purchase_date));
+ 
+
+$this->loadmodel('fix_asset');
+$this->fix_asset->updateAll(array("asset_category_id" => $asset_category_id,"asset_name" => $asset_name, "description" => $description, 
+"purchase_date" => strtotime($purchase_date2), "cost_of_purchase" => $cost_of_purchase, 
+"asset_supplier_id" => $assert_supplier_id,"warranty_period_from" => $warranty_from,
+"warranty_period_to" => $warranty_to, "maintanance_schedule" => $maintanance_schedule),array("society_id" => (int)$s_society_id,"fix_asset_id" =>$asset_id));
+
+
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("ledger_account_id" => $asset_category_id,"debit"=>$cost_of_purchase,"transaction_date"=>strtotime($purchase_date2)),array("society_id" => (int)$s_society_id, "element_id" =>$asset_id,"table_name"=>"fix_asset","ledger_sub_account_id" => null));
+
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("ledger_sub_account_id" => $assert_supplier_id,"credit"=>$cost_of_purchase,"transaction_date"=>strtotime($purchase_date2)),array("society_id" => (int)$s_society_id, "element_id" => $asset_id,"table_name"=>"fix_asset","ledger_account_id" => 15));
+
+}
+
+
+$output=json_encode(array('type'=>'success','text'=>'Fixed Asset  is generated successfully'));
+die($output); 
+
+
+}
+/////////////////////////End fix_asset_update_json /////////////////////////////////////	
 }
 ?>

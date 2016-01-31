@@ -72,7 +72,7 @@ $current_date = date('d-m-Y');
 <?php 
 $total_amount=0;
 foreach($result_fix_asset as $data){
-	$fix_asset_id=$data['fix_asset']['fix_asset_id'];
+	$fix_asset_id=(int)$data['fix_asset']['fix_asset_id'];
 	$fix_receipt_id=(int)$data['fix_asset']['fix_receipt_id'];
 	$asset_category_id=$data['fix_asset']['asset_category_id'];
 	$asset_supplier_id=$data['fix_asset']['asset_supplier_id'];
@@ -118,7 +118,20 @@ $prepaired_by = $data['user']['user_name'];
 <td><?php echo $warranty_period_from; ?></td>
 <td><?php echo $warranty_period_to; ?></td>
 <td><?php echo $maintanance_schedule; ?></td>
-<td><?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
+<td>
+<div class="btn-group">
+<a class="btn blue mini" href="#" data-toggle="dropdown">
+<i class="icon-chevron-down"></i>	
+</a>
+<ul class="dropdown-menu" style="min-width:70px !important;">
+<li><a href="fix_asset_update/<?php echo $fix_asset_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
+</ul>
+</div>
+
+
+
+
+<?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date22; ?>">
   </i>
 </td>
