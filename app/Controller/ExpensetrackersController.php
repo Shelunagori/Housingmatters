@@ -216,13 +216,18 @@ function expense_tracker_json(){
 				}
 	
 	
+	$invoice_date = $child[1];
+	$due_date = $child[2];
+	$invoice_date = date('Y-m-d',strtotime($invoice_date));
+	$due_date = date('Y-m-d',strtotime($due_date));
+	$invoice_date = strtotime($invoice_date);
+	$due_date = strtotime($due_date);
 	
-	
-	
-	
-	
-	
-	
+	if($due_date < $invoice_date)
+	{
+	$output=json_encode(array('report_type'=>'error','text'=>'Due Date should be Greater Than Invoice date in row '.$c));
+	die($output);	
+	}
 	
 	
 	
