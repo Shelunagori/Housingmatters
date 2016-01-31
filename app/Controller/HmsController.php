@@ -2784,7 +2784,8 @@ $this->layout='session';
 	        @$reminder_status = $this->request->data['remndrr'];
 			@$signup_auto=$this->request->data['signup'];
 			@$help_desk=$this->request->data['help_desk'];
-			@$family_member=$this->request->data['family_member'];
+			@$family_member=(int)$this->request->data['family_member'];
+			@$family_member_tenant=(int)$this->request->data['family_member_tenant']; 
 			@$notice=$this->request->data['notice'];
 			@$document=$this->request->data['document'];
 			@$discussion_forum=$this->request->data['discussion_forum'];
@@ -2859,7 +2860,7 @@ $this->layout='session';
 			$reminder_status = 0;
 			}
 			$this->loadmodel('society');
-			$this->society->updateAll(array('signup'=>$signup_auto,'help_desk'=>$help_desk,'notice'=>$notice,'document'=>$document,'discussion_forum'=>$discussion_forum,'discussion_forum_email'=>$discussion_forum_email,'poll'=>$poll,'account_email'=>$account_email,'account_sms'=>$account_sms,'account_zero_ammount'=>$account_zero_ammount,'content_moderation'=>$banned_word,'family_member'=>$family_member,'merge_receipt'=>$merge_receipt,"reminder_status"=>$reminder_status,'access_tenant'=>$access_tenant),array('society_id'=>$s_society_id));
+			$this->society->updateAll(array('signup'=>$signup_auto,'help_desk'=>$help_desk,'notice'=>$notice,'document'=>$document,'discussion_forum'=>$discussion_forum,'discussion_forum_email'=>$discussion_forum_email,'poll'=>$poll,'account_email'=>$account_email,'account_sms'=>$account_sms,'account_zero_ammount'=>$account_zero_ammount,'content_moderation'=>$banned_word,'family_member'=>$family_member,'merge_receipt'=>$merge_receipt,"reminder_status"=>$reminder_status,'access_tenant'=>$access_tenant,'family_member_tenant'=>$family_member_tenant),array('society_id'=>$s_society_id));
 					
 	}
 	
@@ -24053,6 +24054,7 @@ $s_user_id=$this->Session->read('user_id');
 	foreach($result as $data)
 	{
 	$tenant=(int)$data['user']['tenant'];
+	$user_name_by=$data['user']['user_name'];
 	$wing=(int)$data['user']['wing'];
 	$flat=(int)$data['user']['flat'];
 	$residing=(int)$data['user']['noc_type'];
@@ -24061,11 +24063,13 @@ $s_user_id=$this->Session->read('user_id');
 	$result_society=$this->society_name($s_society_id);	
 	foreach($result_society as $data)
 	{
-	 $society_name=$data['society']['society_name'];
-	 @$family_member=$data['society']['family_member'];
+	  $society_name=$data['society']['society_name'];
+	  @$family_member=$data['society']['family_member'];
+	  @$family_member_tenant=$data['society']['family_member_tenant'];
 	  
 	}
 
+	
 	$s_n='';
 	$sco_na=$society_name;
 	$dd=explode(' ',$sco_na);
@@ -24173,9 +24177,15 @@ if((sizeof(@$mobile_no1)>0) && (sizeof(@$mobile_no2)>0)){
 }
 }
 
+if($tenant==1){
+		$type="owner";
+	}
+	if($tenant==2){
+		$type="tenant";
+	}
 
  
-if($family_member==1 || $s_role_id==3 )
+if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_tenant==1))
 {
 	$ip=$this->hms_email_ip();
 
@@ -24236,7 +24246,7 @@ if(!empty($email) && !empty($mobile))
 			<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
 			<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
 			<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
-			</br><p>Dear $name,</p>
+			</br><p>Dear $name,</p><p>you have been added to $society_name online portal by $user_name_by </p>
 			<p>'We at $society_name use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.</p>
 			<p>As you are an owner/resident/staff of $society_name, we have added your email address in HousingMatters portal.</p>
 			<p>Here are some of the important features related to our portal on HousingMatters:</p>
@@ -24261,7 +24271,7 @@ if(!empty($email) && !empty($mobile))
 			<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
 			<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
 			<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
-			</br><p>Dear $name,</p>
+			</br><p>Dear $name,</p><p>you have been added to $society_name online portal by $user_name_by </p>
 			<p>'We at $society_name use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.</p>
 			<p>As you are an owner/resident/staff of $society_name, we have added your email address in HousingMatters portal.</p>
 			<p>Here are some of the important features related to our portal on HousingMatters:</p>
