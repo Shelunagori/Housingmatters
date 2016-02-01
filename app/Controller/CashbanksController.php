@@ -5521,26 +5521,62 @@ function petty_cash_payment_update($auto_id=null)
 	{
 		
 		$transaction_date = $this->request->data['date'];
-		$ac_group = $this->request->data['date'];
+		$transaction_date = date('Y-m-d',strtotime($transaction_date));
+		$ac_group = (int)$this->request->data['type'];
 		if($ac_group == 1)
 		{
-		$party_ac = $this->request->data['party1'];
+		$party_ac = (int)$this->request->data['party1'];
 		}
 		else
 		{
-		$party_ac = $this->request->data['party2'];	
+		$party_ac = (int)$this->request->data['pppppp'];	
 		}
-		$paid_from = $this->request->data['date'];
+		$paid_from = (int)$this->request->data['account_head'];
 		$amount = $this->request->data['ammount'];
 		$narration = $this->request->data['narration'];
 		$petty_cash_id = (int)$this->request->data['petty_cash_id'];
 		
 		
 		
-	
+/////////////////////////////////////
+
+$this->loadmodel('new_cash_bank');
+$this->new_cash_bank->updateAll(array("user_id" => $party_ac, 
+"account_type"=>$ac_group,"transaction_date" => strtotime($transaction_date),"narration"=> $narration, "account_head" => $paid_from,"amount" =>$amount),array("society_id" => (int)$s_society_id,"transaction_id" =>(int)$petty_cash_id));
+
+if($ac_group == 1)
+{
+
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"debit"=>$amount, "ledger_account_id" => 15,"ledger_sub_account_id"=>$party_ac),array("society_id" => (int)$s_society_id, "element_id" => (int)$petty_cash_id,"table_name"=>"new_cash_bank","credit" =>null));
+
+}
+else
+{
+
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"debit" => $amount,"ledger_account_id" =>$party_ac,"ledger_sub_account_id" =>null),array("society_id" => (int)$s_society_id, "element_id" => (int)$petty_cash_id,"table_name"=>"new_cash_bank","credit" =>null));
+}
+		
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"credit"=>$amount,"ledger_account_id" =>$paid_from,"ledger_sub_account_id" =>null),array("society_id" =>(int)$s_society_id, "element_id" => (int)$petty_cash_id,"table_name"=>"new_cash_bank","debit"=> null));	
+?>		
+
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>The Record Updated Successfully</p>
+</div>
+<div class="modal-footer">
+<a href="<?php echo $this->webroot; ?>Cashbanks/petty_cash_payment_view" class="btn red">OK</a>
+</div>
+</div>		
 		
 		
-	}
+		
+<?php		
+}
 	
 	
 	$this->loadmodel('ledger_sub_account');
