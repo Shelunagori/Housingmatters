@@ -295,9 +295,9 @@ $(document).ready(function() {
 	}
 	$.ajax({
 			url: "family_member_valid?q="+myJsonString,
-			//dataType:'json',
+			dataType:'json',
 			}).done(function(response) {
-			alert(response);
+			//alert(response);
 				if(response.type == 'error'){  
 					output = '<div class="alert alert-error">'+response.text+'</div>';
 					$("#submit").removeClass("disabled").text("submit");
