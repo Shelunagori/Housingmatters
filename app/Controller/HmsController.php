@@ -985,7 +985,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+ //Configure::write('debug', 0);
 }
 
 
@@ -17067,7 +17067,7 @@ $s_society_id=$this->Session->read('society_id');
 $search=$this->request->query('con');
 $flat=$search;
 $this->loadmodel('flat'); 
-$conditions=array("society_id"=>$s_society_id,"flat_name"=> new MongoRegex('/^' .  $flat . '$/i'));
+$conditions=array("society_id"=>$s_society_id,"flat_name"=> (int)$flat);
 $result_flat=$this->flat->find('all',array('conditions'=>$conditions));
 foreach($result_flat as $data)
 {
@@ -17088,9 +17088,19 @@ if(!empty($da_user_id))
 $this->set('result_usser_flat',@$da_user_id);
 }
 $this->set('search_value',$search);
+$regex_hob = new MongoRegex("/.*$search.*/i"); 
+$this->loadmodel('hobbies_category');
+$conditions=array('hobbies_name'=>$regex_hob);
+$result_hobbies_category=$this->hobbies_category->find('all',array('conditions'=>$conditions));
+ $hob_id=(string)$result_hobbies_category[0]['hobbies_category']['hobbies_id'];
+
 $regex = new MongoRegex("/.*$search.*/i");  
 $this->loadmodel('user');
-$conditions=array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0);
+$conditions =array( '$or' => array( 
+		array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0),
+		array("hobbies" => $hob_id),
+		));
+		
 $result=$this->user->find('all',array('conditions'=>$conditions));
 $this->set('result_user',$result); 
 $n=sizeof($result);

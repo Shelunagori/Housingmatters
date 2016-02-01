@@ -140,7 +140,7 @@ background-color:rgb(218, 236, 240);
 				
               <td width="25%" valign="top" style="padding-top:5px;" align="right">
 			  <div class="controls" class="span4" style="margin-right: 40px;">
-			  <input type="text" placeholder="Name or Unit number"  style="height: 21px;" id="get_search" onkeyup="search_record()"> <i class=" icon-info-sign tooltips" data-placement="bottom" data-original-title="Name of the person whom you want to search "> </i>
+			  <input type="text" placeholder="Name or Unit number or hobbies"  style="height: 21px;" id="get_search" onkeyup="search_record()"> <i class=" icon-info-sign tooltips" data-placement="bottom" data-original-title="Name of the person whom you want to search "> </i>
 			  </div> 
 			  </td>
                 </tr>
