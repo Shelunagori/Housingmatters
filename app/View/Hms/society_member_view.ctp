@@ -192,3 +192,14 @@ $(document).ready(function() {
 	 
 });
 </script>
+<script>
+$(document).ready(function() { 
+	 $(".resend_sms").bind('click',function(){
+		var id=$(this).attr('id');
+		$(this).html('Sending Sms...').load( 'resident_approve_resend_sms?con=' + id, function() {
+		$(this).removeClass( "resend_sms green" ).addClass( "red" );
+		});
+	 });
+	 
+});
+</script>
