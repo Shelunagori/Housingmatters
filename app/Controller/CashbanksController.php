@@ -5525,9 +5525,25 @@ function petty_cash_payment_update($auto_id=null)
 
 	$this->loadmodel('new_cash_bank');
 	$conditions=array("transaction_id"=>$auto_id,"receipt_source"=>4,"society_id"=>$s_society_id);
-	$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
-	$this->set('cursor1',$cursor1);
+	$cursor4=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+	$this->set('cursor4',$cursor4);
 
+	
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
+$cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+$this->loadmodel('accounts_group');
+$conditions=array("accounts_id" => 4);
+$cursor2=$this->accounts_group->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+	
+	
+	
+	
+	
+	
 }
 ///////////////////////////// End petty_cash_Payment_Update /////////////////////////////////////////////
 

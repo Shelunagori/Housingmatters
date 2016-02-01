@@ -1,5 +1,5 @@
 <?php 
-foreach ($cursor1 as $collection) 
+foreach ($cursor4 as $collection) 
 {
 $receipt_no = (int)$collection['new_cash_bank']['receipt_id'];
 $d_date = $collection['new_cash_bank']['transaction_date'];
@@ -13,7 +13,7 @@ $sub_account = (int)$collection['new_cash_bank']['account_head'];
 $transaction_date = date('d-m-Y');
 }
 ?>
-<body onload="loaddajjax(<?php echo $account_type; ?>,<?php echo $user_id;  ?>)" style="overflow:hidden">
+
 <form method="post">
 <div class="portlet box blue">
 <div class="portlet-title">
@@ -44,14 +44,46 @@ $transaction_date = date('d-m-Y');
 </div>
 <br />
 
-
-<label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select Expense/Party A/c"> </i></label></td>
-<div class="controls" id="show_user">
-<select   name="user_id" class="m-wrap span9 chosen" id="usr">
+<div id="one">
+<label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
+<select name="party1" class="m-wrap large chosen">
 <option value="" style="display:none;">Select</option>
+<?php 
+foreach($cursor1 as $data)
+{
+$auto_id = (int)$data['ledger_sub_account']['auto_id'];
+$name = $data['ledger_sub_account']['name'];	
+?>
+<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
+<?php	
+}
+?>
 </select>
-<label id="usr"></label>
 </div>
+
+
+<div id="two" class="hide">
+<label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
+<select name="party2" class="m-wrap large chosen ignore">
+<option value="" style="display:none;">Select</option>
+<?php
+foreach($cursor2 as $collection)
+{
+$auto_id1 = (int)$collection['accounts_group']['auto_id'];
+$result_ledger_account = $this->requestAction(array('controller' => 'hms', 'action' => 'expense_tracker_fetch2'),array('pass'=>array($auto_id1)));
+foreach($result_ledger_account as $collection2)
+{
+$sub_id = (int)$collection2['ledger_account']['auto_id'];
+$name = $collection2['ledger_account']['ledger_name'];
+?>
+<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
+<?php	
+}}
+?>
+</select>
+</div>
+<br>
+
 
 </div>
 <div class="span6">
@@ -89,26 +121,10 @@ $transaction_date = date('d-m-Y');
 </div>
 </div>
 </form>
-</body>
 
 
 
-<script>
-$(document).ready(function() {
-	$("#go").bind('change',function(){
-	var value1 = document.getElementById('go').value;
-	$("#show_user").load("<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_ajax?value1=" +value1 + "");
-});
-});
-</script>	
 
-
-<script>
-function loaddajjax(acttpp,ussiddd)
-{
-$("#show_user").load("<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_ajax?value1=" +acttpp + "&usdd=" +ussiddd+ "");	
-}
-</script>
 
 
 
