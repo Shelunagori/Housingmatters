@@ -37,13 +37,15 @@ $ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
 }	
 
 ?>
-<body onload="loadddd(<?php echo $tds_id; ?>,<?php echo $account_type; ?>,<?php echo $amount; ?>,<?php echo $user_id; ?>)">
-<div style="background-color:#FFF; overflow:hidden; border:1px solid #CCC;" id="bddd">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:10px;"><i class="icon-money" style="margin-left:8px;"></i> Update Bank Payment</h4>
 <form method="post">
-
-<div style="background-color:#FFF; width:48%; float:left; margin-left:2%;">
-
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Update Bank Payment</h4>
+</div>
+<div class="portlet-body form">
+<div class="row-fluid">                       
+<div class="span6">                       
+  
 <label style="font-size:14px;">Transaction Date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" value="<?php echo $transaction_date; ?>">
@@ -110,11 +112,8 @@ $tds_tax = $tds_sub_arr[0];
 </span>
 </div>
 
-
-</div>
-
-<div style="background-color:#FFF; width:50%; float:right;">
-
+</div>                          
+<div class="span6">
 <label style="font-size:14px;">Mode of Payment<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please choose payment mode"> </i></label>
 <div class="controls">
 <label class="radio">
@@ -173,21 +172,27 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 </div>
 <br />
 
+
+
+
+
+
+
+
+
+
 </div>
-<br />
-
-<div style="width:100%; overflow:auto;">
-<hr />
-
-<button type="submit" class="btn form_post" style="background-color: green; color:#fff; margin-left:70%;" value="xyz" id="vali">Submit</button>
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_payment" class="btn" rel='tab'>Reset</a>
-<div style="display:none;" id='wait'><img src="<?php echo $webroot_path; ?>as/fb_loading.gif" /> Please Wait...</div>
-
+</div>                          
+<div class="form-actions">
+<button type="submit" class="btn blue">Save</button>
+<button type="button" class="btn">Cancel</button>
 </div>
+</div>
+</div>
+
 </form>
 
-</div>
-</body>
+
 
 <script>
 $(document).ready(function() {

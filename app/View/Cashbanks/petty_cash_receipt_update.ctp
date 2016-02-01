@@ -35,8 +35,8 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <div class="controls">
 <select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)" id="type">
 <option value="" style="display:none;">Select</option>
-<option value="1" <?php if($account_type == 1) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c</option>
-<option value="2" <?php if($account_type == 2) { ?> selected="selected" <?php } ?>>Other Income</option>
+<option value="1" selected="selected">Sundry Debtors Control A/c</option>
+<option value="2">Other Income</option>
 </select>
 <label id="type"></label>
 </div>
