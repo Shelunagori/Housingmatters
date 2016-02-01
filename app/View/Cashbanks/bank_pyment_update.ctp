@@ -12,6 +12,7 @@ $account_head = (int)@$data["new_cash_bank"]["account_head"];
 $amount = (int)@$data["new_cash_bank"]["amount"];
 $tds_id = @$data["new_cash_bank"]["tds_id"];	
 $account_type = (int)@$data["new_cash_bank"]["account_type"];	
+$transaction_id = (int)$data['new_cash_bank']['transaction_id'];
 }
 if($account_type == 1)
 {
@@ -207,12 +208,13 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 </div>
 </div>                          
 <div class="form-actions">
-<button type="submit" class="btn blue">Save</button>
+<a href="<?php echo $webroot_path; ?>Cashbanks/bank_payment_view" rel="tab" class="btn green"><i class=" icon-arrow-left"></i> Back</a>
+<button type="submit" class="btn blue" name="bank_payment">Save</button>
 <button type="button" class="btn">Cancel</button>
 </div>
 </div>
 </div>
-
+<input type="hidden" value="<?php echo $transaction_id; ?>" name="bank_payment_id">
 </form>
 
 
