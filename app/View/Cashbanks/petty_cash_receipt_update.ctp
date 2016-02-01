@@ -1,5 +1,5 @@
 <?php
-foreach($cursor1 as $data){
+foreach($cursor4 as $data){
 $receipt_no = (int)$data['new_cash_bank']['receipt_id'];
 $d_date = $data['new_cash_bank']['transaction_date'];
 $today = date("d-M-Y");
@@ -31,9 +31,9 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <br />
 
 
-<label style="font-size:14px;">A/c Group<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select account group"> </i></label>
+<label style="font-size:14px;">A/c Group<span style="color:red;">*</span></label>
 <div class="controls">
-<select name="type" id="go" class="m-wrap span9 chosen">
+<select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)">
 <option value="" style="display:none;">Select</option>
 <option value="1" <?php if($account_type == 1) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c</option>
 <option value="2" <?php if($account_type == 2) { ?> selected="selected" <?php } ?>>Other Income</option>
@@ -42,19 +42,33 @@ $trnsaction_date = date('d-m-Y',$d_date);
 </div>
 <br />
 
+<div <?php if($account_type == 2) {?>class="hide" <?php } ?> id="one">
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
-<div class="controls" id="show_user">
-<select name="user_id" class="m-wrap span9 chosen" id="usr">
-<option value="">Select</option>
-</select> 
-<label report="ussrr" class="remove_report"></label>
+<?php
+$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'));    
+?>
+</div>
+	
+<div <?php if($account_type == 1) {?> class="hide" <?php } ?> id="two">
+<label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
+<select name="user_id" class="m-wrap chosen large">
+<option value="" style="display:none;">Select</option>
+<?php
+foreach ($cursor2 as $collection) 
+{
+$auto_id = (int)$collection['ledger_account']['auto_id'];
+$name = $collection['ledger_account']['ledger_name'];
+?>
+<option value="<?php echo $auto_id; ?>" <?php if($ussidd == $auto_id) { ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
+<?php } ?>
+</select>
 </div>
 <br />
 
 </div>
 
 <div class="span6">
-<label style="font-size:14px;">Account Head<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select account head"> </i></label>
+<label style="font-size:14px;">Account Head<span style="color:red;">*</span></label>
 <div class="controls">
 <select   name="account_head" class="m-wrap span9 chosen" id="acn">
 <option value="" style="display:none;">Select</option>
@@ -81,109 +95,36 @@ $trnsaction_date = date('d-m-Y',$d_date);
    
 </div>                         
 <div class="form-actions">
+<a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_view" class="btn green">
+<i class="icon-arrow-left"></i> Back</a>
 <button type="submit" class="btn blue">Save</button>
-<button type="button" class="btn">Cancel</button>
+
 </div>
 </div>
 </div>
 <input type="hidden" value="<?php echo $auto_id; ?>" id="elldd" />
 </form>
 
-
-	
-	
-
-  
-
-   
-
-
-
-
-
-
-
 <script>
-$(document).ready(function() {
-$("#go").bind('change',function(){
-var value=document.getElementById('go').value;
-$("#show_user").load("<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_ajax?value=" +value+ "");
-});
-});
+function show_party(tt)
+{
+if(tt == 1)
+{
+$("#one").show();
+$("#two").hide();	
+}	
+if(tt == 2)	
+{
+$("#one").hide();
+$("#two").show();	
+}	
+}
 </script>	
 
-<script>
-function loaddajjax(ttpp,uudd)
-{
-$("#show_user").load("<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_ajax?value=" +ttpp+ "&ussidd=" +uudd+ "");	
-}
-</script>
 
-
-
-<script>
-$(document).ready(function() { 
-	$('form').submit( function(ev){
 	
-	
-	ev.preventDefault();
-		
-		var m_data = new FormData();
-		m_data.append( 'dddd', $('#date').val());
-		m_data.append( 'actpp', $('#go').val());
-		m_data.append( 'usssr', $('#usr').val());
-		m_data.append( 'acheadd', $('#acn').val());
-		m_data.append( 'amttt', $('#amt').val());
-		m_data.append( 'nrrr', $('#narr').val());
-		m_data.append( 'elidd', $('#elldd').val());
-		
-		$(".form_post").addClass("disabled");
-		$("#wait").show();
-			
-			$.ajax({
-			url: "<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_update_json",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			//dataType:'json',
-			}).done(function(response) {
-				alert(response);
-				if(response.report_type=='error'){
-					$(".remove_report").html('');
-						jQuery.each(response.report, function(i, val) {
-						$("label[report="+val.label+"]").html('<span style="color:red;">'+val.text+'</span>');
-					});
-				}
-				if(response.report_type=='publish'){
-                $("#shwd").show()
-				}
-			
-			$("html, body").animate({
-			scrollTop:0
-			},"slow");
-			$(".form_post").removeClass("disabled");
-			$("#wait").hide();
-			});
-
-	 
-});
-});
-
-</script>		
 
 
-<div id="shwd" class="hide">
-<div class="modal-backdrop fade in"></div>
-<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-<div class="modal-body">
-<p style="font-size:15px; font-weight:600;">Record Updated Successfully</p>
-</div>
-<div class="modal-footer">
-<a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt" class="btn green" rel='tab'>OK</a>
-</div>
-</div>
-</div> 
 
 
 
