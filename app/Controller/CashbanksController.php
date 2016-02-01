@@ -5684,10 +5684,26 @@ function bank_pyment_update($auto_id=null)
 		$cursor3=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 		$this->set('cursor3',$cursor3);
 
-}
-///////////////////////////// End Bank_Payment_Update /////////////////////////////////////////////
+		$this->loadmodel('ledger_sub_account');
+		$conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
+		$cursor11=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+		$this->set('cursor11',$cursor11);
 
-//////////////////////////////Start Petty Cash Payment Json //////////////////////////////////////////
+
+		$this->loadmodel('accounts_group');
+		$conditions=array("accounts_id" => 1);
+		$cursor12=$this->accounts_group->find('all',array('conditions'=>$conditions));
+		$this->set('cursor12',$cursor12);
+
+		$this->loadmodel('accounts_group');
+		$conditions=array("accounts_id" => 4);
+		$cursor13=$this->accounts_group->find('all',array('conditions'=>$conditions));
+		$this->set('cursor13',$cursor13);	
+	
+}
+/////////////////////// End Bank_Payment_Update /////////////////////////////////////////
+
+//////////////////////////////Start Petty Cash Payment Json ////////////////////////////
 function petty_cash_payment_json()
 {
 $this->layout="";

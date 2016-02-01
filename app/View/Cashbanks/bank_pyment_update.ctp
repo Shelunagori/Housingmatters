@@ -55,27 +55,50 @@ $ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
 <br />
 
 
-<label style="font-size:14px;">A/c Group<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select account group"> </i></label>
+<label style="font-size:14px;">Ledger Account<span style="color:red;">*</span></label>
 <div class="controls">
-<select name="ac_type" class="m-wrap chosen span9" id="type">
-<option value="" style="display:none;">--SELECT--</option>							 
-<option value="1" <?php if($account_type == 1) { ?> selected="selected" <?php } ?> >Sundry Creditors Control A/c</option>
-<option value="2" <?php if($account_type == 2) { ?> selected="selected" <?php } ?> >Liability</option>
-<option value="3" <?php if($account_type == 3) { ?> selected="selected" <?php } ?> >Expenditure</option>
-</select>
-<label report="ac_gr" class="remove_report"></label>
-</div>
-<br />
-
-
-<label style="font-size:14px;">Expense Party A/c<span style="color:red;">*</span></label></td>
-<div class="controls" id="result2">
-<select name="expense_ac" class="m-wrap chosen span9" id="ex_prt_ac">
+<select class="m-wrap span9 chosen" id="led">
 <option value="">--SELECT--</option>
+<?php
+foreach($cursor11 as $collection)
+{
+$auto_id = $collection['ledger_sub_account']['auto_id'];
+$name = $collection['ledger_sub_account']['name'];
+?>
+<option value="<?php echo $auto_id; ?>,1" <?php if($account_type == 1 && $user_id == $auto_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+<?php } ?>
+<?php
+foreach($cursor12 as $collection)
+{
+$auto_id_a = (int)$collection['accounts_group']['auto_id'];
+$result33 = $this->requestAction(array('controller' => 'hms', 'action' => 'expense_tracker_fetch2'),array('pass'=>array($auto_id_a)));
+foreach($result33 as $collection)
+{
+$auto_id = (int)$collection['ledger_account']['auto_id'];
+$name = $collection['ledger_account']['ledger_name'];
+if($auto_id == 15)
+continue;
+?>
+<option value="<?php echo $auto_id; ?>,2" <?php if($account_type == 2 && $user_id == $auto_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+<?php }} ?>
+<?php
+foreach($cursor13 as $collection)
+{
+$auto_id_b = (int)$collection['accounts_group']['auto_id'];
+
+$result33 = $this->requestAction(array('controller' => 'hms', 'action' => 'expense_tracker_fetch2'),array('pass'=>array($auto_id_b)));
+foreach($result33 as $collection)
+{
+$auto_id = (int)$collection['ledger_account']['auto_id'];
+$name = $collection['ledger_account']['ledger_name'];
+?>
+<option value="<?php echo $auto_id; ?>,2" <?php if($account_type == 1 && $user_id == $auto_id) { ?> selected="selected" <?php } ?> ><?php echo $name; ?></option>
+<?php }} ?>
 </select>
-<label report="ex_prt" class="remove_report"></label>
+<label id="led"></label>
 </div>
 <br />
+
 
 
 <label style="font-size:14px;">Amount<span style="color:red;">*</span></label></td>
@@ -201,25 +224,6 @@ $("#go").live('change',function(){
 var tds = document.getElementById('go').value;
 var amount=document.getElementById('amount').value;
 $("#result").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_tds_ajax?tds='+tds+'&amount='+amount+'');
-});
-});
-</script>	
-
-	
-<script>
-$(document).ready(function() {
-$("#type").bind('change',function(){
-var type = document.getElementById('type').value;
-$("#result2").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_type_ajax?type='+type+'');
-});
-});
-</script>	
-
-<script>
-$(document).ready(function() {
-$("#type").bind('change',function(){
-var type = document.getElementById('type').value;
-$("#result2").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_type_ajax?type='+type+'');
 });
 });
 </script>	
