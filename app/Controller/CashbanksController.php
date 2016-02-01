@@ -5514,9 +5514,34 @@ function petty_cash_payment_update($auto_id=null)
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id = (int)$this->Session->read('user_id');	
 
-	$auto_id=(int)$auto_id;
+	$auto_idddddd=(int)$auto_id;
 	$this->ath();
-	//$this->check_user_privilages();
+	
+	if(isset($this->request->data['petty_cash_payment']))
+	{
+		
+		$transaction_date = $this->request->data['date'];
+		$ac_group = $this->request->data['date'];
+		if($ac_group == 1)
+		{
+		$party_ac = $this->request->data['party1'];
+		}
+		else
+		{
+		$party_ac = $this->request->data['party2'];	
+		}
+		$paid_from = $this->request->data['date'];
+		$amount = $this->request->data['ammount'];
+		$narration = $this->request->data['narration'];
+		$petty_cash_id = (int)$this->request->data['petty_cash_id'];
+		
+		
+		
+	
+		
+		
+	}
+	
 	
 	$this->loadmodel('ledger_sub_account');
 	$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
@@ -5524,7 +5549,7 @@ function petty_cash_payment_update($auto_id=null)
 	$this->set('cursor3',$cursor3);
 
 	$this->loadmodel('new_cash_bank');
-	$conditions=array("transaction_id"=>$auto_id,"receipt_source"=>4,"society_id"=>$s_society_id);
+	$conditions=array("transaction_id"=>$auto_idddddd,"receipt_source"=>4,"society_id"=>$s_society_id);
 	$cursor4=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
 	$this->set('cursor4',$cursor4);
 

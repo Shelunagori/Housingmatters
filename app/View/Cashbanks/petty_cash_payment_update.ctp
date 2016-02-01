@@ -11,10 +11,11 @@ $user_id = (int)@$collection['new_cash_bank']['user_id'];
 $account_type = (int)@$collection['new_cash_bank']['account_type'];
 $sub_account = (int)$collection['new_cash_bank']['account_head'];
 $transaction_date = date('d-m-Y');
+$petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 }
 ?>
 
-<form method="post">
+<form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block">Update Petty Cash Payment</h4>
@@ -28,25 +29,24 @@ $transaction_date = date('d-m-Y');
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" value="<?php echo $transaction_date; ?>">
 <label id="date"></label>
-<div id="result11"></div>
 </div>
 <br />
 
 
 <label style="font-size:14px;">A/c Group<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select account group"> </i></label>
 <div class="controls">
-<select name="type" id="go" class="m-wrap span9 chosen">
+<select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)" id="type">
 <option value="" style="display:none;">Select</option>
 <option value="1" <?php if($account_type == 1) { ?> selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
 <option value="2" <?php if($account_type == 2) { ?> selected="selected" <?php } ?>>All Expenditure A/cs</option>
 </select>
-<label id="go"></label>
+<label id="type"></label>
 </div>
 <br />
 
 <div id="one">
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
-<select name="party1" class="m-wrap large chosen">
+<select name="party1" class="m-wrap large chosen" id="party1">
 <option value="" style="display:none;">Select</option>
 <?php 
 foreach($cursor1 as $data)
@@ -59,12 +59,13 @@ $name = $data['ledger_sub_account']['name'];
 }
 ?>
 </select>
+<label id="party1"></label>
 </div>
 
 
 <div id="two" class="hide">
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
-<select name="party2" class="m-wrap large chosen ignore">
+<select name="party2" class="m-wrap large chosen ignore" id="party2">
 <option value="" style="display:none;">Select</option>
 <?php
 foreach($cursor2 as $collection)
@@ -81,6 +82,7 @@ $name = $collection2['ledger_account']['ledger_name'];
 }}
 ?>
 </select>
+<label id="party2"></label>
 </div>
 <br>
 
@@ -109,24 +111,108 @@ $name = $collection2['ledger_account']['ledger_name'];
 
 <label style="font-size:14px;">Narration<span style="color:red;">*</span></label>
 <div class="controls">
-<textarea   rows="4" name="narration" style="resize:none;" class="m-wrap span9" id="nr"><?php echo $narration; ?></textarea>
-<label id="nr"></label>
+<textarea   rows="4" name="narration" style="resize:none;" class="m-wrap span9"><?php echo $narration; ?></textarea>
+
 </div>
 </div>
 </div>
 <div class="form-actions">
-<button type="submit" class="btn blue">Save</button>
-<button type="button" class="btn">Cancel</button>
+<a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_view" class="btn green" rel="tab"><i class="icon-arrow-left"></i> Back</a>
+<button type="submit" class="btn blue" name="petty_cash_payment">Save</button>
+
 </div>
 </div>
 </div>
+<input type="hidden" value="<?php echo $petty_cash_payment_id; ?>" name="petty_cash_id">
 </form>
 
 
+<script>
+function show_party(kk)
+{
+if(kk == 1)
+{
+$("#one").show();	
+$("#two").hide();
+$("#party1").removeClass("ignore");
+$("#party2").addClass("ignore");
+}
+if(kk == 2)
+{
+$("#one").hide();	
+$("#two").show();
+$("#party1").addClass("ignore");
+$("#party2").removeClass("ignore");		
+}
+}
+</script>
 
 
 
+<script>
+$(document).ready(function(){
+	
+jQuery.validator.addMethod("notEqual", function(value, element, param) {
+return this.optional(element) || value !== param;
+}, "Please choose Other value!");
+	
+$.validator.setDefaults({ ignore: ":hidden:not()" });
+
+$('#contact-form').validate({
+ignore: ".ignore",
+
+errorElement: "label",
+//place all errors in a <div id="errors"> element
+errorPlacement: function(error, element) {
+//error.appendTo("label#errors");
+error.appendTo('label#' + element.attr('id'));
+},
+					
+	    rules: {
+
+			date:{
+				required: true
+			},
+		  
+			type: {
+			required: true  
+			},
+	
 
 
 
+	
+			party1 : {
+			required: true  	
+			},
 
+			party2 : {
+			required: true
+			
+			},
+
+			account_head : {
+			required: true  	
+			},
+			
+			ammount: {
+			required: true,
+            number: true,
+            notEqual: "0"			
+			},
+							
+
+		
+		},
+		highlight: function(element) {
+		$(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		element
+		.text('OK!').addClass('valid')
+		.closest('.control-group').removeClass('error').addClass('success');
+		}
+		});
+
+}); 
+</script>
