@@ -103,7 +103,7 @@ $name = $collection['ledger_account']['ledger_name'];
 
 <label style="font-size:14px;">Amount<span style="color:red;">*</span></label></td>
 <div class="controls">
-<input type="text"   name="ammount" class="m-wrap span9" id="amount" value="<?php echo $amount; ?>">
+<input type="text"   name="ammount" class="m-wrap span9" id="amount" value="<?php echo $amount; ?>" style="text-align:right;">
 <label report="amt" class="remove_report"></label>
 </div>
 <br />
@@ -119,20 +119,22 @@ $tds_sub_arr = $tds_arr[$k];
 $tds_id2 = (int)$tds_sub_arr[1];
 $tds_tax = $tds_sub_arr[0];	
 ?>
-<option value= "<?php echo $tds_id2; ?>" <?php if($tds_id == $tds_id2) { ?> selected="selected" <?php } ?>><?php echo $tds_tax; ?></option>
+<option value= "<?php echo $tds_id2; ?>" <?php if($tds_id == $tds_id2) { $tax=$tds_tax; ?> selected="selected" <?php } ?>><?php echo $tds_tax; ?></option>
 <?php } ?>                           
 </select>
 <label report="tds" class="remove_report"></label>
 </div>
 <br />
+<?php
+$tax_amt = round(($tax/100)*$amount);
+$net_amt = $amount - $tax_amt;
 
-
-
-<label style="font-size:14px;">Total Amount</label>
+?>
+<label style="font-size:14px;">Net Amount</label>
 <div class="controls" id="result">
-<span id="total_am">
-<input type="text" readonly class="m-wrap span9" id="amt" id="tt">
-</span>
+
+<input type="text" readonly class="m-wrap span9" value="<?php echo $net_amt; ?>" style="text-align:right;">
+
 </div>
 
 </div>                          
@@ -228,14 +230,6 @@ $("#result").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_tds_ajax?t
 });
 </script>	
 
-
-<script>
-function loadddd(tddss,acctt,amt,ussidd)
-{
-$("#result2").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_type_ajax?type='+acctt+'&ussidd='+ussidd+'');	
-$("#result").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_tds_ajax?tds='+tddss+'&amount='+amt+'');	
-}
-</script>
 
 
 
