@@ -20308,7 +20308,7 @@ $this->layout='session';
 
 function ledger_SubAccount_dattta_by_flat_id($flat_id)
 {
-$s_society_id = $this->Session->read('society_id');
+$s_society_id = (int)$this->Session->read('society_id');
 
 $this->loadmodel('ledger_sub_account');
 $conditions=array("flat_id" => $flat_id,"society_id"=>$s_society_id);

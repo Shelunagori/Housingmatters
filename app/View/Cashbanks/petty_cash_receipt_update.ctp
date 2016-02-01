@@ -99,7 +99,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <div class="form-actions">
 <a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_view" class="btn green">
 <i class="icon-arrow-left"></i> Back</a>
-<button type="submit" class="btn blue">Save</button>
+<button type="submit" class="btn blue" name="petty_receipt_update">Save</button>
 
 </div>
 </div>
@@ -131,8 +131,8 @@ $("#party").removeClass("ignore");
 	<script>
 $(document).ready(function(){
 	
-	 jQuery.validator.addMethod("notEqual", function(value, element, param) {
-  return this.optional(element) || value !== param;
+jQuery.validator.addMethod("notEqual", function(value, element, param) {
+return this.optional(element) || value !== param;
 }, "Please choose Other value!");
 	
 $.validator.setDefaults({ ignore: ":hidden:not()" });
