@@ -37,7 +37,7 @@ $ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
 }	
 
 ?>
-<form method="post">
+<form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block">Update Bank Payment</h4>
@@ -49,15 +49,13 @@ $ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
 <label style="font-size:14px;">Transaction Date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" value="<?php echo $transaction_date; ?>">
-<label report="tr_dat" class="remove_report"></label>
-<div id="result11"></div>
+<label id="date"></label>
 </div>
 <br />
 
-
 <label style="font-size:14px;">Ledger Account<span style="color:red;">*</span></label>
 <div class="controls">
-<select class="m-wrap span9 chosen" id="led">
+<select class="m-wrap span9 chosen" id="led" name="ledger">
 <option value="">--SELECT--</option>
 <?php
 foreach($cursor11 as $collection)
@@ -104,7 +102,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <label style="font-size:14px;">Amount<span style="color:red;">*</span></label></td>
 <div class="controls">
 <input type="text"   name="ammount" class="m-wrap span9" id="amount" value="<?php echo $amount; ?>" style="text-align:right;">
-<label report="amt" class="remove_report"></label>
+<label id="amount"></label>
 </div>
 <br />
 
@@ -154,18 +152,18 @@ NEFT
 <div class="radio" id="uniform-undefined"><span><input type="radio" name="mode" value="PG" style="opacity: 0;" id="mode" <?php if($receipt_mode == "PG") { ?> checked="checked"  <?php } ?>></span></div>
 PG
 </label>
-<label report="mode" class="remove_report"></label>
+<label id="mode"></label>
 </div>
 <br />                         
-
 
  
 <label style="font-size:14px;">Instrument/UTR<span style="color:red;">*</span></label></td>
 <div class="controls">
 <input type="text"   name="instruction" class="m-wrap span9" id="inst" value="<?php echo $receipt_instruction; ?>">
-<label report="ins_utr" class="remove_report"></label>
+<label id="inst"></label>
 </div>
 <br />						  
+
 
 <label style="font-size:14px;">Bank Account<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select bank account"> </i></label></td>
 <div class="controls">
@@ -180,10 +178,9 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 <option value="<?php echo $sub_account_id; ?>" <?php if($sub_account_id == $account_head) { ?> selected="selected" <?php } ?>><?php echo $sub_account_name; ?></option>
 <?php } ?>
 </select>
-<label report="bank_ac" class="remove_report"></label>
+<label id="acb"></label>
 </div>
 <br />
-
 
 <label style="font-size:14px;">Invoice Reference<span style="color:red;">*</span></label>
 <div class="controls">
@@ -232,7 +229,70 @@ $("#result").load('<?php echo $webroot_path; ?>Cashbanks/bank_payment_tds_ajax?t
 
 
 
+<script>
+$(document).ready(function(){
+	
+jQuery.validator.addMethod("notEqual", function(value, element, param) {
+return this.optional(element) || value !== param;
+}, "Please choose Other value!");
+	
+$.validator.setDefaults({ ignore: ":hidden:not()" });
 
+$('#contact-form').validate({
+ignore: ".ignore",
+
+errorElement: "label",
+//place all errors in a <div id="errors"> element
+errorPlacement: function(error, element) {
+//error.appendTo("label#errors");
+error.appendTo('label#' + element.attr('id'));
+},
+					
+	    rules: {
+
+			date:{
+				required: true
+			},
+		  
+			ledger: {
+			required: true  
+			},
+	
+	
+			ammount : {
+			required: true,
+            number: true,
+            notEqual: "0"				
+			},
+
+			mode : {
+			required: true
+			
+			},
+
+			instruction : {
+			required: true  	
+			},
+			
+			bank_account: {
+			required: true
+           	},
+							
+
+		
+		},
+		highlight: function(element) {
+		$(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		element
+		.text('OK!').addClass('valid')
+		.closest('.control-group').removeClass('error').addClass('success');
+		}
+		});
+
+}); 
+</script>
 
 
 
