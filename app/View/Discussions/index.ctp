@@ -149,7 +149,7 @@ $flat_info=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_f
 <!---------------------------------------------->
 <?php if(!empty($file)) { ?>
 <div style="margin-top:2px;" >
-<img src="<?php echo $webroot_path ; ?>/discussion_file/<?php echo $file; ?>" style="width:100%; height:160px;">
+<img src="<?php echo $webroot_path ; ?>/discussion_file/<?php echo $file; ?>" style="width:100%; height:350px;">
 <div>
 <?php } ?>
 <!---------------------------------------------->
