@@ -11,19 +11,18 @@ $account_type = (int)@$data['new_cash_bank']['account_type'];
 $sub_account = (int)$data['new_cash_bank']['account_head'];
 $auto_id = (int)$data['new_cash_bank']['transaction_id'];
 }
-
 $trnsaction_date = date('d-m-Y',$d_date);
 ?>
-<body onload="loaddajjax(<?php echo $account_type; ?>,<?php echo $user_id; ?>)"> 
-<div style="background-color:#FFF; overflow:auto; border:1px solid #CCC;">
-<h4 style="color: #03F;font-weight: 500;border-bottom: solid 1px #DAD9D9;padding-bottom:18px;">&nbsp;&nbsp;&nbsp;<i class="icon-money"></i> Update Petty Cash receipt</h4>	
+
 <form method="post">
-	
-	
-<div style="background-color:#FFF; width:48%; float:left; margin-left:8px;">
-  
-<input type="hidden" value="<?php echo $auto_id; ?>" id="elldd" />
-   
+<div class="portlet box blue">
+<div class="portlet-title">
+<h4 class="block">Update Petty cash Receipt</h4>
+</div>
+<div class="portlet-body form">
+<div class="row-fluid">   
+<div class="span6">
+
 <label style="font-size:14px;">Transaction Date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" data-date-start-date="+0d" value="<?php echo $trnsaction_date; ?>">
@@ -52,10 +51,9 @@ $trnsaction_date = date('d-m-Y',$d_date);
 </div>
 <br />
 
-
-
 </div>
-<div style="background-color:#FFF; width:50%; float:right;">		
+
+<div class="span6">
 <label style="font-size:14px;">Account Head<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select account head"> </i></label>
 <div class="controls">
 <select   name="account_head" class="m-wrap span9 chosen" id="acn">
@@ -79,20 +77,31 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <textarea   rows="4" name="narration" class="m-wrap span9" style="resize:none;" id="narr"><?php echo $narration; ?></textarea>
 </div>
 <br />
-	
- 
-</div> 
-<br />
-<div style="width:100%; overflow:auto;">
-<hr />
-<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" class="btn red" style="margin-left:5%;" rel="tab">Back</a>
-<button type="submit" class="btn green form_post" name="bank_receipt_update">Save</button>
+</div>
+   
+</div>                         
+<div class="form-actions">
+<button type="submit" class="btn blue">Save</button>
 <button type="button" class="btn">Cancel</button>
 </div>
+</div>
+</div>
+<input type="hidden" value="<?php echo $auto_id; ?>" id="elldd" />
 </form>
 
-</div>
-</body>
+
+	
+	
+
+  
+
+   
+
+
+
+
+
+
 
 <script>
 $(document).ready(function() {
