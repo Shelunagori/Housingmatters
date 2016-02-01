@@ -9,12 +9,12 @@ $narration = @$data['new_cash_bank']['narration'];
 $user_id = (int)@$data['new_cash_bank']['user_id'];
 $account_type = (int)@$data['new_cash_bank']['account_type'];
 $sub_account = (int)$data['new_cash_bank']['account_head'];
-$auto_id = (int)$data['new_cash_bank']['transaction_id'];
+$auto_iddddd = (int)$data['new_cash_bank']['transaction_id'];
 }
 $trnsaction_date = date('d-m-Y',$d_date);
 ?>
 
-<form method="post">
+<form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block">Update Petty cash Receipt</h4>
@@ -26,32 +26,33 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <label style="font-size:14px;">Transaction Date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" data-date-start-date="+0d" value="<?php echo $trnsaction_date; ?>">
-<label report="dddd" class="remove_report"></label>
+<label id="date"></label>
 </div>
 <br />
 
 
 <label style="font-size:14px;">A/c Group<span style="color:red;">*</span></label>
 <div class="controls">
-<select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)">
+<select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)" id="type">
 <option value="" style="display:none;">Select</option>
 <option value="1" <?php if($account_type == 1) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c</option>
 <option value="2" <?php if($account_type == 2) { ?> selected="selected" <?php } ?>>Other Income</option>
 </select>
-<label report="acggg" class="remove_report"></label>
+<label id="type"></label>
 </div>
 <br />
 
-<div <?php if($account_type == 2) {?>class="hide" <?php } ?> id="one">
+<div id="one">
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
 <?php
 $this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'));    
 ?>
+<label id="resident"></label>
 </div>
 	
-<div <?php if($account_type == 1) {?> class="hide" <?php } ?> id="two">
+<div class="hide" id="two">
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
-<select name="user_id" class="m-wrap chosen large">
+<select name="party" class="m-wrap chosen large ignore" id="party">
 <option value="" style="display:none;">Select</option>
 <?php
 foreach ($cursor2 as $collection) 
@@ -62,6 +63,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <option value="<?php echo $auto_id; ?>" <?php if($ussidd == $auto_id) { ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
 <?php } ?>
 </select>
+<label id="party"></label>
 </div>
 <br />
 
@@ -74,14 +76,14 @@ $name = $collection['ledger_account']['ledger_name'];
 <option value="" style="display:none;">Select</option>
 <option value="32" selected="selected">Cash-in-hand</option>
 </select> 
-<label report="achdd" class="remove_report"></label>
+<label id="acn"></label>
 </div>
 <br />
 
 <label style="font-size:14px;">Amount<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="m-wrap span9"  name="amount" id="amt" value="<?php echo $amount; ?>">
-<label report="amttt" class="remove_report"></label>
+<label id="amt"></label>
 </div>
 <br />
 
@@ -102,7 +104,7 @@ $name = $collection['ledger_account']['ledger_name'];
 </div>
 </div>
 </div>
-<input type="hidden" value="<?php echo $auto_id; ?>" id="elldd" />
+<input type="hidden" value="<?php echo $auto_iddddd; ?>" name="iddd"/>
 </form>
 
 <script>
@@ -111,18 +113,84 @@ function show_party(tt)
 if(tt == 1)
 {
 $("#one").show();
-$("#two").hide();	
+$("#two").hide();
+$("#resident").removeClass("ignore");
+$("#party").addClass("ignore");
 }	
 if(tt == 2)	
 {
 $("#one").hide();
-$("#two").show();	
+$("#two").show();
+$("#resident").addClass("ignore");
+$("#party").removeClass("ignore");	
 }	
 }
 </script>	
 
 
+	<script>
+$(document).ready(function(){
 	
+	 jQuery.validator.addMethod("notEqual", function(value, element, param) {
+  return this.optional(element) || value !== param;
+}, "Please choose Other value!");
+	
+$.validator.setDefaults({ ignore: ":hidden:not()" });
+
+$('#contact-form').validate({
+ignore: ".ignore",
+
+errorElement: "label",
+//place all errors in a <div id="errors"> element
+errorPlacement: function(error, element) {
+//error.appendTo("label#errors");
+error.appendTo('label#' + element.attr('id'));
+},
+					
+	    rules: {
+
+			date:{
+				required: true
+			},
+		  
+			type: {
+			required: true  
+			},
+		
+			resident : {
+			required: true  	
+			},
+
+			party : {
+			required: true
+			
+			},
+
+			account_head : {
+			required: true  	
+			},
+			
+			amount: {
+			required: true,
+            number: true,
+            notEqual: "0"			
+			},
+							
+
+		
+		},
+		highlight: function(element) {
+		$(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		element
+		.text('OK!').addClass('valid')
+		.closest('.control-group').removeClass('error').addClass('success');
+		}
+		});
+
+}); 
+</script>
 
 
 
