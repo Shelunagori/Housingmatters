@@ -5384,9 +5384,9 @@ $cursor2=$this->society->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 }
-///////////////////////////// End petty_cash_Receipt_html_view /////////////////////////////////////////////
+////////////////// End petty_cash_Receipt_html_view //////////////////////////////////
 
-///////////////////////////// Start petty_cash_receipt_Update /////////////////////////////////////////////
+///////////////////// Start petty_cash_receipt_Update ///////////////////////////
 function petty_cash_receipt_update($auto_id=null)
 {
 	if($this->RequestHandler->isAjax()){
@@ -5409,9 +5409,24 @@ function petty_cash_receipt_update($auto_id=null)
 
 	$this->loadmodel('new_cash_bank');
 	$conditions=array("transaction_id"=>$auto_id,"receipt_source"=>3,"society_id"=>$s_society_id);
-	$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
-	$this->set('cursor1',$cursor1);
+	$cursor4=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+	$this->set('cursor4',$cursor4);
 
+	
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 34, "society_id" => $s_society_id,"deactive"=>0);
+$cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+$this->loadmodel('ledger_account');
+$conditions=array("group_id" => 8);
+$cursor2=$this->ledger_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+	
+	
+	
+	
+	
 }
 ///////////////////////////// End petty_cash_Receipt_Update /////////////////////////////////////////////
 
