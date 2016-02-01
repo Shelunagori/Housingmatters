@@ -5398,9 +5398,52 @@ function petty_cash_receipt_update($auto_id=null)
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id = (int)$this->Session->read('user_id');	
 
+	if(isset($this->request->data['petty_receipt_update']))
+	{
+	
+	echo $transaction_date = $this->request->data['date'];
+	echo $ac_group = (int)$this->request->data['type'];
+	if($ac_group == 1)
+	{
+	echo $party_ac = (int)$this->request->data['resident'];
+	}
+	else
+	{
+	echo $party_ac = (int)$this->request->data['party'];	
+	}
+	
+	echo $ac_head = (int)$this->request->data['account_head'];
+	echo $amount = $this->request->data['amount'];
+	echo $description = $this->request->data['narration'];
+	echo $petty_cash_id = (int)$this->request->data['iddd'];
+	
+exit;	
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	$auto_id=(int)$auto_id;
 	$this->ath();
-	//$this->check_user_privilages();
 	
 	$this->loadmodel('ledger_sub_account');
 	$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
