@@ -114,6 +114,7 @@ $tds_tax = $tds_sub_arr[0];
 
 </div>                          
 <div class="span6">
+
 <label style="font-size:14px;">Mode of Payment<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please choose payment mode"> </i></label>
 <div class="controls">
 <label class="radio">
