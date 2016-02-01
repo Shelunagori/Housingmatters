@@ -10,7 +10,7 @@ $narration = @$collection['new_cash_bank']['narration'];
 $user_id = (int)@$collection['new_cash_bank']['user_id'];
 $account_type = (int)@$collection['new_cash_bank']['account_type'];
 $sub_account = (int)$collection['new_cash_bank']['account_head'];
-$transaction_date = date('d-m-Y');
+$transaction_date = date('d-m-Y',($d_date));
 $petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 }
 ?>
