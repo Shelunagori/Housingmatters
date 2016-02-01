@@ -159,7 +159,9 @@ $flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat
 									<div class="tabbable tabbable-custom">
 										<ul class="nav nav-tabs">
 											<li class="active"><a href="profile" rel='tab' >Basic</a></li>
-											<li class=""><a href="family_member_view" rel='tab' >Family Member</a></li>
+<?php if($tenant==1){ $type="owner"; } if($tenant==2){ $type="tenant"; }
+if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_tenant==1)){ ?>
+<li class=""><a href="family_member_view" rel='tab' >Family Member</a></li> <?php } ?>
 										</ul>
 										<div class="tab-content">
 										 

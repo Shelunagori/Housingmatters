@@ -16190,14 +16190,20 @@ $conditions2=array('user_id'=>$s_user_id);
 $result_user=$this->user->find('all',array('conditions'=>$conditions2));
 foreach($result_user as $data)
 {
-	  $profile=$data['user']['profile_pic'];
+	   $profile=$data['user']['profile_pic'];
+	   $tenant=$data['user']['tenant'];
 }
+$this->set('tenant',$tenant);
 $result_society=$this->society_name($s_society_id);
 foreach($result_society as $data)
 {
 	 $society_name2=$data['society']['society_name'];
+	 @$family_member=$data['society']['family_member'];
+	 @$family_member_tenant=$data['society']['family_member_tenant'];
+	 
 }
-
+$this->set('family_member',$family_member);
+$this->set('family_member_tenant',$family_member_tenant);
 $this->loadmodel('hobbies_category');
 $this->set('hobbies_category',$this->hobbies_category->find('all'));
 
@@ -17221,15 +17227,17 @@ function family_member_view()
 	//$residing=(int)$data['user']['noc_type'];
 
 	}
+	$this->set('tenant',$tenant);
 	$result_society=$this->society_name($s_society_id);	
 	foreach($result_society as $data)
 	{
 	 $society_name=$data['society']['society_name'];
 	 @$family_member=$data['society']['family_member'];
+	  @$family_member_tenant=$data['society']['family_member_tenant'];
 	  @$s_duser_id=$data['society']['user_id'];
 	}
-
-	
+	$this->set('family_member',$family_member);
+	$this->set('family_member_tenant',$family_member_tenant);	
 	
 	
 	
@@ -24050,6 +24058,7 @@ $this->layout='blank';
 $q=$this->request->query('q');
  $q = html_entity_decode($q);
  $myArray = json_decode($q, true);
+ pr($myArray);exit;
 $s_society_id=$this->Session->read('society_id'); 
 $s_role_id=$this->Session->read('role_id');
 $s_user_id=$this->Session->read('user_id');
@@ -24070,6 +24079,7 @@ $s_user_id=$this->Session->read('user_id');
 	$residing=(int)$data['user']['noc_type'];
 
 	}
+	$wing_flat=$this->wing_name($wing,$flat);
 	$result_society=$this->society_name($s_society_id);	
 	foreach($result_society as $data)
 	{
@@ -24139,16 +24149,16 @@ foreach($myArray as $child){
 	
 	
 	if(empty($child[1])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Please enter a age'));
+		$output = json_encode(array('type'=>'error', 'text' => 'Please select age group'));
         die($output);
 	}
 	
-	if(!empty($child[1]) && $child[1]< 13){
+	/*if(!empty($child[1]) && $child[1]< 13){
 		
 		$output = json_encode(array('type'=>'error', 'text' => 'Your age should be above 13'));
         die($output);
 		
-	}
+	}*/
 	if(empty($child[3])){
 		$output = json_encode(array('type'=>'error', 'text' => 'Please enter a relation'));
         die($output);
@@ -24208,7 +24218,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 			$dob=$child[1];
 			$relation=$child[3];
 			$blood_group=$child[2];
-			
+			$gender=$child[6];
 			
 			$this->loadmodel('user');	
 			$i=$this->autoincrement('user','user_id');	
@@ -24240,7 +24250,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 		  			
 			////////////////////////// insert user table //////////////////////////
 $role_id[]=2;
-$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'residing' => $residing, 'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>'','role_id'=>$role_id,'default_role_id'=>2,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
+$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'residing' => $residing, 'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>$gender,'role_id'=>$role_id,'default_role_id'=>2,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
 
 			////////////////////// End user table ///////////////////////////////////////////////////
 
@@ -24251,51 +24261,251 @@ if(!empty($email) && !empty($mobile))
 		{
 			$login_user=$email;	
 
+  $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody>
+			<tr>
+                <td>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+									<td colspan="2">
+										<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
+										<tbody>
+										<tr><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										<tr>
+										<td style="height:32;line-height:0px" align="left" valign="middle" width="32"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/HM-LOGO-small.jpg" style="border:0" height="50" width="50"></a></td>
+										<td style="display:block;width:15px" width="15">&nbsp;&nbsp;&nbsp;</td>
+										<td width="100%"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none;font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:19px;line-height:32px"><span style="color:#00a0e3">Housing</span><span style="color:#777776">Matters</span></a></td>
+										<td align="right"><a href="https://www.facebook.com/HousingMatters.co.in" target="_blank"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/SMLogoFB.png" style="max-height:30px;min-height:30px;width:30px;max-width:30px" height="30px" width="30px"></a>
+											
+										</td>
+										</tr>
+										<tr style="border-bottom:solid 1px #e5e5e5"><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										</tbody>
+										</table>
+									</td>
+								</tr>
+								
+									
+								
+						</tbody>
+					</table>
+					
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify"> Dear '.$name.', </span> 
+										</td>
+																
+								</tr>
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify">As a family member,you have been added to '.$society_name.' online portal by '.$user_name_by.' '.$wing_flat.' </span> 
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										 We at '.$society_name.' use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.
+										
+										
+										
+										
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+												Here are some of the important features related to our portal on HousingMatters:
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+												You can log & track complaints, start new discussions, check your dues, post classifieds and many more in the portal.
+										</td>
+																
+								</tr>
 
-			$message_web="<div>
-			<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
-			<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
-			<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
-			</br><p>Dear $name,</p><p>you have been added to $society_name online portal by $user_name_by </p>
-			<p>'We at $society_name use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.</p>
-			<p>As you are an owner/resident/staff of $society_name, we have added your email address in HousingMatters portal.</p>
-			<p>Here are some of the important features related to our portal on HousingMatters:</p>
-			<p>You can log & track complaints, start new discussions, check your dues, post classifieds and many more in the portal.</p>
-			<p>You can receive important SMS & emails from your committee.</p>
-			<br/>				
-			<p><b><a href='$ip".$this->webroot."/hms/send_sms_for_verify_mobile?q=$random'>Click here</a> for one time verification of your mobile number and Login into HousingMatters  for making life simpler for all your housing matters!</b></p>
-			<br/>
-			<p>Pls add www.housingmatters.co.in in your favorite bookmarks for future use.</p>
-			<p>Regards,</p>	
-			<p>Administrator of $society_name</p><br/><br/>
-			www.housingmatters.co.in
-			</div >
-			</div>";
+									<tr>
+									<td style="padding:5px;" width="100%" align="left">
+									You can receive important SMS & emails from your committee.
+									</td>
+
+									</tr>
+								<tr>
+										<td style="padding:5px;" width="100%" align="left"><br/>
+											<span  align="justify"> <b>
+											<a href="'.$ip.$this->webroot.'hms/send_sms_for_verify_mobile?q='.$random.'"> Click here </a> for one time verification of your mobile number and Login into HousingMatters for making life simpler for all your housing matters!</b>
+											</span> 
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span align="justify"> Pls add www.housingmatters.in in your favorite bookmarks for future use. </span> 
+										</td>
+																
+								</tr>
+								
+								<tr>
+									<td style="padding:5px;" width="100%" align="left">
+											<span > 
+												Regards,<br/>
+												Administrator of '.$society_name.'<br/>
+												www.housingmatters.in
+											</span>
+									</td>
+																
+								</tr>
+					
+					</table>
+					
+				</td>
+			</tr>
+
+        </tbody>
+</table>';
+			
 		}
 			
 			
 		if(!empty($email) && empty($mobile))
 		{
 			$login_user=$email;	
-			$message_web="<div>
-			<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
-			<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
-			<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
-			</br><p>Dear $name,</p><p>you have been added to $society_name online portal by $user_name_by </p>
-			<p>'We at $society_name use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.</p>
-			<p>As you are an owner/resident/staff of $society_name, we have added your email address in HousingMatters portal.</p>
-			<p>Here are some of the important features related to our portal on HousingMatters:</p>
-			<p>You can log & track complaints, start new discussions, check your dues, post classifieds and many more in the portal.</p>
-			<p>You can receive important SMS & emails from your committee.</p>
-			<br/>				
-			<p><b><a href='$ip".$this->webroot."/hms/set_new_password?q=$random'>Click here</a> for one time verification of your email and Login into HousingMatters  for making life simpler for all your housing matters!</b></p>
-			<br/>
-			<p>Pls add www.housingmatters.co.in in your favorite bookmarks for future use.</p>
-			<p>Regards,</p>	
-			<p>Administrator of $society_name</p><br>
-			www.housingmatters.co.in
-			</div >
-			</div>";
+			
+			$message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody>
+			<tr>
+                <td>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+									<td colspan="2">
+										<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
+										<tbody>
+										<tr><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										<tr>
+										<td style="height:32;line-height:0px" align="left" valign="middle" width="32"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/HM-LOGO-small.jpg" style="border:0" height="50" width="50"></a></td>
+										<td style="display:block;width:15px" width="15">&nbsp;&nbsp;&nbsp;</td>
+										<td width="100%"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none;font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:19px;line-height:32px"><span style="color:#00a0e3">Housing</span><span style="color:#777776">Matters</span></a></td>
+										<td align="right"><a href="https://www.facebook.com/HousingMatters.co.in" target="_blank"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/SMLogoFB.png" style="max-height:30px;min-height:30px;width:30px;max-width:30px" height="30px" width="30px"></a>
+											
+										</td>
+										</tr>
+										<tr style="border-bottom:solid 1px #e5e5e5"><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										</tbody>
+										</table>
+									</td>
+								</tr>
+								
+									
+								
+						</tbody>
+					</table>
+					
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify"> Dear '.$name.', </span> 
+										</td>
+																
+								</tr>
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify">As a family member,you have been added to '.$society_name.' online portal by '.$user_name_by.' '.$wing_flat.' </span> 
+										</td>
+																
+								</tr>
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										 We at '.$society_name.' use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.
+										
+										
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+												Here are some of the important features related to our portal on HousingMatters:
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+												You can log & track complaints, start new discussions, check your dues, post classifieds and many more in the portal.
+										</td>
+																
+								</tr>
+
+									<tr>
+									<td style="padding:5px;" width="100%" align="left">
+									You can receive important SMS & emails from your committee.
+									</td>
+
+									</tr>
+								<tr>
+										<td style="padding:5px;" width="100%" align="left"><br/>
+											<span  align="justify"> <b>
+											<a href="'.$ip.$this->webroot.'hms/set_new_password?q='.$random.'"> Click here </a> for one time verification of your email and Login into HousingMatters for making life simpler for all your housing matters!</b>
+											</span> 
+										</td>
+																
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span align="justify"> Pls add www.housingmatters.in in your favorite bookmarks for future use. </span> 
+										</td>
+																
+								</tr>
+								
+								<tr>
+									<td style="padding:5px;" width="100%" align="left">
+											<span > 
+												Regards,<br/>
+												Administrator of '.$society_name.'<br/>
+												www.housingmatters.in
+											</span>
+									</td>
+																
+								</tr>
+					
+					</table>
+					
+				</td>
+			</tr>
+
+        </tbody>
+</table>';
+			
+			
 		}
 			
 			
@@ -24345,8 +24555,8 @@ $this->login->saveAll(array('login_id'=>$log_i,'user_name'=>$login_user,'passwor
 
 		}
 				
-$output = json_encode(array('type'=>'add_tr', 'text' => 'Your family details have been updated.'));
-				die($output);
+		$output = json_encode(array('type'=>'add_tr', 'text' => 'Your family member will get further communication to complete their enrollment process.'));
+		die($output);
 
 
 

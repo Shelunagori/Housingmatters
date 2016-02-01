@@ -6,7 +6,11 @@ var c=$('#hid').val();
 
 c++;
 
- $("table.table_1").append("<tr id=tab"+c+"><td width='20%'><input type='text'  class='span12 m-wrap ' name='name"+c+"' id='name"+c+"'  style='font-size:16px;' placeholder='Name*'></td><td width='20%'><input type='text'  class='span12 m-wrap' name='email"+c+"' id='email"+c+"' style='font-size:16px;' placeholder='Email Address'></td><td width='10%'><input type='text'  class='span12 m-wrap' name='mobile"+c+"' id='mobile"+c+"' style='font-size:16px;' placeholder='Mobile No' maxlength='10'></td><td width='5%'><input type='text'  class='span12 m-wrap' name='dob"+c+"' id='dob"+c+"' style='font-size:16px;' maxlength='2' placeholder='Age'></td><td width='10%'><select class=' span12 m-wrap '  name='blood_group"+c+"'  id='blood_group"+c+"'><option value='' style='display:none;'>Blood Group</option><option value='1'>  A+ </option><option value='2'>  B+</option><option value='3'>  AB+  </option><option value='4'>  O+  </option></option><option value='5'>  A- </option><option value='6'>  B-</option><option value='7'>  AB-  </option><option value='8'>  O-  </option></select></td><td width='25%'><input type='text'  class='span8 m-wrap' name='relation"+c+"' id='relation"+c+"' style='font-size:16px;' placeholder='Relationship'></td></tr>");
+ $("table.table_1").append("<tr id=tab"+c+"><td width='20%'><input type='text'  class='span12 m-wrap ' name='name"+c+"' id='name"+c+"'  style='font-size:16px;' placeholder='Name*'></td><td width='20%'><input type='text'  class='span12 m-wrap' name='email"+c+"' id='email"+c+"' style='font-size:16px;' placeholder='Email Address'></td><td width='10%'><input type='text'  class='span12 m-wrap' name='mobile"+c+"' id='mobile"+c+"' style='font-size:16px;' placeholder='Mobile No' maxlength='10'></td><td width='10%'><select class='span12 m-wrap ' data-placeholder='Choose Age Group' name='dob"+c+"' id='dob"+c+"'><option value='' style='display:none;'></option><option value='1'> 18-24 </option><option value='2'> 25-34 </option><option value='3'> 35-44 </option><option value='4'> 45-54 </option><option value='5'> 55-64 </option><option value='6'> 65+</option></select></td><td width='10%'><select class=' span12 m-wrap '  name='blood_group"+c+"'  id='blood_group"+c+"'><option value='' style='display:none;'>Blood Group</option><option value='1'>  A+ </option><option value='2'>  B+</option><option value='3'>  AB+  </option><option value='4'>  O+  </option></option><option value='5'>  A- </option><option value='6'>  B-</option><option value='7'>  AB-  </option><option value='8'>  O-  </option></select></td><td width='20%'><input type='text'  class='span8 m-wrap' name='relation"+c+"' id='relation"+c+"' style='font-size:16px;' placeholder='Relationship*'></td><td  width='10%'><label class='radio'><input type='radio' class='gen"+c+"' name='gen"+c+"' value='1' >Male</label><label class='radio'><input type='radio' class='gen"+c+"' name='gen"+c+"'  value='2' >Female</label></td></tr>");
+ var test = $("input[type=radio]:not(.toggle)");
+if (test) {
+	test.uniform();
+}
 $('#hid').val(c);
 
 });
@@ -37,8 +41,12 @@ $('#hid').val(c);
 
 <div class="tabbable tabbable-custom">
 										<ul class="nav nav-tabs">
-											<li class=""><a href="profile" rel='tab' >Basic</a></li>
-											<li class="active"><a href="family_member_view" rel='tab' >Family Member</a></li>
+											
+											<?php 
+if($tenant==1){ $type="owner"; } if($tenant==2){ $type="tenant"; }
+if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_tenant==1)){
+?><li class=""><a href="profile" rel='tab' >Basic</a></li>
+<li class="active"><a href="family_member_view" rel='tab' >Family Member</a></li> 
 										</ul>
 										<div class="tab-content">
 										<br>
@@ -49,10 +57,11 @@ $('#hid').val(c);
 			<form method="post" id="contact-form">
 			
 	<input type="hidden" value="1" id="hid" name="hid_id">
-	<table class="table_1" width="100%" >
+	<table class="table_1" width="100%" cellpadding="0"  class="table table-bordered" style="background-color:white;" >
+	
 	<tr >
 	<td  width="20%">
-	
+	<label>Name <span style="color:red;"> * </span></label>
 	<input type="text"   class="span12 m-wrap" name="name1" id="name1" style="font-size:16px;" placeholder="Name*" value="<?php echo @$nam; ?>" >
 	
 	
@@ -60,7 +69,7 @@ $('#hid').val(c);
 	
 	<td width="20%" > 
 
-
+<label>Email </label>
 <input type="text" class=" span12 m-wrap" placeholder="Email Address"  id="email1" style="font-size:16px;" name="email1" >
 <div id="echo_exit"></div>
 
@@ -68,26 +77,35 @@ $('#hid').val(c);
 </td>
 
 <td width="10%" > 
+<label>Mobile </label>
 <input type="text"   class="span12 m-wrap" placeholder="Mobile No"style="font-size:16px;" id="mobile1" maxlength="10" name="mobile1" >
 
 
 </td>
 	
 	
-	<td width="5%" >
+	<td width="10%" >
 
                              
-                            
+    <label>Age <span style="color:red;"> * </span></label>                        
 							 
- <input class=" span12 m-wrap "  type="text" value="" maxlength='2' name="dob1" placeholder="Age" id="dob1">
-                              
-                        
+ 
+	<select class='span12 m-wrap ' data-placeholder='Choose Age Group' name='dob1' id='dob1'>
+	<option value='' style='display:none;'>Age group</option>
+	<option value='1'> 18-24 </option>
+	<option value='2'> 25-34 </option>
+	<option value='3'> 35-44 </option>
+	<option value='4'> 45-54 </option>
+	<option value='5'> 55-64 </option>
+	<option value='6'> 65+</option>
+	</select>                            
+
  </td>
 	
 	
 	
 	<td width="10%" > 
-
+<label>Blood Group </label>
 <select class=" span12 m-wrap "placeholder=" Blood Group" name="blood_group1" id="blood_group1">
 <option value="" style="display:none;">Blood group</option>
 <option value="1">  A+ </option>
@@ -104,11 +122,16 @@ $('#hid').val(c);
 
  </td>
  
- <td width="25%" >
-
-                                 <input class="span8 m-wrap " type="text" value="" name="relation1" placeholder="Relationship" id='relation1'>
+ <td width="20%" >
+<label>Relation <span style="color:red;"> * </span></label>
+                                 <input class="span8 m-wrap " type="text" value="" name="relation1" placeholder="Relationship*" id='relation1'>
                        
  </td>
+<td  width='10%'>
+<label> Gender </label>
+<label class='radio'><input type='radio' class='gen1' name='gen1'  value='1' >Male</label>
+<label class="radio"><input type='radio' class='gen1' name='gen1'  value='2' >Female</label>
+</td>
 	
 	</tr>
 			
@@ -234,6 +257,9 @@ $('#hid').val(c);
 										<br><br>
 										</div>
 										</div>
+										<?php }else{ ?>
+<div class='alert alert-block alert-success fade in'><h4 class='alert-heading'></h4><p>Administrator has not allowed family member login into the portal.</p><p><a class='btn green' href='dashboard' rel='tab' role='button'>Ok</a></p></div>
+<?php } ?>
 										
 										
 </div>	
@@ -254,22 +280,24 @@ $(document).ready(function() {
 	
 	for(var i=1;i<=hidden;i++)
 	{
-	
+	   var qw1='input:radio:checked';
 		var n=$("#name"+i).val();
 		var e=$("#email"+i).val();
 		var m=$("#mobile"+i).val();
 	    var d=$("#dob"+i).val();
 		var b=$("#blood_group"+i).val();
 		var r=$("#relation"+i).val();
-	   
-	   ar.push([n,d,b,r,e,m]);
+		var e=$("#email"+i).val();
+		var gen=$(".gen"+i+":checked").val();
+	    ar.push([n,d,b,r,e,m,gen]);
 		var myJsonString = JSON.stringify(ar);
+		alert(ar);
 	}
 	$.ajax({
 			url: "family_member_valid?q="+myJsonString,
-			dataType:'json',
+			//dataType:'json',
 			}).done(function(response) {
-			
+			alert(response);
 				if(response.type == 'error'){  
 					output = '<div class="alert alert-error">'+response.text+'</div>';
 					$("#submit").removeClass("disabled").text("submit");
