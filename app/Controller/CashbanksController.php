@@ -5500,9 +5500,9 @@ $this->set('cursor2',$cursor2);
 	
 	
 }
-///////////////////////////// End petty_cash_Receipt_Update /////////////////////////////////////////////
+///////////////////////////// End petty_cash_Receipt_Update /////////////////////////////
 
-///////////////////////////// Start petty_cash_Payment_Update /////////////////////////////////////////////
+///////////////////////////// Start petty_cash_Payment_Update //////////////////////////
 function petty_cash_payment_update($auto_id=null)
 {
 	if($this->RequestHandler->isAjax()){
@@ -5572,8 +5572,6 @@ $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),
 <a href="<?php echo $this->webroot; ?>Cashbanks/petty_cash_payment_view" class="btn red">OK</a>
 </div>
 </div>		
-		
-		
 		
 <?php		
 }
@@ -5645,9 +5643,9 @@ $tds_arr = $collection['reference']['reference'];
 $this->set("tds_arr",$tds_arr);		
 		
 }
-///////////////////////////// End petty_cash_Payment_Update /////////////////////////////////////////////
+//////////////////////////// End petty_cash_Payment_Update ///////////////////////////////
 
-///////////////////////////// Start petty_cash_Payment_Update /////////////////////////////////////////////
+/////////////////////////// Start petty_cash_Payment_Update ////////////////////////////
 function bank_pyment_update($auto_id=null)
 {
 		if($this->RequestHandler->isAjax()){
@@ -5748,27 +5746,25 @@ $this->loadmodel('ledger');
 $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"credit" =>$total_tds_amount,"ledger_sub_account_id" =>$sub_account_id_a),array("society_id" => (int)$s_society_id, "element_id" => (int)$bank_payment_id,"table_name"=>"new_cash_bank","debit" =>null,"ledger_account_id" =>33));
 
 
-
-
-
-
 if($tds_amount > 0)
 {
 $sub_account_id_t = 16;
-
-
 $this->loadmodel('ledger');
 $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),
 "credit" =>$tds_amount),array("society_id" => (int)$s_society_id, "element_id" => (int)$bank_payment_id,"table_name"=>"new_cash_bank","debit" =>null,"ledger_account_id"=>16));
-
-
 }
-
-
-
-
-	
-	
+?>
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>The Record Updated Successfully</p>
+</div>
+<div class="modal-footer">
+<a href="<?php echo $this->webroot; ?>Cashbanks/bank_payment_view" class="btn red">OK</a>
+</div>
+</div>	
+<?php
 }
 	
 	
