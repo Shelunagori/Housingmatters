@@ -12,32 +12,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 
-<?php
-$current_date = date('Y-m-d');
-$current_date2 = strtotime($current_date);
-foreach($financial_data as $financial_dataaa)
-{
-$from = $financial_dataaa['financial_year']['from'];	
-$to = $financial_dataaa['financial_year']['to'];
 
-$from2 = date('Y-m-d',$from->sec);
-$to2 = date('Y-m-d',$to->sec);	
-$from3 = strtotime($from2);
-$to3 = strtotime($to2);
-if($current_date2 >= $from3 && $current_date2 <= $to3)
-{
-$financial_year_from = $from3;
-$financial_year_to = $to3;
-}
-}
-
-echo date('d-m-Y',$financial_year_from);
-echo date('d-m-Y',$financial_year_to);
-?>
 
 
 <!---- Start Import Code -->
-    <?php /*    <div id='suces'>
+        <div id='suces'>
         <div id="error_msg"></div>
         <div id="myModal3" class="modal hide fade in" style="display:none;">
         <div class="modal-backdrop fade in"></div>
@@ -685,7 +664,7 @@ $("#amttt"+ dd).val("");
 return false;		
 }
 }
-</script>  */ ?>
+</script>  
 
 
 
