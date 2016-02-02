@@ -174,11 +174,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
                                
                                 
                                 
-                                <div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="" name="file">
+                                <div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden" value="">
                                 <span class="btn btn-file">
                                 <span class="fileupload-new"> file</span>
                                 <span class="fileupload-exists">Change</span>
-                                <input type="file" class="default" name="file">
+                                <input type="file" class="default">
                                 </span>
                                 <span class="fileupload-preview"></span>
                                 <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none"></a>
@@ -212,7 +212,9 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </div>
 </div>
 </form>
-<!------------------------------ End New Expense Tracker Form ----------------------------------------->
+<!------------------------------ End New Expense Tracker Form ------------------------->
+
+
 
 <script>
 function amt_val(vv,dd)
@@ -344,9 +346,9 @@ var invoice_ref=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 t
 var party_ac=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(1) select").val();
 var amt_inv=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(2) input").val();
 var description=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(4) input").val();
-var file_name = $('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(3) input[type=file]')[0].files[0].name;
+m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(3) input[type=file]')[0].files[0]);
 
-ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description,file_name]);
+ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
 			}
 	var myJsonString = JSON.stringify(ar);
 	m_data.append('myJsonString',myJsonString);
