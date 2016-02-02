@@ -7330,8 +7330,8 @@ $this->Session->write('new_bank_rrr', 1);
 $output = json_encode(array('type'=>'success', 'text' => 'The Bank Receipt #'.$arr_rrr.' Generated Sucessfully'));
 die($output);
 }
-////////////////////////// End bank_receipt_json ////////////////////////////////////////////////////////
-////////////////////////////// Start new_bank_receipt_reference_ajax ///////////////////////////////////////
+////////////////////////// End bank_receipt_json ///////////////////////////////////////
+////////////////////////////// Start new_bank_receipt_reference_ajax ///////////////////
 function new_bank_receipt_reference_ajax()
 {
 $this->layout='blank';
@@ -8747,55 +8747,97 @@ $this->ath();
 if(isset($this->request->data['bank_rrr']))
 {
 $transaction_date = $this->request->data['transaction_date'];
+$transaction_date = date('Y-m-d',strtotime($transaction_date));
 $deposited_in = (int)$this->request->data['deposited_bank_id'];
 $receipt_mode = $this->request->data['receipt_mode'];
 
 		if($receipt_mode == "Cheque")
 		{
-		echo $cheque_number = $this->request->data['cheque_number'];
-       echo $cheque_date = $this->request->data['cheque_date1'];	
-       echo $which_bank = $this->request->data['drawn_on_which_bank'];	
-       echo $branch = $this->request->data['branch'];			
+		$cheque_number = $this->request->data['cheque_number'];
+        $cheque_date = $this->request->data['cheque_date1'];	
+        $which_bank = $this->request->data['drawn_on_which_bank'];	
+        $branch = $this->request->data['branch'];			
 		}
 		else
 		{
-		echo $reference = $this->request->data['reference_number'];	
-        echo $cheque_date = $this->request->data['neft_date'];			
+		 $reference = $this->request->data['reference_number'];	
+         $cheque_date = $this->request->data['neft_date'];			
 		}	
-	    echo $member_type = (int)$this->request->data['member_type'];
+	     $member_type = (int)$this->request->data['member_type'];
 	    
 		if($member_type == 1)
 		{
-		echo $receipt_type=(int)$this->request->data['receipt_type'];	
+		 $receipt_type=(int)$this->request->data['receipt_type'];	
 		if($receipt_type == 2)
 		{
-		echo $resident_flat_id = (int)$this->request->data['resident'];	
+		 $resident_flat_id = (int)$this->request->data['resident'];	
 		}
   		}
 	    if($member_type == 2)
 		{
-	   echo  $part_name_id = (int)$this->request->data['party_name'];
-	   echo  $bill_reference = $this->request->data['bill_reference'];
+	     $part_name_id = (int)$this->request->data['party_name'];
+	     $bill_reference = $this->request->data['bill_reference'];
 		}
-	    echo $amount = $this->request->data['amount']; 
+	     $amount = $this->request->data['amount']; 
+		 $narration = @$this->request->data['description'];
+	     $transaction_id = (int)$this->request->data['iddd'];
+/////////////////////////////////////
+
+if($member_type == 1)
+{
+if($receipt_type == 2)
+{
+
+$this->loadmodel('new_cash_bank');
+$this->new_cash_bank->updateAll(array("receipt_date"=>strtotime($transaction_date),"receipt_mode"=>$receipt_mode,"cheque_number" =>@$cheque_number,"cheque_date"=>$cheque_date,"drawn_on_which_bank"=>@$which_bank,
+"reference_utr"=>@$reference,"deposited_bank_id"=>$deposited_in,"member_type"=> $member_type,"party_name_id"=>$resident_flat_id,"receipt_type"=>$receipt_type,"amount" => $amount,"flat_id"=>$resident_flat_id,
+"narration"=>$narration,"bank_branch"=>@$branch),array("society_id"=>(int)$s_society_id,"transaction_id" =>(int)$transaction_id));
+
 	
-	exit;
+$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array($resident_flat_id)));
+foreach($result_flat_info as $flat_info){
+$account_id = (int)$flat_info["ledger_sub_account"]["auto_id"];
 }
 
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"debit" => $amount,"ledger_sub_account_id"=>$deposited_in),array("society_id" => (int)$s_society_id, "element_id"=>(int)$transaction_id,"table_name"=>"new_cash_bank","credit"=>null));
 
 
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"credit" => $amount,"ledger_sub_account_id"=>$account_id),array("society_id" => (int)$s_society_id, "element_id"=>(int)$transaction_id,"table_name"=>"new_cash_bank","debit"=>null));
 
+}
+}
+else if($member_type == 2)
+{
+$this->loadmodel('new_cash_bank');
+$this->new_cash_bank->updateAll(array("receipt_date"=>strtotime($transaction_date),
+"receipt_mode"=>$receipt_mode,"cheque_number"=>@$cheque_number,"cheque_date"=>$cheque_date,
+"drawn_on_which_bank"=>@$which_bank,"reference_utr"=>@$reference,
+"deposited_bank_id"=>$deposited_in,"member_type"=>$member_type,"party_name_id"=>$part_name_id,
+"receipt_type"=>@$receipt_type,"amount"=>$amount,"flat_id"=>$part_name_id,
+"narration"=>$narration,"bill_reference"=>$bill_reference,"bank_branch"=>@$branch),array("society_id"=>(int)$s_society_id,"transaction_id" =>(int)$transaction_id));
 
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"debit"=> $amount,"ledger_sub_account_id"=>$deposited_in),array("society_id" => (int)$s_society_id, "element_id"=>(int)$transaction_id,"table_name"=>"new_cash_bank","credit" =>null));
 
+$this->loadmodel('ledger');
+$this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),"credit"=>$amount,"ledger_sub_account_id"=>$part_name_id),array("society_id" => (int)$s_society_id, "element_id"=>(int)$transaction_id,"table_name"=>"new_cash_bank","debit" =>null));
 
-
-
-
-
-
-
-
-
+}
+?>
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<h4><b>Thank You!</b></h4>
+<p>The Record Updated Successfully</p>
+</div>
+<div class="modal-footer">
+<a href="<?php echo $this->webroot; ?>Cashbanks/bank_receipt_view" class="btn red">OK</a>
+</div>
+</div>	
+<?php	
+}
 
 
 $this->loadmodel('new_cash_bank');

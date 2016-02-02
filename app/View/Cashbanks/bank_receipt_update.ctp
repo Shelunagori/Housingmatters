@@ -1,5 +1,6 @@
 <?php
 foreach($cursor1 as $data){
+	$transaction_id =(int)$data["new_cash_bank"]["transaction_id"];
 $receipt_id=$data["new_cash_bank"]["receipt_id"];
 $transaction_date=$data["new_cash_bank"]["receipt_date"];
 $transaction_date=date("d-m-Y",($transaction_date));
@@ -224,6 +225,7 @@ $name = $data['ledger_sub_account']['name'];
 </div>
 </div>
 </div>
+<input type="hidden" value="<?php echo $transaction_id; ?>" name="iddd">
 </form>
 
 <script>
