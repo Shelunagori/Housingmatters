@@ -985,7 +985,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+ //Configure::write('debug', 0);
 }
 
 
@@ -10822,12 +10822,12 @@ $this->login->save(array('login_id'=>$log_i,'user_name'=>$email,'password'=>$ran
 //////////////////// end code login table ///////////////////////////////
 
 //////////////// Role to assign code for Society  //////////////////////////
-for($p=1;$p<=3;$p++)
+for($p=1;$p<=4;$p++)
 {
 if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
-
+if($p==4) { $d="Family Member"; }
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
 $this->role->saveAll(array("auto_id" => $k, "role_name" => $d, 'role_id'=>$p, "society_id" => $society_id));
@@ -11042,11 +11042,12 @@ $this->user_temp->deleteAll($conditions);
 
 
 //////////////// Role to assign code for Society  //////////////////////////
-for($p=1;$p<=3;$p++)
+for($p=1;$p<=4;$p++)
 {
 if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
+if($p==4) { $d="Family Member"; }
 
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
@@ -16172,9 +16173,10 @@ if($this->RequestHandler->isAjax()){
 		$this->layout='session';
 	}
 $s_society_id=$this->Session->read('society_id');
+$s_role_id=$this->Session->read('role_id'); 
 $s_user_id=$this->Session->read('user_id');
 $r=$this->request->query('try');
-
+$this->set('s_role_id',$s_role_id);
 $this->seen_alert(101,$s_user_id);
 @$ip=$this->hms_email_ip();
  
@@ -16192,6 +16194,7 @@ foreach($result_user as $data)
 {
 	   $profile=$data['user']['profile_pic'];
 	   $tenant=$data['user']['tenant'];
+	   
 }
 $this->set('tenant',$tenant);
 $result_society=$this->society_name($s_society_id);
@@ -17164,13 +17167,13 @@ function family_member_add_ajax()
 	if($this->request->is("post"))
 	{
 		    $name=$this->request->data['name1'];
-		    $email=$this->request->data['email1'];
-		    $mobile=$this->request->data['mobile1'];
+		    //$email=$this->request->data['email1'];
+		    //$mobile=$this->request->data['mobile1'];
 		    $dob=$this->request->data['dob1'];
 		    $blood_group=$this->request->data['blood_group1'];
 		    $relation=$this->request->data['relation1'];
 			$this->loadmodel('user');
-			$this->user->updateAll(array("user_name"=>$name,"email"=>$email,"mobile"=>$mobile,"dob"=>$dob,"relation"=>$relation,"blood_group"=>$blood_group),array("user_id"=>$id));
+			$this->user->updateAll(array("user_name"=>$name,"dob"=>$dob,"relation"=>$relation,"blood_group"=>$blood_group),array("user_id"=>$id));
 			?>
 			
 			
@@ -17199,9 +17202,10 @@ function family_member_deactive()
 {
 	$this->layout="blank";
 	$id=(int)$this->request->query('con');
-	
 	$this->loadmodel("user");
 	$this->user->updateAll(array('deactive'=>1),array('user_id'=>$id));
+	$this->loadmodel("user_flat");
+	$this->user_flat->updateAll(array('active'=>1),array('user_id'=>$id));
 	$this->response->header("location","family_member_view");
 	
 }
@@ -17216,6 +17220,7 @@ function family_member_view()
 	 $s_user_id=$this->Session->read('user_id'); 
 	 $s_society_id=$this->Session->read('society_id'); 
 	 $s_role_id=$this->Session->read('role_id');
+	 $this->set('s_role_id',$s_role_id);
 	$this->loadmodel('user');
 	$conditions=array('user_id'=>$s_user_id);
 	$result=$this->user->find('all',array('conditions'=>$conditions));
@@ -24076,10 +24081,10 @@ $s_user_id=$this->Session->read('user_id');
 	$user_name_by=$data['user']['user_name'];
 	$wing=(int)$data['user']['wing'];
 	$flat=(int)$data['user']['flat'];
-	$residing=(int)$data['user']['noc_type'];
+	
 
 	}
-	$wing_flat=$this->wing_name($wing,$flat);
+	@$wing_flat=$this->wing_flat($wing,$flat);
 	$result_society=$this->society_name($s_society_id);	
 	foreach($result_society as $data)
 	{
@@ -24249,19 +24254,19 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 			
 		  			
 			////////////////////////// insert user table //////////////////////////
-$role_id[]=2;
-$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'residing' => $residing, 'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>$gender,'role_id'=>$role_id,'default_role_id'=>2,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
+$role_id[]=4;
+$this->user->saveAll(array('user_id' => $i, 'user_name' => $name,'email' => $email, 'password' =>$random, 'mobile' => $mobile,  'society_id' => $s_society_id, 'tenant' => $tenant, 'wing' => $wing, 'flat' => $flat,'date' => $date, 'time' => $time,"profile_pic"=>'blank.jpg','sex'=>$gender,'role_id'=>$role_id,'default_role_id'=>4,'signup_random'=>$random,'family_member'=>$s_user_id,'dob'=>$dob,'relation'=>$relation,'login_id'=>$log_i,'s_default'=>1,'blood_group'=>$blood_group,'deactive'=>0,'profile_status'=>1));
 
 			////////////////////// End user table ///////////////////////////////////////////////////
 
 $user_flat_id=$this->autoincrement('user_flat','user_flat_id');
 $this->user_flat->saveAll(array('user_flat_id'=>$user_flat_id,'user_id'=>$i,'society_id'=>$s_society_id,'flat_id'=>$flat,'status'=>$tenant,'active'=>0,'exit_date'=>'','time'=>'','family_member'=>1));
-unset($role_id);
+unset($role_id); 
 if(!empty($email) && !empty($mobile))
 		{
 			$login_user=$email;	
 
-  $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+   $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
           <tbody>
 			<tr>
                 <td>
@@ -24303,7 +24308,7 @@ if(!empty($email) && !empty($mobile))
 								</tr>
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										<span style="color:rgb(100,100,99)" align="justify">As a family member,you have been added to '.$society_name.' online portal by '.$user_name_by.' '.$wing_flat.' </span> 
+										<span style="color:rgb(100,100,99)" align="justify">As a family member, you have been added to '.$society_name.' online portal by '.$user_name_by.' '.@$wing_flat.' </span> 
 										</td>
 																
 								</tr>
@@ -24430,7 +24435,7 @@ if(!empty($email) && !empty($mobile))
 								</tr>
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										<span style="color:rgb(100,100,99)" align="justify">As a family member,you have been added to '.$society_name.' online portal by '.$user_name_by.' '.$wing_flat.' </span> 
+										<span style="color:rgb(100,100,99)" align="justify">As a family member, you have been added to '.$society_name.' online portal by '.$user_name_by.' '.@$wing_flat.' </span> 
 										</td>
 																
 								</tr>
@@ -24509,7 +24514,7 @@ if(!empty($email) && !empty($mobile))
 		}
 			
 			
-			
+		
 			
 			$from_name="HousingMatters";
 			$reply="support@housingmatters.in";

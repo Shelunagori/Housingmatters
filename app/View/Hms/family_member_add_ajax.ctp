@@ -36,14 +36,14 @@ Family Member
  </td></tr>
 <tr><td> 
 
-<input type="text" class=" span12 m-wrap" placeholder="Email Address" style="font-size:16px;" name="email1" value="<?php echo @$email; ?>" id="1" >
+<input type="text" class=" span12 m-wrap" placeholder="Email Address" style="font-size:16px;" readonly name="email1" value="<?php echo @$email; ?>" id="1" >
 
 
 </td></tr>
 <tr><td> 
 
 
-<input type="text"   class="span12 m-wrap" placeholder="Mobile No"style="font-size:16px;" id="mob" maxlength="10" name="mobile1"  value="<?php echo @$mobile; ?>" >
+<input type="text"   class="span12 m-wrap" placeholder="Mobile No"style="font-size:16px;" readonly id="mob" maxlength="10" name="mobile1"  value="<?php echo @$mobile; ?>" >
 
 
 
@@ -52,8 +52,18 @@ Family Member
 
 <tr>
 <td>
- <input class=" span12 m-wrap "  type="text" maxlength='2' name="dob1" placeholder="Age" value="<?php echo @$dob; ?>" >
- </td></tr>
+<select class="span12 m-wrap" data-placeholder="Choose Age Group" name="dob1">
+<option value="" style="display:none;"></option>
+<option value="1"<?php if($dob==1){?>selected <?php } ?>> 18-24 </option>
+<option value="2" <?php if($dob==2){?>selected <?php } ?>> 25-34 </option>
+<option value="3"<?php if($dob==3){?>selected <?php } ?>> 35-44 </option>
+<option value="4"<?php if($dob==4){?>selected <?php } ?>> 45-54 </option>
+<option value="5" <?php if($dob==5){?>selected <?php } ?>> 55-64 </option>
+<option value="6" <?php if($dob==6){?>selected <?php } ?>> 65+</option>
+</select> 
+ 
+ </td>
+ </tr>
  <tr>
 <td> 
 <div class="control-group">
@@ -82,7 +92,7 @@ Family Member
  
 <tr><td>
 <div class="form-actions">
-<button type="submit" name="login" class="btn blue pull"  font-size:16px;">Update</button>
+<button type="submit" name="login" class="btn blue pull" >Update</button>
 </div>
 
 
@@ -91,7 +101,7 @@ Family Member
 </center>
 </form>
 
-
+</div>
 </div>
 
 

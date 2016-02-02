@@ -110,14 +110,14 @@ margin-left: 13%;' >
 </tr>
 <tr>
 <td>
-<span style='color:#3B6B96;font-size: 16px;font-weight: bold;'>8. Whether Owner family members should allow to login into the portal ? </span><br>
+<span style='color:#3B6B96;font-size: 16px;font-weight: bold;'>8. Whether Owner family members be allowed login access to the portal ?  </span><br>
 <span style='font-size:12px;'> &nbsp &nbsp <p> <input type='checkbox' name='family_member' value='1' <?php if($family_member_owner==1){?> checked <?php } ?>> Check this if you want to allow owner family members to login the portal.
  </p></span>
 </td>
 </tr>
 <tr>
 <td>
-<span style='color:#3B6B96;font-size: 16px;font-weight: bold;'>9. Whether Tenant family members should allow to login into the portal ? </span><br>
+<span style='color:#3B6B96;font-size: 16px;font-weight: bold;'>9. Whether Tenant family members be allowed login access to the portal ?  </span><br>
 <span style='font-size:12px;'> &nbsp &nbsp <p> <input type='checkbox' name='family_member_tenant' value='1' <?php if($family_member_tenant==1){?> checked <?php } ?>> Check this if you want to allow tenant family members to login the portal.
  </p></span>
 </td>

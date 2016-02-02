@@ -34,7 +34,7 @@ $('#hid').val(c);
 				<div class="row-fluid">
 					<div class="span12">
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->		
-						<h3 style="color:#999;">Family Member</h3>
+						<h3 style="color:#999;">Family Members</h3>
 						<!-- END PAGE TITLE & BREADCRUMB-->
 					</div>
 				</div>
@@ -44,9 +44,9 @@ $('#hid').val(c);
 											
 											<?php 
 if($tenant==1){ $type="owner"; } if($tenant==2){ $type="tenant"; }
-if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_tenant==1)){
+if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_tenant==1)){  if($s_role_id!=4){
 ?><li class=""><a href="profile" rel='tab' >Basic</a></li>
-<li class="active"><a href="family_member_view" rel='tab' >Family Member</a></li> 
+<li class="active"><a href="family_member_view" rel='tab' >Family Members</a></li> 
 										</ul>
 										<div class="tab-content">
 										<br>
@@ -87,7 +87,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 	<td width="10%" >
 
                              
-    <label>Age <span style="color:red;"> * </span></label>                        
+    <label>Age <span style="color:red;"> * <i class=" icon-info-sign tooltips" data-placement="top" data-original-title="No login access/emails are currently provided to users <18 years"> </i> </span> </label>                        
 							 
  
 	<select class='span12 m-wrap ' data-placeholder='Choose Age Group' name='dob1' id='dob1'>
@@ -164,9 +164,9 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 												<td>Mobile</td>
 												<td>Email</td>
 												<td>Relation</td>
-												<td>Age</td>
+												<td>Age Group</td>
 												<td>Blood Group</td>
-												<!--<td>Action</td>-->
+												<td>Action</td>
 												</tr>
 												</thead>
 <tbody>
@@ -188,39 +188,20 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 												$wing=(int)$data['user']['wing'];
 												$flat = (int)$data['user']['flat'];
 												$flat_wing = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'),array('pass'=>array($wing,$flat)));				  
-													if($blood_group==1)
-													{
-													$b_group="A+";
-													}
-													if($blood_group==2)
-													{
-													$b_group="B+";
-													}
-													if($blood_group==3)
-													{
-													$b_group="AB+";
-													}
-													if($blood_group==4)
-													{
-													$b_group="O+";
-													}
-													
-													if($blood_group==5)
-													{
-													$b_group="A-";
-													}
-													if($blood_group==6)
-													{
-													$b_group="B-";
-													}
-													if($blood_group==7)
-													{
-													$b_group="AB-";
-													}
-													if($blood_group==8)
-													{
-													$b_group="O-";
-													}
+													if($blood_group==1){ $b_group="A+"; }
+													if($blood_group==2){ $b_group="B+"; }
+													if($blood_group==3){ $b_group="AB+"; }
+													if($blood_group==4){ $b_group="O+"; }
+													if($blood_group==5){ $b_group="A-"; }
+													if($blood_group==6){ $b_group="B-"; }
+													if($blood_group==7){ $b_group="AB-"; }
+													if($blood_group==8){ $b_group="O-"; }
+													if($dob==1){ $dob_group="18-24"; }
+													if($dob==2){ $dob_group="25-34";}
+													if($dob==3){ $dob_group="35-44"; }
+													if($dob==4){ $dob_group="45-54"; }
+													if($dob==5){ $dob_group="55-64";}
+													if($dob==6){ $dob_group="65+";}
 												?>
 												<tr>
 												
@@ -230,9 +211,9 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 												<td><?php echo $mobile ; ?></td>
 												<td><?php echo $email ; ?></td>
 												<td><?php echo $relation; ?></td>
-												<td><?php echo $dob; ?></td>
+												<td><?php echo $dob_group; ?></td>
 												<td><?php echo @$b_group; ?></td>
-                               <!-- <td>
+                                <td>
 								
 
 										<div class="btn-group">
@@ -248,7 +229,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 										</div>
 
 								
-								</td>-->
+								</td>
 												</tr>
 									  <?php } ?>
 												</tbody>
@@ -257,7 +238,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 										<br><br>
 										</div>
 										</div>
-										<?php }else{ ?>
+<?php } }else{ ?>
 <div class='alert alert-block alert-success fade in'><h4 class='alert-heading'></h4><p>Administrator has not allowed family member login into the portal.</p><p><a class='btn green' href='dashboard' rel='tab' role='button'>Ok</a></p></div>
 <?php } ?>
 										
@@ -291,13 +272,14 @@ $(document).ready(function() {
 		var gen=$(".gen"+i+":checked").val();
 	    ar.push([n,d,b,r,e,m,gen]);
 		var myJsonString = JSON.stringify(ar);
-		alert(ar);
+		
 	}
 	$.ajax({
 			url: "family_member_valid?q="+myJsonString,
 			dataType:'json',
 			}).done(function(response) {
-			//alert(response);
+			
+			
 				if(response.type == 'error'){  
 					output = '<div class="alert alert-error">'+response.text+'</div>';
 					$("#submit").removeClass("disabled").text("submit");
@@ -307,14 +289,14 @@ $(document).ready(function() {
 				}
 				else{
 				   					
-				output ='<div id="pp"><div class="modal-backdrop fade in"></div><div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true"><div class="modal-body" style="font-size:14px;">'+response.text+' </div><div class="modal-footer"><a href="family_member_view" class="btn blue" id="yes">ok</a></div></div></div>';
+				output ='<div id="pp"><div class="modal-backdrop fade in"></div><div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true"><div class="modal-body" style="font-size:12px;">'+response.text+' </div><div class="modal-footer"><a href="family_member_view" class="btn blue" id="yes">ok</a></div></div></div>';
 					
 			}
 			if(response.type == 'sucess')
 			{
 			output ='<div id="pp"><div class="modal-backdrop fade in"></div><div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true"><div class="modal-body" style="font-size:14px;">'+response.text+' </div><div class="modal-footer"><a href="family_member_view" class="btn blue" id="yes">ok</a></div></div></div>';
 					
-			}
+			} 
 				
 				
 				$("#error_msg").html(output);
