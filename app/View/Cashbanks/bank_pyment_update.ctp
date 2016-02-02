@@ -1,3 +1,6 @@
+<input type="hidden" id="from" value="<?php echo $datefrom; ?>" />
+<input type="hidden" id="to" value="<?php echo $datetto; ?>" />
+<input type="hidden" id="count" value="<?php echo $count; ?>" />
 <?php
 foreach($cursor1 as $data){
 $receipt_id=$data["new_cash_bank"]["receipt_id"];
@@ -51,6 +54,7 @@ $ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" value="<?php echo $transaction_date; ?>">
 <label id="date"></label>
+<span style="font-size:14px; color:red" id="validation"></span>
 </div>
 <br />
 
@@ -209,7 +213,7 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 </div>                          
 <div class="form-actions">
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_payment_view" rel="tab" class="btn green"><i class=" icon-arrow-left"></i> Back</a>
-<button type="submit" class="btn blue" name="bank_payment">Save</button>
+<button type="submit" class="btn blue" name="bank_payment" id="save_bank_voucher">Save</button>
 <button type="button" class="btn">Cancel</button>
 </div>
 </div>
@@ -217,6 +221,49 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 <input type="hidden" value="<?php echo $transaction_id; ?>" name="bank_payment_id">
 </form>
 
+<script>
+$(document).ready(function() {
+$("#save_bank_voucher").bind('click',function(){
+
+var from_date = document.getElementById("from").value;
+var to_date = document.getElementById("to").value;
+var count = document.getElementById("count").value;
+var fromm = from_date.split(",");
+var tomm = to_date.split(",");
+var transaction_date = $("#date").val();
+
+var nnn = 55;
+for(var i=0; i<count; i++)
+{
+var frmm = fromm[i]; 
+var too	= tomm[i];
+      if(frmm == ""){
+			nnn = 555;
+			break;	
+	    }
+ else if(Date.parse(transaction_date) >= Date.parse(frmm) && Date.parse(transaction_date) <= Date.parse(too))  
+ {
+ nnn = 5;
+ break; 
+ }
+}
+
+if(nnn == 55)
+{
+$("#validation").html('Transaction Date Should be in Open Financial Year');	
+return false;	
+}
+else{
+$("#validation").html('');		
+	
+}
+
+
+
+
+});
+});
+</script>
 
 
 <script>

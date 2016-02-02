@@ -1,3 +1,6 @@
+<input type="hidden" id="from" value="<?php echo $datefrom; ?>" />
+<input type="hidden" id="to" value="<?php echo $datetto; ?>" />
+<input type="hidden" id="count" value="<?php echo $count; ?>" />
 <?php 
 foreach ($cursor4 as $collection) 
 {
@@ -29,6 +32,7 @@ $petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" value="<?php echo $transaction_date; ?>">
 <label id="date"></label>
+<span style="font-size:14px; color:red" id="validation"></span>
 </div>
 <br />
 
@@ -118,14 +122,56 @@ $name = $collection2['ledger_account']['ledger_name'];
 </div>
 <div class="form-actions">
 <a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_view" class="btn green" rel="tab"><i class="icon-arrow-left"></i> Back</a>
-<button type="submit" class="btn blue" name="petty_cash_payment">Save</button>
+<button type="submit" class="btn blue" name="petty_cash_payment" id="petty_payment">Save</button>
 
 </div>
 </div>
 </div>
 <input type="hidden" value="<?php echo $petty_cash_payment_id; ?>" name="petty_cash_id">
 </form>
+<script>
+$(document).ready(function() {
+$("#petty_payment").bind('click',function(){
 
+var from_date = document.getElementById("from").value;
+var to_date = document.getElementById("to").value;
+var count = document.getElementById("count").value;
+var fromm = from_date.split(",");
+var tomm = to_date.split(",");
+var transaction_date = $("#date").val();
+
+var nnn = 55;
+for(var i=0; i<count; i++)
+{
+var frmm = fromm[i]; 
+var too	= tomm[i];
+      if(frmm == ""){
+			nnn = 555;
+			break;	
+	    }
+ else if(Date.parse(transaction_date) >= Date.parse(frmm) && Date.parse(transaction_date) <= Date.parse(too))  
+ {
+ nnn = 5;
+ break; 
+ }
+}
+
+if(nnn == 55)
+{
+$("#validation").html('Transaction Date Should be in Open Financial Year');	
+return false;	
+}
+else{
+$("#validation").html('');		
+	
+}
+
+
+
+
+});
+});
+</script>
 
 <script>
 function show_party(kk)
