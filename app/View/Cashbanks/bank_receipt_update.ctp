@@ -9,6 +9,7 @@ if($receipt_mode == "Cheque")
 $cheque_number=@$data["new_cash_bank"]["cheque_number"];
 $which_bank=@$data["new_cash_bank"]["drawn_on_which_bank"];
 $receipt_date1 = @$data["new_cash_bank"]["cheque_date"];
+$branch = @$data['new_cash_bank']['bank_branch'];
 }
 else
 {
@@ -40,7 +41,7 @@ $wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing
 }
 else
 {
-$party_name = @$data["new_cash_bank"]["party_name_id"];	
+$party_name = (int)@$data["new_cash_bank"]["party_name_id"];	
 $bill_reference = @$data["new_cash_bank"]["bill_reference"];		
 }
 $amount = @$data["new_cash_bank"]["amount"];
@@ -50,7 +51,7 @@ $narration = @$data["new_cash_bank"]["narration"];
 ?>
 
 
-
+<form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block"><i class="icon-reorder"></i>Validation States</h4>
@@ -62,6 +63,7 @@ $narration = @$data["new_cash_bank"]["narration"];
 <label style="font-size:14px;">Transaction date<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="transaction_date" placeholder="Transaction Date" style="background-color:white !important;" id="date" value="<?php echo $transaction_date; ?>">
+<label id="date"></label>
 </div>
 <br />   
 
@@ -80,10 +82,10 @@ $bank_account_number = $db['ledger_sub_account']["bank_account"];
 <option value="<?php echo $bank_id; ?>" <?php if($deposited_bank_id == $bank_id) { ?> selected="selected" <?php } ?>><?php echo $bank_ac; ?> &nbsp;&nbsp; <?php echo $bank_account_number; ?></option>
 <?php } ?>
 </select>
+<label id="bank"></label>
 </div>
 <br />
-	   
-	   
+	
 <label  style="font-size:14px;">Receipt Mode<span style="color:red;">*</span></label>
 <div class="controls">
 <label class="radio">
@@ -104,7 +106,7 @@ PG
 		
 		 
 <div id="cheque_show_by_query" <?php if($receipt_mode != "Cheque") { ?> class="hide"  <?php } ?> >
-<label style="font-size:14px;">Cheque No.<span style="color:red;">*</span><span style="margin-left:12%;">Cheque Date<span style="color:red;">*</span></span></label>
+<label style="font-size:14px;">Cheque No.<span style="color:red;">*</span><span style="margin-left:10%;">Cheque Date<span style="color:red;">*</span></span></label>
 <div class="controls">
 <input type="text"  name="cheque_number" class="m-wrap span3 chhh1 ignore" placeholder="Cheque No." style="background-color:white !important;" id="ins" value="<?php echo @$cheque_number; ?>">
 <input type="text"  class="date-picker m-wrap span4 chhh2 ignore" name="cheque_date1" data-date-format="dd-mm-yyyy" placeholder="Date" id="chh" value="<?php echo @$receipt_date1; ?>"/>
@@ -113,10 +115,16 @@ PG
 <br />
 
 
-<label style="font-size:14px;">Drawn on which bank?<span style="color:red;">*</span> </label>
+
+
+<label style="font-size:14px;">Drawn on which bank?<span style="color:red;">*</span><span style="margin-left:15%;">Branch<span style="color:red;">*</span></span> </label>
 <div class="controls">
-<input type="text"  name="drawn_on_which_bank" class="m-wrap span9 chhh3 ignore" placeholder="Drawn on which bank?" style="background-color:white !important;" id="ins" data-provide="typeahead" data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" value="<?php echo @$which_bank; ?>">
-<label id="ins"></label>
+<input type="text"  name="drawn_on_which_bank" class="m-wrap span5 chhh3 ignore" placeholder="Drawn on which bank?" style="background-color:white !important;" id="which" data-provide="typeahead" data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" value="<?php echo @$which_bank; ?>">
+
+<input type="text" name="branch" id="branch" class="m-wrap span4" value="<?php echo @$branch; ?>" placeholder="Branch" >
+<table border="0" width="65%"><tr><td style="width:44%;"><label id="which"></label></td><td> <label id="branch"></label></td></tr></table>
+
+
 </div>
 <br />
 </div>
@@ -130,6 +138,10 @@ PG
 </div>
 <br />
 </div>
+
+
+
+
 </div>
 <div class="span6">		
 <?php if($member_type == 1) { ?>		
@@ -142,11 +154,21 @@ PG
 <?php } else { ?>
 <h5><b>Receipt type: Other</b></h5>	
 <input type="hidden" name="receipt_type" value="2" />
-	
 <?php }  ?>
+<?php if($receipt_type == 1) { ?>
+
 <h5><b>Resident Name: <?php echo $resident_name; ?>   <?php echo $wing_flat; ?></b></h5>	
 <input type="hidden" name="resident_flat_id" value="<?php echo $party_name_flat_id; ?>" />	
-<br />
+
+<?php } else { ?>
+<label style="font-size:14px;">Select Resident<span style="color:red;">*</span></label>
+<div class="controls">
+<?php
+$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down')); ?>
+<label id="resident"></label>
+</div>
+<br>	
+<?php } ?>
 <?php
 } else { ?>
 <h5><b>Receipt For : Non-Residential</b></h5>
@@ -155,13 +177,23 @@ PG
 
 <label style="font-size:14px;">Party Name<span style="color:red;">*</span></label>
 <div class="controls">
-<input type="text" class="m-wrap span9 nonrr1 ignore" name="party_name" id="party" value="<?php echo $party_name; ?>"/>
+<select class="span9 m-wrap" name="party_name" id="party">
+<option value="" style="dispaly:none;">Select</option>
+<?php foreach($cursor4 as $data) {
+$auto_id = (int)$data['ledger_sub_account']['auto_id'];
+$name = $data['ledger_sub_account']['name'];
+?>
+<option value="<?php echo $auto_id; ?>" <?php if($auto_id == $party_name) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+<?php } ?>
+</select>
+<label id="party"></label>
 </div>
 <br />
 
 <label style="font-size:14px;">Bill Reference<span style="color:red;">*</span></label>
 <div class="controls">
 <input type="text" class="m-wrap span9 nonrr2 ignore" name="bill_reference" id="bill_ref" value="<?php echo $bill_reference; ?>"/>
+<label id="bill_ref"></label>
 </div>
 <br />
 
@@ -187,16 +219,12 @@ PG
                           
                                                
 <div class="form-actions">
-<a href="<?php echo $weroot_path; ?>Cashbanks/bank_receipt_view" class="btn green"><i class=" icon-arrow-left"></i> Back</a>
+<a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" class="btn green" rel="tab"><i class=" icon-arrow-left"></i> Back</a>
 <button type="submit" class="btn blue">Save</button>
 </div>
 </div>
 </div>
-
-
-
-
-
+</form>
 
 <script>
 function cheque_view()
@@ -221,5 +249,122 @@ $("#neft_show").show();
 
 
 
+   
+   
 
 
+
+
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+	
+ jQuery.validator.addMethod("notEqual", function(value, element, param) {
+  return this.optional(element) || value !== param;
+}, "Please choose Other value!");	
+	
+
+$.validator.setDefaults({ ignore: ":hidden:not(select)" });
+
+		$('#contact-form').validate({
+		errorElement: "label",
+                    //place all errors in a <div id="errors"> element
+                    errorPlacement: function(error, element) {
+                        //error.appendTo("label#errors");
+						error.appendTo('label#' + element.attr('id'));
+                    },
+		
+	    rules: {
+	      transaction_date: {
+	       
+	        required: true
+	      },
+		  
+		  
+		  deposited_bank_id: {
+	       
+	        required: true
+	      },
+		  
+		   receipt_mode: {
+	       
+	        required: true
+	      },
+		  
+		  cheque_number: {
+	       
+	        required: true,
+			number:true
+	      },
+		  
+		  
+		   cheque_date1: {
+	       
+	        required: true
+	      },
+		  
+		   drawn_on_which_bank: {
+	       
+	        required: true
+	      },
+		  
+		   branch: {
+	       
+	        required: true
+	      },
+		  
+		   reference_number: {
+	       
+	        required: true
+	      },
+		  
+		   neft_date: {
+	       
+	        required: true
+	      },
+		  
+		   party_name: {
+	       
+	        required: true
+	      },
+		  
+		   bill_reference: {
+	       
+	        required: true
+	      },
+	  
+		  
+		   amount: {
+	        required: true,
+			number: true,
+			notEqual: "0"
+	      },
+		 
+		  
+		 resident: {
+			 
+			 required: true 
+			 
+		 },
+		 
+		   
+	   
+
+		},
+			highlight: function(element) {
+				$(element).closest('.control-group').removeClass('success').addClass('error');
+			},
+			success: function(element) {
+				element
+				.text('OK!').addClass('valid')
+				.closest('.control-group').removeClass('error').addClass('success');
+			}
+	  });
+
+}); 
+</script>	
