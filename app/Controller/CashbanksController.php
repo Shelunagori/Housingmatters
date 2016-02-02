@@ -5657,7 +5657,8 @@ function bank_pyment_update($auto_id=null)
 	$s_role_id = (int)$this->Session->read('role_id');
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id = (int)$this->Session->read('user_id');	
-	
+	$auto_id=(int)$auto_id;
+	$this->ath();
 	
 	$this->loadmodel('reference');
 	$conditions=array("auto_id"=>3);
@@ -5668,8 +5669,7 @@ function bank_pyment_update($auto_id=null)
 	}
 	$this->set("tds_arr",$tds_arr);
 
-	$auto_id=(int)$auto_id;
-	$this->ath();
+	
 	
 if(isset($this->request->data['bank_payment']))
 {
@@ -8516,8 +8516,8 @@ $this->set('cursor1',$cursor1);
 
 }
 
-/////////////////////////////End bank_receipt_approve //////////////////////////////////////////////
-/////////////////////////////Start aprrove_bank_receipt_update ////////////////////////////////////
+/////////////////////////////End bank_receipt_approve /////////////////////////////////////
+/////////////////////////////Start aprrove_bank_receipt_update /////////////////////////////
 function aprrove_bank_receipt_update()
 {
 if($this->RequestHandler->isAjax()){
@@ -8549,8 +8549,8 @@ $this->set('bank_detail',$bank_detail);
 
 	
 }
-/////////////////////////////End aprrove_bank_receipt_update ////////////////////////////////////
-//////////////////////////// Start approve_receipt_update_json ///////////////////////////////////
+/////////////////////////////End aprrove_bank_receipt_update ////////////////////////////
+//////////////////////////// Start approve_receipt_update_json //////////////////////////
 function approve_receipt_update_json()
 {
 $this->layout=null;
@@ -8728,6 +8728,36 @@ $this->my_flat_receipt_update->updateAll(array("receipt_date" => $transaction_da
 $output = json_encode(array('type'=>'success', 'text' => 'Please Fill Numeric Amount '));
 die($output);	
 }
-////////////////////////// End approve_receipt_update_json ////////////////////////////////////////
+////////////////////////// End approve_receipt_update_json ////////////////////////////
+//////////////////////// Start bank_receipt_update //////////////////////////////////
+function bank_receipt_update($auto_id=null)
+{
+if($this->RequestHandler->isAjax()){
+$this->layout='blank';
+}else{
+$this->layout='session';
+}
+	
+$s_role_id = (int)$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id = (int)$this->Session->read('user_id');	
+$auto_id=(int)$auto_id;
+$this->ath();	
+
+
+$this->loadmodel('new_cash_bank');
+$conditions=array("transaction_id" => $auto_id,"receipt_source"=>1,"society_id"=>$s_society_id);
+$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+
+
+
+
+
+	
+}
+//////////////////////// End bank_receipt_update //////////////////////////////////
+
 }
 ?>
