@@ -5766,28 +5766,11 @@ $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),
 </div>	
 <?php
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-		$this->loadmodel('new_cash_bank');
-		$conditions=array("transaction_id" => $auto_id,"receipt_source"=>2,"society_id"=>$s_society_id);
-		$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
-		$this->set('cursor1',$cursor1);
+$this->loadmodel('new_cash_bank');
+$conditions=array("transaction_id" => $auto_id,"receipt_source"=>2,"society_id"=>$s_society_id);
+$cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
 
 		$this->loadmodel('ledger_sub_account');
 		$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
