@@ -70,11 +70,6 @@ $income_head_detail = "NOT";
 break;	
 }
 
-
-
-
-
-
 }
 
 if($income_head_detail == 'YES')
