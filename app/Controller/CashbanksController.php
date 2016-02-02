@@ -5469,7 +5469,31 @@ $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),
 <?php	
 }
 	
-	
+$this->loadmodel('financial_year');
+$conditions=array("society_id" => $s_society_id, "status"=>1);
+$cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
+foreach($cursor as $collection)
+{
+$date_from = @$collection['financial_year']['from'];
+$date_to = @$collection['financial_year']['to'];
+
+$date_from1 = date('Y-m-d',$date_from->sec);
+$date_to1 = date('Y-m-d',$date_to->sec);
+
+$datef[] = $date_from1;
+$datet[] = $date_to1;
+}
+		
+if(!empty($datef))
+{
+$datefrom = implode(',',$datef);
+$datetto = implode(',',$datet);
+}
+			
+$count = sizeof(@$datef);
+$this->set('datefrom',@$datefrom);
+$this->set('datetto',@$datetto);
+$this->set('count',$count);	
 	
 	$auto_id=(int)$auto_id;
 	
@@ -5576,7 +5600,7 @@ $this->ledger->updateAll(array("transaction_date"=>strtotime($transaction_date),
 <?php		
 }
 	
-	$this->loadmodel('financial_year');
+$this->loadmodel('financial_year');
 $conditions=array("society_id" => $s_society_id, "status"=>1);
 $cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
 foreach($cursor as $collection)

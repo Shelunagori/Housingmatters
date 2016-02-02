@@ -1,3 +1,7 @@
+<input type="hidden" id="from" value="<?php echo $datefrom; ?>" />
+<input type="hidden" id="to" value="<?php echo $datetto; ?>" />
+<input type="hidden" id="count" value="<?php echo $count; ?>" />
+
 <?php
 foreach($cursor4 as $data){
 $receipt_no = (int)$data['new_cash_bank']['receipt_id'];
@@ -27,6 +31,7 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <div class="controls">
 <input type="text" class="date-picker m-wrap span7" data-date-format="dd-mm-yyyy" name="date" id="date" data-date-start-date="+0d" value="<?php echo $trnsaction_date; ?>">
 <label id="date"></label>
+<span style="font-size:14px; color:red" id="validation"></span>
 </div>
 <br />
 
@@ -99,13 +104,57 @@ $name = $collection['ledger_account']['ledger_name'];
 <div class="form-actions">
 <a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_receipt_view" class="btn green">
 <i class="icon-arrow-left"></i> Back</a>
-<button type="submit" class="btn blue" name="petty_receipt_update">Save</button>
+<button type="submit" class="btn blue" name="petty_receipt_update" id="petty_receipt">Save</button>
 
 </div>
 </div>
 </div>
 <input type="hidden" value="<?php echo $auto_iddddd; ?>" name="iddd"/>
 </form>
+
+<script>
+$(document).ready(function() {
+$("#petty_receipt").bind('click',function(){
+
+var from_date = document.getElementById("from").value;
+var to_date = document.getElementById("to").value;
+var count = document.getElementById("count").value;
+var fromm = from_date.split(",");
+var tomm = to_date.split(",");
+var transaction_date = $("#date").val();
+
+var nnn = 55;
+for(var i=0; i<count; i++)
+{
+var frmm = fromm[i]; 
+var too	= tomm[i];
+      if(frmm == ""){
+			nnn = 555;
+			break;	
+	    }
+ else if(Date.parse(transaction_date) >= Date.parse(frmm) && Date.parse(transaction_date) <= Date.parse(too))  
+ {
+ nnn = 5;
+ break; 
+ }
+}
+
+if(nnn == 55)
+{
+$("#validation").html('Transaction Date Should be in Open Financial Year');	
+return false;	
+}
+else{
+$("#validation").html('');		
+	
+}
+
+
+
+
+});
+});
+</script>
 
 <script>
 function show_party(tt)
