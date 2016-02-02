@@ -113,8 +113,8 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 		$approver_name = "";
 	 
 	 
-		$debit=$data["ledger"]["debit"];
-		$credit=$data["ledger"]["credit"];
+		 $debit=$data["ledger"]["debit"];
+		 $credit=$data["ledger"]["credit"];
 		$transaction_date=$data["ledger"]["transaction_date"];
 		$arrear_int_type=@$data["ledger"]["arrear_int_type"];
 	 $table_name=$data["ledger"]["table_name"];
