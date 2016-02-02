@@ -8751,7 +8751,10 @@ $cursor1=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 
 
-
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 33,"society_id"=>$s_society_id);
+$cursor3=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor3',$cursor3);
 
 
 
