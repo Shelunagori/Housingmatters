@@ -295,15 +295,19 @@ foreach($myArray as $child){
 		$expense_head = (int)$child[5];
 		$amt_inv = $child[6];
 		$description = $child[7];
+		$file = $child[8];
 		
-				$file_name=@$_FILES["file".$z]["name"];
-				if(!empty($file_name)){
-					$file_name=$_FILES["file".$z]["name"];
-					$file_tmp_name =$_FILES['file'.$z]['tmp_name'];
-					$target = "expenset/";
-					$target=@$target.basename($file_name);
-					move_uploaded_file($file_tmp_name,@$target);
-				}
+		
+		
+		
+			$file_name=@$_FILES["file"]["name"];
+			if(!empty($file_name)){
+			$file_name=$_FILES["file"]["name"];
+			$file_tmp_name =$_FILES['file']['tmp_name'];
+			$target = "expenset/";
+			$target=@$target.basename($file_name);
+			move_uploaded_file($file_tmp_name,@$target);
+			}
 		///////////// add Expense tracker code /////////////////////
 		
 			$this->loadmodel('expense_tracker');

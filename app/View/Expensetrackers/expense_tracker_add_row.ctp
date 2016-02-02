@@ -177,7 +177,7 @@ foreach($result_account_group as $data){
                                 <span class="btn btn-file">
                                 <span class="fileupload-new"> file</span>
                                 <span class="fileupload-exists">Change</span>
-                                <input type="file" class="default" name="file1">
+                                <input type="file" class="default" name="file">
                                 </span>
                                 <span class="fileupload-preview"></span>
                                 <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none"></a>
