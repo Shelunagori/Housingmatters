@@ -220,6 +220,12 @@ if($is_cancel=="NO" && $maximum_one_time_id==$bill_one_time_id){ ?>
 	<?php if($is_cancel=="NO" && ($maximum_one_time_id==$bill_one_time_id)){ ?>
 	<li><a href="#" role="button" class="cancel_receipt" record_id="<?php echo $transaction_id; ?>"><i class="icon-remove"></i>Cancel</a></li>
 	<?php } ?>
+	<?php if($member_type == 1 && $receipt_type == 2 || $member_type == 2) { ?>
+	<li>
+	<a href="bank_receipt_update/<?php echo $transaction_id; ?>"><i class="icon-edit"></i>Edit</a>
+	</li>			
+	
+	<?php } ?>
 
 	</ul>
 	</div>
