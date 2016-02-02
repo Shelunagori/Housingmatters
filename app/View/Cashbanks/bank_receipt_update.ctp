@@ -220,7 +220,7 @@ $name = $data['ledger_sub_account']['name'];
                                                
 <div class="form-actions">
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_receipt_view" class="btn green" rel="tab"><i class=" icon-arrow-left"></i> Back</a>
-<button type="submit" class="btn blue">Save</button>
+<button type="submit" class="btn blue" name="bank_rrr">Save</button>
 </div>
 </div>
 </div>

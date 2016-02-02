@@ -8744,6 +8744,59 @@ $s_user_id = (int)$this->Session->read('user_id');
 $auto_id=(int)$auto_id;
 $this->ath();	
 
+if(isset($this->request->data['bank_rrr']))
+{
+$transaction_date = $this->request->data['transaction_date'];
+$deposited_in = (int)$this->request->data['deposited_bank_id'];
+$receipt_mode = $this->request->data['receipt_mode'];
+
+		if($receipt_mode == "Cheque")
+		{
+		echo $cheque_number = $this->request->data['cheque_number'];
+       echo $cheque_date = $this->request->data['cheque_date1'];	
+       echo $which_bank = $this->request->data['drawn_on_which_bank'];	
+       echo $branch = $this->request->data['branch'];			
+		}
+		else
+		{
+		echo $reference = $this->request->data['reference_number'];	
+        echo $cheque_date = $this->request->data['neft_date'];			
+		}	
+	    echo $member_type = (int)$this->request->data['member_type'];
+	    
+		if($member_type == 1)
+		{
+		echo $receipt_type=(int)$this->request->data['receipt_type'];	
+		if($receipt_type == 2)
+		{
+		echo $resident_flat_id = (int)$this->request->data['resident'];	
+		}
+  		}
+	    if($member_type == 2)
+		{
+	   echo  $part_name_id = (int)$this->request->data['party_name'];
+	   echo  $bill_reference = $this->request->data['bill_reference'];
+		}
+	    echo $amount = $this->request->data['amount']; 
+	
+	exit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $this->loadmodel('new_cash_bank');
 $conditions=array("transaction_id" => $auto_id,"receipt_source"=>1,"society_id"=>$s_society_id);
