@@ -295,7 +295,7 @@ foreach($myArray as $child){
 		$expense_head = (int)$child[5];
 		$amt_inv = $child[6];
 		$description = $child[7];
-		
+		$file_name = $child[8];
 		
 		
 		
