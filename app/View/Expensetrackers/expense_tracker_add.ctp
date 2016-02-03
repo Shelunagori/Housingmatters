@@ -346,7 +346,7 @@ var invoice_ref=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 t
 var party_ac=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(1) select").val();
 var amt_inv=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(2) input").val();
 var description=$("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(4) input").val();
-m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(3) input[type=file]')[0].files[0]);
+ m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(3) input[type=file]')[0].files[0]);
 
 ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
 			}
