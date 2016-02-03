@@ -7463,6 +7463,16 @@ $output = json_encode(array('type'=>'success', 'text' => 'supplimentry_bill_view
 /////////////////////////// Start it_regular_bill_json ////////////////////////////
 function it_regular_bill_json()
 {
+
+
+
+
+
+
+
+
+
+
 	
 }
 ///////////////////////End it_regular_bill_json /////////////////////////////////////

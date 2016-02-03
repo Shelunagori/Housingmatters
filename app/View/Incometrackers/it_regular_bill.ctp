@@ -108,7 +108,7 @@ if($society_detail == 'YES')
 if($income_head_detail == 'YES')	
 {	
 ?>
- <form method="post" id="contact-form">
+<form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
 <h4 class="block"><i class="icon-reorder"></i>Generate Regular Bill</h4>
@@ -119,9 +119,9 @@ if($income_head_detail == 'YES')
 
 <div class="span6">
 
-        <label style="font-size:14px;">&nbsp;&nbsp;&nbsp;Billing Cycle<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select billing cycle"> </i></label>
+        <label style="font-size:14px;">Billing Cycle<span style="color:red;">*</span></label>
         <div class="controls">
-        &nbsp;&nbsp;<select name="bill_p" id="bp" class="m-wrap span7 chosen">
+        <select id="billing_period" class="m-wrap span7 chosen">
         <option value="" style="display:none;">Select</option>
         <?php
         for($k=0; $k<sizeof($bill_period_arr); $k++)
@@ -135,37 +135,33 @@ if($income_head_detail == 'YES')
         }
         ?>
         </select>
-        &nbsp;&nbsp;<label id="bp"></label>
         </div>
         <br />
 
 
 
-        <label style="font-size:14px;">&nbsp;&nbsp;&nbsp;Billing Start Date<span style="color:red;">*</span></label>
+        <label style="font-size:14px;">Billing Start Date<span style="color:red;">*</span></label>
         <div class="controls">
-        &nbsp;&nbsp;<input type="text" name="from" class="m-wrap span7 date-picker" 
+        <input type="text" class="m-wrap span7 date-picker" 
 		data-date-format="dd-mm-yyyy" placeholder="Bill Date" id="from" value="<?php echo $default_date; ?>"/>
-        &nbsp;&nbsp;<label id="from"></label><label id="result11"></label>
         </div>
         <br />
 
 
-        <label style="font-size:14px; color:red;">&nbsp;&nbsp;&nbsp;Payment Due Date<span style="color:red;">*</span> <i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please select payment due date "> </i></label>
-        <div class="controls">
-       &nbsp;&nbsp;<input type="text" class="m-wrap span7 date-picker" data-date-format="dd-mm-yyyy" placeholder="Due Date" name="due_date" id="due" style="color:red; border-color:red;">
-        &nbsp;&nbsp;<label id="due" ></label><label id="result12"></label>
+        <label style="font-size:14px; color:red;">Payment Due Date<span style="color:red;">*</span></label>
+       <div class="controls">
+       <input type="text" class="m-wrap span7 date-picker" data-date-format="dd-mm-yyyy" placeholder="Due Date" id="due" style="color:red; border-color:red;">
+       
         </div>
         <br />
         
 </div>
 
 
-
-
 <div class="span6">
-<label class="" style="font-size:14px;">&nbsp;&nbsp;&nbsp;Bill For<span style="color:red;">*</span><i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please choose bill "> </i></label>
+<label class="" style="font-size:14px;">Bill For<span style="color:red;">*</span></label>
         <div class="controls">
-       &nbsp;&nbsp;<label class="radio">
+        <label class="radio">
         <div class="radio" id="uniform-undefined"><span><input type="radio" name="bill_for" value="1" style="opacity: 0;" id="bill_for"  onclick="wing()"></span></div>
         Wing Wise
         </label>
@@ -173,26 +169,24 @@ if($income_head_detail == 'YES')
         <div class="radio" id="uniform-undefined"><span><input type="radio" name="bill_for" value="2" style="opacity: 0;" id="bill_for" onclick="flat()"></span></div>
         All Units
         </label>
-        &nbsp;&nbsp;<label id="bill_for"></label>
         </div>       
-        <br />   
-
+        <br /> 
+		
 
         <div id="show_bill_for" class="hide">
         <div class="controls">
-        <label style="font-size:14px;">&nbsp;&nbsp;&nbsp;Select Wing<span style="color:red;">*</span></label>
+        <label style="font-size:14px;">Select Wing<span style="color:red;">*</span></label>
         <?php
         foreach($cursor5 as $collection)
         {
         $wing_id = (int)$collection['wing']['wing_id'];	
         $wing_name = $collection['wing']['wing_name'];		
         ?>
-       &nbsp;&nbsp;<label class="checkbox">
+        <label class="checkbox">
         <div class="checker" id="uniform-undefined"><span>
-        <input type="checkbox" value="<?php echo $wing_id; ?>" style="opacity: 0;" name="wing<?php echo $wing_id; ?>" id="win"></span></div><?php echo $wing_name; ?> 
+        <input type="checkbox" value="<?php echo $wing_id; ?>" style="opacity: 0;" id="win"></span></div><?php echo $wing_name; ?> 
         </label>
         <?php } ?><br />
-       &nbsp;&nbsp;<label id="chk_vali"></label>
         </div>
         </div>        
         <br />    
@@ -205,24 +199,21 @@ if($income_head_detail == 'YES')
 <div class="controls">
 <label class="" style="font-size:14px;">&nbsp;&nbsp;&nbsp;Penalty<i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please choose penalty yes/no "> </i></label>
 
-&nbsp;&nbsp;<label class="radio">
-<div class="radio" id="uniform-undefined"><span><input type="radio" name="pen" value="1" style="opacity: 0;" id="pen"></span></div>
+<label class="radio">
+<div class="radio" id="uniform-undefined"><span><input type="radio" value="1" style="opacity: 0;" id="pen"></span></div>
 Yes
 </label>
 <label class="radio">
-<div class="radio" id="uniform-undefined"><span><input type="radio" name="pen" value="2" style="opacity: 0;" id="pen"></span></div>
+<div class="radio" id="uniform-undefined"><span><input type="radio" value="2" style="opacity: 0;" id="pen"></span></div>
 No
 </label>
-&nbsp;&nbsp;<label id="pen"></label>
 </div>
 <br />
 
-
 <div class="control-group">
 <div class="controls">
-<label style="font-size:14px;">&nbsp;&nbsp;&nbsp;Billing Description</label>
-&nbsp;&nbsp;<textarea class="span9 m-wrap" name="description" id="description" style="resize:none;" rows="3"></textarea>
-<label id="description"></label>
+<label style="font-size:14px;">Billing Description</label>
+<textarea class="span9 m-wrap" id="description" style="resize:none;" rows="3"></textarea>
 </div>
 </div>
 
@@ -245,118 +236,79 @@ No
 
 </div>
 </div>
-
 </form>
 
 <script>
-function hdd_ppupp()
-{
-$("#shwd").hide();	
-}
-</script>		
-<script>
-$.validator.addMethod('requirecheck1', function (value, element) {
-	 return $('.requirecheck1:checked').size() > 0;
-}, 'Please select at list one wing.');
-
-$.validator.addMethod('requirecheck2', function (value, element) {
-	 return $('.requirecheck2:checked').size() > 0;
-}, 'Please check at least one wing.');
-
-$.validator.addMethod('filesize', function(value, element, param) {
-    // param = size (en bytes) 
-    // element = element to validate (<input>)
-    // value = value of the element (file name)
-    return this.optional(element) || (element.files[0].size <= param) 
-});
-
 $(document).ready(function(){
-	
-			var checkboxes = $('.requirecheck1');
-			var checkbox_names = $.map(checkboxes, function(e, i) {
-				return $(e).attr("name")
-			}).join(" ");
-			
-			
-			var checkboxes2 = $('.requirecheck2');
-			var checkbox_names2 = $.map(checkboxes2, function(e, i) {
-				return $(e).attr("name")
-			}).join(" ");
-			
-			
-			
-	$.validator.setDefaults({ ignore: ":hidden:not(select)" });
-		$('#contact-form').validate({ 
-		
-		 errorElement: "label",
-                    //place all errors in a <div id="errors"> element
-                    errorPlacement: function(error, element) {
-                        //error.appendTo("label#errors");
-						error.appendTo('label#' + element.attr('id'));
-                    }, 
-	    groups: {
-            asdfg: checkbox_names,
-			qwerty: checkbox_names2
-        },
-		
-		
-		rules: {
-			pen: {
-			 required: true	
-			},
-			
-	      from: {
-	        required: true
-	      },
-		 		  due_date : {
-			  required: true  
-		  },
-		 		   bill_p: {
-	        required: true
-	      },
-	   
-		   bill_for: {
-		    required: true
-	      },
-		  
-		  
-		
-	    },
-		submitHandler: function (form) {
-			$("#go").hide();
-			$("#submiting_div").show();
-			form.submit();
-			//return true; // required to block normal submit since you used ajax
-		},
-		messages: {
-	                from: {
-	                    required: "Billing Date is Required."
-	                },
-					to: {
-	                    required: "To date is required."
-	                },
-					file: {
-						accept: "File extension must be gif or jpg",
-	                    filesize: "File size must be less than 1MB."
-	                },
-					description: {
-	                    maxlength: "Max 500 characters allowed."
-	                }
-	            },
-			highlight: function(element) {
-				$(element).closest('.control-group').removeClass('success').addClass('error');
-				
-			},
-			success: function(element) {
-				element
-				.text('OK!').addClass('valid')
-				.closest('.control-group').removeClass('error').addClass('success');
-			}
-		
-	  });
+$('form').submit( function(ev){ 
 
-}); 
+	ev.preventDefault();	
+	var m_data = new FormData(); 
+	
+	
+	var ar=[];
+	
+var billing_period = $("#billing_period").val();
+var fromm = $("#from").val();
+var due = $("#due").val();
+var bill_for = $("#bill_for").val();
+var win = $("#win").val();
+var pen = $("#pen").val();
+var description = $("#description").val();
+
+alert(bill_for);
+
+
+
+ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
+			
+	var myJsonString = JSON.stringify(ar);
+	m_data.append('myJsonString',myJsonString);
+	$.ajax({
+			url: "expense_tracker_json",
+			data: m_data,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			dataType:'json',
+			}).done(function(response) {
+				//alert(response);
+				$("#output").html(response);
+			if(response.report_type=='error'){
+			
+					$("#output").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
+					 //setInterval(function(){ $("#output").html(''); }, 10000);
+					//$("#output").html('');
+			}
+			if(response.report_type=='submit'){
+				$(".portal").remove();
+				$("#shwd").show();
+				$(".swwtxx").html(response.text);
+				$("#output").remove();
+			}
+			$("html, body").animate({
+			scrollTop:0
+			},"slow");
+			//$("#output").html(response);
+			
+	});
+	
+});
+});
 </script>
+
+
+
+
+
+
+
+
+
+
+
+		
+
 
 <script>
 
@@ -528,9 +480,7 @@ $('#chk_vali').html('<p style="color:red;"></p>');
 
 });
 });
-		
-		
-		</script>
+</script>
         
 <script>        
 function wing()
