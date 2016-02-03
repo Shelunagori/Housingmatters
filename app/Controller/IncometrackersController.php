@@ -6955,7 +6955,7 @@ if(isset($this->request->data['approve'])){
 							 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
 							}else{
 								
-								 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M',$bill_start_date)." - ".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
+								 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M',$bill_start_date)."-".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
 							}
 							
 							
