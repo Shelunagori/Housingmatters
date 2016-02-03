@@ -10486,7 +10486,7 @@ function send_sms_for_verify_mobile(){
 	$sms_allow=(int)$r_sms->sms_allow;
 	if($sms_allow==1){	
 
-	$sms='Hi ! '.$user_name.', your one time activation code is '.$random_otp.' to continue your enrollment. If irrelevant contact info@housingmatters.in . ';
+	$sms='Hi ! '.$user_name.', your one time activation code is '.$random_otp.' to continue your enrollment. If irrelevant contact info@housingmatters.in ';
 
 	$sms1=str_replace(' ', '+', $sms);
 
