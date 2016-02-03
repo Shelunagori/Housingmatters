@@ -115,7 +115,7 @@
 			   <td>
 					<span class="btn btn-file">
 					<i class="icon-upload-alt"></i>
-					<input type="file" class="default" name="file1">
+					<input type="file" class="default">
 					</span>
 			   </td>			   
 			   </tr>
@@ -193,9 +193,8 @@ $(document).ready(function() {
 		var to_war = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(2) input").val();
 		var desc = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(3) input").val();
 		var shedule = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(4) input").val();
-		//m_data.append( 'file'+i, $('input[name=file'+i+']')[0].files[0]);
+		m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(5) input[type=file]')[0].files[0]);
 		ar.push([asset_cat,purchase_date,supplier,cost,asset_name,from_war,to_war,desc,shedule]);
-		
 		}
 		var myJsonString = JSON.stringify(ar);
 		m_data.append('myJsonString',myJsonString);

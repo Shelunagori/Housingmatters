@@ -12,8 +12,6 @@ public $components = array(
 );
 
 
-
-
 var $name = 'Hms';
 
 function check_charecter_name($name){
@@ -20774,14 +20772,14 @@ foreach($myArray as $child)
  $maintanance_schedule = $child[8]; 
  $current_date = date('d-m-Y');
  
- $file_name=@$_FILES["file".$z]["name"];
-		if(!empty($file_name)){
-		$file_name=$_FILES["file".$z]["name"];
-		$file_tmp_name =$_FILES['file'.$z]['tmp_name'];
-		$target = "fix_assets/";
-		$target=@$target.basename($file_name);
-		move_uploaded_file($file_tmp_name,@$target);
-		}
+$file_name=@$_FILES["file".$z]["name"];
+if(!empty($file_name)){
+$file_name=$_FILES["file".$z]["name"];
+$file_tmp_name =$_FILES['file'.$z]['tmp_name'];
+$target = "fix_assets/";
+$target=@$target.basename($file_name);
+move_uploaded_file($file_tmp_name,@$target);
+}
 
  
  

@@ -102,7 +102,7 @@ $default_date = date('d-m-Y');
 			   <td>
 					<span class="btn btn-file">
 					<i class="icon-upload-alt"></i>
-					<input type="file" class="default" name="file<?php echo $count; ?>">
+					<input type="file" class="default">
 					</span>
 			   </td>			   
 			   </tr>
