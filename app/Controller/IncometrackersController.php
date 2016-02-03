@@ -6948,9 +6948,9 @@ if(isset($this->request->data['approve'])){
 							
 							 $user_name=$this->check_charecter_name($user_name);				
 							
-							 $sms="Dear ".$user_name." ".$wing_flat.",your maintenance bill of Rs ".$due_for_payment." for ".date('d-M',$bill_start_date)." to ".date('d-M-Y',$bill_end_date)." is sent via email,kindly check %26 pay by ".date('d-M',$due_date).".".$society_name;
+							 //$sms="Dear ".$user_name." ".$wing_flat.",your maintenance bill of Rs ".$due_for_payment." for ".date('d-M',$bill_start_date)." to ".date('d-M-Y',$bill_end_date)." is sent via email,kindly check %26 pay by ".date('d-M',$due_date).".".$society_name;
 							
-							
+							 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M',$bill_start_date)." - ".date('M-Y',$bill_end_date)." is sent via email,kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
 							
 							
 							
