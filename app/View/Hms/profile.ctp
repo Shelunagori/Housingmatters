@@ -226,7 +226,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
                                             <tr>
                                             <td width="40%" style="font-size:14px; ">Name</td>
                                             <td width="60%">
-											<input type="text" class="m-wrap" id="name" value="<?php echo $c_name;  ?>" name="name">
+											<input type="text" class="m-wrap" id="name" value="<?php echo $c_name;  ?>" readonly name="name">
 											<label id="name"></label>
 											</td>
                                             </tr>
