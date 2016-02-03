@@ -114,7 +114,7 @@ if($income_head_detail == 'YES')
 <h4 class="block"><i class="icon-reorder"></i>Generate Regular Bill</h4>
 </div>
 <div class="portlet-body form">
-   
+   <div id="validdn"></div>
 <div class="row-fluid">
 
 <div class="span6">
@@ -184,7 +184,7 @@ if($income_head_detail == 'YES')
         ?>
         <label class="checkbox">
         <div class="checker" id="uniform-undefined"><span>
-        <input type="checkbox" value="<?php echo $wing_id; ?>" style="opacity: 0;" id="win"></span></div><?php echo $wing_name; ?> 
+        <input type="checkbox" value="<?php echo $wing_id; ?>" style="opacity: 0;" class="wingg"></span></div><?php echo $wing_name; ?> 
         </label>
         <?php } ?><br />
         </div>
@@ -197,14 +197,14 @@ if($income_head_detail == 'YES')
 
 	
 <div class="controls">
-<label class="" style="font-size:14px;">&nbsp;&nbsp;&nbsp;Penalty<i class=" icon-info-sign tooltips" data-placement="right" data-original-title="Please choose penalty yes/no "> </i></label>
+<label class="" style="font-size:14px;">Penalty</label>
 
 <label class="radio">
-<div class="radio" id="uniform-undefined"><span><input type="radio" value="1" style="opacity: 0;" id="pen"></span></div>
+<div class="radio" id="uniform-undefined"><span><input type="radio" value="1" style="opacity: 0;" id="pen" name="pen"></span></div>
 Yes
 </label>
 <label class="radio">
-<div class="radio" id="uniform-undefined"><span><input type="radio" value="2" style="opacity: 0;" id="pen"></span></div>
+<div class="radio" id="uniform-undefined"><span><input type="radio" value="2" style="opacity: 0;" id="pen" name="pen"></span></div>
 No
 </label>
 </div>
@@ -247,49 +247,36 @@ $('form').submit( function(ev){
 	
 	
 	var ar=[];
-	
+	var win=[];
 var billing_period = $("#billing_period").val();
 var fromm = $("#from").val();
 var due = $("#due").val();
-var bill_for = $("#bill_for").val();
-var win = $("#win").val();
-var pen = $("#pen").val();
+var bill_for = $("#bill_for:checked").val();
+$(':checkbox:checked').each(function(i){
+win[i] = $(this).val();
+});
+var pen = $("#pen:checked").val();
 var description = $("#description").val();
 
-alert(bill_for);
 
-
-
-ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_inv,description]);
+ar.push([billing_period,fromm,due,bill_for,win,pen,description]);
 			
 	var myJsonString = JSON.stringify(ar);
-	m_data.append('myJsonString',myJsonString);
-	$.ajax({
-			url: "expense_tracker_json",
-			data: m_data,
-			processData: false,
-			contentType: false,
-			type: 'POST',
-			dataType:'json',
-			}).done(function(response) {
+			$.ajax({
+			url: "it_regular_bill_json?q="+myJsonString,
+		    dataType:'json',
+			}).done(function(response){
 				//alert(response);
-				$("#output").html(response);
-			if(response.report_type=='error'){
-			
-					$("#output").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
-					 //setInterval(function(){ $("#output").html(''); }, 10000);
-					//$("#output").html('');
+				if(response.type == 'error'){
+			  		
+			$("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');
 			}
-			if(response.report_type=='submit'){
-				$(".portal").remove();
-				$("#shwd").show();
-				$(".swwtxx").html(response.text);
-				$("#output").remove();
+			if(response.type == 'success'){
+				
+			window.location.href = response.text;
+			  $("#shwd").show();
+			  $(".swwtxx").html(response.text);
 			}
-			$("html, body").animate({
-			scrollTop:0
-			},"slow");
-			//$("#output").html(response);
 			
 	});
 	
@@ -297,190 +284,6 @@ ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_
 });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-		
-
-
-<script>
-
-		$(document).ready(function() {
-		$("#go").bind('click',function(){
-	
-		var from1 = document.getElementById("from").value;
-		var per_tp = document.getElementById("bp").value;
-		var date = from1.split("-"); 
-		var d = date[0];
-		var m = date[1];
-		var y = date[2];
-		var date2 = m + "/" + d + "/" + y; 
-		//alert(date2);
-		var datobj=new Date(date2);
-			
-		if(per_tp == 1)
-		{
-		var to1 = new Date(date2).addMonths(1);  //
-		to1 = to1.setDate(to1.getDate()-1);
-		to1 =  new Date(to1);
-		var to1 = to1.toString("dd-MM-yyyy");
-		}
-		else if(per_tp == 2)
-		{
-		var to1 = new Date(date2).addMonths(2);  //
-		to1 = to1.setDate(to1.getDate()-1);
-		to1 =  new Date(to1);
-		var to1 = to1.toString("dd-MM-yyyy");
-		}
-		else if(per_tp == 3)
-		{
-		var to1 = new Date(date2).addMonths(3);  //
-		to1 = to1.setDate(to1.getDate()-1);
-		to1 =  new Date(to1);
-		var to1 = to1.toString("dd-MM-yyyy");
-		}
-		else if(per_tp == 4)
-		{
-		var to1 = new Date(date2).addMonths(6);  //
-		to1 = to1.setDate(to1.getDate()-1);
-		to1 =  new Date(to1);
-		var to1 = to1.toString("dd-MM-yyyy");
-		}
-		else if(per_tp == 5)
-		{
-		var to1 = new Date(date2).addMonths(12);  //
-		to1 = to1.setDate(to1.getDate()-1);
-		to1 =  new Date(to1);
-		var to1 = to1.toString("dd-MM-yyyy");
-		}
-	
-		var Typpp = $("input[name='bill_for']:checked").val();
-		
-		var fi = document.getElementById("fi").value;
-		var ti = document.getElementById("ti").value;
-		var cn = document.getElementById("cn").value;
-		var fe = fi.split(",");
-		var te = ti.split(",");
-		var due1 = document.getElementById("due").value;
-		var fb = document.getElementById("fb").value;
-		var tb= document.getElementById("tb").value;
-		var from = from1.split("-").reverse().join("-");
-		var to = to1.split("-").reverse().join("-");
-		var due = due1.split("-").reverse().join("-");
-		if(from == "")
-		{
-		}
-		else if(to == "")
-		{
-			
-		}
-		else if(Date.parse(to) <= Date.parse(from))
-		{
-       	$("#result11").load("regular_vali?ss=" + 1 + "");
-        return false;
-		}
-		else if(Date.parse(tb) >= Date.parse(from) && Typpp == 2)
-		{
-		$("#result11").load("regular_vali?ss=" + 5 + "");
-        return false;	
-		}
-		else
-		{
-		$("#result11").load("regular_vali?ss=" + 11 + "");
-       	}
-		
-		var nnn = 55;
-		for(var i=0; i<cn; i++)
-		{
-		var fd = fe[i];
-		var td = te[i]
-		
-		    if(from == "")
-			{
-				nnn = 555;
-			break;	
-			}
-			else if(to == "")
-			{
-				nnn = 555;
-				break;
-			}
-			else if(Date.parse(fd) <= Date.parse(from))
-		     {
-			 if(Date.parse(td) >= Date.parse(to))
-			 {
-				 nnn = 5;
-				 break;
-			 }
-			 else
-			 {
-				 
-			 }
-        	 } 
-			 }
-			 
-		
-		if(nnn == 55)
-		{
-		$("#result11").load("regular_vali?ss=" + 2 + "");
-        return false;	
-		}
-		else if(nnn == 555)
-		{
-			
-		}
-		else
-		{
-		$("#result11").load("regular_vali?ss=" + 12 + "");		
-		}
-		if(due == "")
-		{
-			
-		}
-		else if(Date.parse(due) <= Date.parse(from))	 
-		{
-		$("#result12").load("regular_vali?ss=" + 3 + "");
-		return false;
-		}
-		else if(Date.parse(due) > Date.parse(to))
-		{
-		$("#shwd").show();
-			
-		//$("#result12").load("regular_vali?ss=" + 505 + "");	
-		return false;
-		}
-		else
-		{
-		$("#result12").load("regular_vali?ss=" + 13 + "");	 
-		}
-		
-		
-var bb = $('input[type=radio]:checked').val();
-if(bb == 1)
-{       
-if($('input[type=checkbox]:checked').length == 0)
-{
-$('#chk_vali').html('<p style="color:red; font-size:15px;">Select at list One wing</p>'); return false;
-}		
-else
-{
-$('#chk_vali').html('<p style="color:red;"></p>');	
-}
-}		
-		
-		
-		
-
-});
-});
-</script>
         
 <script>        
 function wing()

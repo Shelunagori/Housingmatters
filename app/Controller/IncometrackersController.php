@@ -7463,17 +7463,245 @@ $output = json_encode(array('type'=>'success', 'text' => 'supplimentry_bill_view
 /////////////////////////// Start it_regular_bill_json ////////////////////////////
 function it_regular_bill_json()
 {
+ $this->layout='blank';
+		$s_society_id = (int)$this->Session->read('society_id');
+		$s_user_id = (int)$this->Session->read('user_id');
 
+          $this->ath();	
+		
+		$q=$this->request->query('q'); 
+		$q = html_entity_decode($q);
+		$myArray = json_decode($q, true);
 
-
-
-
-
-
-
-
-
+foreach($myArray as $child)
+		{
+		
+		if(empty($child[0]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Billing Cycle is Required'));
+		die($output);
+		}	
 	
+	    if(empty($child[1]))
+	    {
+		$output = json_encode(array('type'=>'error', 'text' => 'Billing Start date is Required'));
+		die($output);
+		}	
+	
+
+$dattt = $child[1];
+$dddatttt = date('Y-m-d',strtotime($dattt));
+$dddatttt = strtotime($dddatttt);
+$this->loadmodel('financial_year');
+$conditions=array("society_id"=>$s_society_id,"status"=>1);
+$cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
+if(sizeof($cursor) == 0)
+{
+$nnnnn = 555;	
+}
+	foreach($cursor as $dataaa)
+	{
+	$fin_from_date = $dataaa['financial_year']['from'];
+	$fin_to_date = $dataaa['financial_year']['to'];
+	$from_date = date('Y-m-d',$fin_from_date->sec);
+	$to_date = date('Y-m-d',$fin_to_date->sec);
+	$from = strtotime($from_date);
+	$to = strtotime($to_date);
+	if($from <= $dddatttt && $to >= $dddatttt)
+	{
+	$nnnnn = 55;
+	break;
+	}
+	else
+	{
+	$nnnnn = 555;
+	}
+	}
+			
+if($nnnnn == 555)
+{
+$output = json_encode(array('type'=>'error', 'text' => 'Billing Date Should be in Open Financial Year'));
+die($output);
+}
+	
+if(empty($child[2]))
+{
+$output = json_encode(array('type'=>'error', 'text' => 'Payment Due Date is Required'));
+die($output);
+}	
+$due_date = $child[2]; 
+$due_date2 = date('Y-m-d',strtotime($due_date)); 
+$dueee_datee = strtotime($due_date2);
+	
+if($dueee_datee < $dddatttt)
+{
+$output = json_encode(array('type'=>'error', 'text' => 'Due Date Should be Greater Than or Equal to the Billing Start Date'));
+die($output);	 
+}
+	     
+if(empty($child[3]))
+{
+$output = json_encode(array('type'=>'error', 'text' => 'Bill For is Required'));
+die($output);	 	 
+}
+$bill_for = (int)$child[3];		
+	
+        $this->loadmodel('new_regular_bill');
+		$order=array('new_regular_bill.auto_id'=> 'ASC');
+		$conditions=array("society_id" => $s_society_id);
+		$cursor=$this->new_regular_bill->find('all',array('conditions'=>$conditions,'order' =>$order));
+		foreach ($cursor as $data)
+		{
+		$one_time_id = (int)$data['new_regular_bill']['one_time_id'];
+		}	
+	
+	
+	$wing_vali_arrr = array();
+	if($bill_for == 1)				
+	{
+		if(empty($child[4]))
+		{
+		$output = json_encode(array('type'=>'error', 'text' => 'Please Select Wing'));
+		die($output);	 	 
+		}	
+	    $wing_arr = $child[4];
+       
+	   foreach($wing_arr as $winggg)
+	   {
+		$wing_id = (int)$winggg;
+		
+		$this->loadmodel('new_regular_bill');
+		$conditions=array("society_id" => $s_society_id,"one_time_id"=>$one_time_id);
+		$cursor=$this->new_regular_bill->find('all',array('conditions'=>$conditions));
+		foreach ($cursor as $collection)
+		{
+		$regular_from = $collection['new_regular_bill']['bill_start_date'];
+		$regular_to = $collection['new_regular_bill']['bill_end_date'];
+		$flat_id = (int)$collection['new_regular_bill']['flat_id'];
+		
+		$flat_dataa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+		foreach ($flat_dataa as $flat_dataaaa) 
+		{
+		$regular_wing = (int)$flat_dataaaa['flat']['wing_id'];
+		}	
+		
+		if($regular_to >= $dddatttt && $regular_wing == $wing_id)
+		{
+		$wing_vali_arrr[] = $wing_id;
+        break;		
+		}
+		}
+	    }
+	$wing_name_array=array();	
+    if(!empty($wing_vali_arrr))
+    {
+	foreach($wing_vali_arrr as $www)
+	{
+	$wing_name_array[] = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wingname_via_wingid'),array('pass'=>array((int)$www)));
+	}	
+	}
+	$wing_name_array2 = implode(',',$wing_name_array);	
+		
+	if(!empty($wing_name_array2))	
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for Wing '.$wing_name_array2.' for this Period'));
+	die($output);	
+	}
+	}
+	if($bill_for == 2)				
+	{
+		$this->loadmodel('new_regular_bill');
+		$conditions=array("society_id" => $s_society_id,"one_time_id"=>$one_time_id);
+		$cursor=$this->new_regular_bill->find('all',array('conditions'=>$conditions));
+		foreach ($cursor as $collection)
+		{
+		$regular_from = $collection['new_regular_bill']['bill_start_date'];
+		$regular_to = $collection['new_regular_bill']['bill_end_date'];	
+		}
+		if($regular_to >= $dddatttt)
+		{
+	$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for this Period'));
+	die($output);	
+			
+	}
+	}
+	
+	if(empty($child[5]))
+	{
+	$output = json_encode(array('type'=>'error', 'text' => 'Penalty is Required'));
+	die($output);	
+	}
+	
+}	
+foreach($myArray as $child)
+{
+$period_id = (int)$child[0];
+$from = $child[1];
+$due_date = $child[2];
+$bill_for = (int)$child[3];
+if($bill_for == 1)
+{
+$wing_arr = $child[4];	
+}
+$penalty = (int)$child[5];
+$description = $child[6];
+
+
+
+$fromm = date("Y-m-d", strtotime($from));
+$fromm = new MongoDate(strtotime($fromm));
+				
+@$wing_imp = implode(",",@$wing_arr);
+	
+				if($period_id == 1)
+				{
+				$to = date('Y-m-d', strtotime("+1 months", strtotime($from)));
+				$to = date('Y-m-d', strtotime("-1 days", strtotime($to)));
+				}
+				else if($period_id == 3)
+				{
+				$to = date('Y-m-d', strtotime("+3 months", strtotime($from)));
+				$to = date('Y-m-d', strtotime("-1 days", strtotime($to)));
+				}
+				else if($period_id == 4)
+				{
+				$to = date('Y-m-d', strtotime("+6 months", strtotime($from)));
+				$to = date('Y-m-d', strtotime("-1 days", strtotime($to)));
+				}
+				else if($period_id == 2)
+				{
+				$to = date('Y-m-d', strtotime("+2 months", strtotime($from)));
+				$to = date('Y-m-d', strtotime("-1 days", strtotime($to)));
+				}
+				else if($period_id == 5)
+				{
+				$to = date('Y-m-d', strtotime("+12 months", strtotime($from)));
+				$to = date('Y-m-d', strtotime("-1 days", strtotime($to)));
+				}
+
+		$tom = date("Y-m-d", strtotime($to));
+		$tom = new MongoDate(strtotime($tom));
+
+			$due_date55 = date("Y-m-d", strtotime($due_date));
+			$due_date55 = new MongoDate(strtotime($due_date55));
+
+				$f1=$this->encode($from,'housingmatters');
+				$t1=$this->encode($to,'housingmatters');
+				$due1=$this->encode($due_date,'housingmatters');
+				$desc1=$this->encode($description,'housingmatters');
+				$p_id = $this->encode($period_id,'housingmatters');
+				$pen = $this->encode($penalty,'housingmatters');
+				$wing_imp_en = $this->encode($wing_imp,'housingmatters');
+				$bill_for_en = $this->encode($bill_for,'housingmatters');
+
+	//$this->response->header('Location','regular_bill_preview_screen_new?f='.$f1.'&t='.$t1.'&due='.$due1.'&d='.$desc1.'&p='.$p_id.'&pen='.$pen.'&wi='.$wing_imp_en.'&bi='.$bill_for_en.' ');
+	
+
+$output = json_encode(array('type'=>'success','text'=>'regular_bill_preview_screen_new?f='.$f1.'&t='.$t1.'&due='.$due1.'&d='.$desc1.'&p='.$p_id.'&pen='.$pen.'&wi='.$wing_imp_en.'&bi='.$bill_for_en.' '));
+die($output);
+
+
+}
 }
 ///////////////////////End it_regular_bill_json /////////////////////////////////////
 }
