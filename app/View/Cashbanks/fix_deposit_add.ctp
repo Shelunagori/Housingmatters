@@ -140,7 +140,7 @@ $default_date = date('d-m-Y');
 						<td>
 						<span class="btn btn-file">
 						<i class="icon-upload-alt"></i>
-						<input type="file" class="default corsrr" name="file2">
+						<input type="file" class="default">
 						</span>
 						</td>
 						
@@ -259,7 +259,7 @@ $(document).ready(function() {
 		var interest = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(2) input").val();
 		var purpose = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(4) select").val();
 		
-		//m_data.append( 'file'+i, $('input[name=file'+i+']')[0].files[0]);
+		 m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #sub_tablll tr:nth-child(4) td:nth-child(3) input[type=file]')[0].files[0]);
 		ar.push([bank_name,branch,ac_reference,pricipal_amt,start_date,maturity_date,interest,purpose]);
 		
 		}

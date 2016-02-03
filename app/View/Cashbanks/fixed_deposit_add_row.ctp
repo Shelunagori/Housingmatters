@@ -65,7 +65,7 @@ $default_date = date('d-m-Y');
 						<td>
 						<span class="btn btn-file corsrr">
 						<i class="icon-upload-alt"></i>
-						<input type="file" class="default" name="file2">
+						<input type="file" class="default">
 						</span>
 						</td>
 						
