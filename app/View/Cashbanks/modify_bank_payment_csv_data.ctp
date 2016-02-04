@@ -1,5 +1,5 @@
 <div style="background-color: #FFF;">
-<table style="backgroud-color:white; width:100%;">
+<table style="backgroud-color:white; width:100%;" id="main_table">
 <?php
 foreach($result_bank_receipt_converted as $data)
 {
@@ -15,7 +15,7 @@ $bank_id = $data['payment_csv_converted']['bank'];
 $invoice_ref = $data['payment_csv_converted']['invoice_ref'];
 $narration = $data['payment_csv_converted']['narration'];
 ?>
-<tr>
+<tr id="<?php echo $csv_auto_id; ?>">
 <td style="border:solid 1px blue;">
 
              <table id="sub_table2" class="table table-bordered table-striped">
@@ -31,14 +31,15 @@ $narration = $data['payment_csv_converted']['narration'];
 
 			  
 			  <tr>
-			  <td><input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
+			  <td><div><input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
 			  value="<?php echo $transaction_date; ?>" 
-			  style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="<?php echo $csv_auto_id; ?>"></td>
+			  style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="<?php echo $csv_auto_id; ?>"></div></td>
 			  
 			  
 					<td>
+					<div>
 					<select class="m-wrap span12 chosen" field="ledger_data" record_id="<?php echo $csv_auto_id; ?>">
-					<option value="">--SELECT--</option>
+					<option value="" style="display:none;">--SELECT--</option>
 					<?php
 					foreach($cursor11 as $collection)
 					{
@@ -74,23 +75,23 @@ $narration = $data['payment_csv_converted']['narration'];
 					?>
 					<option value="<?php echo $auto_id; ?>,2" <?php if($ledger_account_id == $auto_id && $type == 2) { ?> selected="selected" <?php } ?> ><?php echo $name; ?></option>
 					<?php }} ?>
-					</select>
+					</select></div>
 					</td>
 
   
-			  <td><input type="text" class="m-wrap span12" 
+			  <td><div><input type="text" class="m-wrap span12" 
 			  style="background-color:white !important; margin-top:2.5px;" id="inv_ref1"
-			  value="<?php echo $invoice_ref; ?>" field="invoice" record_id="<?php echo $csv_auto_id; ?>">
+			  value="<?php echo $invoice_ref; ?>" field="invoice" record_id="<?php echo $csv_auto_id; ?>"></div>
 			  </td>
 			  
 			  
-			  <td><input type="text" class="m-wrap span12" id="amttt1" 
+			  <td><div><input type="text" class="m-wrap span12" id="amttt1" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" maxlength="10" value="<?php echo $amount; ?>" 
-			   field="amt" record_id="<?php echo $csv_auto_id; ?>">
+			   field="amt" record_id="<?php echo $csv_auto_id; ?>"></div>
 			  </td>
 			  
 			  
-				<td><select class="m-wrap chosen span12" field="tdss" record_id="<?php echo $csv_auto_id; ?>">
+				<td><div><select class="m-wrap chosen span12" field="tdss" record_id="<?php echo $csv_auto_id; ?>">
 				<option value="" style="display:none;">Select</option>
 				<?php
 				for($k=0; $k<sizeof($tds_arr); $k++)
@@ -101,7 +102,7 @@ $narration = $data['payment_csv_converted']['narration'];
 				?>
 				<option value= "<?php echo $tds_id; ?>" <?php if($tds_tax==$tds) { ?> selected="selected" <?php } ?>><?php echo $tds_tax; ?></option>
 				<?php } ?>                           
-				</select>
+				</select></div>
 				</td>
 			  </tr>
 
@@ -119,21 +120,21 @@ $narration = $data['payment_csv_converted']['narration'];
 				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;">
 				  </td>
 				  
-				<td>
+				<td><div>
 				<select class="m-wrap span12 chosen" field="mode" record_id="<?php echo $csv_auto_id; ?>">
-				<option value="">Select</option>
+				<option value="" style="display:none;">Select</option>
 				<option value="Cheque" <?php if($mode == "Cheque") { ?>selected="selected" <?php } ?>>Cheque</option>
 				<option value="NEFT" <?php if($mode == "NEFT") { ?>selected="selected" <?php } ?>>NEFT</option>
 				<option value="PG" <?php if($mode == "PG") { ?>selected="selected" <?php } ?>>PG</option>
-				</select>
+				</select></div>
 				</td>
 
 
-			  <td><input type="text"  class="m-wrap span12" 
-			  style="text-align:right; background-color:white !important; margin-top:2.5px;" id="instru1" value="<?php echo $instrument; ?>" field="inst" record_id="<?php echo $csv_auto_id; ?>">
+			  <td><div><input type="text"  class="m-wrap span12" 
+			  style="text-align:right; background-color:white !important; margin-top:2.5px;" id="instru1" value="<?php echo $instrument; ?>" field="inst" record_id="<?php echo $csv_auto_id; ?>"></div>
               </td>
 			 
-					<td>
+					<td><div>
 					<select onchange="get_value(this.value)" class="m-wrap chosen span12" field="bankk" record_id="<?php echo $csv_auto_id; ?>">
 					<option value="" style="display:none;">Select</option>    
 					<?php
@@ -147,12 +148,13 @@ $narration = $data['payment_csv_converted']['narration'];
 					<option value="<?php echo $sub_account_id; ?>" <?php if($sub_account_id == $bank_id) { ?> selected="selected" <?php } ?>><?php echo $sub_account_name; ?>&nbsp;&nbsp;<?php echo $bank_acccc; ?></option>
 					<?php } ?>
 					</select>
+					</div>
 					</td>
 
 
-				  <td><input type="text" class="m-wrap span12" 
+				  <td><div><input type="text" class="m-wrap span12" 
 				  style="background-color:white !important; margin-top:2.5px;" 
-				  value="<?php echo $narration; ?>" field="desc" record_id="<?php echo $csv_auto_id; ?>">
+				  value="<?php echo $narration; ?>" field="desc" record_id="<?php echo $csv_auto_id; ?>"></div>
 				  </td>
 			  
 			  
@@ -208,12 +210,13 @@ $( document ).ready(function() {
 		$.ajax({
 			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
+			
 			if(response=="F"){
-				$("table#report_tb tr#"+record_id+" td").each(function(){
+				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
 				});
 			}else{
-				$("table#report_tb tr#"+record_id+" td").each(function(){
+				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('input[field="'+field+'"]').parent("div").css("border", "");
 				});
 			}
@@ -228,11 +231,11 @@ $( document ).ready(function() {
 			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
 			if(response=="F"){
-				$("table#report_tb tr#"+record_id+" td").each(function(){
+				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('select[field="'+field+'"]').parent("div").css("border", "solid 1px red");
 				});
 			}else{
-				$("table#report_tb tr#"+record_id+" td").each(function(){
+				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('select[field="'+field+'"]').parent("div").css("border", "");
 				});
 			}
