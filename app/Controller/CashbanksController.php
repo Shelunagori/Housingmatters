@@ -9165,5 +9165,13 @@ $bank_id = (int)$collection['ledger_sub_account']['auto_id'];
 	
 }
 ////////////////// End convert_payment_imported_data /////////////////////////////
+//////////////////// Start modify_bank_payment_csv_data //////////////////////////
+function modify_bank_payment_csv_data()
+{
+	
+	
+}
+
+////////////////////// End modify_bank_payment_csv_data /////////////////////////////
 }
 ?>

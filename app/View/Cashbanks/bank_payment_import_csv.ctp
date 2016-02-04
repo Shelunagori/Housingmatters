@@ -88,7 +88,21 @@ function convert_csv_data_ajax(){
 </script>
 <?php } ?>
 
-
+<?php if(@$process_status==3){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Uploaded Data Is Ready To More Modification.</span>
+	<br/><br/>
+	<a href="<?php echo $webroot_path; ?>Cashbanks/modify_bank_payment_csv_data" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
+</div>
+<?php } ?>
 
 
 
