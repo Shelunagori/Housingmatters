@@ -26,7 +26,6 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 	</div>
 </div>
 <?php } ?>
-
 <?php if(@$process_status==1){ ?>
 <div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
 	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
@@ -44,12 +43,27 @@ $( document ).ready(function() {
 	}).done(function(response){
 		
 		if(response=="READ"){
-			change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv");
+			change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
 		}
 	});
 });
 </script>
 <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 $('form#form1').submit( function(ev){
 	ev.preventDefault();
@@ -65,9 +79,34 @@ $('form#form1').submit( function(ev){
 	dataType: 'json'
 	}).done(function(response){
 		if(response=="UPLOADED"){
-			change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv");
+			change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
 		}
 	});
 });
 
 </script>
+<script>
+function change_page_automatically(pageurl){
+	$.ajax({
+		url: pageurl,
+		}).done(function(response) {
+		
+		//$("#loading_ajax").html('');
+		
+		$(".page-content").html(response);
+		$("html, body").animate({
+			scrollTop:0
+		},"slow");
+		 $('#submit_success').hide();
+		});
+	
+	window.history.pushState({path:pageurl},'',pageurl);
+}
+</script>
+
+
+
+
+
+
+
