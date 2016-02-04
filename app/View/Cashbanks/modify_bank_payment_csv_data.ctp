@@ -3,6 +3,7 @@
 <?php
 foreach($result_bank_receipt_converted as $data)
 {
+$csv_auto_id = (int)$data['payment_csv_converted']['auto_id'];
 $transaction_date = $data['payment_csv_converted']['trajection_date'];	
 $ledger_account_id = (int)$data['payment_csv_converted']['ledger_ac'];	
 $type = (int)$data['payment_csv_converted']['type'];
@@ -13,12 +14,7 @@ $instrument = $data['payment_csv_converted']['instrument'];
 $bank_id = $data['payment_csv_converted']['bank'];	
 $invoice_ref = $data['payment_csv_converted']['invoice_ref'];
 $narration = $data['payment_csv_converted']['narration'];
-
 ?>
-
-
-
-
 <tr>
 <td style="border:solid 1px blue;">
 
@@ -37,11 +33,11 @@ $narration = $data['payment_csv_converted']['narration'];
 			  <tr>
 			  <td><input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
 			  value="<?php echo $transaction_date; ?>" 
-			  style="background-color:white !important; margin-top:2.5px;" id="dattt1"></td>
+			  style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="<?php echo $csv_auto_id; ?>"></td>
 			  
 			  
 					<td>
-					<select class="m-wrap span12 chosen">
+					<select class="m-wrap span12 chosen" field="ledger_data" record_id="<?php echo $csv_auto_id; ?>">
 					<option value="">--SELECT--</option>
 					<?php
 					foreach($cursor11 as $collection)
@@ -84,17 +80,17 @@ $narration = $data['payment_csv_converted']['narration'];
   
 			  <td><input type="text" class="m-wrap span12" 
 			  style="background-color:white !important; margin-top:2.5px;" id="inv_ref1"
-			  value="<?php echo $invoice_ref; ?>">
+			  value="<?php echo $invoice_ref; ?>" field="invoice" record_id="<?php echo $csv_auto_id; ?>">
 			  </td>
 			  
 			  
 			  <td><input type="text" class="m-wrap span12" id="amttt1" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" maxlength="10" value="<?php echo $amount; ?>" 
-			  onchange="tdssssamt2(this.value,1)">
+			   field="amt" record_id="<?php echo $csv_auto_id; ?>">
 			  </td>
 			  
 			  
-				<td><select class="m-wrap chosen span12" onchange="tdssssamt(this.value,1)">
+				<td><select class="m-wrap chosen span12" field="tdss" record_id="<?php echo $csv_auto_id; ?>">
 				<option value="" style="display:none;">Select</option>
 				<?php
 				for($k=0; $k<sizeof($tds_arr); $k++)
@@ -120,11 +116,11 @@ $narration = $data['payment_csv_converted']['narration'];
 			  <tr>
 				  
 				  <td id="tds_show1"><input type="text"  class="m-wrap span12" 
-				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;" id="net_amtt1">
+				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;">
 				  </td>
 				  
 				<td>
-				<select class="m-wrap span12 chosen">
+				<select class="m-wrap span12 chosen" field="mode" record_id="<?php echo $csv_auto_id; ?>">
 				<option value="">Select</option>
 				<option value="Cheque" <?php if($mode == "Cheque") { ?>selected="selected" <?php } ?>>Cheque</option>
 				<option value="NEFT" <?php if($mode == "NEFT") { ?>selected="selected" <?php } ?>>NEFT</option>
@@ -134,12 +130,11 @@ $narration = $data['payment_csv_converted']['narration'];
 
 
 			  <td><input type="text"  class="m-wrap span12" 
-			  style="text-align:right; background-color:white !important; margin-top:2.5px;" id="instru1" value="<?php echo $instrument; ?>">
+			  style="text-align:right; background-color:white !important; margin-top:2.5px;" id="instru1" value="<?php echo $instrument; ?>" field="inst" record_id="<?php echo $csv_auto_id; ?>">
               </td>
-			  
-			  
+			 
 					<td>
-					<select onchange="get_value(this.value)" class="m-wrap chosen span12">
+					<select onchange="get_value(this.value)" class="m-wrap chosen span12" field="bankk" record_id="<?php echo $csv_auto_id; ?>">
 					<option value="" style="display:none;">Select</option>    
 					<?php
 					foreach ($cursor2 as $db) 
@@ -156,15 +151,19 @@ $narration = $data['payment_csv_converted']['narration'];
 
 
 				  <td><input type="text" class="m-wrap span12" 
-				  style="background-color:white !important; margin-top:2.5px;" id="desc1"
-				  value="<?php echo $narration; ?>">
+				  style="background-color:white !important; margin-top:2.5px;" 
+				  value="<?php echo $narration; ?>" field="desc" record_id="<?php echo $csv_auto_id; ?>">
 				  </td>
+			  
+			  
+			  
+			  
 			  
               </tr>	
 			  </table>
 			  </td>
 			  <td valign="top">
-			<a href="#" class="btn mini black delete_row" record_id="<?php echo $auto_id; ?>" role="button"><i class="icon-trash"></i></a>
+			<a href="#" class="btn mini black delete_row" record_id="<?php echo $csv_auto_id; ?>" role="button"><i class="icon-trash"></i></a>
 		</td>
 			  </tr>
 			  
@@ -195,6 +194,54 @@ for($ii=1;$ii<=$loop;$ii++){ ?>
 
 <a class="btn purple big" role="button" id="final_import">IMPORT VOUCHERS <i class="m-icon-big-swapright m-icon-white"></i></a>									
 <div id="check_validation_result"></div>		  
+
+
+
+<script>
+$( document ).ready(function() {
+	$( 'input[type="text"]' ).blur(function() {
+		
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$(this).val();
+		
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			if(response=="F"){
+				$("table#report_tb tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("table#report_tb tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
+	
+	$( 'select' ).change(function() {
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$("option:selected",this).val();
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			if(response=="F"){
+				$("table#report_tb tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("table#report_tb tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
+});
+
+</script>
+
 			  
 <script>			  
 $(document).ready(function() {

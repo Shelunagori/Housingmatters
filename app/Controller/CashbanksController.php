@@ -9137,7 +9137,7 @@ $bank_id = (int)$collection['ledger_sub_account']['auto_id'];
 }
 
 		$this->loadmodel('payment_csv_converted');
-		$auto_id=$this->autoincrement('bank_receipt_csv_converted','auto_id');
+		$auto_id=$this->autoincrement('payment_csv_converted','auto_id');
 		$this->payment_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger_id,"type"=>$typppp,"amount"=>$amount,"tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank_id,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_imported"=>"NO")));
 		
 		$this->loadmodel('bank_payment_csv');
@@ -9253,104 +9253,96 @@ function auto_save_bank_payment($record_id=null,$field=null,$value=null){
 	$this->ath();
 	$s_society_id = $this->Session->read('society_id');
 	$record_id=(int)$record_id; 
-	
-	if($field=="trajection_date"){
+  
+			
+		
+			  
+	if($field=="transaction_date"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("trajection_date" => $value),array("auto_id" => $record_id));
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("trajection_date" => $value),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
 	
-	if($field=="deposited_in"){
+	if($field=="ledger_data"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("deposited_in" => (int)$value),array("auto_id" => $record_id));
+		$val_arr = explode(',',$value);	
+			$led_id = (int)$val_arr[0];
+			$typp = (int)$val_arr[1];
+			
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("ledger_ac"=>(int)$led_id,"type"=>(int)$typp),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
 	
-	if($field=="receipt_mode"){
+	
+	
+	if($field=="invoice"){
+		
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("invoice_ref"=>$value),array("auto_id" => $record_id));
+			echo "T";
+		
+	}
+	
+	if($field=="amt"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("receipt_mode" => strtolower($value)),array("auto_id" => $record_id));
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
 	
-	if($field=="cheque_or_reference_no"){
+	if($field=="tdss"){
+		
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("tds" => $value),array("auto_id" => $record_id));
+			echo "T";
+		
+	}
+	
+
+	
+	if($field=="mode"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("cheque_or_reference_no" => $value),array("auto_id" => $record_id));
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("mode" => $value),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
 	
-	if($field=="date"){
+	
+	if($field=="inst"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("date" => $value),array("auto_id" => $record_id));
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("instrument" => $value),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
 	
-	if($field=="drown_in_which_bank"){
+	if($field=="bankk"){
 		if(empty($value)){ echo "F";}
 		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("drown_in_which_bank" => $value),array("auto_id" => $record_id));
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("bank" => (int)$value),array("auto_id" => $record_id));
 			echo "T";
 		}
 	}
-	
-	if($field=="branch_of_bank"){
-		if(empty($value)){ echo "F";}
-		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("branch_of_bank" => $value),array("auto_id" => $record_id));
-			echo "T";
-		}
-	}
-	
-	if($field=="ledger_sub_account_id"){
-		if(empty($value)){ echo "F";}
-		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("ledger_sub_account_id" => (int)$value),array("auto_id" => $record_id));
-			echo "T";
-		}
-	}
-	
-	
-	if($field=="amount"){
-		$value=(int)$value;
-		if(empty($value)){ echo "F"; 
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("amount" => (int)$value),array("auto_id" => $record_id));
-		}
-		else{
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("amount" => (int)$value),array("auto_id" => $record_id));
-			echo "T";
-		}
-	}
-	
-	if($field=="receipt_type"){
-		$this->loadmodel('bank_receipt_csv_converted');
-		$this->bank_receipt_csv_converted->updateAll(array("receipt_type" => (int)$value),array("auto_id" => $record_id));
+
+	if($field=="desc"){
+		$this->loadmodel('payment_csv_converted');
+		$this->payment_csv_converted->updateAll(array("narration"=>$value),array("auto_id" => $record_id));
 		echo "T";
 	}
 	
-	if($field=="narration"){
-		$this->loadmodel('bank_receipt_csv_converted');
-		$this->bank_receipt_csv_converted->updateAll(array("narration" => $value),array("auto_id" => $record_id));
-		echo "T";
-	}
+	
 	
 }
 
