@@ -8961,10 +8961,17 @@ $this->loadmodel('ledger_sub_account');
 $conditions=array("ledger_id" => 112,"society_id"=>$s_society_id);
 $cursor4=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor4',$cursor4);
-
-	
 }
 //////////////////////// End bank_receipt_update //////////////////////////////////
-
+///////////////////////// Start bank_payment_import_csv ///////////////////////////
+function bank_payment_import_csv()
+{
+	
+	
+	
+	
+	
+}
+///////////////////// End bank_payment_import_csv ////////////////////////////////////
 }
 ?>
