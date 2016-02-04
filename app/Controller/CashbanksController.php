@@ -9477,25 +9477,26 @@ $this->layout=null;
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id= (int)$this->Session->read('user_id');
 	
-	$this->loadmodel('import_record');
-	$conditions=array("society_id" => $s_society_id,"module_name" => "BR");
-	$result_import_record = $this->import_record->find('all',array('conditions'=>$conditions));
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
 	$this->set('result_import_record',$result_import_record);
 	foreach($result_import_record as $data_import){
-		$step1=(int)@$data_import["import_record"]["step1"];
-		$step2=(int)@$data_import["import_record"]["step2"];
-		$step3=(int)@$data_import["import_record"]["step3"];
-		$step4=(int)@$data_import["import_record"]["step4"];
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+		$step4=(int)@$data_import["import_payment_record"]["step4"];
 	}
 	$process_status= @$step1+@$step2+@$step3+@$step4;
 	
 	if($process_status==4){
+		
 		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
 		$result_import_converted = $this->payment_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
 		
 		foreach($result_import_converted as $import_converted){
-			$bank_payment_csv_id=$import_converted["payment_csv_converted"]["auto_id"];
+			$bank_payment_csv_id=(int)$import_converted["payment_csv_converted"]["auto_id"];
 			$transaction_date=$import_converted["payment_csv_converted"]["trajection_date"];
 			$ledger_acc=(int)$import_converted["payment_csv_converted"]["ledger_ac"];
 			$acc_type=(int)$import_converted["payment_csv_converted"]["type"];
@@ -9594,10 +9595,11 @@ $multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($t
 $this->ledger->saveAll($multipleRowData); 
 }
 
+            $this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => $bank_payment_csv_id));
 //////////////////////////////////////
 		
 	}
-		
 		
 		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
@@ -9606,6 +9608,9 @@ $this->ledger->saveAll($multipleRowData);
 		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id);
 		$total_records = $this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		
+		
 		
 		$converted_per=($total_converted_records*100)/$total_records;
 		if($converted_per==100){ $again_call_ajax="NO"; 
