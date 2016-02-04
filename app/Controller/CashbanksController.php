@@ -9347,6 +9347,55 @@ function auto_save_bank_payment($record_id=null,$field=null,$value=null){
 }
 
 ////////////////// End auto_save_bank_payment /////////////////////////////////////
+////////////// Start check_bank_payment_csv_validation /////////////////////////
+function check_bank_payment_csv_validation()
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = (int)$this->Session->read('society_id');
+	$page=(int)$page;
 
+
+
+		
+		$this->payment_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger_id,"type"=>$typppp,"amount"=>$amount,"tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank_id,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+
+	
+	$this->loadmodel('payment_csv_converted'); 
+	$conditions=array("society_id"=>(int)$s_society_id);
+	$order=array('payment_csv_converted.auto_id'=>'ASC');
+	$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>20,"page"=>$page));
+	foreach($result_bank_receipt_converted as $receipt_converted){
+		$auto_id=(int)$receipt_converted["payment_csv_converted"]["auto_id"];
+		$trajection_date=$receipt_converted["payment_csv_converted"]["trajection_date"];
+		$ledger_ac=$receipt_converted["payment_csv_converted"]["ledger_ac"];
+		$amount=$receipt_converted["payment_csv_converted"]["amount"];
+		$tds=$receipt_converted["payment_csv_converted"]["tds"];
+		$mode=$receipt_converted["payment_csv_converted"]["mode"];
+		$instrument=$receipt_converted["payment_csv_converted"]["instrument"];
+		$bank=(int)$receipt_converted["payment_csv_converted"]["bank"];
+		$invoice_ref=$receipt_converted["payment_csv_converted"]["invoice_ref"];
+		$narration=$receipt_converted["payment_csv_converted"]["narration"];
+		
+		if(empty($trajection_date)){ $trajection_date_v=1; }else{ $trajection_date_v=0; }
+		if(empty($ledger_ac)){ $ledger_ac_in_v=1; }else{ $ledger_ac_in_v=0; }
+		if(empty($amount)){	$amount_in_v=1; }else{ $amount_in_v=0; }
+		if(empty($mode)){	$mode_in_v=1; }else{ $mode_in_v=0; }
+		if(empty($instrument)){ $instrument_in_v=1; }else{ $instrument_in_v=0; }
+		if(empty($bank)){ $bank_in_v=1; }else{ $bank_in_v=0; }
+				
+		$v_result[]=array($trajection_date_v,$ledger_ac_in_v,$amount_in_v,$mode_in_v,$instrument_in_v,$bank_in_v,$auto_id);
+	}
+		
+	die(json_encode($v_result));
+	
+	
+	
+	
+	
+}
+
+///////////////// End check_bank_payment_csv_validation //////////////////////////////
 }
 ?>

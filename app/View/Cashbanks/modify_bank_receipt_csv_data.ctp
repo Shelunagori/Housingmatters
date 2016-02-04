@@ -107,7 +107,7 @@ input.m-wrap[type="text"]{
 		</td>
 		<td valign="top">
 			<div class="member">
-			<select class="m-wrap chosen" style="width=100%;" record_id="<?php echo $auto_id; ?>"field="ledger_sub_account_id">
+			<select class="m-wrap chosen" style="width=100%;" record_id="<?php echo $auto_id; ?>" field="ledger_sub_account_id" >
 				<option value="" style="display:none;">Select...</option>
 				 <?php
 				foreach ($result_members as $member_info){

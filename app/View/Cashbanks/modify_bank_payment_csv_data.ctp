@@ -31,13 +31,13 @@ $narration = $data['payment_csv_converted']['narration'];
 
 			  
 			  <tr>
-			  <td><div><input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
+			  <td><div class="one"><input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
 			  value="<?php echo $transaction_date; ?>" 
 			  style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="<?php echo $csv_auto_id; ?>"></div></td>
 			  
 			  
 					<td>
-					<div>
+					<div class="two">
 					<select class="m-wrap span12 chosen" field="ledger_data" record_id="<?php echo $csv_auto_id; ?>">
 					<option value="" style="display:none;">--SELECT--</option>
 					<?php
@@ -85,7 +85,7 @@ $narration = $data['payment_csv_converted']['narration'];
 			  </td>
 			  
 			  
-			  <td><div><input type="text" class="m-wrap span12" id="amttt1" 
+			  <td><div class="three"><input type="text" class="m-wrap span12" id="amttt1" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" maxlength="10" value="<?php echo $amount; ?>" 
 			   field="amt" record_id="<?php echo $csv_auto_id; ?>"></div>
 			  </td>
@@ -120,7 +120,7 @@ $narration = $data['payment_csv_converted']['narration'];
 				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;">
 				  </td>
 				  
-				<td><div>
+				<td><div class="four">
 				<select class="m-wrap span12 chosen" field="mode" record_id="<?php echo $csv_auto_id; ?>">
 				<option value="" style="display:none;">Select</option>
 				<option value="Cheque" <?php if($mode == "Cheque") { ?>selected="selected" <?php } ?>>Cheque</option>
@@ -130,11 +130,11 @@ $narration = $data['payment_csv_converted']['narration'];
 				</td>
 
 
-			  <td><div><input type="text"  class="m-wrap span12" 
+			  <td><div class="five"><input type="text"  class="m-wrap span12" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" id="instru1" value="<?php echo $instrument; ?>" field="inst" record_id="<?php echo $csv_auto_id; ?>"></div>
               </td>
 			 
-					<td><div>
+					<td><div class="six">
 					<select onchange="get_value(this.value)" class="m-wrap chosen span12" field="bankk" record_id="<?php echo $csv_auto_id; ?>">
 					<option value="" style="display:none;">Select</option>    
 					<?php
@@ -264,9 +264,27 @@ change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_im
 });	
 });	  
 </script>			  
-			  
-			  
-			  
+<script>			  
+	$( document ).ready(function() {
+    $.ajax({
+		url: "<?php echo $webroot_path; ?>Cashbanks/check_bank_receipt_csv_validation/<?php echo $page; ?>",
+		dataType: 'json'
+	}).done(function(response){
+		
+		response.forEach(function(item) {
+			
+			if(item[0]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(1) .one").css("border", "solid 1px red","!important"); }
+			if(item[1]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(2) .two").css("border", "solid 1px red","!important"); }
+			if(item[2]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(4) .three").css("border", "solid 1px red","!important"); }
+			if(item[3]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(2) .four").css("border", "solid 1px red","!important"); }
+			if(item[4]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(3) .five").css("border", "solid 1px red","!important"); }
+			if(item[5]==1){ $("#main_table tr#"+item[6]+" td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(4) .six").css("border", "solid 1px red","!important"); }
+			
+			
+		});
+	});
+});		  
+</script>			  
 			  
 			  
 			  
