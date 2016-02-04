@@ -9082,7 +9082,7 @@ function read_payment_csv_file(){
 		}
 	}
 	$this->loadmodel('import_payment_record');
-	$this->import_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));
+	$this->import_payment_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));
 	die(json_encode("READ"));
 }
 
@@ -9166,9 +9166,82 @@ $bank_id = (int)$collection['ledger_sub_account']['auto_id'];
 }
 ////////////////// End convert_payment_imported_data /////////////////////////////
 //////////////////// Start modify_bank_payment_csv_data //////////////////////////
-function modify_bank_payment_csv_data()
+function modify_bank_payment_csv_data($page=null)
 {
+if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
 	
+	
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);
+	
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+	}
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('payment_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page));
+		$this->set('result_bank_receipt_converted',$result_bank_receipt_converted);
+		
+		$this->loadmodel('payment_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_bank_receipt_converted=$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+	   }	
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id, "ledger_id" => 33);
+$cursor2=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+
+$this->loadmodel('master_tds');
+$cursor3=$this->master_tds->find('all');
+$this->set('cursor3',$cursor3);
+
+$this->loadmodel('reference');
+$conditions=array("auto_id"=>3);
+$cursor = $this->reference->find('all',array('conditions'=>$conditions));
+foreach($cursor as $collection)
+{
+$tds_arr = $collection['reference']['reference'];
+}
+$this->set("tds_arr",$tds_arr);
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
+$cursor11=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor11',$cursor11);
+
+
+$this->loadmodel('accounts_group');
+$conditions=array("accounts_id" => 1);
+$cursor12=$this->accounts_group->find('all',array('conditions'=>$conditions));
+$this->set('cursor12',$cursor12);
+
+$this->loadmodel('accounts_group');
+$conditions=array("accounts_id" => 4);
+$cursor13=$this->accounts_group->find('all',array('conditions'=>$conditions));
+$this->set('cursor13',$cursor13);
+
+
+
+
+
+
+
 	
 }
 
