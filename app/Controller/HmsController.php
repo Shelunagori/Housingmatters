@@ -17081,8 +17081,8 @@ foreach($result_flat as $data)
 	$flat_id=$data['flat']['flat_id'];
 	$this->set('flat_search',@$flat_id);
 	$this->loadmodel('user_flat');	
-	$conditions=array('flat_id'=>$flat_id,'active'=>0);
-	$result_user=$this->user_flat->find('all',array('conditions'=>$conditions));
+	$conditions1=array('flat_id'=>$flat_id,'active'=>0);
+	$result_user=$this->user_flat->find('all',array('conditions'=>$conditions1));
 	
 	foreach($result_user as $dda)
 	{
@@ -17097,25 +17097,32 @@ $this->set('result_usser_flat',@$da_user_id);
 $this->set('search_value',$search);
 $regex_hob = new MongoRegex("/.*$search.*/i"); 
 $this->loadmodel('hobbies_category');
-$conditions=array('hobbies_name'=>$regex_hob);
-$result_hobbies_category=$this->hobbies_category->find('all',array('conditions'=>$conditions));
- $hob_id=(string)$result_hobbies_category[0]['hobbies_category']['hobbies_id'];
+$conditions2=array('hobbies_name'=>$regex_hob);
+$result_hobbies_category=$this->hobbies_category->find('all',array('conditions'=>$conditions2));
+@$hob_id=(string)$result_hobbies_category[0]['hobbies_category']['hobbies_id'];
 
 $regex = new MongoRegex("/.*$search.*/i");  
 $this->loadmodel('user');
-$conditions =array( '$or' => array( 
+if(!empty($hob_id)){
+$conditions3 =array( '$or' => array( 
 		array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0),
-		array("hobbies" => $hob_id),
+		array("hobbies" => $hob_id,'society_id'=>$s_society_id,'deactive'=>0),
 		));
-		
-$result=$this->user->find('all',array('conditions'=>$conditions));
+}else{
+$conditions3 =array( '$or' => array( 
+		array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0),
+		));
+
+}	
+$result=$this->user->find('all',array('conditions'=>$conditions3));
+
 $this->set('result_user',$result); 
 $n=sizeof($result);
 $this->set('count_user2',$n);
 $this->loadmodel('user');
-$conditions=array("society_id" => $s_society_id,'deactive'=>0);
+$conditions4=array("society_id" => $s_society_id,'deactive'=>0);
 $order1=array('user.user_name'=> 'ASC');
-$result2=$this->user->find('all',array('conditions'=> $conditions,'order'=>$order1));
+$result2=$this->user->find('all',array('conditions'=> $conditions4,'order'=>$order1));
 $this->set('result_user3',$result2);
 }
 
