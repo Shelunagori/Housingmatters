@@ -8974,11 +8974,129 @@ if($this->RequestHandler->isAjax()){
 	$this->ath();
 	$s_society_id = $this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');	
+
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+		$step4=(int)@$data_import["import_payment_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	if(@$process_status==2){
+		$this->loadmodel('bank_receipt_csv');
+		$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
+		$total_converted_records = $this->bank_receipt_csv->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('bank_receipt_csv');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->bank_receipt_csv->find('count',array('conditions'=>$conditions));
+		
+		$this->set("converted_per",($total_converted_records*100)/$total_records);
+	}
+	if(@$process_status==4){
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
+		$total_converted_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->set("converted_per_im",($total_converted_records*100)/$total_records);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
 	
 }
 ///////////////////// End bank_payment_import_csv ////////////////////////////////////
+/////////////////// Start Upload_Bank_payment_csv_file ///////////////////////////////
+function Upload_Bank_payment_csv_file()
+{
+$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$this->ath();
+	if(isset($_FILES['file'])){
+		$file_name=$s_society_id.".csv";
+		$file_tmp_name =$_FILES['file']['tmp_name'];
+		$target = "Bank_Payment_csv_files/";
+		$target=@$target.basename($file_name);
+		move_uploaded_file($file_tmp_name,@$target);
+		
+		
+		$today = date("d-M-Y");
+		
+		$this->loadmodel('import_payment_record');
+		$auto_id=$this->autoincrement('import_payment_record','auto_id');
+		$this->import_payment_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "BP", "step1" => 1,"date"=>$today))); 
+		die(json_encode("UPLOADED"));
+	}	
+	
+	
+}
+//////////////////// End Upload_Bank_payment_csv_file //////////////////////////////////
+/////////////////// Start read_payment_csv_file ///////////////////////////////////
+function read_payment_csv_file(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$f = fopen('Bank_Payment_csv_files/'.$s_society_id.'.csv', 'r') or die("ERROR OPENING DATA");
+	$batchcount=0;
+	$records=0;
+	while (($line = fgetcsv($f, 4096, ';')) !== false) {
+	$numcols = count($line);
+	$test[]=$line;
+	++$records;
+	}
+	$i=0;
+	foreach($test as $child){ $i++;
+		if($i>1){
+			$child_ar=explode(',',$child[0]);
+			$trajection_date=$child_ar[0];
+			$ledger=$child_ar[1];
+			$amount=$child_ar[2];
+			$tds=$child_ar[3];
+			$mode=$child_ar[4];
+			$instrument=$child_ar[5];
+			$bank=$child_ar[6];
+			$invoice_ref=$child_ar[7];
+			$narration=$child_ar[8];
+			
+			
+			$this->loadmodel('bank_payment_csv');
+			$auto_id=$this->autoincrement('bank_payment_csv','auto_id');
+			$this->bank_payment_csv->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger,"amount"=>$amount, "tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+		}
+	}
+	$this->loadmodel('import_payment_record');
+	$this->import_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));
+	die(json_encode("READ"));
+}
+
+
+
+/////////////////// End read_payment_csv_file ///////////////////////////////////
+
+
+
+
+
+
+
+
+
 }
 ?>
