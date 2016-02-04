@@ -254,10 +254,14 @@ $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/lod
 $.ajax({
 url: "<?php echo $webroot_path; ?>Cashbanks/allow_import_bank_payment",
 }).done(function(response){
+	
+	response = response.replace(/\s+/g,' ').trim();
+	
 if(response=="F"){
 $("#check_validation_result").html("");
 alert("Your Data Is Not Valid.");
 }else{
+	
 change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
 }
 });
@@ -284,7 +288,26 @@ change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_im
 		});
 	});
 });		  
+</script>
+<script>			  
+	function change_page_automatically(pageurl){
+	$("#loading").show();
+
+	$.ajax({
+		url: pageurl,
+		}).done(function(response) {
+		
+		//$("#loading_ajax").html('');
+		
+		$(".page-content").html(response);
+		$("#loading").hide();
+		$("html, body").animate({
+			scrollTop:0
+		},"slow");
+		 $('#submit_success').hide();
+		});
+	
+	window.history.pushState({path:pageurl},'',pageurl);
+}		  
 </script>			  
-			  
-			  
 			  

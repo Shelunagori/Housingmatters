@@ -9244,7 +9244,7 @@ function allow_import_bank_payment()
 $this->layout=null;
 	
 	$this->ath();
-	$s_society_id = $this->Session->read('society_id');
+	$s_society_id = (int)$this->Session->read('society_id');
 
 	$this->loadmodel('payment_csv_converted'); 
 	$conditions=array("society_id"=>(int)$s_society_id);
@@ -9260,75 +9260,63 @@ $this->layout=null;
 		$tds = $receipt_converted["payment_csv_converted"]["tds"];
 		$mode = $receipt_converted["payment_csv_converted"]["mode"];
 		$instrument = $receipt_converted["payment_csv_converted"]["instrument"];
-		$bank=(int)$receipt_converted["payment_csv_converted"]["bank"];
+		$bank=$receipt_converted["payment_csv_converted"]["bank"];
 		$narration=$receipt_converted["payment_csv_converted"]["narration"];
 		
-		
-		if(empty($trajection_date)){ $trajection_date_v=1; }else{ $trajection_date_v=0; }
-		
-			$ddatttt = $trajection_date;
-			$dattttt = date('Y-m-d',strtotime($ddatttt));
-			$dddatttt = strtotime($dattttt);
-			
-			$this->loadmodel('financial_year');
-			$conditions=array("society_id"=>$s_society_id,"status"=>1);
-			$cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
-			if(sizeof($cursor) == 0)
-			{
-			$nnnnn = 555;	
-			}
-			foreach($cursor as $dataaa)
-			{
-				$fin_from_date = $dataaa['financial_year']['from'];
-				$fin_to_date = $dataaa['financial_year']['to'];
-				$from_date = date('Y-m-d',$fin_from_date->sec);
-				$to_date = date('Y-m-d',$fin_to_date->sec);
-				$from = strtotime($from_date);
-				$to = strtotime($to_date);
-					if($from <= $dddatttt && $to >= $dddatttt)
-					{
-					$nnnnn = 55;
+
+if(empty($trajection_date)){ $trnsaction_v = 1; } else { $trnsaction_v = 0;  }	
+
+
+    	$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($trajection_date));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
 					break;
-					}
-					else
-					{
-					$nnnnn = 555;
-					}
-			}
-			
-			if($nnnnn == 555)
-			{
-			$trajection_date_v=1;
-			}
-	   	    else{
-			$trajection_date_v=0;	
-			}
-		
-		
-		if(empty($deposited_in)){ $deposited_in_v=1; }else{ $deposited_in_v=0; }
-		$receipt_mode_v=0;
-		if($receipt_mode=="cheque"){
-			if(empty($cheque_or_reference_no)){	$cheque_or_reference_no_v=1; }else{ $cheque_or_reference_no_v=0; }
-			if(empty($date)){	$date_v=1; }else{ $date_v=0; }
-			if(empty($drown_in_which_bank)){ $drown_in_which_bank_v=1; }else{ $drown_in_which_bank_v=0; }
-			if(empty($branch_of_bank)){ $branch_of_bank_v=1; }else{ $branch_of_bank_v=0; }
-		}elseif($receipt_mode=="neft" || $receipt_mode=="pg"){
-			if(empty($cheque_or_reference_no)){	$cheque_or_reference_no_v=1; }else{ $cheque_or_reference_no_v=0; }
-			if(empty($date)){	$date_v=1; }else{ $date_v=0; }
-			$drown_in_which_bank_v=0;
-			$branch_of_bank_v=0;
+					}	
 		}
+	if($abc == 555){ $transs_v = 1;	}else { $transs_v = 0;  }
+
+if(empty($ledger)){ $ledger_v = 1; }else { $ledger_v = 0;  }	
+
+if(empty($amount)){ $amount_v = 1;  }else { $amount_v = 0;  }
+
+if(is_numeric($amount))
+{ 
+$amount_vv = 0;
+}
+else
+{
+$amount_vv = 1;
+}
+
+
+if(empty($mode)){ $mode_v = 1; }else{ $mode_v = 0; }	
+
+
+
+if(empty($instrument)){ $inst_v = 1; }else{ $inst_v = 0;  }	
+
+
+if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }		
 		
-		if(empty($ledger_sub_account_id)){ $ledger_sub_account_id_v=1; }else{ $ledger_sub_account_id_v=0; }
-		if(empty($amount)){ $amount_v=1; }else{ $amount_v=0; }
-		
-		$v_result[]=array($trajection_date_v,$deposited_in_v,$receipt_mode_v,$cheque_or_reference_no_v,$date_v,$drown_in_which_bank_v,$branch_of_bank_v,$ledger_sub_account_id_v,$amount_v);
+		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
 		
 	} 
 	foreach($v_result as $data){
 		if(array_sum($data)==0){ echo "T";
-			$this->loadmodel('import_record');
-			$this->import_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BR"));	
+			$this->loadmodel('import_payment_record');
+			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
 		}else{ echo "F"; die; }
 	}
 	
@@ -9486,8 +9474,8 @@ $this->layout=null;
 function final_import_bank_payment_ajax()
 {
 $this->layout=null;
-	$s_society_id = $this->Session->read('society_id');
-	$s_user_id=$this->Session->read('user_id');
+	$s_society_id = (int)$this->Session->read('society_id');
+	$s_user_id= (int)$this->Session->read('user_id');
 	
 	$this->loadmodel('import_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "BR");
@@ -9502,116 +9490,149 @@ $this->layout=null;
 	$process_status= @$step1+@$step2+@$step3+@$step4;
 	
 	if($process_status==4){
-		$this->loadmodel('bank_receipt_csv_converted');
+		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
-		$result_import_converted = $this->bank_receipt_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		$result_import_converted = $this->payment_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
 		
 		foreach($result_import_converted as $import_converted){
-			$bank_receipt_csv_id=$import_converted["bank_receipt_csv_converted"]["auto_id"];
-			$trajection_date=$import_converted["bank_receipt_csv_converted"]["trajection_date"];
-			$trajection_date = date('Y-m-d',strtotime($trajection_date));
-			$trajection_date = strtotime($trajection_date); 
-			$deposited_in=$import_converted["bank_receipt_csv_converted"]["deposited_in"];
-			$receipt_mode=$import_converted["bank_receipt_csv_converted"]["receipt_mode"];
-			$cheque_or_reference_no=$import_converted["bank_receipt_csv_converted"]["cheque_or_reference_no"];
-			$date=$import_converted["bank_receipt_csv_converted"]["date"];
-			$drown_in_which_bank=$import_converted["bank_receipt_csv_converted"]["drown_in_which_bank"];
-			$branch_of_bank=$import_converted["bank_receipt_csv_converted"]["branch_of_bank"];
-			$ledger_sub_account_id=$import_converted["bank_receipt_csv_converted"]["ledger_sub_account_id"];
-			$amount=$import_converted["bank_receipt_csv_converted"]["amount"];
-			$narration=$import_converted["bank_receipt_csv_converted"]["narration"];
-			$receipt_type=$import_converted["bank_receipt_csv_converted"]["receipt_type"];
+			$bank_payment_csv_id=$import_converted["payment_csv_converted"]["auto_id"];
+			$transaction_date=$import_converted["payment_csv_converted"]["trajection_date"];
+			$ledger_acc=(int)$import_converted["payment_csv_converted"]["ledger_ac"];
+			$acc_type=(int)$import_converted["payment_csv_converted"]["type"];
+			$invoice=$import_converted["payment_csv_converted"]["invoice_ref"];
+			$amount=$import_converted["payment_csv_converted"]["amount"];
+			$tds_id=$import_converted["payment_csv_converted"]["tds"];
+			$mode=$import_converted["payment_csv_converted"]["mode"];
+			$instrument=$import_converted["payment_csv_converted"]["instrument"];
+			$bank_ac=(int)$import_converted["payment_csv_converted"]["bank"];
+			$narration=$import_converted["payment_csv_converted"]["narration"];
+			$transaction_date = date('Y-m-d',strtotime($transaction_date));
 			
-			
-			
-			
-					
-					
-				
+	
+		//////////////////////////////////////////	
+$current_date = date('Y-m-d');		
+$i=$this->autoincrement('new_cash_bank','transaction_id');
+$bbb=$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',2);
+$rr_arr[] = $bbb;
+$this->loadmodel('new_cash_bank');
+$multipleRowData = Array( Array("transaction_id" => $i, "receipt_id" => $bbb,  "current_date" => $current_date, 
+"transaction_date" => strtotime($transaction_date), "prepaired_by" => $s_user_id, 
+"user_id" => $ledger_acc,"invoice_reference" => @$invoice,"narration" => $narration, "receipt_mode" => $mode,
+"receipt_instruction" => $instrument, "account_head" => $bank_ac,  
+"amount" => $amount,"society_id" => $s_society_id, "tds_id" =>$tds_id,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
+$this->new_cash_bank->saveAll($multipleRowData);  
 
-					
-				
-			
-			
-			$current_date = date('Y-m-d');
-			
-			$t1=$this->autoincrement('new_cash_bank','transaction_id');
-			$k = (int)$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',1); 
-			$this->loadmodel('new_cash_bank');
-			$multipleRowData = Array( Array("transaction_id"=> $t1,"receipt_id" => $k, "receipt_date" => $trajection_date, "receipt_mode" => $receipt_mode, "cheque_number" =>@$cheque_or_reference_no,"cheque_date" =>$date,"drawn_on_which_bank" =>@$drown_in_which_bank,"reference_utr" => @$cheque_or_reference_no,"deposited_bank_id" => $deposited_in,"bank_branch" => $branch_of_bank,"member_type" => 1,"party_name_id"=>$flat_id,"receipt_type" => $receipt_type,"amount" => $amount,"current_date" => $current_date,"society_id"=>$s_society_id,"flat_id"=>$flat_id,"bill_auto_id"=>$auto_id,"bill_one_time_id"=>$regular_bill_one_time_id,"narration"=>$narration,"receipt_source"=>1,"edit_status"=>"NO","auto_inc"=>"YES","prepaired_by" => $s_user_id,"is_cancel"=>"NO"));  
-			$this->new_cash_bank->saveAll($multipleRowData);
-			
-			$l=$this->autoincrement('ledger','auto_id');
-			$this->loadmodel('ledger');
-			$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $trajection_date, "debit" => $amount, "credit" =>null,"ledger_account_id" => 33, "ledger_sub_account_id" => $deposited_in, "table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
-			$this->ledger->saveAll($multipleRowData); 
+//////////////////// End Insert///////////////////////////////
+///////////// TDS CALCULATION /////////////////////
+$this->loadmodel('reference');
+$conditions=array("auto_id" => 3);
+$cursor4=$this->reference->find('all',array('conditions'=>$conditions));
+foreach($cursor4 as $collection)
+{
+$tds_arr = $collection['reference']['reference'];	
+}
+if(!empty($tds_id))
+{
+for($r=0; $r<sizeof($tds_arr); $r++)
+{
+$tds_sub_arr = $tds_arr[$r];
+$tds_id2 = (int)$tds_sub_arr[1];
+if($tds_id2 == $tds_id)
+{
+$tds_rate = $tds_sub_arr[0];
+break;
+}
+}
+$tds_amount = (round(($tds_rate/100)*$amount));
+$total_tds_amount = ($amount - $tds_amount);
+}
+else
+{
+$total_tds_amount = $amount;
+$tds_amount = 0;
+}
 
-			$l=$this->autoincrement('ledger','auto_id');
-			$this->loadmodel('ledger');
-			$multipleRowData = Array( Array("auto_id" => $l, "transaction_date"=> $trajection_date, "credit" => $amount, "debit" =>null,"ledger_account_id" => 34, "ledger_sub_account_id" => $ledger_sub_account_id,"table_name" => "new_cash_bank","element_id" => $t1, "society_id" => $s_society_id));
-			$this->ledger->saveAll($multipleRowData);
-			
-			$this->loadmodel('bank_receipt_csv_converted');
-			$this->bank_receipt_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => $bank_receipt_csv_id));
-					
-					
-			
-			
-			
+////////////END TDS CALCULATION //////////////////// 
+////////////////START LEDGER ENTRY///////////////////////
+if($acc_type == 1)
+{
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), "debit" => $amount, "credit" =>null,"ledger_account_id" => 15, "ledger_sub_account_id" =>$ledger_acc, "table_name" =>"new_cash_bank","element_id" => $i, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
+else
+{
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), "debit" => $amount,"credit" =>null,"ledger_account_id" =>$ledger_acc, "ledger_sub_account_id" =>null, "table_name" =>"new_cash_bank","element_id" =>$i, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
 
-			
 
-			
-			
-			
-			
 
-												
-			
+
+$sub_account_id_a = (int)$bank_ac;
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), 
+"debit" =>null,"credit" =>$total_tds_amount,"ledger_account_id" =>33, 
+"ledger_sub_account_id" =>$sub_account_id_a, "table_name" =>"new_cash_bank","element_id" =>$i, 
+"society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+
+
+if($tds_amount > 0)
+{
+$sub_account_id_t = 16;
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date),
+"debit" =>null,"credit" =>$tds_amount,"ledger_account_id" =>$sub_account_id_t, 
+"ledger_sub_account_id" =>null, "table_name" =>"new_cash_bank","element_id" =>$i, 
+"society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
+
+//////////////////////////////////////
 		
-				
-			
-			
-			
-
-
-			
-
-					
-		} 
+	}
 		
 		
-		
-		$this->loadmodel('bank_receipt_csv_converted');
+		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
-		$total_converted_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		$total_converted_records = $this->payment_csv_converted->find('count',array('conditions'=>$conditions));
 		
-		$this->loadmodel('bank_receipt_csv_converted');
+		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id);
-		$total_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		$total_records = $this->payment_csv_converted->find('count',array('conditions'=>$conditions));
 		
 		$converted_per=($total_converted_records*100)/$total_records;
 		if($converted_per==100){ $again_call_ajax="NO"; 
 			
-			$this->loadmodel('bank_receipt_csv_converted');
+			$this->loadmodel('payment_csv_converted');
 			$conditions4=array('society_id'=>$s_society_id);
-			$this->bank_receipt_csv_converted->deleteAll($conditions4);
+			$this->payment_csv_converted->deleteAll($conditions4);
 			
-			$this->loadmodel('bank_receipt_csv');
+			$this->loadmodel('bank_payment_csv');
 			$conditions4=array('society_id'=>$s_society_id);
-			$this->bank_receipt_csv->deleteAll($conditions4);
+			$this->bank_payment_csv->deleteAll($conditions4);
 			
-			$this->loadmodel('import_record');
-			$conditions4=array("society_id" => $s_society_id, "module_name" => "BR");
-			$this->import_record->deleteAll($conditions4);
-		}else{
+			$this->loadmodel('import_payment_record');
+			$conditions4=array("society_id" => $s_society_id, "module_name" => "BP");
+			$this->import_payment_record->deleteAll($conditions4);
+		  }else{
 			$again_call_ajax="YES"; 
 			}
 		die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per_im"=>$converted_per)));
-	}
-	
-	
+	}		
+
 }
 //////////////////////// End final_import_bank_payment_ajax ////////////////////////
 }
 ?>
+
+
+
+
+
