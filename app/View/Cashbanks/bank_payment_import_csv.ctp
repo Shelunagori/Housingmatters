@@ -50,7 +50,43 @@ $( document ).ready(function() {
 </script>
 <?php } ?>
 
-
+<?php if(@$process_status==2){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
+	<span style="padding-left: 10px; font-weight: bold; color: red;">Preparing Data For More Modifications.</span>
+	<div class="progress progress-striped progress-danger active">
+		<div id="progress" style="width: <?php echo $converted_per; ?>%;" class="bar"></div>
+	</div>
+</div>
+<script>
+$( document ).ready(function() {
+	convert_csv_data_ajax();
+});
+function convert_csv_data_ajax(){
+	$( document ).ready(function() {
+		$.ajax({
+			url: "convert_payment_imported_data",
+			dataType: 'json'
+		}).done(function(response){
+			if(response.again_call_ajax=="YES"){
+				$("#progress").css("width",response.converted_per+"%");
+				convert_csv_data_ajax();
+			}
+			if(response.again_call_ajax=="NO"){
+				change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
+			}
+		});
+	});
+}
+</script>
+<?php } ?>
 
 
 
