@@ -8966,7 +8966,14 @@ $this->set('cursor4',$cursor4);
 ///////////////////////// Start bank_payment_import_csv ///////////////////////////
 function bank_payment_import_csv()
 {
-	
+if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+	}else{
+		$this->layout='session';
+	}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');	
 	
 	
 	
