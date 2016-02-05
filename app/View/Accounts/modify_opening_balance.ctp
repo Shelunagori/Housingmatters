@@ -25,7 +25,7 @@ $tt_credit = 0; ?>
  $penalty = $data['opening_balance_csv_converted']['penalty'];
 	
 ?>
-<tr>
+<tr id="<?php echo $csv_id; ?>">
 
 <td>
 <select class="m-wrap span10" disabled="disabled">
@@ -90,17 +90,17 @@ $name = $dataa['ledger_account']['ledger_name'];
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 1){ ?> value="<?php echo $amount; ?>"  <?php } ?>/>
+<?php if($type == 1){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="debit" record_id="<?php echo $csv_id; ?>"/>
 </td>
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 2){ ?> value="<?php echo $amount; ?>"  <?php } ?>/>
+<?php if($type == 2){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="credit" record_id="<?php echo $csv_id; ?>"/>
 </td>
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 2 && !empty($penalty)){ ?> value="<?php echo $penalty; ?>"  <?php } ?>/>                       
+<?php if($type == 2 && !empty($penalty)){ ?> value="<?php echo $penalty; ?>"  <?php } ?> field="penalty" record_id="<?php echo $csv_id; ?>"/>                       
 </td>                      
 
 <td>
