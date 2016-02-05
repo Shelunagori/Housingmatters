@@ -250,6 +250,65 @@ $type_id = 2;
 	
 }
 //////////////////////// End convert_imported_data_ob /////////////////////////////////////
+
+//////////////////////// Start modify_opening_balance ///////////////////////////////////
+function modify_opening_balance($page=null)
+{
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
+	
+	
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);	
+
+
+    $this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+	}
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('opening_balance_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page));
+		$this->set('result_bank_receipt_converted',$result_bank_receipt_converted);
+		
+		$this->loadmodel('opening_balance_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_bank_receipt_converted=$this->opening_balance_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+	}
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id);
+$cursor1 = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+$this->loadmodel('ledger_account');
+$cursor2 = $this->ledger_account->find('all');
+$this->set('cursor2',$cursor2);
+
+$this->loadmodel('accounts_group');
+$cursor3 = $this->accounts_group->find('all');
+$this->set('cursor3',$cursor3);
+
+
+
+
+	
+}
+///////////////////////// End modify_opening_balance ////////////////////////////////////
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
 {
