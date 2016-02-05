@@ -28,7 +28,7 @@ $tt_credit = 0; ?>
 <tr id="<?php echo $csv_id; ?>">
 
 <td>
-<select class="m-wrap span10" disabled="disabled">
+<select class="m-wrap medium" disabled="disabled">
 <option value="">Select Group Account</option>
 <?php
 foreach($cursor3 as $collection)
