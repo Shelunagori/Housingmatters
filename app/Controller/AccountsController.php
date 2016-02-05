@@ -305,11 +305,41 @@ $this->set('cursor3',$cursor3);
 }
 ///////////////////////// End modify_opening_balance ////////////////////////////////////
 //////////////////////// Start auto_save_opening_balance ////////////////////////////////
-function auto_save_opening_balance()
+function auto_save_opening_balance($record_id=null,$field=null,$value=null)
 {
+$this->layout=null;
 	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 
 	
+	if($field=="debit"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
 	
+	if($field=="credit"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	if($field=="penalty"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+
 	
 }
 ///////////////////////////// End auto_save_opening_balance ///////////////////////////

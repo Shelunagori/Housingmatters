@@ -153,7 +153,7 @@ $( document ).ready(function() {
 		var value=$(this).val();
 		
 		$.ajax({
-			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_opening_balance/"+record_id+"/"+field+"/"+value,
+			url: "<?php echo $webroot_path; ?>Accounts/auto_save_opening_balance/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
 			
 			if(response=="F"){
