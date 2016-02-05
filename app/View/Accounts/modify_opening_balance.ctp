@@ -12,7 +12,7 @@
 $tt_debit = 0;
 $tt_credit = 0; ?>
 			
-<?php foreach($opening_balance_csv_converted as $data)
+<?php foreach($result_bank_receipt_converted as $data)
 { 
  $csv_id = (int)$data['opening_balance_csv_converted']['auto_id']; 
  $group_id2 = (int)$data['opening_balance_csv_converted']['group_id'];
