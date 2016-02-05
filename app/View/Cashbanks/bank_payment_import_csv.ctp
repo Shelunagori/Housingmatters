@@ -144,7 +144,7 @@ function final_import_bank_payment_ajax(){
 				
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
-				final_import_bank_receipt_ajax();
+				final_import_bank_payment_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
 				
