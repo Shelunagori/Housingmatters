@@ -34,7 +34,7 @@ function opening_balance_import()
 	$s_society_id=(int)$this->Session->read('society_id');
 				
 	$this->loadmodel('import_ob_record');
-	$conditions=array("society_id" => $s_society_id,"module_name" => "BR");
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
 	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
 	$this->set('result_import_record',$result_import_record);
 	foreach($result_import_record as $data_import){
@@ -64,9 +64,9 @@ function upload_opening_balance_csv_file()
 		
 		$today = date("d-M-Y");
 		
-		$this->loadmodel('import_record');
-		$auto_id=$this->autoincrement('import_record','auto_id');
-		$this->import_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "BR", "step1" => 1,"date"=>$today))); 
+		$this->loadmodel('import_ob_record');
+		$auto_id=$this->autoincrement('import_ob_record','auto_id');
+		$this->import_ob_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "OB","step1" => 1,"date"=>$today))); 
 		
 		die(json_encode("UPLOADED"));
 	}
