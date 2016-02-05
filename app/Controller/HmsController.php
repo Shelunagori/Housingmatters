@@ -992,7 +992,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- //Configure::write('debug', 0);
+ Configure::write('debug', 0);
 }
 
 
@@ -6146,10 +6146,9 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	/*$s_society_id = $this->Session->read('society_id');
+	/* $s_society_id = $this->Session->read('society_id');
 	$this->loadmodel('flat');
-	$conditions=array("society_id" => $s_society_id);
-	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
+	$result_flat = $this->flat->find('all');
 	foreach($result_flat as $data){
 		$flat_id=(int)$data["flat"]["flat_id"];
 		$flat_name=$data["flat"]["flat_name"];
