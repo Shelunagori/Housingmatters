@@ -302,13 +302,17 @@ $this->set('cursor2',$cursor2);
 $this->loadmodel('accounts_group');
 $cursor3 = $this->accounts_group->find('all');
 $this->set('cursor3',$cursor3);
-
-
-
-
-	
 }
 ///////////////////////// End modify_opening_balance ////////////////////////////////////
+//////////////////////// Start auto_save_opening_balance ////////////////////////////////
+function auto_save_opening_balance()
+{
+	
+	
+	
+	
+}
+///////////////////////////// End auto_save_opening_balance ///////////////////////////
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
 {
