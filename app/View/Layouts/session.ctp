@@ -457,7 +457,7 @@ $(document).ready(function() {
 
 		<!-- BEGIN TOP NAVIGATION BAR -->
 		<div class="navbar-inner hide_at_print">
-			<div class="container-fluid" style="padding-right: 0px;">
+			<div class="container-fluid navbar" style="padding-right: 0px;">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="<?php echo $webroot_path; ?>Hms/dashboard" style="margin-top:-9px;">
 				<img src="<?php echo $webroot_path; ?>as/hm/hm-logo.png" alt="logo" height="16px" width="120px"/>

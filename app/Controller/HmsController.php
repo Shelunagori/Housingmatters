@@ -14,6 +14,15 @@ public $components = array(
 
 var $name = 'Hms';
 
+function tenancy_agreement_via_user_fetch($society_id,$user_id){
+	
+	$this->loadmodel('tenant');
+	$conditions=array("society_id" => $society_id,'user_id'=>$user_id);
+	return $this->tenant->find('all',array('conditions'=>$conditions));
+	
+}
+
+
 function check_charecter_name($name){
 	
 	$dd=explode(' ',$name);
@@ -983,7 +992,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+ //Configure::write('debug', 0);
 }
 
 
@@ -4620,8 +4629,8 @@ if ($this->request->is('post'))
 				foreach($result_user as $data)
 				{
 				
-				$user_id=$data['user']['user_id'];
-				$society_id=$data['user']['society_id'];
+				 $user_id=$data['user']['user_id'];
+				 $society_id=$data['user']['society_id']; 
 				$user_name=$data['user']['user_name'];
 				$wing=$data['user']['wing'];
 				$tenant=$data['user']['tenant'];
@@ -4633,7 +4642,24 @@ if ($this->request->is('post'))
 						$this->user->updateAll(array('slide_show'=>0),array('user_id'=>$user_id));
 					}
 				}
-				 
+				if($tenant==1){ $type="Owner"; }else{ $type="Tenant"; }
+				
+				date_default_timezone_set('Asia/kolkata');
+				$date2=date("d-m-Y");
+
+				$result_society= $this->society_name($society_id);
+				$access_tenant=$result_society[0]['society']['access_tenant'];
+					if($access_tenant==0 && $type=="Tenant"){
+						goto a;
+					}
+				if($tenant==2){
+					$result_tenant= $this->tenancy_agreement_via_user_fetch($society_id,$user_id);
+					$t_end_date=$result_tenant[0]['tenant']['t_end_date'];
+						if(strtotime($t_end_date)<strtotime($date2)){
+							goto a;
+						}
+					}
+					
 					$this->loadmodel('user');
 					$conditions5=array('signup_random'=>$password);
 					$res_n=$this->user->find('all',array('conditions'=>$conditions5));
@@ -4671,7 +4697,8 @@ if ($this->request->is('post'))
 				 
 				 	}
 				
-				 
+				a:
+				$this->set('wrong', 'Login is not allowed by Administrator ');
 				 
 			 }
 			 else
@@ -6119,8 +6146,8 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	$s_society_id = $this->Session->read('society_id');
-	/*$this->loadmodel('flat');
+	/*$s_society_id = $this->Session->read('society_id');
+	$this->loadmodel('flat');
 	$conditions=array("society_id" => $s_society_id);
 	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
 	foreach($result_flat as $data){
@@ -6129,7 +6156,7 @@ if($this->RequestHandler->isAjax()){
 		
 		$this->loadmodel('flat');
 		$this->flat->updateAll(array("flat_name" => (int)$flat_name),array("flat_id" => $flat_id));
-	}*/
+	} */
 	
 	//echo "hello";
 	//exit;
@@ -24595,7 +24622,7 @@ $res_society=$this->society_name($s_society_id);
 foreach($res_society as $data)
 {
  $society_name=$data['society']['society_name'];
-
+ $access_tenant=$data['society']['access_tenant'];
 }
 $s_n='';
 $sco_na=$society_name;
@@ -24681,19 +24708,23 @@ foreach($myArray as $child){
 		$this->loadmodel('user_flat');
 		$conditions=array("flat_id" => (int)$child[2],'active'=>0,'family_member'=>array('$ne'=>1));
 		$result4 = $this->user_flat->find('all',array('conditions'=>$conditions));
-		
-		
+		$result_flat=$this->fetch_wing_id_via_flat_id((int)$child[2]);
+		$noc_status=@$result_flat[0]['flat']['noc_ch_tp'];
 		 $n4 = sizeof($result4); 
 		if($n4==1){
 			
 			$tenant=$result4[0]['user_flat']['status'];
 			if($tenant==1){
-				if($tenant==(int)$child[5]){
+				if($noc_status==1){
+					 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already self Occupied');
 					
-				 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already exist owner');	
-					
+				}else{
+					if($tenant==(int)$child[5]){
+						
+					 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already exist owner');	
+						
+					}
 				}
-				
 				
 			}else{
 				
@@ -24792,10 +24823,12 @@ foreach($myArray as $child)
 	if($tenant==1)
 	{
 	 $committee=(int)$child[6];
+	 $type="Owner";
 	}
 	else
 	{
 	 $committee=2;
+	  $type="Tenant";
 	}
 
 	$role_id[]=2;
@@ -24816,8 +24849,8 @@ foreach($myArray as $child)
 	$random=$random1.$random2 ;	
 	$de_user_id=$this->encode($i,'housingmatters');
 	$random=$de_user_id.'/'.$random;
-	
-
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
+		
 		if(!empty($mobile) && empty($email))
 		{
 			$r_sms=$this->hms_sms_ip();
@@ -24835,6 +24868,10 @@ foreach($myArray as $child)
 			$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms1.'');
 			}
 		}
+		
+	}
+
+		
 
 		/////////// insert code user table ///////////////////////
 		
@@ -24854,6 +24891,7 @@ foreach($myArray as $child)
 			}
 		/////////////  End code ledger sub accounts //////////////////////////
 		$special="'";
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && !empty($mobile))
 		{
 		$login_user=$email;	
@@ -24995,7 +25033,8 @@ foreach($myArray as $child)
 </table>';
 		
 		}
-		
+	}	
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && empty($mobile))
 		{
 			
@@ -25137,7 +25176,10 @@ foreach($myArray as $child)
 </table>';
 			
 		}
-
+	}
+	
+	
+	
 			$from_name="HousingMatters";
 			$reply="support@housingmatters.in";
 			$to=$email;
