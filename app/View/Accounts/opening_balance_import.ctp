@@ -38,6 +38,101 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 </div>
 <?php } ?>
 
+<?php if(@$process_status==1){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
+	<span style="padding-left: 10px; font-weight: bold; color: red;">Do Not Close Window, Reading CSV file...</span>
+</div>
+<script>
+$( document ).ready(function() {
+    $.ajax({
+		url: "read_csv_file_ob",
+		dataType: 'json'
+	}).done(function(response){
+		
+		if(response=="READ"){
+			change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_import");
+		}
+	});
+});
+</script>
+<?php } ?>
+<?php if(@$process_status==2){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>as/loding.gif" /> 
+	<span style="padding-left: 10px; font-weight: bold; color: red;">Preparing Data For More Modifications.</span>
+	<div class="progress progress-striped progress-danger active">
+		<div id="progress" style="width: <?php echo $converted_per; ?>%;" class="bar"></div>
+	</div>
+</div>
+<script>
+$( document ).ready(function() {
+	convert_csv_data_ajax();
+});
+function convert_csv_data_ajax(){
+	$( document ).ready(function() {
+		$.ajax({
+			url: "convert_imported_data_ob",
+			dataType: 'json'
+		}).done(function(response){
+			if(response.again_call_ajax=="YES"){
+				$("#progress").css("width",response.converted_per+"%");
+				convert_csv_data_ajax();
+			}
+			if(response.again_call_ajax=="NO"){
+				change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_import");
+			}
+		});
+	});
+}
+</script>
+<?php } ?>
+
+<?php if(@$process_status==3){ ?>
+<div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">File Uploaded Succesfully.</span>
+	<br/><span style="padding-left: 35px; color: rgb(114, 113, 113);"><b>Uploaded on:</b> </span><span style="color: rgb(114, 113, 113);"> <?php echo $date; ?></span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">To Read Uploaded File Succesfully Done.</span>
+	<br/><br/>
+	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
+	<span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Uploaded Data Is Ready To More Modification.</span>
+	<br/><br/>
+	<a href="<?php echo $webroot_path; ?>Cashbanks/modify_bank_receipt_csv_data" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
+</div>
+<?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 $('form#form1').submit( function(ev){
 	ev.preventDefault();
