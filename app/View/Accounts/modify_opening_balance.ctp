@@ -52,30 +52,56 @@ if($group_id == 15 || $group_id == 34 || $group_id == 33 || $group_id == 35 || $
             
 <td>
 <?php
- ?>
+if($ledger_type == 1)
+{
+?>	
+<select class="m-wrap medium" disabled="disabled">
+<option value="" style="display:none;">Select</option>
+<?php foreach($cursor1 as $dataa)
+{
+$auto_id = (int)$dataa['ledger_sub_account']['auto_id'];
+$name = $dataa['ledger_sub_account']['name'];
+?>
+<option value="<?php echo $auto_id; ?>" <?php if($auto_id == $ledger_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+<?php	
+}
+?>
+</select>
+<?php	
+}
+else{
+?>	
+<select class="m-wrap medium" disabled="disabled">
+<option value="" style="display:none;">Select</option>
+<?php foreach($cursor2 as $dataa)
+{
+$auto_id = (int)$dataa['ledger_account']['auto_id'];
+$name = $dataa['ledger_account']['ledger_name'];
+?>
+<option value="<?php echo $auto_id; ?>" <?php if($auto_id == $ledger_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+<?php	
+}
+?>
+</select>
+<?php	
+}
+?>
 </td>
-			
-            
-            
-            
-            
-                            <td>
-                            <?php
-                            $e = (int)strcasecmp("Debit",$type);
-                            $c = (int)strcasecmp("Credit",$type);
-                            $pen_amt5 = (int)$data[7];
-                            ?>
-                            <input type="text" class="m-wrap span10" value="<?php if($e == 0) { echo $data[2]; $tt_debit = $tt_debit + $data[2] + $pen_amt5;
-                            } ?>" style="background-color:white !important;"/>
-                            </td>
-                            <td>
-                            <input type="text" class="m-wrap span10" value="<?php if($c == 0) { echo $data[2]; $tt_credit = $tt_credit + $data[2] + 		$pen_amt5;} ?>" style="background-color:white !important;"/>
-                            </td>
 
-                        <td>
-                       
-                        
-                        
+<td>
+<input type="text" class="m-wrap span10" style="background-color:white !important;"
+<?php if($type == 1){ ?> value="<?php echo $amount; ?>"  <?php } ?>/>
+</td>
+
+<td>
+<input type="text" class="m-wrap span10" style="background-color:white !important;"
+<?php if($type == 2){ ?> value="<?php echo $amount; ?>"  <?php } ?>/>
+</td>
+
+<td>
+<input type="text" class="m-wrap span10" style="background-color:white !important;"
+<?php if($type == 2 && !empty($penalty)){ ?> value="<?php echo $penalty; ?>"  <?php } ?>/>                       
+</td>                      
 
 <td>
 <a href="#" role="button" class="btn mini red delete" del="<?php echo $j; ?>"><i class="icon-remove icon-white"></i></a>
@@ -83,11 +109,11 @@ if($group_id == 15 || $group_id == 34 || $group_id == 33 || $group_id == 35 || $
 
 	
 </tr>
-<?php } } ?>
+<?php } ?>
 <tr>
 <th colspan="2" style="text-align:right;">Total</th>
-<th><?php echo $tt_debit; ?></th>
-<th><?php echo $tt_credit; ?></th>
+<th></th>
+<th></th>
 <th></th>
 <th></th>
 </tr>
