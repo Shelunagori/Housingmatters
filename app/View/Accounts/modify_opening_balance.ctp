@@ -121,6 +121,29 @@ $name = $dataa['ledger_account']['ledger_name'];
 
 
 
+<?php if(empty($page)){ $page=1;} ?>
+<div >
+	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
+	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
+</div>
+<div class="pagination pagination-large ">
+<ul>
+<?php 
+$loop=(int)($count_bank_receipt_converted/20);
+if($count_bank_receipt_converted%20>0){
+	$loop++;
+}
+for($ii=1;$ii<=$loop;$ii++){ ?>
+	<li><a href="<?php echo $webroot_path; ?>Accounts/modify_opening_balance/<?php echo $ii; ?>" rel='tab' role="button" ><?php echo $ii; ?></a></li>
+<?php } ?>
+</ul>
+</div>
+<br/>
+
+<a class="btn purple big" role="button" id="final_import">IMPORT VOUCHERS <i class="m-icon-big-swapright m-icon-white"></i></a>									
+<div id="check_validation_result"></div>		  
+
+
 
 
 
