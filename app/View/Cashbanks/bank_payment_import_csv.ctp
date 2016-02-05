@@ -38,7 +38,7 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 <script>
 $( document ).ready(function() {
     $.ajax({
-		url: "read_payment_csv_file",
+		url: "<?php echo $webroot_path; ?>Cashbanks/read_payment_csv_file",
 		dataType: 'json'
 	}).done(function(response){
 		
@@ -72,7 +72,7 @@ $( document ).ready(function() {
 function convert_csv_data_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "convert_payment_imported_data",
+			url: "<?php echo $webroot_path; ?>Cashbanks/convert_payment_imported_data",
 			dataType: 'json'
 		}).done(function(response){
 			if(response.again_call_ajax=="YES"){
@@ -133,7 +133,7 @@ $( document ).ready(function() {
 function final_import_bank_payment_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "final_import_bank_payment_ajax",
+			url: "<?php echo $webroot_path; ?>Cashbanks/final_import_bank_payment_ajax",
 			dataType: 'json'
 		}).done(function(response){
 			
