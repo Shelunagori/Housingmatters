@@ -23,17 +23,62 @@ function master_ledger_sub_account_ajax()
 //////////////////////////// Start Opening Balance Import (Accounts)//////////////////////////
 function opening_balance_import()
 {
-			if($this->RequestHandler->isAjax()){
-			$this->layout='blank';
-			}else{
-			$this->layout='session';
-			}
-			
-				$this->ath();
-				$this->check_user_privilages();
-				$s_society_id=(int)$this->Session->read('society_id');
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+
+	$this->ath();
+	$this->check_user_privilages();
+	$s_society_id=(int)$this->Session->read('society_id');
+				
+	$this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BR");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+		$step4=(int)@$data_import["import_ob_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;			
+				
 }
 //////////////////// End Opening Balance Import (Accounts)/////////////////////////////////////
+
+/////////////////// Start upload_opening_balance_csv_file ///////////////////////////////
+function upload_opening_balance_csv_file()
+{
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$this->ath();
+	if(isset($_FILES['file'])){
+		$file_name=$s_society_id.".csv";
+		$file_tmp_name =$_FILES['file']['tmp_name'];
+		$target = "openig_balance_csv_file/";
+		$target=@$target.basename($file_name);
+		move_uploaded_file($file_tmp_name,@$target);
+		
+		
+		$today = date("d-M-Y");
+		
+		$this->loadmodel('import_record');
+		$auto_id=$this->autoincrement('import_record','auto_id');
+		$this->import_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "BR", "step1" => 1,"date"=>$today))); 
+		
+		die(json_encode("UPLOADED"));
+	}
+
+
+
+
+
+	
+	
+}
+////////////////// End upload_opening_balance_csv_file ////////////////////////////////////
 
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
