@@ -9600,28 +9600,37 @@ $this->ledger->saveAll($multipleRowData);
 //////////////////////////////////////
 		
 	}
+	
 		
 		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
-		$total_converted_records = $this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		$total_converted_records = (int)$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
 		
 		$this->loadmodel('payment_csv_converted');
 		$conditions=array("society_id" => $s_society_id);
-		$total_records = $this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		$total_records = (int)$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
 		
 		
-		
-		
+	
 		$converted_per=($total_converted_records*100)/$total_records;
+		
+		
+			
 		if($converted_per==100){ $again_call_ajax="NO"; 
 			
+		
 			$this->loadmodel('payment_csv_converted');
 			$conditions4=array('society_id'=>$s_society_id);
 			$this->payment_csv_converted->deleteAll($conditions4);
+		
 			
 			$this->loadmodel('bank_payment_csv');
 			$conditions4=array('society_id'=>$s_society_id);
 			$this->bank_payment_csv->deleteAll($conditions4);
+			
+			
+			
+			
 			
 			$this->loadmodel('import_payment_record');
 			$conditions4=array("society_id" => $s_society_id, "module_name" => "BP");
@@ -9629,6 +9638,7 @@ $this->ledger->saveAll($multipleRowData);
 		  }else{
 			$again_call_ajax="YES"; 
 			}
+			
 		die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per_im"=>$converted_per)));
 	}		
 

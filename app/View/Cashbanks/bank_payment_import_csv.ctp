@@ -8,7 +8,7 @@
 	$file_name=@$data_import["import_payment_record"]["file_name"];
 }
 $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
-
+<div id="first_div">
 <?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;">
 	<div class="portlet-title">
@@ -136,16 +136,18 @@ function final_import_bank_payment_ajax(){
 			url: "final_import_bank_payment_ajax",
 			dataType: 'json'
 		}).done(function(response){
+			
+			//response = response.replace(/\s+/g,' ').trim();
 			//alert(response);
-			response = response.replace(/\s+/g,' ').trim();
+			//alert(response.again_call_ajax);
 			if(response.again_call_ajax=="YES"){
-				
+				alert('Yess');
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
 				final_import_bank_receipt_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
-				
+				alert('Nooo');
 				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" >OK</a> </p></div>');
 			}
 		});
@@ -155,7 +157,7 @@ function final_import_bank_payment_ajax(){
 <?php } ?>
 
 
-
+</div>
 
 
 
