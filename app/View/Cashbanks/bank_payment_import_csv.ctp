@@ -141,13 +141,13 @@ function final_import_bank_payment_ajax(){
 			//alert(response);
 			//alert(response.again_call_ajax);
 			if(response.again_call_ajax=="YES"){
-				alert('Yess');
+				
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
 				final_import_bank_receipt_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
-				alert('Nooo');
+				
 				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" >OK</a> </p></div>');
 			}
 		});
