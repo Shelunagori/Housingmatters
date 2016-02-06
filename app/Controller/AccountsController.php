@@ -314,30 +314,28 @@ $this->layout=null;
 	$record_id=(int)$record_id; 
 	
 	if($field=="debit"){
-		if(empty($value)){ echo "F";}
-		else{
+		
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-		}
+		
 	}
 	
 	if($field=="credit"){
-		if(empty($value)){ echo "F";}
-		else{
+		
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-		}
+		
 	}
 	
 	if($field=="penalty"){
-		if(empty($value)){ echo "F";}
-		else{
+		
+		
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
 			echo "T";
-		}
+		
 	}
 
 	
@@ -350,70 +348,33 @@ $this->layout=null;
 	
 	$this->ath();
 	$s_society_id = (int)$this->Session->read('society_id');
-
+    $total_debit = 0;
+	$total_credit = 0;
 	$this->loadmodel('opening_balance_csv_converted'); 
 	$conditions=array("society_id"=>(int)$s_society_id);
 	$order=array('opening_balance_csv_converted.auto_id'=>'ASC');
 	$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions));
 	foreach($result_bank_receipt_converted as $receipt_converted){
-		$auto_id=$receipt_converted["opening_balance_csv_converted"]["auto_id"];
-		$trajection_date=$receipt_converted["opening_balance_csv_converted"]["trajection_date"];
+		$ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
+		$type=$receipt_converted["opening_balance_csv_converted"]["type"];
 		$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_ac"];
 		$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
-		$invoice = $receipt_converted["opening_balance_csv_converted"]["invoice_ref"];
-		$amount=$receipt_converted["opening_balance_csv_converted"]["amount"];
-		$tds = $receipt_converted["opening_balance_csv_converted"]["tds"];
-		$mode = $receipt_converted["opening_balance_csv_converted"]["mode"];
-		$instrument = $receipt_converted["opening_balance_csv_converted"]["instrument"];
-		$bank=$receipt_converted["opening_balance_csv_converted"]["bank"];
-		$narration=$receipt_converted["opening_balance_csv_converted"]["narration"];
-		
-
+		$amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
+		$penalty=$receipt_converted["opening_balance_csv_converted"]["penalty"];
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-if(empty($trajection_date)){ $trnsaction_v = 1; } else { $trnsaction_v = 0;  }	
-
-
-    	$this->loadmodel('financial_year');
-		$conditions=array("society_id" => $s_society_id,"status"=>1);
-		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
-		$abc = 555;
-		foreach($cursor as $collection){
-				$from = $collection['financial_year']['from'];
-				$to = $collection['financial_year']['to'];
-				$from1 = date('Y-m-d',$from->sec);
-				$to1 = date('Y-m-d',$to->sec);
-				$from2 = strtotime($from1);
-				$to2 = strtotime($to1);
-				$transaction1 = date('Y-m-d',strtotime($trajection_date));
-				$transaction2 = strtotime($transaction1);
-					if($transaction2 <= $to2 && $transaction2 >= $from2){
-					$abc = 5;
-					break;
-					}	
+		if($type == 1)
+		{
+		if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;  }	
+		$total_debit = $total_debit + $amount;
 		}
-	if($abc == 555){ $transs_v = 1;	}else { $transs_v = 0;  }
-
-if(empty($ledger)){ $ledger_v = 1; }else { $ledger_v = 0;  }	
-
-if(empty($amount)){ $amount_v = 1;  }else { $amount_v = 0;  }
-
+		if($type == 2)
+		{
+		if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
+		$total_credit = $total_credit + $amount + $penalty;
+		}
+		
+		
 if(is_numeric($amount))
 { 
 $amount_vv = 0;
@@ -422,37 +383,131 @@ else
 {
 $amount_vv = 1;
 }
-
-
-if(empty($mode)){ $mode_v = 1; }else{ $mode_v = 0; }	
-
-
-
-if(empty($instrument)){ $inst_v = 1; }else{ $inst_v = 0;  }	
-
-
-if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }		
 		
-		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
+		$v_result[]=array($amount_v,$amount_vv,$tt_v);
 		
 	} 
+	if($total_credit == $total_debit) { $tt_v = 0;  }else{   $tt_v = 1;   }
+	
+	
+	
 	foreach($v_result as $data){
-		if(array_sum($data)==0){ echo "T";
-			$this->loadmodel('import_payment_record');
-			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
+		if(array_sum($data)==0 && $tt_v == 0){ echo "T";
+			$this->loadmodel('import_ob_record');
+			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
 		}else{ echo "F"; die; }
 	}
 	
+}
+//////////////////////// End allow_import_opening_balance //////////////////////////////
+//////////////////////// Start final_import_opening_balance ////////////////////////////
+function final_import_opening_balance()
+{
+
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
 	
-}	
+	$this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+		$step4=(int)@$data_import["import_ob_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
 	
+	if($process_status==4){
+		$this->loadmodel('opening_balance_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
+		$result_import_converted = $this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		
+		foreach($result_import_converted as $import_converted){
+			$bank_receipt_csv_id=$import_converted["opening_balance_csv_converted"]["auto_id"];
+			$group_id=(int)$import_converted["opening_balance_csv_converted"]["group_id"];
+			$ledger_id=(int)$import_converted["opening_balance_csv_converted"]["ledger_id"];
+			$ledger_type=(int)$import_converted["opening_balance_csv_converted"]["ledger_type"];
+			$type=(int)$import_converted["opening_balance_csv_converted"]["type"];
+			$amount=$import_converted["opening_balance_csv_converted"]["amount"];
+			$penalty=$import_converted["opening_balance_csv_converted"]["penalty"];
 	
+		
+if($type==1)
+{
+$debit=$amount;
+$credit="";	
+}
+else
+{
+$debit="";
+$credit=$amount;		
+}
 	
-	
+		if($group_id==34){
+
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$debit,"credit"=>$credit,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date)));
+
+		
+		if($penalty>0 && $type == 2){
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$penalty,"credit"=>null,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date),"arrear_int_type"=>"YES"));
+		}
+		}
+		else if($group_id==33 || $group_id==35 || $group_id==15 || $group_id==112){
+		
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" =>$group_id,
+		"ledger_sub_account_id" => $ledger_id,"debit"=>$debit,"credit"=>$credit,
+		"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,
+		"transaction_date"=>strtotime($transaction_date)));	
+		}
+		else
+		{
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => $ledger_id,"ledger_sub_account_id" => null,"debit"=>$debit,"credit"=>$credit,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date)));
+		}
+		}
+		
+		
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
+		$total_converted_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$converted_per=($total_converted_records*100)/$total_records;
+		if($converted_per==100){ $again_call_ajax="NO"; 
+			
+			$this->loadmodel('bank_receipt_csv_converted');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->bank_receipt_csv_converted->deleteAll($conditions4);
+			
+			$this->loadmodel('bank_receipt_csv');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->bank_receipt_csv->deleteAll($conditions4);
+			
+			$this->loadmodel('import_record');
+			$conditions4=array("society_id" => $s_society_id, "module_name" => "BR");
+			$this->import_record->deleteAll($conditions4);
+		}else{
+			$again_call_ajax="YES"; 
+			}
+		die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per_im"=>$converted_per)));
+	}	
 	
 	
 }
-//////////////////////// End allow_import_opening_balance //////////////////////////////
+//////////////////////// End final_import_opening_balance ///////////////////////////
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
 {
