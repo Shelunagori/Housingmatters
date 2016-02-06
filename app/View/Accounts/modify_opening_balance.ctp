@@ -1,6 +1,6 @@
 <input type="text" class="date-picker m-wrap span4" data-date-format="dd-mm-yyyy" 
 value="<?php echo $tra_date; ?>" 
-style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="1">
+style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="1" placeholder="Date">
  
  
 <div style="background-color: #FFF;"> 
@@ -33,7 +33,7 @@ $tt_credit = 0; ?>
 <tr id="<?php echo $csv_id; ?>">
 
 <td>
-<select class="m-wrap medium">
+<select class="m-wrap medium chosen">
 <option value="">Select Group Account</option>
 <?php
 foreach($cursor3 as $collection)
