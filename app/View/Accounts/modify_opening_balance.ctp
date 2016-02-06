@@ -176,7 +176,7 @@ $( "#final_import" ).click(function() {
 $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/loding.gif" /><span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Importing Receipts.</span>');
 
 $.ajax({
-url: "<?php echo $webroot_path; ?>Cashbanks/allow_import_bank_payment",
+url: "<?php echo $webroot_path; ?>Accounts/allow_import_opening_balance",
 }).done(function(response){
 	
 	response = response.replace(/\s+/g,' ').trim();

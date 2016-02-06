@@ -343,6 +343,116 @@ $this->layout=null;
 	
 }
 ///////////////////////////// End auto_save_opening_balance ///////////////////////////
+//////////////////////// Start allow_import_opening_balance ////////////////////////////
+function allow_import_opening_balance()
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = (int)$this->Session->read('society_id');
+
+	$this->loadmodel('opening_balance_csv_converted'); 
+	$conditions=array("society_id"=>(int)$s_society_id);
+	$order=array('opening_balance_csv_converted.auto_id'=>'ASC');
+	$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions));
+	foreach($result_bank_receipt_converted as $receipt_converted){
+		$auto_id=$receipt_converted["opening_balance_csv_converted"]["auto_id"];
+		$trajection_date=$receipt_converted["opening_balance_csv_converted"]["trajection_date"];
+		$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_ac"];
+		$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
+		$invoice = $receipt_converted["opening_balance_csv_converted"]["invoice_ref"];
+		$amount=$receipt_converted["opening_balance_csv_converted"]["amount"];
+		$tds = $receipt_converted["opening_balance_csv_converted"]["tds"];
+		$mode = $receipt_converted["opening_balance_csv_converted"]["mode"];
+		$instrument = $receipt_converted["opening_balance_csv_converted"]["instrument"];
+		$bank=$receipt_converted["opening_balance_csv_converted"]["bank"];
+		$narration=$receipt_converted["opening_balance_csv_converted"]["narration"];
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+if(empty($trajection_date)){ $trnsaction_v = 1; } else { $trnsaction_v = 0;  }	
+
+
+    	$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($trajection_date));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
+					break;
+					}	
+		}
+	if($abc == 555){ $transs_v = 1;	}else { $transs_v = 0;  }
+
+if(empty($ledger)){ $ledger_v = 1; }else { $ledger_v = 0;  }	
+
+if(empty($amount)){ $amount_v = 1;  }else { $amount_v = 0;  }
+
+if(is_numeric($amount))
+{ 
+$amount_vv = 0;
+}
+else
+{
+$amount_vv = 1;
+}
+
+
+if(empty($mode)){ $mode_v = 1; }else{ $mode_v = 0; }	
+
+
+
+if(empty($instrument)){ $inst_v = 1; }else{ $inst_v = 0;  }	
+
+
+if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }		
+		
+		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
+		
+	} 
+	foreach($v_result as $data){
+		if(array_sum($data)==0){ echo "T";
+			$this->loadmodel('import_payment_record');
+			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
+		}else{ echo "F"; die; }
+	}
+	
+	
+}	
+	
+	
+	
+	
+	
+	
+}
+//////////////////////// End allow_import_opening_balance //////////////////////////////
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
 {
