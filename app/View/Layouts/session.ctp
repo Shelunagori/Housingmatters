@@ -452,230 +452,224 @@ $(document).ready(function() {
 <body class="fixed-top">
 <!-- BEGIN HEADER -->
 <div id="loading_ajax"></div>
-		<div class="header navbar navbar-inverse navbar-fixed-top">
+	<div class="header navbar navbar-inverse navbar-fixed-top" id="flash_output_div">
+
+
 		<!-- BEGIN TOP NAVIGATION BAR -->
-		<div class="navbar-inner">
-			<div class="container-fluid">
+		<div class="navbar-inner hide_at_print">
+			<div class="container-fluid navbar" style="padding-right: 0px;">
 				<!-- BEGIN LOGO -->
-				<a class="brand" href="index.html">
-				<img src="assets/img/logo.png" alt="logo" />
+				<a class="brand" href="<?php echo $webroot_path; ?>Hms/dashboard" style="margin-top:-9px;">
+				<img src="<?php echo $webroot_path; ?>as/hm/hm-logo.png" alt="logo" height="16px" width="120px"/>
 				</a>
+				
+				<!--change Society -->
+				<?php
+					$login_id=$this->Session->read('login_id');
+					$society_id=$this->Session->read('society_id');
+					$s_user_id=$this->Session->read('user_id');
+					$s_mult_data=$this->requestAction(array('controller' => 'hms', 'action' => 'login_user_id'), array('pass' => array((int)$login_id)));
+					
+									
+					$soc_id=$this->requestAction(array('controller' => 'hms', 'action' => 'society_name'), array('pass' => array((int)$society_id)));
+					
+					foreach($soc_id as $data7)
+					{
+					 $soc_n=$data7['society']['society_name'];
+					}
+					
+					?>
+				<div class="btn-group">
+					<a class="btn" href="#"  data-toggle="dropdown" style="color: #DEDEDE;background-color: #1F1F1F;font-size: 14px;font-weight: bold;"><?php echo @$soc_n; ?></a>
+					<?php
+					if(sizeof($s_mult_data)>1)
+					{
+					?>
+					<ul class="dropdown-menu">
+						<li><a href="#" role="button" style="background-color: #eee;font-weight: 100;font-size: 13px;">Change Your Society</a></li>
+						<?php
+							foreach($s_mult_data as $data)
+							{
+							$sco_id=$data['user']['society_id'];
+							$role_name2=$this->requestAction(array('controller' => 'hms', 'action' => 'society_name'), array('pass' => array((int)$sco_id)));
+							foreach($role_name2 as $data2)
+							{
+							 $soc=$data2['society']['society_name'];
+							
+						 ?>
+						<li><a href="change_society?society=<?php echo $sco_id; ?>"><?php echo $soc; ?><?php if($sco_id==$society_id) { ?><i class="icon-ok"></i><?php } else { ?><?php } ?></a></li>
+						<?php } } ?>
+					</ul>
+					<?php } 
+					else
+					{
+					?>
+					<ul class="dropdown-menu" style=" padding: 2px; color: rgb(103, 103, 102); ">
+						<li>
+							<p>You have single Society.</p>
+						</li>
+					</ul>
+					
+					<?php }?>
+				</div>
+				
+				
 				<!-- END LOGO -->
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 				<a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-				<img src="assets/img/menu-toggler.png" alt="" />
+				<img src="<?php echo $this->webroot; ?>assets/img/menu-toggler.png" alt="" />
 				</a>          
 				<!-- END RESPONSIVE MENU TOGGLER -->				
 				<!-- BEGIN TOP NAVIGATION MENU -->					
-				<ul class="nav pull-right">
+				<ul class="nav pull-right" >
+				
+
+					
+					
+					
+					
+					
+				
+				
+				
+					
+					
 					<!-- BEGIN NOTIFICATION DROPDOWN -->	
-					<li class="dropdown" id="header_notification_bar">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-warning-sign"></i>
-						<span class="badge">6</span>
+					<li class="dropdown " id="header_notification_bar">
+						<a href="#" class="dropdown-toggle notification_button" data-toggle="dropdown">
+						<i class="icon-bell"></i>
+						<span class="badge" id="notification_count"></span>
 						</a>
-						<ul class="dropdown-menu extended notification">
-							<li>
-								<p>You have 14 new notifications</p>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-success"><i class="icon-plus"></i></span>
-								New user registered. 
-								<span class="time">Just now</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-important"><i class="icon-bolt"></i></span>
-								Server #12 overloaded. 
-								<span class="time">15 mins</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-warning"><i class="icon-bell"></i></span>
-								Server #2 not respoding.
-								<span class="time">22 mins</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-info"><i class="icon-bullhorn"></i></span>
-								Application error.
-								<span class="time">40 mins</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-important"><i class="icon-bolt"></i></span>
-								Database overloaded 68%. 
-								<span class="time">2 hrs</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="label label-important"><i class="icon-bolt"></i></span>
-								2 user IP blocked.
-								<span class="time">5 hrs</span>
-								</a>
-							</li>
-							<li class="external">
-								<a href="#">See all notifications <i class="m-icon-swapright"></i></a>
-							</li>
+						<ul class="dropdown-menu extended_new notification">
+						
+							<div style="border: solid 1px #ccc;">
+							
+							<div style="background-color:#eee; padding:5px;color:#02689b;font-weight: bold;">
+							<i class=" icon-bell"></i> Notifications
+							
+							</div>
+							
+							
+							<div class="scroller" data-height="300px" data-height="200px" data-always-visible="1" data-rail-visible="1" id="notification_div">
+							
+							</div>
+							
+							<div align="right" style="background-color:#eee; padding:5px;color:#02689b;font-weight: bold;"><a href="<?php echo $this->webroot; ?>Hms/see_all_notifications" rel="tab"> See all notifications <i class=" icon-circle-arrow-right"></i></a></div>
+							
+							</div>
+							
 						</ul>
 					</li>
 					<!-- END NOTIFICATION DROPDOWN -->
-					<!-- BEGIN INBOX DROPDOWN -->
-					<li class="dropdown" id="header_inbox_bar">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-envelope-alt"></i>
-						<span class="badge">5</span>
+					<!-- BEGIN ALERT DROPDOWN -->	
+					<li class="dropdown " id="header_notification_bar">
+						<a href="#" class="dropdown-toggle alert_button" data-toggle="dropdown">
+						<i class="icon-warning-sign"></i>
+						<span class="badge" id="alert_count"></span>
 						</a>
-						<ul class="dropdown-menu extended inbox">
-							<li>
-								<p>You have 12 new messages</p>
-							</li>
-							<li>
-								<a href="#">
-								<span class="photo"><img src="./assets/img/avatar2.jpg" alt="" /></span>
-								<span class="subject">
-								<span class="from">Lisa Wong</span>
-								<span class="time">Just Now</span>
-								</span>
-								<span class="message">
-								Vivamus sed auctor nibh congue nibh. auctor nibh
-								auctor nibh...
-								</span>  
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="photo"><img src="./assets/img/avatar3.jpg" alt="" /></span>
-								<span class="subject">
-								<span class="from">Richard Doe</span>
-								<span class="time">16 mins</span>
-								</span>
-								<span class="message">
-								Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
-								auctor nibh...
-								</span>  
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="photo"><img src="./assets/img/avatar1.jpg" alt="" /></span>
-								<span class="subject">
-								<span class="from">Bob Nilson</span>
-								<span class="time">2 hrs</span>
-								</span>
-								<span class="message">
-								Vivamus sed nibh auctor nibh congue nibh. auctor nibh
-								auctor nibh...
-								</span>  
-								</a>
-							</li>
-							<li class="external">
-								<a href="#">See all messages <i class="m-icon-swapright"></i></a>
-							</li>
+						<ul class="dropdown-menu extended_new notification">
+						
+							<div style="border: solid 1px #ccc;">
+							
+							<div style="background-color:#eee; padding:5px;color:#e02222;font-weight: bold;">
+							<i class=" icon-warning-sign"></i> Alerts
+							<div class="pull-right" ><a href="#" style="color:#e02222;"><i class=" icon-cog"></i></a></div>
+							</div>
+							
+							
+							<div class="scroller" data-height="300px" data-height="200px" data-always-visible="1" data-rail-visible="1" id="alert_div">
+							
+							</div>
+							
+							<div align="right" style="background-color:#eee; padding:5px;font-weight: bold;"><a href="#" style="color:#e02222;"> See all alerts <i class=" icon-circle-arrow-right"></i></a></div>
+							
+							</div>
+							
 						</ul>
 					</li>
-					<!-- END INBOX DROPDOWN -->
-					<!-- BEGIN TODO DROPDOWN -->
+					<!-- END ALERT DROPDOWN -->
+					
+					
+					<!--change role---->
+					<?php
+					$s_role_id=$this->Session->read('role_id');
+					$role_name=$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_rolename_via_roleid'), array('pass' => array($s_role_id)));
+					?>
 					<li class="dropdown" id="header_task_bar">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-tasks"></i>
-						<span class="badge">5</span>
+						<a href="#" class="dropdown-toggle tooltips"  data-Placement="bottom"  data-original-title="Change Role"  data-toggle="dropdown">
+						<i class="icon-tasks"></i><span style="color:#FFF; padding:2px; "><?php echo $role_name; ?></span>
 						</a>
-						<ul class="dropdown-menu extended tasks">
+						<?php
+						$users_roles=$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_users_role'), array('pass' => array()));
+						
+						if(sizeof($users_roles)>1)
+						{
+						?>
+                            <ul class="dropdown-menu extended tasks">
 							<li>
-								<p>You have 12 pending tasks</p>
+								<p>Change Your Role</p>
 							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">New release v1.2</span>
-								<span class="percent">30%</span>
-								</span>
-								<span class="progress progress-success ">
-								<span style="width: 30%;" class="bar"></span>
-								</span>
-								</a>
+                            <?php
+							foreach ($users_roles as $role_id) 
+							{
+							
+							 
+							 $role_name2=$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_rolename_via_roleid'), array('pass' => array($role_id)));
+							 ?>
+							<li class="external ">
+								<a href="<?php echo $this->webroot; ?>Hms/change_role?role=<?php echo $role_id; ?>"><?php echo $role_name2; ?><?php if($role_id==$s_role_id) { ?><i class="icon-ok"></i><?php } else { ?><i class=" icon-circle-arrow-right"></i><?php } ?></a>
 							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">Application deployment</span>
-								<span class="percent">65%</span>
-								</span>
-								<span class="progress progress-danger progress-striped active">
-								<span style="width: 65%;" class="bar"></span>
-								</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">Mobile app release</span>
-								<span class="percent">98%</span>
-								</span>
-								<span class="progress progress-success">
-								<span style="width: 98%;" class="bar"></span>
-								</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">Database migration</span>
-								<span class="percent">10%</span>
-								</span>
-								<span class="progress progress-warning progress-striped">
-								<span style="width: 10%;" class="bar"></span>
-								</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">Web server upgrade</span>
-								<span class="percent">58%</span>
-								</span>
-								<span class="progress progress-info">
-								<span style="width: 58%;" class="bar"></span>
-								</span>
-								</a>
-							</li>
-							<li>
-								<a href="#">
-								<span class="task">
-								<span class="desc">Mobile development</span>
-								<span class="percent">85%</span>
-								</span>
-								<span class="progress progress-success">
-								<span style="width: 85%;" class="bar"></span>
-								</span>
-								</a>
-							</li>
-							<li class="external">
-								<a href="#">See all tasks <i class="m-icon-swapright"></i></a>
-							</li>
-						</ul>
+                       <?php } ?>
+							</ul>
+					<?php } 
+					else
+					{
+					?>
+					<ul class="dropdown-menu extended tasks">
+						<li>
+							<p>You have single role.</p>
+						</li>
+					</ul>
+					<?php
+					}?>
+                            
 					</li>
-					<!-- END TODO DROPDOWN -->
+					<!---change role-->
 					<!-- BEGIN USER LOGIN DROPDOWN -->
+					<?php
+					$s_user_id=$this->Session->read('user_id');
+					$result_user_name_profile=$this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'), array('pass' => array($s_user_id)));
+					foreach ($result_user_name_profile as $data10) 
+					{
+					$user_name=$data10["user"]["user_name"];
+					$profile_pic=$data10["user"]["profile_pic"];
+					$f_profile_pic=@$data10["user"]["f_profile_pic"];
+					$g_profile_pic=@$data10["user"]["g_profile_pic"];
+					}
+					
+					?>
 					<li class="dropdown user">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img alt="" src="assets/img/avatar1_small.jpg" />
-						<span class="username">Bob Nilson</span>
+						<?php if(!empty($profile_pic) && $profile_pic!="blank.jpg"){ ?>
+						<img alt="" src="<?php echo $webroot_path; ?>profile/<?php echo @$profile_pic; ?>"  style="width:28px; height:28px;" />
+						<?php }
+						elseif(!empty($f_profile_pic)){ ?>
+							<img alt="" src="<?php echo $f_profile_pic; ?>"  style="width:28px; height:28px;" />
+						<?php }
+						elseif(!empty($g_profile_pic)){ ?>
+							<img alt="" src="<?php echo $g_profile_pic; ?>"  style="width:28px; height:28px;" />
+						<?php }
+						else{ ?>
+							<img alt="" src="<?php echo $webroot_path; ?>profile/blank.jpg"  style="width:28px; height:28px;" />
+						<?php } ?>
+						<span class="username">Hello <?php echo @$user_name; ?></span>
 						<i class="icon-angle-down"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><i class="icon-user"></i> My Profile</a></li>
-							<li><a href="#"><i class="icon-calendar"></i> My Calendar</a></li>
-							<li><a href="#"><i class="icon-tasks"></i> My Tasks</a></li>
+							<li><a href="<?php echo $this->webroot; ?>Hms/profile" rel='tab'><i class="icon-user"></i> My Profile</a></li>
+							<li><a href="<?php echo $this->webroot; ?>Hms/notification_email" rel='tab'><i class="icon-calendar"></i> User Settings</a></li>
 							<li class="divider"></li>
-							<li><a href="login.html"><i class="icon-key"></i> Log Out</a></li>
+							<li><a href="<?php echo $this->webroot; ?>Hms/logout"><i class="icon-key"></i> Log Out</a></li>
 						</ul>
 					</li>
 					<!-- END USER LOGIN DROPDOWN -->
@@ -693,93 +687,200 @@ $(document).ready(function() {
 <!-- BEGIN CONTAINER -->	
 	<div class="page-container row-fluid" id="header_div_container">
 		<!-- BEGIN SIDEBAR -->
-		
 		<div class="page-sidebar nav-collapse collapse">
 			<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
 			<div class="slide hide">
 				<i class="icon-angle-left"></i>
 			</div>
-			<form class="sidebar-search" />
-				<div class="input-box">
-					<input type="text" class="" placeholder="Search" />
-					<input type="button" class="submit" value=" " />
-				</div>
-			</form>
+			
 			<div class="clearfix"></div>
 			<!-- END RESPONSIVE QUICK SEARCH FORM -->
 			<!-- BEGIN SIDEBAR MENU -->
 			<ul>
-				<li class="active">
-					<a href="index.html">
+				<li>
+					<a href="<?php echo $this->webroot; ?>Hms/dashboard" rel='tab'>
 					<i class="icon-home"></i> Dashboard
-					<span class="selected"></span>
 					</a>					
 				</li>
-				<li class="has-sub">
-					<a href="javascript:;" class="">
-					<i class="icon-bookmark-empty"></i> UI Features
-					<span class="arrow"></span>
-					</a>
-					<ul class="sub">
-						<li><a class="" href="ui_general.html">General</a></li>
-						<li><a class="" href="ui_buttons.html">Buttons</a></li>
-						<li><a class="" href="ui_tabs_accordions.html">Tabs & Accordions</a></li>
-						<li><a class="" href="ui_typography.html">Typography</a></li>
-					</ul>
-				</li>
-				<li class="has-sub">
-					<a href="javascript:;" class="">
-					<i class="icon-table"></i> Form Stuff
-					<span class="arrow"></span>
-					</a>
-					<ul class="sub">
-						<li><a class="" href="form_layout.html">Form Layouts</a></li>
-						<li><a class="" href="form_component.html">Form Components</a></li>
-						<li><a class="" href="form_wizard.html">Form Wizard</a></li>
-						<li><a class="" href="form_validation.html">Form Validation</a></li>
-					</ul>
-				</li>
-				<li class="has-sub">
-					<a href="javascript:;" class="">
-					<i class="icon-th-list"></i> Data Tables
-					<span class="arrow"></span>
-					</a>
-					<ul class="sub">
-						<li><a class="" href="table_basic.html">Basic Tables</a></li>
-						<li><a class="" href="table_managed.html">Managed Tables</a></li>
-					</ul>
-				</li>
-				<li><a class="" href="grids.html"><i class="icon-th"></i> Grids & Portlets</a></li>
-				<li class="has-sub">
-					<a href="javascript:;" class="">
-					<i class="icon-map-marker"></i> Maps
-					<span class="arrow"></span>
-					</a>
-					<ul class="sub">
-						<li><a class="" href="maps_google.html">Google Maps</a></li>
-						<li><a class="" href="maps_vector.html">Vector Maps</a></li>
-					</ul>
-				</li>
-				<li><a class="" href="charts.html"><i class="icon-bar-chart"></i> Visual Charts</a></li>
-				<li><a class="" href="calendar.html"><i class="icon-calendar"></i> Calendar</a></li>
-				<li><a class="" href="gallery.html"><i class="icon-camera"></i> Gallery</a></li>
-				<li class="has-sub">
-					<a href="javascript:;" class="">
-					<i class="icon-briefcase"></i> Extra
-					<span class="arrow"></span>
-					</a>
-					<ul class="sub">
-						<li><a class="" href="extra_pricing_table.html">Pricing Tables</a></li>
-						<li><a class="" href="extra_404.html">404 Page</a></li>
-						<li><a class="" href="extra_500.html">500 Page</a></li>
-						<li><a class="" href="extra_blank.html">Blank Page</a></li>
-					</ul>
-				</li>
-				<li><a class="" href="login.html"><i class="icon-user"></i> Login Page</a></li>
+<?php
+$result=$this->requestAction(array('controller' => 'hms', 'action' => 'menus_from_role_privileges'));
+
+if(sizeof(@$result)>0){
+	foreach($result as $data1){
+		$group_module_id[]=@$data1['role_privileges']['module_id'];
+		$group_sub_module_id[]=@$data1['role_privileges']['sub_module_id'];
+	}
+	
+	$distinct_group_module_id = array_unique($group_module_id);
+	sort($distinct_group_module_id);
+	foreach($distinct_group_module_id as $child1){
+		
+	$result_moduletype_id=(int)$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_module_type_id'), array('pass' => array($child1)));
+		
+	$complete_menu[$result_moduletype_id][]=$child1;
+	}
+	ksort($complete_menu);
+	foreach($complete_menu as $key=>$child2){
+		$result_module_type_info=$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_module_type_name'), array('pass' => array($key)));
+		
+		foreach($result_module_type_info as $result_module_type_info_child)
+		{
+		$icon=@$result_module_type_info_child['module_type']['icon'];
+		$module_type_name=$result_module_type_info_child['module_type']['module_type_name'];
+		}
+	?>
+	<li class="has-sub">
+	<a href="javascript:;" class="">
+	<i class="<?php echo $icon; ?>"></i> <?php echo $module_type_name; ?>
+	<span class="arrow"></span>
+	</a>
+		<ul class="sub" style="display: none;">	
+		<?php foreach($child2 as $child_sub){
+			$result_mainmodulename=$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_mainmodulename_usermanagement'), array('pass' => array($child_sub)));
+
+			foreach($result_mainmodulename as $data5)
+			{
+			$module_name=$data5['main_module']['module_name'];
+			}
+			$new_array_module_group[]=array($module_name,$child_sub);
+			sort($new_array_module_group);
+			
+		} ?>
+		<?php foreach($new_array_module_group as $child_22){
+			$child_22[1];
+			
+			$result_role_prvg=@$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_sub_module_id_from_role_prvg'), array('pass' => array($child_22[1])));
+		
+			foreach($result_role_prvg as $data44)
+			{
+			$sub_module_id=$data44['role_privilege']['sub_module_id'];
+			}
+			
+			$result_page=@$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_pagename_main_module_usermanagement'), array('pass' => array($child_22[1],$sub_module_id)));
+			foreach($result_page as $data4)
+			{
+			$page_name=$data4['page']['page_name'];
+			$controller=$data4['page']['controller'];
+			}
+			
+			$result_module_name=@$this->requestAction(array('controller' => 'hms', 'action' => 'fetch_mainmodulename_usermanagement'), array('pass' => array($child_22[1])));
+			foreach($result_module_name as $data44)
+			{
+			$main_module_icon=$data44['main_module']['icon'];
+			}
+		?>
+		<li>
+		<a href="<?php echo $this->webroot.@$controller; ?>/<?php echo @$page_name; ?>" rel="tab">
+		<i class="<?php echo $main_module_icon; ?>"></i>
+		<?php echo $child_22[0]; ?>
+		</a>					
+		</li>
+		<?php } unset($new_array_module_group); ?>
+		
+		
+		</ul>
+	</li>
+	<?php }
+} ?>
+
+
+
+
+
+
+
+
+
+
+
+
+<!---------Commitee member------------->
+<?php if($s_role_id==1)	{ ?>
+<li>
+	<a href="new_tenant_enrollment_view">
+	<i class="icon-home"></i> Tenant
+	</a>					
+</li>
+
+
+
+
+<?php } ?>
+<!--------- end Commitee member------------->
+<?php 
+$s_society_id=$this->Session->read('society_id');
+$soc_id2=$this->requestAction(array('controller' => 'hms', 'action' => 'society_name'), array('pass' => array($s_society_id)));
+foreach($soc_id2 as $data)
+{
+
+@$complaints= $data['society']['help_desk'];
+
+}
+
+?>
+<li>
+	<a href="<?php echo $webroot_path; ?>Hms/feedback" rel='tab'>
+	<i class="icon-phone"></i> Contact Us
+	</a>					
+</li>
+
+<!---------housingmatters------------->
+<?php if($s_role_id==0)	{?>
+<li>
+	<a href="hm_assign_module">
+	<i class="icon-home"></i> Assign Modules
+	</a>					
+</li>
+
+<li>
+	<a href="new_society_enrollment">
+	<i class="icon-home"></i> New Enrollment
+	</a>					
+</li>
+<li>
+	<a href="society_approve">
+	<i class="icon-home"></i> Approve Society
+	</a>					
+</li>
+
+<li>
+	<a href="feedback_view">
+	<i class="icon-home"></i> Feedback
+	</a>					
+</li>	
+
+<li>
+	<a href="hm_society_member_view">
+	<i class="icon-home"></i> Society View
+	</a>					
+</li>	
+
+
+<li>
+	<a href="master_accounts_category_hm">
+	<i class="icon-home"></i>Master Charts Of Account HM
+	</a>					
+</li>
+
+<li>
+	<a href="flash_message">
+	<i class="icon-home"></i>Flash Message
+	</a>					
+</li>
+
+
+<?php } ?>
+<!---------housingmatters------------->
+			
+<!--<li>
+	<a href="<?php echo $webroot_path; ?>Classifieds/post_ad" rel='tab'>
+	<i class="icon-phone"></i> Classifieds
+	</a>					
+</li>-->
+			
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
-		
 		<!-- END SIDEBAR -->
 		<!-- BEGIN PAGE -->
 		<div class="page-content" style="padding:5px;background: #f1f3fa;">
