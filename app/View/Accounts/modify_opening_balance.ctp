@@ -1,5 +1,5 @@
 <input type="text" class="date-picker m-wrap span4" data-date-format="dd-mm-yyyy" 
- style="background-color:white !important; margin-top:2.5px;" field="transaction_date" placeholder="Date" record_id="1">
+ style="background-color:white !important; margin-top:2.5px;" field="transaction_date" placeholder="Date" record_id="1" value="<?php echo $tra_date; ?>">
  
  
  
@@ -39,16 +39,16 @@ foreach($cursor3 as $collection)
 {
 $group_id5 = (int)$collection['accounts_group']['auto_id'];
 $group_name1= $collection['accounts_group']['group_name'];
-if($group_id == 15 || $group_id == 34 || $group_id == 33 || $group_id == 35 || $group_id == 112)
+if($group_id2 == 15 || $group_id2 == 34 || $group_id2 == 33 || $group_id2 == 35 || $group_id2 == 112)
 {
 ?>
-<option value="15" <?php if($group_id == 15) { ?> selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
-<option value="112" <?php if($group_id == 112) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c </option>
-<option value="33" <?php if($group_id == 33) { ?> selected="selected" <?php } ?>>Bank Accounts</option>
-<option value="35" <?php if($group_id == 35) { ?> selected="selected" <?php } ?>>Tax deducted at source (TDS receivable)</option>
-<option value="34" <?php if($group_id == 34) { ?> selected="selected" <?php } ?>>Members Control Account</option>
+<option value="15" <?php if($group_id2 == 15) { ?> selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
+<option value="112" <?php if($group_id2 == 112) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c </option>
+<option value="33" <?php if($group_id2 == 33) { ?> selected="selected" <?php } ?>>Bank Accounts</option>
+<option value="35" <?php if($group_id2 == 35) { ?> selected="selected" <?php } ?>>Tax deducted at source (TDS receivable)</option>
+<option value="34" <?php if($group_id2 == 34) { ?> selected="selected" <?php } ?>>Members Control Account</option>
 <?php } else { ?>
-<option value="<?php echo $group_id; ?>" <?php if($group_id2 == $group_id) { ?> selected="selected" <?php } ?>><?php echo $group_name1; ?></option>
+<option value="<?php echo $group_id5; ?>" <?php if($group_id2 == $group_id5) { ?> selected="selected" <?php } ?>><?php echo $group_name1; ?></option>
 <?php }} ?>
 </select>
 </td>
