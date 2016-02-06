@@ -328,28 +328,28 @@ $this->layout=null;
 	}
 	
 	if($field=="debit"){
-				
+			if(!empty($value)){	
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-		
+			}
 	}
 	
 	if($field=="credit"){
 		
-			
+			if(!empty($value)){	
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-		
+			}
 	}
 	
 	if($field=="penalty"){
-		
+		if(!empty($value)){	
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
 			echo "T";
-		
+		}
 	}
 
 	
@@ -475,11 +475,13 @@ $amount_vv = 1;
 	
 	
 	foreach($v_result as $data){
-		if(array_sum($data)==0) { echo "T";
+		if(array_sum($data)==0) { $tt ="T"; }else{ $tt="F"; break;  }
+	}
+			if($tt == "T"){
 			$this->loadmodel('import_ob_record');
 			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
-		}else{ echo "F"; die; }
-	}
+		    }else{ echo "F"; die; }
+	
 	
 }
 //////////////////////// End allow_import_opening_balance //////////////////////////////

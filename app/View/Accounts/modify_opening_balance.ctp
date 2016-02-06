@@ -1,5 +1,5 @@
-<input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
-value="<?php echo $transaction_date; ?>" 
+<input type="text" class="date-picker m-wrap span4" data-date-format="dd-mm-yyyy" 
+value="<?php echo $tra_date; ?>" 
 style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="1">
  
  
@@ -60,7 +60,7 @@ if($group_id2 == 15 || $group_id2 == 34 || $group_id2 == 33 || $group_id2 == 35 
 if($ledger_type == 1)
 {
 ?>	
-<select class="m-wrap medium" disabled="disabled">
+<select class="m-wrap medium chosen">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor1 as $dataa)
 {
@@ -76,7 +76,7 @@ $name = $dataa['ledger_sub_account']['name'];
 }
 else{
 ?>	
-<select class="m-wrap medium" disabled="disabled">
+<select class="m-wrap medium chosen">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor2 as $dataa)
 {
@@ -184,7 +184,7 @@ $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/lod
 $.ajax({
 url: "<?php echo $webroot_path; ?>Accounts/allow_import_opening_balance",
 }).done(function(response){
-	alert(response);
+	
 response = response.replace(/\s+/g,' ').trim();
 	
 if(response=="F"){
