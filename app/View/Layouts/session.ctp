@@ -452,11 +452,9 @@ $(document).ready(function() {
 <body class="fixed-top">
 <!-- BEGIN HEADER -->
 <div id="loading_ajax"></div>
-	<div class="header navbar navbar-inverse navbar-fixed-top" id="flash_output_div">
-
-
+	<div class="header navbar navbar-inverse navbar-fixed-top">
 		<!-- BEGIN TOP NAVIGATION BAR -->
-		<div class="navbar-inner hide_at_print">
+		<div class="navbar-inner">
 			<div class="container-fluid">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="index.html">
