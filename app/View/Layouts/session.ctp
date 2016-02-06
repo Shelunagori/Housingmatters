@@ -123,7 +123,7 @@ $webroot_path=$this->requestAction(array('controller' => 'Hms', 'action' => 'web
 <link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<?php echo $webroot_path; ?>assets/css/metro.css" rel="stylesheet" />
 	
-	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.1.css" rel="stylesheet" />
+	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/css/style.1.css" rel="stylesheet" />
