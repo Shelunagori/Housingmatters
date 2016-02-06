@@ -7,18 +7,18 @@ Large notebooks and desktops
  	***/
 	.page-sidebar {
 		position: absolute;
- 		width: 225px;
+ 		width: 170px;
   	}
 
   	.page-sidebar ul{
-  		width: 225px;
+  		width: 170px;
   	}
 
   	/***
   	Page content
   	***/
   	.page-content { 
-  		margin-left: 225px; 
+  		margin-left: 170px; 
 		margin-top: 0px;
 	}
 }
@@ -177,8 +177,8 @@ For tablets and phones
 	Page header
 	***/
 	.header .navbar-inner .container-fluid {
-		margin-left: 10px !important;
-		margin-right: 10px !important;
+		margin-right: 2px !important;
+		margin-left: 2px !important;
 	}
 
 	.header .top-nav .nav{  
