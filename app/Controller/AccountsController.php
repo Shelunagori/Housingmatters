@@ -373,6 +373,9 @@ $this->layout=null;
 	foreach($ddddd as $fffff){
 	$tra_date=$fffff['import_ob_record']['tra_date'];
 	}
+	if(empty($tra_date)){ $trr_v=1;   }else{ $trr_v=0;    }
+	
+	
 		    $ddatttt = $tra_date;
 			$dattttt = date('Y-m-d',strtotime($ddatttt));
 			$dddatttt = strtotime($dattttt);
@@ -455,7 +458,7 @@ $amount_vv = 1;
 	
 	
 	foreach($v_result as $data){
-		if(array_sum($data)==0 && $tt_v == 0 && $trajection_date_v == 0){ echo "T";
+		if(array_sum($data)==0 && $tt_v == 0 && $trajection_date_v == 0,$trr_v == 0){ echo "T";
 			$this->loadmodel('import_ob_record');
 			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
 		}else{ echo "F"; die; }
