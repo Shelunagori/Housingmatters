@@ -885,7 +885,7 @@ foreach($soc_id2 as $data)
 		<!-- BEGIN PAGE -->
 		<div class="page-content" style="padding:5px;background: #f1f3fa;">
 			<!-- BEGIN PAGE CONTAINER-->
-			<div class="" ><!--container-fluid-->
+			<div class="container-fluid" ><!--container-fluid-->
 				
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
