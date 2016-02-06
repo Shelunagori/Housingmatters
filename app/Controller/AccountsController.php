@@ -437,7 +437,7 @@ $total_debit = $total_debit + $amount;
 }
 if($type == 2)
 {
-if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
+if(empty($amount) && empty($penalty)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
 $total_credit = $total_credit + $amount + $penalty;
 		
 if(!empty($penalty))
@@ -453,7 +453,8 @@ $penalty_v = 1;
 }
 }
 		
-		
+if(!empty($amount))
+{	
 if(is_numeric($amount))
 { 
 $amount_vv = 0;
@@ -462,10 +463,13 @@ else
 {
 $amount_vv = 1;
 }
+}
 		
 		$v_result[]=array($amount_v,$amount_vv,$ledger_v,$penalty_v);
 		
 	} 
+	
+	
 	
 	
 	
@@ -477,6 +481,8 @@ $amount_vv = 1;
 	foreach($v_result as $data){
 		if(array_sum($data)==0) { $tt ="T"; }else{ $tt="F"; break;  }
 	}
+	
+	
 			if($tt == "T"){
 			$this->loadmodel('import_ob_record');
 			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
