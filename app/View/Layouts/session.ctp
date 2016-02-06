@@ -123,7 +123,7 @@ $webroot_path=$this->requestAction(array('controller' => 'Hms', 'action' => 'web
 <link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<?php echo $webroot_path; ?>assets/css/metro.css" rel="stylesheet" />
 	
-	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.1.css" rel="stylesheet" />
+	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/css/style.1.css" rel="stylesheet" />
@@ -934,25 +934,25 @@ foreach($soc_id2 as $data)
 			<button class="btn yellow">Save</button>
 		</div>
 	</div>
-	<div class="modal-backdrop fade in" style="display:none;"></div>
+	<!--<div class="modal-backdrop fade in" style="display:none;"></div>
 	
 	<!----Session Destroy----->
-	<div style="display: none;" id="myModal1" class="modal hide fade in session_destroy_container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false">
+	<!--<div style="display: none;" id="myModal1" class="modal hide fade in session_destroy_container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false">
 		<div class="modal-body">
 			<p><b>Disconnected from the server</b></p><br/>
 			<p>Your session has expired. please re-login for access.</p><br/>
 			<a href="<?php $webroot_path; ?>" class="btn green">Login</a>
 		</div>
-	</div>
+	</div>-->
 	<!-----end---->
 	
 	<!----No Connection----->
-	<div style="display: none;" id="myModal1" class="modal hide fade in no_connection_container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false">
+	<!--<div style="display: none;" id="myModal1" class="modal hide fade in no_connection_container" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="false">
 		<div class="modal-body">
 			<p><b>Disconnected from the server (No Internet Connection)</b></p><br/>
 			<p>This can occur either because you're not connected to the Internet or because our servers are temporarily having problems. Reload the page.</p>
 		</div>
-	</div>
+	</div>-->
 	<!-----end---->
 </body>
 </html>
