@@ -19,7 +19,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 	$file_name=@$data_import["import_ob_record"]["file_name"];
 }
 $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
-
+<div id="first_div">
 <?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;">
 	<div class="portlet-title">
@@ -138,28 +138,29 @@ function convert_csv_data_ajax(){
 </div>
 <script>
 $( document ).ready(function() {
-	final_import_bank_receipt_ajax();
+	final_import_opening_balance();
 });
-function final_import_bank_receipt_ajax(){
+function final_import_opening_balance(){
 	$( document ).ready(function() {
 		$.ajax({
 			url: "final_import_opening_balance",
 			dataType: 'json'
 		}).done(function(response){
+			//alert(response);
 			if(response.again_call_ajax=="YES"){
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
-				final_import_bank_receipt_ajax();
+				final_import_opening_balance();
 			}
 			if(response.again_call_ajax=="NO"){
-				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Cashbanks/import_bank_receipts_csv" >OK</a> </p></div>');
+				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Accounts/opening_balance_import">OK</a> </p></div>');
 			}
 		});
 	});
 }
 </script>
 <?php } ?>
-
+</div>
 
 
 

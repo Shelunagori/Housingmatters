@@ -1,4 +1,8 @@
-
+<input type="text" class="date-picker m-wrap span4" data-date-format="dd-mm-yyyy" 
+ style="background-color:white !important; margin-top:2.5px;" field="transaction_date" placeholder="Date" record_id="1">
+ 
+ 
+ 
 <table class="table table-bordered table-striped" style="width:100%; background-color:white;" id="open_bal">
 <tr>
 <th>Account Group</th>
@@ -155,7 +159,7 @@ $( document ).ready(function() {
 		$.ajax({
 			url: "<?php echo $webroot_path; ?>Accounts/auto_save_opening_balance/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
-			
+			//alert(response);
 			if(response=="F"){
 				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
