@@ -320,14 +320,12 @@ $this->layout=null;
 	
 	if($field="transaction_date")
 	{
-	
-		
-		
 	$this->loadmodel('import_ob_record');
 	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
 	echo "T";	
 	}
-	
+	echo $field;
+	exit;
 	if($field=="debit"){
 		
 			$this->loadmodel('opening_balance_csv_converted');
@@ -414,31 +412,45 @@ $this->layout=null;
 			$trajection_date_v=0;	
 			}
 	
-	$this->loadmodel('opening_balance_csv_converted'); 
-	$conditions=array("society_id"=>(int)$s_society_id);
-	$order=array('opening_balance_csv_converted.auto_id'=>'ASC');
-	$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions));
-	foreach($result_bank_receipt_converted as $receipt_converted){
-		$ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
-		//$type=$receipt_converted["opening_balance_csv_converted"]["type"];
-		$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_id"];
-		$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
-		$amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
-		$penalty=$receipt_converted["opening_balance_csv_converted"]["penalty"];
+$this->loadmodel('opening_balance_csv_converted'); 
+$conditions=array("society_id"=>(int)$s_society_id);
+$order=array('opening_balance_csv_converted.auto_id'=>'ASC');
+$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions));
+foreach($result_bank_receipt_converted as $receipt_converted){
+$ledger="";
+$ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
+//$type=$receipt_converted["opening_balance_csv_converted"]["type"];
+$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_id"];
+$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
+$amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
+$penalty=$receipt_converted["opening_balance_csv_converted"]["penalty"];
 		
 		
-		if(empty($ledger)) { $ledger_v = 1; }else{ $ledger_v = 0; } 
+if(empty($ledger)) { $ledger_v = 1; }else{ $ledger_v = 0; } 
 		
-		if($type == 1)
-		{
-		if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;  }	
-		$total_debit = $total_debit + $amount;
-		}
-		if($type == 2)
-		{
-		if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
-		$total_credit = $total_credit + $amount + $penalty;
-		}
+
+if($type == 1)
+{
+if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;  }	
+$total_debit = $total_debit + $amount;
+}
+if($type == 2)
+{
+if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
+$total_credit = $total_credit + $amount + $penalty;
+		
+if(!empty($penalty))
+{
+if(is_numeric($penalty))
+{ 
+$penalty_v = 0;
+}
+else
+{
+$penalty_v = 1;
+}	
+}
+}
 		
 		
 if(is_numeric($amount))
@@ -450,15 +462,19 @@ else
 $amount_vv = 1;
 }
 		
-		$v_result[]=array($amount_v,$amount_vv,$tt_v,$ledger_v);
+		$v_result[]=array($amount_v,$amount_vv,$ledger_v,$penalty_v);
 		
 	} 
-	if($total_credit == $total_debit) { $tt_v = 0;  }else{   $tt_v = 1;   }
+	
+	
+	
+	//&& ($tt_v == 0) && ($trajection_date_v == 0) && ($trr_v == 0))
+	//if($total_credit == $total_debit) { $tt_v = 0;  }else{   $tt_v = 1;   }
 	
 	
 	
 	foreach($v_result as $data){
-		if(array_sum($data)==0 && $tt_v == 0 && $trajection_date_v == 0 && $trr_v == 0){ echo "T";
+		if(array_sum($data)==0) { echo "T";
 			$this->loadmodel('import_ob_record');
 			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
 		}else{ echo "F"; die; }

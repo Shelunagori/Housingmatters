@@ -1,8 +1,9 @@
-<input type="text" class="date-picker m-wrap span4" data-date-format="dd-mm-yyyy" 
- style="background-color:white !important; margin-top:2.5px;" field="transaction_date" placeholder="Date" record_id="1" value="<?php echo $tra_date; ?>">
+<input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" 
+value="<?php echo $transaction_date; ?>" 
+style="background-color:white !important; margin-top:2.5px;" field="transaction_date" record_id="1">
  
  
- 
+<div style="background-color: #FFF;"> 
 <table class="table table-bordered table-striped" style="width:100%; background-color:white;" id="open_bal">
 <tr>
 <th>Account Group</th>
@@ -122,7 +123,7 @@ $name = $dataa['ledger_account']['ledger_name'];
 <th></th>
 </tr>
 </table>
-
+</div>
 
 
 <?php if(empty($page)){ $page=1;} ?>
@@ -148,6 +149,7 @@ for($ii=1;$ii<=$loop;$ii++){ ?>
 <div id="check_validation_result"></div>		  
 
 
+
 <script>
 $( document ).ready(function() {
 	$( 'input[type="text"]' ).blur(function() {
@@ -159,7 +161,7 @@ $( document ).ready(function() {
 		$.ajax({
 			url: "<?php echo $webroot_path; ?>Accounts/auto_save_opening_balance/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
-			//alert(response);
+			
 			if(response=="F"){
 				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
@@ -171,9 +173,9 @@ $( document ).ready(function() {
 			}
 		});
 	});
+	
 });
 </script>
-
 <script>			  
 $(document).ready(function() {
 $( "#final_import" ).click(function() {
@@ -182,6 +184,7 @@ $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/lod
 $.ajax({
 url: "<?php echo $webroot_path; ?>Accounts/allow_import_opening_balance",
 }).done(function(response){
+	alert(response);
 response = response.replace(/\s+/g,' ').trim();
 	
 if(response=="F"){
