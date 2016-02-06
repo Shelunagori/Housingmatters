@@ -889,23 +889,7 @@ foreach($soc_id2 as $data)
 				
 				<!-- BEGIN PAGE CONTENT-->
 				<div class="row-fluid">
-				<div class="styler-panel hidden-phone">
-							<i class="icon-cog"></i>
-							<i class="icon-remove"></i>
-							<span class="settings">
-							<span class="text">Style:</span>
-							<span class="colors">
-							<span class="color-default" data-style="default"></span>
-							<span class="color-blue" data-style="blue"></span>
-							<span class="color-light" data-style="light"></span>		
-							</span>
-							<span class="layout">
-							<label class="hidden-phone">
-							<input type="checkbox" class="header" checked="" value="" />Fixed Header
-							</label>							
-							</span>
-							</span>
-						</div>
+				
 					<div  id="content">
 						
 						
