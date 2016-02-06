@@ -421,7 +421,7 @@ $this->layout=null;
 	foreach($result_bank_receipt_converted as $receipt_converted){
 		$ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
 		//$type=$receipt_converted["opening_balance_csv_converted"]["type"];
-		$ledger = (int)$receipt_converted["opening_balance_csv_converted"]["ledger_id"];
+		$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_id"];
 		$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
 		$amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
 		$penalty=$receipt_converted["opening_balance_csv_converted"]["penalty"];
