@@ -479,39 +479,7 @@ $(document).ready(function() {
 					}
 					
 					?>
-				<div class="btn-group">
-					<a class="btn" href="#"  data-toggle="dropdown" style="color: #DEDEDE;background-color: #1F1F1F;font-size: 14px;font-weight: bold;"><?php echo @$soc_n; ?></a>
-					<?php
-					if(sizeof($s_mult_data)>1)
-					{
-					?>
-					<ul class="dropdown-menu">
-						<li><a href="#" role="button" style="background-color: #eee;font-weight: 100;font-size: 13px;">Change Your Society</a></li>
-						<?php
-							foreach($s_mult_data as $data)
-							{
-							$sco_id=$data['user']['society_id'];
-							$role_name2=$this->requestAction(array('controller' => 'hms', 'action' => 'society_name'), array('pass' => array((int)$sco_id)));
-							foreach($role_name2 as $data2)
-							{
-							 $soc=$data2['society']['society_name'];
-							
-						 ?>
-						<li><a href="change_society?society=<?php echo $sco_id; ?>"><?php echo $soc; ?><?php if($sco_id==$society_id) { ?><i class="icon-ok"></i><?php } else { ?><?php } ?></a></li>
-						<?php } } ?>
-					</ul>
-					<?php } 
-					else
-					{
-					?>
-					<ul class="dropdown-menu" style=" padding: 2px; color: rgb(103, 103, 102); ">
-						<li>
-							<p>You have single Society.</p>
-						</li>
-					</ul>
-					
-					<?php }?>
-				</div>
+				
 				
 				
 				<!-- END LOGO -->
