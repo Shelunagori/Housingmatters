@@ -318,16 +318,17 @@ $this->layout=null;
 	
 	
 	
-	if($field="transaction_date")
+	if($field=="transaction_date")
 	{
+		
+		
 	$this->loadmodel('import_ob_record');
 	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
 	echo "T";	
 	}
-	echo $field;
-	exit;
+	
 	if($field=="debit"){
-		
+				
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
@@ -336,6 +337,7 @@ $this->layout=null;
 	
 	if($field=="credit"){
 		
+			
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
@@ -343,7 +345,6 @@ $this->layout=null;
 	}
 	
 	if($field=="penalty"){
-		
 		
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
