@@ -93,7 +93,7 @@ function read_csv_file_ob()
 			$group=@$child_ar[0];
 			$subledger_ac=@$child_ar[1];
 			$wing_name=@$child_ar[2];
-			$flat_name=@$child_ar[3];
+			$flat_name=(int)@$child_ar[3];
 			$type=@$child_ar[4];
 			$amount=@$child_ar[5];
 			$penalty=@$child_ar[6];
