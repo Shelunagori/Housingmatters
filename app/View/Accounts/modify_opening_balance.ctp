@@ -209,7 +209,34 @@ $( document ).ready(function() {
 </script>
 
 
+<script>
+$( document ).ready(function() {
+	$( 'input[type="text"]' ).blur(function() {
+		
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$(this).val();
+		
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Accounts/auto_save_opening_balance_date/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			
+			if(response=="F"){
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
 
+
+	
+});
+</script>
 
 
 
