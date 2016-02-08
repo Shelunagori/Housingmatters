@@ -178,9 +178,10 @@ $( document ).ready(function() {
 	
 });
 </script>
+
 <script>
 $( document ).ready(function() {
-	$( 'input[type="text"]' ).keyup(function() {
+	$( 'input[type="text"]' ).keydown(function() {
 		
 		var record_id=$(this).attr("record_id");
 		var field=$(this).attr("field");
@@ -206,7 +207,6 @@ $( document ).ready(function() {
 	
 });
 </script>
-
 
 
 
