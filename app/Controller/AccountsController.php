@@ -516,6 +516,10 @@ else
 $amount_vv = 1;
 }
 }
+else
+{
+$amount_vv = 0;	
+}
 		
 		$v_result[]=array($amount_v,$amount_vv,$ledger_v,$penalty_v);
 		
