@@ -125,7 +125,7 @@ function read_user_info_csv_file(){
 			$child_ar=explode(',',$child[0]);
 			$name=$child_ar[0];
 			$wing_name=$child_ar[1];
-			$flat_name=$child_ar[2];
+			$flat_name=(int)$child_ar[2];
 			$owner_tenant=$child_ar[3];
 			$email=$child_ar[4];
 			$mobile=$child_ar[5];
@@ -143,11 +143,12 @@ function read_user_info_csv_file(){
 
 function convert_user_info_data(){
 	$this->layout=null;
-	$s_society_id = $this->Session->read('society_id');
+	 $s_society_id = $this->Session->read('society_id');
 	
 	$this->loadmodel('user_info_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
 	$result_import_record = $this->user_info_csv->find('all',array('conditions'=>$conditions,'limit'=>10));
+
 	foreach($result_import_record as $import_record){
 		$user_info_csv_id=$import_record["user_info_csv"]["auto_id"];
 		$name=trim($import_record["user_info_csv"]["name"]);
@@ -169,8 +170,9 @@ function convert_user_info_data(){
 		}
 		
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' . $flat_name . '$/i'),"society_id"=>$s_society_id);
+		$conditions=array("flat_name"=>(int)$flat_name,"wing_id"=>$wing_id,"society_id"=>$s_society_id);
 		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
+		
 		if(sizeof($result_ac)>0){
 			foreach($result_ac as $collection){
 				$flat_id = (int)$collection['flat']['flat_id'];
@@ -182,9 +184,10 @@ function convert_user_info_data(){
 		if($owner_tenant=="owner"){ $tenant=1; }else{ $tenant=2; }
 		
 		$this->loadmodel('user'); 
-		$conditions=array("wing"=>$wing_id,"flat"=>$flat_id,"tenant"=>$tenant);
+		$conditions=array("wing"=>$wing_id,"flat"=>$flat_id,"tenant"=>$tenant,"society_id"=>$s_society_id);
 		$result_user=$this->user->find('all',array('conditions'=>$conditions));
 		$user_id =0;
+		
 		foreach($result_user as $collection){
 				$user_id = (int)$collection['user']['user_id'];
 			}
@@ -237,7 +240,7 @@ function convert_user_info_data(){
 		$this->loadmodel('user_info_csv');
 		$this->user_info_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $user_info_csv_id));
 	}
-	
+
 	$this->loadmodel('user_info_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
 	$total_converted_records = $this->user_info_csv->find('count',array('conditions'=>$conditions));
@@ -992,7 +995,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+ //Configure::write('debug', 0);
 }
 
 
