@@ -127,7 +127,7 @@ $ob_id=(int)@$import_record["opening_balance_csv"]["auto_id"];
 $group_name=trim(@$import_record["opening_balance_csv"]["group"]);
 $account_name=trim(@$import_record["opening_balance_csv"]["subledger_ac"]);
 $wing_name=@$import_record["opening_balance_csv"]["wing_name"];
-$flat_name=@$import_record["opening_balance_csv"]["flat_name"];
+$flat_name=(int)@$import_record["opening_balance_csv"]["flat_name"];
 $type=@$import_record["opening_balance_csv"]["type"];
 $amount=@$import_record["opening_balance_csv"]["amount"];
 $penalty=@$import_record["opening_balance_csv"]["penalty"];
@@ -180,7 +180,7 @@ $wing_id = (int)$wing_detaill['wing']['wing_id'];
 }	
 	
 $this->loadmodel('flat'); 
-$conditions=array("flat_name"=> new MongoRegex('/^' .  trim($flat_name) . '$/i'),"society_id"=>$s_society_id,"wing_id"=>$wing_id);
+$conditions=array("flat_name"=> $flat_name,"society_id"=>$s_society_id,"wing_id"=>$wing_id);
 $flat_data=$this->flat->find('all',array('conditions'=>$conditions));
 foreach($flat_data as $flltdddt)
 {
