@@ -601,7 +601,7 @@ $credit=$amount;
 	
 	
 	
-		if($group_id==34){
+		if($group_id==34 && !empty($amount)){
 
 		$this->loadmodel('ledger');
 		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
