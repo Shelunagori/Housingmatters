@@ -307,6 +307,31 @@ $cursor3 = $this->accounts_group->find('all');
 $this->set('cursor3',$cursor3);
 }
 ///////////////////////// End modify_opening_balance ////////////////////////////////////
+//////////////////////// Start auto_save_opening_balance_date ////////////////////////////
+function auto_save_opening_balance_date($record_id=null,$field=null,$value=null)
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 	
+	
+	
+	if($field=="transaction_date")
+	{
+	$this->loadmodel('import_ob_record');
+	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	
+	
+	
+	
+	
+	
+}
+/////////////////////// End auto_save_opening_balance_date ///////////////////////////
 //////////////////////// Start auto_save_opening_balance ////////////////////////////////
 function auto_save_opening_balance($record_id=null,$field=null,$value=null)
 {
