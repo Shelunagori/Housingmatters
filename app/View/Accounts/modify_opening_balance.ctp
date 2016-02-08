@@ -33,7 +33,7 @@ $tt_credit = 0; ?>
 <tr id="<?php echo $csv_id; ?>">
 
 <td>
-<select class="m-wrap medium chosen" disabled="disabled">
+<select class="m-wrap medium" disabled="disabled">
 <option value="">Select Group Account</option>
 <?php
 foreach($cursor3 as $collection)
@@ -55,12 +55,12 @@ $group_name1= $collection['accounts_group']['group_name'];
 </td>
             
             
-<td id="change<?php echo $csv_id; ?>">
+<td>
 <?php
 if($ledger_type == 1)
 {
 ?>	
-<select class="m-wrap medium chosen" disabled="disabled">
+<select class="m-wrap medium" disabled="disabled">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor1 as $dataa)
 {
@@ -76,7 +76,7 @@ $name = $dataa['ledger_sub_account']['name'];
 }
 else{
 ?>	
-<select class="m-wrap medium chosen" disabled="disabled">
+<select class="m-wrap medium" disabled="disabled">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor2 as $dataa)
 {

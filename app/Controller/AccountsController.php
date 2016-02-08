@@ -588,6 +588,17 @@ $debit="";
 $credit=$amount;		
 }
 	
+	
+	 if(empty($amount) && !empty($penalty) && $group_id==34)
+	 {
+	$this->loadmodel('ledger');
+	$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+	$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$penalty,"credit"=>null,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date),"arrear_int_type"=>"YES"));   
+	}
+	
+	
+	
+	
 		if($group_id==34){
 
 		$this->loadmodel('ledger');
