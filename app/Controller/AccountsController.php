@@ -472,7 +472,7 @@ $ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
 $ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_id"];
 $type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
 $amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
-$penalty=$receipt_converted["opening_balance_csv_converted"]["penalty"];
+$penalty=@$receipt_converted["opening_balance_csv_converted"]["penalty"];
 		
 		
 if(empty($ledger)) { $ledger_v = 1; }else{ $ledger_v = 0; } 
@@ -487,7 +487,7 @@ if($type == 2)
 {
 if(empty($amount) && empty($penalty)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
 $total_credit = $total_credit + $amount + $penalty;
-		
+}		
 if(!empty($penalty))
 {
 if(is_numeric($penalty))
@@ -499,7 +499,11 @@ else
 $penalty_v = 1;
 }	
 }
+else
+{
+$penalty_v = 0;	
 }
+
 		
 if(!empty($amount))
 {	
