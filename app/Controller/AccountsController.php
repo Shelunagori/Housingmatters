@@ -567,7 +567,9 @@ function final_import_opening_balance()
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
 		$result_import_converted = $this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
 		
-		foreach($result_import_converted as $import_converted){
+		   foreach($result_import_converted as $import_converted){
+			$debit="";
+			$credit="";
 			$bank_receipt_csv_id=(int)$import_converted["opening_balance_csv_converted"]["auto_id"];
 			$group_id=(int)$import_converted["opening_balance_csv_converted"]["group_id"];
 			$ledger_id=(int)$import_converted["opening_balance_csv_converted"]["ledger_id"];
