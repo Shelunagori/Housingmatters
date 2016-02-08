@@ -76,7 +76,7 @@ $name = $dataa['ledger_sub_account']['name'];
 }
 else{
 ?>	
-<select class="m-wrap medium" disabled="disabled">
+<select class="m-wrap medium">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor2 as $dataa)
 {
@@ -175,8 +175,12 @@ $( document ).ready(function() {
 	});
 
 
+	
+});
+</script>
+<script>
 $( document ).ready(function() {
-	$( 'input[type="text"]' ).keydown(function() {
+	$( 'input[type="text"]' ).keyup(function() {
 		
 		var record_id=$(this).attr("record_id");
 		var field=$(this).attr("field");
@@ -199,21 +203,25 @@ $( document ).ready(function() {
 	});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 	
 });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>			  
 $(document).ready(function() {
 $( "#final_import" ).click(function() {
