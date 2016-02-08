@@ -33,34 +33,34 @@ $tt_credit = 0; ?>
 <tr id="<?php echo $csv_id; ?>">
 
 <td>
-<select class="m-wrap medium chosen">
+<select class="m-wrap medium chosen" onchange="drop_down(this.value,<?php echo $csv_id; ?>)" field="group" record_id="<?php echo $csv_id; ?>" typpp="1">
 <option value="">Select Group Account</option>
 <?php
 foreach($cursor3 as $collection)
 {
 $group_id5 = (int)$collection['accounts_group']['auto_id'];
 $group_name1= $collection['accounts_group']['group_name'];
-if($group_id2 == 15 || $group_id2 == 34 || $group_id2 == 33 || $group_id2 == 35 || $group_id2 == 112)
-{
+
 ?>
+<option value="<?php echo $group_id5; ?>" <?php if($group_id2 == $group_id5) { ?> selected="selected" <?php } ?>><?php echo $group_name1; ?></option>
+<?php } ?>
 <option value="15" <?php if($group_id2 == 15) { ?> selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
 <option value="112" <?php if($group_id2 == 112) { ?> selected="selected" <?php } ?>>Sundry Debtors Control A/c </option>
 <option value="33" <?php if($group_id2 == 33) { ?> selected="selected" <?php } ?>>Bank Accounts</option>
 <option value="35" <?php if($group_id2 == 35) { ?> selected="selected" <?php } ?>>Tax deducted at source (TDS receivable)</option>
 <option value="34" <?php if($group_id2 == 34) { ?> selected="selected" <?php } ?>>Members Control Account</option>
-<?php } else { ?>
-<option value="<?php echo $group_id5; ?>" <?php if($group_id2 == $group_id5) { ?> selected="selected" <?php } ?>><?php echo $group_name1; ?></option>
-<?php }} ?>
+
+
 </select>
 </td>
             
             
-<td>
+<td id="change<?php echo $csv_id; ?>">
 <?php
 if($ledger_type == 1)
 {
 ?>	
-<select class="m-wrap medium chosen">
+<select class="m-wrap medium chosen" field="sub" record_id="<?php echo $csv_id; ?>" typpp="2">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor1 as $dataa)
 {
@@ -76,7 +76,7 @@ $name = $dataa['ledger_sub_account']['name'];
 }
 else{
 ?>	
-<select class="m-wrap medium chosen">
+<select class="m-wrap medium chosen" field="sub" record_id="<?php echo $csv_id; ?>" typpp="2">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor2 as $dataa)
 {
@@ -173,6 +173,43 @@ $( document ).ready(function() {
 			}
 		});
 	});
+
+
+	$( 'select' ).change(function() {
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$("option:selected",this).val();
+		var typp=$(this).attr("typpp");
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Accounts/auto_save_opening_balance/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			alert(response);
+			if(response=="F"){
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 });
 </script>
@@ -222,9 +259,9 @@ change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_
 }		  
 </script>	
 
-
-
-
-
-
-
+<script>
+function drop_down(vv,iddd)
+{
+$("#change"+iddd).load("modify_opening_balance_ajax?vvv=" +vv+"&ccc="+iddd+"");
+}
+</script>

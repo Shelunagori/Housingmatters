@@ -317,44 +317,92 @@ $this->layout=null;
 	$record_id=(int)$record_id; 
 	
 	
+	if($field=="group")
+	{
+		
+	
+	$this->loadmodel('opening_balance_csv_converted');
+	$this->opening_balance_csv_converted->updateAll(array("ledger_id"=>"","group_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";		
+		
+	}
+	if($field=="sub")
+	{
+	
+	$this->loadmodel('opening_balance_csv_converted');
+	$this->opening_balance_csv_converted->updateAll(array("ledger_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";		
+		
+	}
 	
 	if($field=="transaction_date")
 	{
-		
-		
 	$this->loadmodel('import_ob_record');
 	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
 	echo "T";	
 	}
 	
 	if($field=="debit"){
-			if(!empty($value)){	
+			
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-			}
+			
 	}
 	
 	if($field=="credit"){
 		
-			if(!empty($value)){	
+				
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
 			echo "T";
-			}
+			
 	}
 	
 	if($field=="penalty"){
-		if(!empty($value)){	
+		
 			$this->loadmodel('opening_balance_csv_converted');
 			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
 			echo "T";
-		}
+		
 	}
 
 	
 }
 ///////////////////////////// End auto_save_opening_balance ///////////////////////////
+////////////////////////// Start modify_opening_balance_ajax /////////////////////////
+function modify_opening_balance_ajax()
+{
+$this->layout='blank';
+
+$this->ath();
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = $this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+
+$value = (int)$this->request->query('vvv');
+$csv_id = (int)$this->request->query('ccc');
+
+$this->set('value',$value);
+$this->set('csv_id',$csv_id);
+
+if($value == 33 || $value == 34 || $value == 35 || $value == 15 || $value == 112)
+{
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id,"ledger_id"=>$value);
+$cursor1 = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+}
+else
+{
+$this->loadmodel('ledger_account');
+$conditions=array("group_id"=>$value);
+$cursor2 = $this->ledger_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+}	
+	
+}
+////////////////////// End modify_opening_balance_ajax ////////////////////////////////
 //////////////////////// Start allow_import_opening_balance ////////////////////////////
 function allow_import_opening_balance()
 {
