@@ -152,7 +152,7 @@ for($ii=1;$ii<=$loop;$ii++){ ?>
 
 <script>
 $( document ).ready(function() {
-	$( 'input[type="text"]' ).blur(function() {
+	$( 'input[type="text"]' ).keyup(function() {
 		
 		var record_id=$(this).attr("record_id");
 		var field=$(this).attr("field");
