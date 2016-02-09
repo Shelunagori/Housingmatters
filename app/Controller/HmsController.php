@@ -22855,7 +22855,7 @@ $k=$last;
 }
 $k++;
 $this->loadmodel('flat');
-$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>(int)$flat_name, "society_id"=>$s_society_id));
+$multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>$flat_name, "society_id"=>$s_society_id));
 $this->flat->saveAll($multipleRowData);	
 
 }
