@@ -1,2 +1,5 @@
-Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration 
-12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration 
+Transaction Date,Deposited In,Receipt Mode,Cheque No/Reference/UTR #,Date,Drawn on which Bank?,Branch of Bank,Member Name,Wing,Flat,Receipt Type,Amount,Narration 
+25-01-2015,SBI,cheque,12345,25-01-2015,sbbj,udaipur,sort2,A,1002,M,5000,Receipt for jan
+25-01-2015,SBBJ,neft,3534,25-01-2015,sbi,udaipur,ashish,A,103,O,1953,Receipt for jan
+25-01-2015,SBBJ,pg,3534,25-01-2015,uco,udaipur,Sudhir,B,201,M,1953,Receipt for jan
+25-01-2015,Uco bank,neft,8489,25-01-2015,sbi,udaipur,Dr. D K Joshi,C,308,o,2000,Receipt for jan
