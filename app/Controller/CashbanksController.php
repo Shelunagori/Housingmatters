@@ -2242,7 +2242,7 @@ $s_society_id = $this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');
 
 $this->set('s_role_id',$s_role_id);
-
+/*
 $this->loadmodel('ledger_account');
 $cursor = $this->ledger_account->find('all');
 foreach ($cursor as $collection) 
@@ -2256,7 +2256,7 @@ $this->loadmodel('ledger_account');
 $this->ledger_account->updateAll(array("group_id"=>(int)$group_id,'ledger_name'=>$lll),array('auto_id'=>$auto_id));
 
 }	
-
+*/
 
 }
 
