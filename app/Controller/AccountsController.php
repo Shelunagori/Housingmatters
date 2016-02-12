@@ -4316,7 +4316,7 @@ function opening_balance_import_ajax()
 	$this->layout="blank";
 	$this->ath();
 
-	$s_society_id= (int)$this->Session->read('society_id');
+$s_society_id= (int)$this->Session->read('society_id');
 
 if(isset($_FILES['file'])){
 $file_name=$_FILES['file']['name'];
