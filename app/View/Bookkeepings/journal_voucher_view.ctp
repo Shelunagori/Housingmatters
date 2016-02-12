@@ -58,7 +58,7 @@ if($ledger_account_id == 34){
 				
 		$user_detail = $this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'fetch_user_info_via_flat_id'), array('pass' => array($wing_id,$flat_id)));		
 		foreach($user_detail as $data){
-		$ledger_ac_name = $data['user']['user_name'];
+		//$ledger_ac_name = $data['user']['user_name'];
 		}
 		$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'), array('pass' => array($wing_id,$flat_id))); 
 		
