@@ -1427,6 +1427,8 @@ function submit_notice(){
 		 @$s_duser_id[]=$child['society']['user_id'];
 	}
 	
+	
+	
 	if(empty($post_data['notice_subject'])){
 		$output = json_encode(array('type'=>'error', 'text' => 'Please fill subject.'));
 		die($output);
@@ -1439,6 +1441,18 @@ function submit_notice(){
 		$output = json_encode(array('type'=>'error', 'text' => 'Please select expire date for notice.'));
 		die($output);
 	}
+	
+	if(!empty($post_data['notice_expire_date'])){
+		 if(strtotime($post_data['notice_expire_date'])<strtotime($date)){
+				$output = json_encode(array('type'=>'error', 'text' => 'Notice expire date should be > than current date'));
+				die($output);
+		
+			}
+	
+		
+	}
+
+	
 	if(empty($post_data['code'])){
 		$output = json_encode(array('type'=>'error', 'text' => 'Please create notice.'));
 		die($output);
