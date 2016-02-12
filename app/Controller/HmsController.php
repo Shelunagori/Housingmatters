@@ -428,10 +428,11 @@ function final_import_user_info_ajax(){
 			}
 			
 			if(($email!=$al_email) or ($mobile!=$al_mobile)){
+				echo'ddgg';
 			/////// Start email code 	
 				$res_society=$this->society_name($s_society_id);
 				foreach($res_society as $data){
-				$society_name=$data['society']['society_name'];
+				echo $society_name=$data['society']['society_name'];
 				}
 				$s_n='';
 				$sco_na=$society_name;
@@ -749,7 +750,8 @@ if(!empty($email) && empty($mobile)){
 			
 		}
 		
-		
+		echo 'rohit';
+			exit;
 		
 		$this->loadmodel('user_info_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
