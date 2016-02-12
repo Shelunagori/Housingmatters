@@ -246,7 +246,7 @@ $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/lod
 $.ajax({
 url: "<?php echo $webroot_path; ?>Accounts/allow_import_opening_balance",
 }).done(function(response){
-	alert(response);
+	
 response = response.replace(/\s+/g,' ').trim();
 	
 if(response=="F"){
