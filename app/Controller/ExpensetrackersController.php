@@ -783,10 +783,22 @@ $target = "expense_temp/";
 $target=@$target.basename($file_name);
 move_uploaded_file($file_tmp_name,@$target);
 }
-				
-	
 }
 ///////////////// End expense_upload ////////////////////////////
 
+/////////////////// Start expense_tracker_import ////////////////////////////////////
+function expense_tracker_import()
+{
+if($this->RequestHandler->isAjax()){
+$this->layout='blank';
+}else{
+$this->layout='session';
+}
+$this->ath();
+$this->check_user_privilages();
+$s_society_id=(int)$this->Session->read('society_id');	
+	
+}
+////////////////// End expense_tracker_import ///////////////////////////////////////
 }
 ?>
