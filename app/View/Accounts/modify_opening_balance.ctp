@@ -209,7 +209,7 @@ $( document ).ready(function() {
 </script>
 
 
-<script>/*
+<script>
 $( document ).ready(function() {
 	$( 'input[type="text"]' ).blur(function() {
 		
@@ -235,7 +235,7 @@ $( document ).ready(function() {
 
 
 	
-});*/
+});
 </script>
 
 <script>			  
