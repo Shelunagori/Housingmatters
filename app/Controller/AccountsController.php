@@ -28,10 +28,28 @@ function opening_balance_import()
 	}else{
 	$this->layout='session';
 	}
-
-	$this->ath();
+$this->ath();
 	$this->check_user_privilages();
 	$s_society_id=(int)$this->Session->read('society_id');
+	
+	$value = "";
+	$value = $this->request->query('bbb');
+	if(!empty($value))
+	{
+	$this->loadmodel('opening_balance_csv_converted');
+	$conditions4=array('society_id'=>$s_society_id);
+	$this->opening_balance_csv_converted->deleteAll($conditions4);
+
+	$this->loadmodel('opening_balance_csv');
+	$conditions4=array('society_id'=>$s_society_id);
+	$this->opening_balance_csv->deleteAll($conditions4);
+
+	$this->loadmodel('import_ob_record');
+	$conditions4=array("society_id" => $s_society_id, "module_name" => "OB");
+	$this->import_ob_record->deleteAll($conditions4);	
+	}
+	
+
 				
 	$this->loadmodel('import_ob_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
