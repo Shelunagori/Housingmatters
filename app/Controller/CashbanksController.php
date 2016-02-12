@@ -6109,8 +6109,7 @@ $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id = (int)$this->Session->read('user_id');
 
-
-$excel = "Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
+$excel= "Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
 $excel.="12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration \n";
 echo $excel;
 
