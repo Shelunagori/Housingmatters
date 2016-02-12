@@ -76,7 +76,7 @@ $name = $dataa['ledger_sub_account']['name'];
 }
 else{
 ?>	
-<select class="m-wrap medium">
+<select class="m-wrap medium" disabled="disabled">
 <option value="" style="display:none;">Select</option>
 <?php foreach($cursor2 as $dataa)
 {
@@ -95,17 +95,17 @@ $name = $dataa['ledger_account']['ledger_name'];
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 1){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="debit" record_id="<?php echo $csv_id; ?>"/>
+<?php if($type == 1){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="debit" record_id="<?php echo $csv_id; ?>" readonly="readonly"/>
 </td>
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 2){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="credit" record_id="<?php echo $csv_id; ?>"/>
+<?php if($type == 2){ ?> value="<?php echo $amount; ?>"  <?php } ?> field="credit" record_id="<?php echo $csv_id; ?>" readonly="readonly"/>
 </td>
 
 <td>
 <input type="text" class="m-wrap span10" style="background-color:white !important;"
-<?php if($type == 2 && !empty($penalty)){ ?> value="<?php echo $penalty; ?>"  <?php } ?> field="penalty" record_id="<?php echo $csv_id; ?>"/>                       
+<?php if($type == 2 && !empty($penalty)){ ?> value="<?php echo $penalty; ?>"  <?php } ?> field="penalty" record_id="<?php echo $csv_id; ?>" readonly="readonly"/>                       
 </td>                      
 
 <td>
@@ -144,13 +144,13 @@ for($ii=1;$ii<=$loop;$ii++){ ?>
 </ul>
 </div>
 <br/>
-
-<a class="btn purple big" role="button" id="final_import">IMPORT VOUCHERS <i class="m-icon-big-swapright m-icon-white"></i></a>									
+<a href="<?php echo $webroot_path; ?>Accounts/opening_balance_import?bbb=55" rel="tab" class="btn purple big"><i class="m-icon-big-swapleft m-icon-white"></i> Back</a>
+<a class="btn purple big" role="button" id="final_import">IMPORT OPENING BALANCE <i class="m-icon-big-swapright m-icon-white"></i></a>									
 <div id="check_validation_result"></div>		  
 
 
 
-<script>
+<script>/*
 $( document ).ready(function() {
 	$( 'input[type="text"]' ).keyup(function() {
 		
@@ -176,10 +176,10 @@ $( document ).ready(function() {
 
 
 	
-});
-</script>
+}); */
+</script> 
 
-<script>
+<script>/*
 $( document ).ready(function() {
 	$( 'input[type="text"]' ).keydown(function() {
 		
@@ -205,11 +205,11 @@ $( document ).ready(function() {
 
 
 	
-});
+}); */
 </script>
 
 
-<script>
+<script>/*
 $( document ).ready(function() {
 	$( 'input[type="text"]' ).blur(function() {
 		
@@ -235,19 +235,8 @@ $( document ).ready(function() {
 
 
 	
-});
+});*/
 </script>
-
-
-
-
-
-
-
-
-
-
-
 
 <script>			  
 $(document).ready(function() {
