@@ -600,6 +600,7 @@ function final_import_opening_balance()
 		   foreach($result_import_converted as $import_converted){
 			$debit="";
 			$credit="";
+			
 			$bank_receipt_csv_id=(int)$import_converted["opening_balance_csv_converted"]["auto_id"];
 			$group_id=(int)$import_converted["opening_balance_csv_converted"]["group_id"];
 			$ledger_id=(int)$import_converted["opening_balance_csv_converted"]["ledger_id"];

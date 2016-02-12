@@ -18,7 +18,7 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 		<form method="post" id="form1" style="margin: 0px;">
 			<h5>Upload CSV file in given format to import Receipts.</h5>
 			<input name="file" class="default" id="image-file" type="file">
-			<a href="<?php echo $webroot_path; ?>Bank_Receipt_csv_files/sample/Bank_Receipt_Import_Sample.csv" download=""><b>Click here for sample format</b></a><br/><br/>
+			<a href="bank_payment_import_excel" download=""><b>Click here for sample format</b></a><br/><br/>
 			<h5 id="submit_element" >
 			<button type="submit" class="btn blue">IMPORT RECEIPTS</button>
 			</h5>
