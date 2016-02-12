@@ -1444,7 +1444,7 @@ function submit_notice(){
 	
 	if(!empty($post_data['notice_expire_date'])){
 		 if(strtotime($post_data['notice_expire_date'])<strtotime($date)){
-				$output = json_encode(array('type'=>'error', 'text' => 'Notice expire date should be > than current date'));
+				$output = json_encode(array('type'=>'error', 'text' => 'Notice expire date should be >current date'));
 				die($output);
 		
 			}
