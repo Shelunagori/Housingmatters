@@ -120,5 +120,119 @@ $description = $data['expense_tracker_csv_converted']['description'];
 </table>
 </div>
 
+<?php if(empty($page)){ $page=1;} ?>
+<div >
+	<span>Showing page:</span><span> <?php echo $page; ?></span> <br/>
+	<span>Total entries: <?php echo ($count_bank_receipt_converted); ?></span>
+</div>
+<div class="pagination pagination-large ">
+<ul>
+<?php 
+$loop=(int)($count_bank_receipt_converted/20);
+if($count_bank_receipt_converted%20>0){
+	$loop++;
+}
+for($ii=1;$ii<=$loop;$ii++){ ?>
+	<li><a href="<?php echo $webroot_path; ?>Expensetrackers/modify_expense_tracker/<?php echo $ii; ?>" rel='tab' role="button" ><?php echo $ii; ?></a></li>
+<?php } ?>
+</ul>
+</div>
+<br/>
+
+<a class="btn purple big" role="button" id="final_import">IMPORT VOUCHERS <i class="m-icon-big-swapright m-icon-white"></i></a>									
+<div id="check_validation_result"></div>		  
+
+
+<script>
+$( document ).ready(function() {
+	$( 'input[type="text"]' ).blur(function() {
+		
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$(this).val();
+		
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			
+			if(response=="F"){
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('input[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
+	
+	$( 'select' ).change(function() {
+		var record_id=$(this).attr("record_id");
+		var field=$(this).attr("field");
+		var value=$("option:selected",this).val();
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+		}).done(function(response){
+			if(response=="F"){
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "solid 1px red");
+				});
+			}else{
+				$("#main_table tr#"+record_id+" td").each(function(){
+					$(this).find('select[field="'+field+'"]').parent("div").css("border", "");
+				});
+			}
+		});
+	});
+});
+
+</script>
+
+			  
+<script>			  
+$(document).ready(function() {
+$( "#final_import" ).click(function() {
+$("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/loding.gif" /><span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Importing Receipts.</span>');
+
+$.ajax({
+url: "<?php echo $webroot_path; ?>Cashbanks/allow_import_bank_payment",
+}).done(function(response){
+	
+	response = response.replace(/\s+/g,' ').trim();
+	
+if(response=="F"){
+$("#check_validation_result").html("");
+alert("Your Data Is Not Valid.");
+}else{
+	
+change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
+}
+});
+});	
+});	  
+</script>			  
+
+<script>			  
+	function change_page_automatically(pageurl){
+	$("#loading").show();
+
+	$.ajax({
+		url: pageurl,
+		}).done(function(response) {
+		
+		//$("#loading_ajax").html('');
+		
+		$(".page-content").html(response);
+		$("#loading").hide();
+		$("html, body").animate({
+			scrollTop:0
+		},"slow");
+		 $('#submit_success').hide();
+		});
+	
+	window.history.pushState({path:pageurl},'',pageurl);
+}		  
+</script>			  
 
 
