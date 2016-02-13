@@ -9655,6 +9655,19 @@ $this->ledger->saveAll($multipleRowData);
 
 }
 //////////////////////// End final_import_bank_payment_ajax ////////////////////////
+////////////////////// Start delete_bank_payment_row /////////////////////////////
+function delete_bank_payment_row($record_id=null)
+{
+$this->layout=null;
+$s_society_id = $this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');
+$this->loadmodel('payment_csv_converted');
+$conditions4=array("auto_id" => (int)$record_id);
+$this->payment_csv_converted->deleteAll($conditions4);
+echo "1";	
+	
+}
+////////////////////// End delete_bank_payment_row ////////////////////////////////
 }
 ?>
 
