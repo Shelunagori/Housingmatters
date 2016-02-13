@@ -97,7 +97,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                      
                      
                      <td>
-                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" maxlength="7" value="<?php echo $amount; ?>" field="amt" record_id="<?php echo $csv_auto_id; ?>" record_id="<?php echo $csv_auto_id; ?>">
+                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" maxlength="7" value="<?php echo $amount; ?>" field="amt" record_id="<?php echo $csv_auto_id; ?>">
                      </td>
                      
                      
@@ -171,9 +171,11 @@ $( document ).ready(function() {
 		var record_id=$(this).attr("record_id");
 		var field=$(this).attr("field");
 		var value=$("option:selected",this).val();
+		
 		$.ajax({
-			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_expense_tracker/"+record_id+"/"+field+"/"+value,
+			url: "<?php echo $webroot_path; ?>Expensetrackers/auto_save_expense_tracker/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
+			
 			if(response=="F"){
 				$("#main_table tr#"+record_id+" td").each(function(){
 					$(this).find('select[field="'+field+'"]').parent("div").css("border", "solid 1px red");

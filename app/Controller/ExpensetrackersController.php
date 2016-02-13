@@ -972,8 +972,9 @@ if($this->RequestHandler->isAjax()){
 	$process_status= @$step1+@$step2+@$step3;
 	if($process_status==3){
 		$this->loadmodel('expense_tracker_csv_converted'); 
+		$order=array('expense_tracker_csv_converted.auto_id'=>'ASC');
 		$conditions=array("society_id"=>(int)$s_society_id);
-		$result_bank_receipt_converted=$this->expense_tracker_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page));
+		$result_bank_receipt_converted=$this->expense_tracker_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page,'order'=>$order));
 		$this->set('result_bank_receipt_converted',$result_bank_receipt_converted);
 		
 		$this->loadmodel('expense_tracker_csv_converted'); 
@@ -1003,11 +1004,6 @@ $this->layout=null;
 	$this->ath();
 	$s_society_id = $this->Session->read('society_id');
 	$record_id=(int)$record_id; 	
-	
-	
-		$this->loadmodel('expense_tracker_csv_converted');
-		$auto_iddd=$this->autoincrement('expense_tracker_csv_converted','auto_id');
-		$this->expense_tracker_csv_converted->saveAll(Array(Array("auto_id" => $auto_iddd, "posting_date"=>$posting_date,"invoice_date" => $invoice_date,"due_date" => $due_date, "party_ac_id" => $party_ac_id, "invoice_ref" => $invoice_ref,"expense_head_id"=>$expense_head_id,"amount"=>$amount,"description"=>$description,"society_id"=>$s_society_id,"is_imported"=>"NO")));
 		
 	if($field=="posting")
 	{
