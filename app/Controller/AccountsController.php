@@ -108,17 +108,24 @@ function read_csv_file_ob()
 	foreach($test as $child){ $i++;
 		if($i>1){
 			$child_ar=explode(',',$child[0]);
+			$group=@$child_ar[0];
+			$subledger_ac=@$child_ar[1];
+			$wing_name=@$child_ar[2];
+			$flat_name=(int)@$child_ar[3];
+			$type=@$child_ar[4];
+			$amount=@$child_ar[5];
+			$penalty=@$child_ar[6];
 			
-			
-			
+			if(!empty($amount) || !empty($penalty))
+			{
 			$this->loadmodel('opening_balance_csv');
 			$auto_id=$this->autoincrement('opening_balance_csv','auto_id');
 			$this->opening_balance_csv->saveAll(Array(Array("auto_id" => $auto_id, "group" => $group,"subledger_ac"=>$subledger_ac,"wing_name"=>$wing_name, "flat_name" => $flat_name, "type" => $type,"amount"=>$amount,"penalty"=>$penalty,"society_id"=>$s_society_id,"is_converted"=>"NO")));
-		
+		} 
 		}
 	   }
-	$this->loadmodel('import_expense_tracker_record');
-	$this->import_expense_tracker_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "ET"));
+	$this->loadmodel('import_ob_record');
+	$this->import_ob_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));
 	die(json_encode("READ"));	
 	
 }
