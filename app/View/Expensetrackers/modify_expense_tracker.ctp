@@ -198,7 +198,7 @@ $( "#final_import" ).click(function() {
 $("#check_validation_result").html('<img src="<?php echo $webroot_path; ?>as/loding.gif" /><span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Importing Receipts.</span>');
 
 $.ajax({
-url: "<?php echo $webroot_path; ?>Cashbanks/allow_import_bank_payment",
+url: "<?php echo $webroot_path; ?>Expensetrackers/allow_import_expense_tracker",
 }).done(function(response){
 	
 	response = response.replace(/\s+/g,' ').trim();
@@ -208,7 +208,7 @@ $("#check_validation_result").html("");
 alert("Your Data Is Not Valid.");
 }else{
 	
-change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
+change_page_automatically("<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import");
 }
 });
 });	
