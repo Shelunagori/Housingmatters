@@ -39,7 +39,7 @@ $( document ).ready(function() {
 });
 </script>
 
-<a href="intent://send/09869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end">+91-9869157561</a>
+
 <?php 
 foreach ($result_user as $collection)   
               	 {
