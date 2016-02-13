@@ -37,7 +37,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 <!----- import functioality start --------->
 
-<a href="#" class="btn purple" role="button" id="import">Import</a>
+<a href="<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import" class="btn purple" role="button" rel="tab">Import</a>
 <div id="myModal3" class="modal hide fade in" style="display: none;">
 <div class="modal-backdrop fade in"></div>
 	<form id="form1" method="post">
