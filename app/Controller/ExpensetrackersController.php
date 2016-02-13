@@ -884,51 +884,57 @@ function convert_imported_data_et()
 $this->layout=null;
 	$s_society_id = $this->Session->read('society_id');
 	
-	$this->loadmodel('opening_balance_csv');
+	$this->loadmodel('expense_tracker_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
-	$result_import_record = $this->opening_balance_csv->find('all',array('conditions'=>$conditions,'limit'=>20));
+	$result_import_record = $this->expense_tracker_csv->find('all',array('conditions'=>$conditions,'limit'=>20));
 	foreach($result_import_record as $import_record){
 
-$ob_id=(int)@$import_record["opening_balance_csv"]["auto_id"];
-$group_name=trim(@$import_record["opening_balance_csv"]["group"]);
-$account_name=trim(@$import_record["opening_balance_csv"]["subledger_ac"]);
-$wing_name=@$import_record["opening_balance_csv"]["wing_name"];
-$flat_name=(int)@$import_record["opening_balance_csv"]["flat_name"];
-$type=@$import_record["opening_balance_csv"]["type"];
-$amount=@$import_record["opening_balance_csv"]["amount"];
-$penalty=@$import_record["opening_balance_csv"]["penalty"];
+$ep_id=(int)@$import_record["expense_tracker_csv"]["auto_id"];
+$posting_date=trim(@$import_record["expense_tracker_csv"]["posting_date"]);
+$invoice_date=trim(@$import_record["expense_tracker_csv"]["invoice_date"]);
+$due_date=@$import_record["expense_tracker_csv"]["due_date"];
+$party_ac=(int)@$import_record["expense_tracker_csv"]["party_ac"];
+$invoice_ref=@$import_record["expense_tracker_csv"]["invoice_ref"];
+$expense_head=@$import_record["expense_tracker_csv"]["expense_head"];
+$amount=@$import_record["expense_tracker_csv"]["amount"];
+$description=@$import_record["expense_tracker_csv"]["description"];
 
+$this->loadmodel('ledger_sub_account');
+$conditions=array("name"=> new MongoRegex('/^' . trim($party_ac) . '$/i'),'society_id'=>$s_society_id);
+$result_ledger_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+foreach($result_ledger_account as $data1){
+$party_ac_id=(int)@$data1['ledger_sub_account']['auto_id'];
+}
+			
+$this->loadmodel('ledger_account');
+$conditions=array("ledger_name"=> new MongoRegex('/^' . trim($expense_head) . '$/i'));
+$result_ledger_account=$this->ledger_account->find('all',array('conditions'=>$conditions));
+foreach($result_ledger_account as $data){
+$expense_head_id=(int)$data['ledger_account']['auto_id'];
+}
 
+	
 
-
-
-
-
-
-
-
-////////////////////////////////////////		
-
-		$this->loadmodel('opening_balance_csv_converted');
-		$auto_iddd=$this->autoincrement('opening_balance_csv_converted','auto_id');
-		$this->opening_balance_csv_converted->saveAll(Array(Array("auto_id" => $auto_iddd, "group_id"=>$group_id,"ledger_id" => $auto_id,"ledger_type" => $ledger_type, "wing_id" => $wing_id, "flat_id" => $flat_id,"type"=>$type_id,"amount"=>$amount,"penalty"=>$penalty,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		$this->loadmodel('expense_tracker_csv_converted');
+		$auto_iddd=$this->autoincrement('expense_tracker_csv_converted','auto_id');
+		$this->expense_tracker_csv_converted->saveAll(Array(Array("auto_id" => $auto_iddd, "posting_date"=>$posting_date,"invoice_date" => $invoice_date,"due_date" => $due_date, "party_ac_id" => $party_ac_id, "invoice_ref" => $invoice_ref,"expense_head_id"=>$expense_head_id,"amount"=>$amount,"description"=>$description,"society_id"=>$s_society_id,"is_imported"=>"NO")));
 		
-		$this->loadmodel('opening_balance_csv');
-		$this->opening_balance_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $ob_id));
+		$this->loadmodel('expense_tracker_csv');
+		$this->expense_tracker_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $ep_id));
 	}
 	
-	$this->loadmodel('opening_balance_csv');
+	$this->loadmodel('expense_tracker_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
-	$total_converted_records = $this->opening_balance_csv->find('count',array('conditions'=>$conditions));
+	$total_converted_records = $this->expense_tracker_csv->find('count',array('conditions'=>$conditions));
 	
-	$this->loadmodel('opening_balance_csv');
+	$this->loadmodel('expense_tracker_csv');
 	$conditions=array("society_id" => $s_society_id);
-	$total_records = $this->opening_balance_csv->find('count',array('conditions'=>$conditions));
+	$total_records = $this->expense_tracker_csv->find('count',array('conditions'=>$conditions));
 	
 	$converted_per=($total_converted_records*100)/$total_records;
 	if($converted_per==100){ $again_call_ajax="NO"; 
-		$this->loadmodel('import_ob_record');
-		$this->import_ob_record->updateAll(array("step3" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));
+		$this->loadmodel('import_expense_tracker_record');
+		$this->import_expense_tracker_record->updateAll(array("step3" => 1),array("society_id" => $s_society_id, "module_name" => "ET"));
 	}else{
 		$again_call_ajax="YES"; 
 			
