@@ -14,6 +14,15 @@ public $components = array(
 
 var $name = 'Hms';
 
+function tenancy_agreement_via_user_fetch($society_id,$user_id){
+	
+	$this->loadmodel('tenant');
+	$conditions=array("society_id" => $society_id,'user_id'=>$user_id);
+	return $this->tenant->find('all',array('conditions'=>$conditions));
+	
+}
+
+
 function check_charecter_name($name){
 	
 	$dd=explode(' ',$name);
@@ -116,7 +125,7 @@ function read_user_info_csv_file(){
 			$child_ar=explode(',',$child[0]);
 			$name=$child_ar[0];
 			$wing_name=$child_ar[1];
-			$flat_name=$child_ar[2];
+			$flat_name=(int)$child_ar[2];
 			$owner_tenant=$child_ar[3];
 			$email=$child_ar[4];
 			$mobile=$child_ar[5];
@@ -134,11 +143,12 @@ function read_user_info_csv_file(){
 
 function convert_user_info_data(){
 	$this->layout=null;
-	$s_society_id = $this->Session->read('society_id');
+	 $s_society_id = $this->Session->read('society_id');
 	
 	$this->loadmodel('user_info_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
 	$result_import_record = $this->user_info_csv->find('all',array('conditions'=>$conditions,'limit'=>10));
+
 	foreach($result_import_record as $import_record){
 		$user_info_csv_id=$import_record["user_info_csv"]["auto_id"];
 		$name=trim($import_record["user_info_csv"]["name"]);
@@ -160,8 +170,9 @@ function convert_user_info_data(){
 		}
 		
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' . $flat_name . '$/i'),"society_id"=>$s_society_id);
+		$conditions=array("flat_name"=>(int)$flat_name,"wing_id"=>$wing_id,"society_id"=>$s_society_id);
 		$result_ac=$this->flat->find('all',array('conditions'=>$conditions));
+		
 		if(sizeof($result_ac)>0){
 			foreach($result_ac as $collection){
 				$flat_id = (int)$collection['flat']['flat_id'];
@@ -173,9 +184,10 @@ function convert_user_info_data(){
 		if($owner_tenant=="owner"){ $tenant=1; }else{ $tenant=2; }
 		
 		$this->loadmodel('user'); 
-		$conditions=array("wing"=>$wing_id,"flat"=>$flat_id,"tenant"=>$tenant);
+		$conditions=array("wing"=>$wing_id,"flat"=>$flat_id,"tenant"=>$tenant,"society_id"=>$s_society_id);
 		$result_user=$this->user->find('all',array('conditions'=>$conditions));
 		$user_id =0;
+		
 		foreach($result_user as $collection){
 				$user_id = (int)$collection['user']['user_id'];
 			}
@@ -228,7 +240,7 @@ function convert_user_info_data(){
 		$this->loadmodel('user_info_csv');
 		$this->user_info_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $user_info_csv_id));
 	}
-	
+
 	$this->loadmodel('user_info_csv');
 	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
 	$total_converted_records = $this->user_info_csv->find('count',array('conditions'=>$conditions));
@@ -380,6 +392,7 @@ function final_import_user_info_ajax(){
 	$s_society_id = $this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');
 	
+		
 	$this->loadmodel('user_info_import_record');
 	$conditions=array("society_id" => $s_society_id);
 	$result_import_record = $this->user_info_import_record->find('all',array('conditions'=>$conditions));
@@ -400,7 +413,7 @@ function final_import_user_info_ajax(){
 		foreach($result_import_converted as $data){
 			
 			$auto_id=$data["user_info_csv_converted"]["auto_id"];
-			$user_id=$data["user_info_csv_converted"]["user_id"];
+			$user_id=(int)$data["user_info_csv_converted"]["user_id"];
 			$email=$data["user_info_csv_converted"]["email"];
 			$mobile=$data["user_info_csv_converted"]["mobile"];
 			
@@ -410,22 +423,27 @@ function final_import_user_info_ajax(){
 			foreach($result_user as $data2){
 				$al_email=$data2["user"]["email"];
 				$al_mobile=$data2["user"]["mobile"];
+				//$name=$data2["user"]["user_name"];
+				//$da_login_id=@$data2["user"]["login_id"];
 			}
+			
 			
 			if($email!=$al_email){
 				
 				$this->loadmodel('user');
 				$this->user->updateAll(array("email" => $email),array("user_id" => (int)$user_id));
-			}
+				}
 			if($mobile!=$al_mobile){
 				$this->loadmodel('user');
 				$this->user->updateAll(array("mobile" => $mobile),array("user_id" => (int)$user_id));
+				
 			}
+
 			
 			if(empty($al_email) && empty($al_mobile)){
 				$this->loadmodel('login');
 				$login_id=$this->autoincrement('login','login_id');
-				$this->login->saveAll(array('login_id' => $login_id, 'user_name' => $email, 'mobile' => $mobile, 'signup_random' => ""));
+				$this->login->saveAll(array('login_id' => $login_id, 'user_name' => $email, 'mobile' => $mobile, 'signup_random' =>$random,'password'=>$random));
 				
 				$this->loadmodel('user');
 				$this->user->updateAll(array("login_id" => $login_id),array("user_id" => (int)$user_id));
@@ -435,9 +453,7 @@ function final_import_user_info_ajax(){
 			$this->user_info_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => (int)$auto_id));
 			
 		}
-		
-		
-		
+			
 		$this->loadmodel('user_info_csv_converted');
 		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
 		$total_converted_records = $this->user_info_csv_converted->find('count',array('conditions'=>$conditions));
@@ -983,7 +999,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+Configure::write('debug', 0);
 }
 
 
@@ -4620,8 +4636,8 @@ if ($this->request->is('post'))
 				foreach($result_user as $data)
 				{
 				
-				$user_id=$data['user']['user_id'];
-				$society_id=$data['user']['society_id'];
+				 $user_id=$data['user']['user_id'];
+				 $society_id=$data['user']['society_id']; 
 				$user_name=$data['user']['user_name'];
 				$wing=$data['user']['wing'];
 				$tenant=$data['user']['tenant'];
@@ -4633,7 +4649,24 @@ if ($this->request->is('post'))
 						$this->user->updateAll(array('slide_show'=>0),array('user_id'=>$user_id));
 					}
 				}
-				 
+				if($tenant==1){ $type="Owner"; }else{ $type="Tenant"; }
+				
+				date_default_timezone_set('Asia/kolkata');
+				$date2=date("d-m-Y");
+
+				$result_society= $this->society_name($society_id);
+				$access_tenant=$result_society[0]['society']['access_tenant'];
+					if($access_tenant==0 && $type=="Tenant"){
+						goto a;
+					}
+				if($tenant==2){
+					$result_tenant= $this->tenancy_agreement_via_user_fetch($society_id,$user_id);
+					$t_end_date=$result_tenant[0]['tenant']['t_end_date'];
+						if(strtotime($t_end_date)<strtotime($date2)){
+							goto a;
+						}
+					}
+					
 					$this->loadmodel('user');
 					$conditions5=array('signup_random'=>$password);
 					$res_n=$this->user->find('all',array('conditions'=>$conditions5));
@@ -4671,7 +4704,8 @@ if ($this->request->is('post'))
 				 
 				 	}
 				
-				 
+				a:
+				$this->set('wrong', 'Login is not allowed by Administrator ');
 				 
 			 }
 			 else
@@ -6119,17 +6153,16 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
-	$s_society_id = $this->Session->read('society_id');
-	/*$this->loadmodel('flat');
-	$conditions=array("society_id" => $s_society_id);
-	$result_flat = $this->flat->find('all',array('conditions'=>$conditions));
+	/* $s_society_id = $this->Session->read('society_id');
+	$this->loadmodel('flat');
+	$result_flat = $this->flat->find('all');
 	foreach($result_flat as $data){
 		$flat_id=(int)$data["flat"]["flat_id"];
 		$flat_name=$data["flat"]["flat_name"];
 		
 		$this->loadmodel('flat');
 		$this->flat->updateAll(array("flat_name" => (int)$flat_name),array("flat_id" => $flat_id));
-	}*/
+	} */
 	
 	//echo "hello";
 	//exit;
@@ -17081,8 +17114,8 @@ foreach($result_flat as $data)
 	$flat_id=$data['flat']['flat_id'];
 	$this->set('flat_search',@$flat_id);
 	$this->loadmodel('user_flat');	
-	$conditions=array('flat_id'=>$flat_id,'active'=>0);
-	$result_user=$this->user_flat->find('all',array('conditions'=>$conditions));
+	$conditions1=array('flat_id'=>$flat_id,'active'=>0);
+	$result_user=$this->user_flat->find('all',array('conditions'=>$conditions1));
 	
 	foreach($result_user as $dda)
 	{
@@ -17097,25 +17130,32 @@ $this->set('result_usser_flat',@$da_user_id);
 $this->set('search_value',$search);
 $regex_hob = new MongoRegex("/.*$search.*/i"); 
 $this->loadmodel('hobbies_category');
-$conditions=array('hobbies_name'=>$regex_hob);
-$result_hobbies_category=$this->hobbies_category->find('all',array('conditions'=>$conditions));
- $hob_id=(string)$result_hobbies_category[0]['hobbies_category']['hobbies_id'];
+$conditions2=array('hobbies_name'=>$regex_hob);
+$result_hobbies_category=$this->hobbies_category->find('all',array('conditions'=>$conditions2));
+@$hob_id=(string)$result_hobbies_category[0]['hobbies_category']['hobbies_id'];
 
 $regex = new MongoRegex("/.*$search.*/i");  
 $this->loadmodel('user');
-$conditions =array( '$or' => array( 
+if(!empty($hob_id)){
+$conditions3 =array( '$or' => array( 
 		array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0),
-		array("hobbies" => $hob_id),
+		array("hobbies" => $hob_id,'society_id'=>$s_society_id,'deactive'=>0),
 		));
-		
-$result=$this->user->find('all',array('conditions'=>$conditions));
+}else{
+$conditions3 =array( '$or' => array( 
+		array('user_name'=>$regex,'society_id'=>$s_society_id,'deactive'=>0),
+		));
+
+}	
+$result=$this->user->find('all',array('conditions'=>$conditions3));
+
 $this->set('result_user',$result); 
 $n=sizeof($result);
 $this->set('count_user2',$n);
 $this->loadmodel('user');
-$conditions=array("society_id" => $s_society_id,'deactive'=>0);
+$conditions4=array("society_id" => $s_society_id,'deactive'=>0);
 $order1=array('user.user_name'=> 'ASC');
-$result2=$this->user->find('all',array('conditions'=> $conditions,'order'=>$order1));
+$result2=$this->user->find('all',array('conditions'=> $conditions4,'order'=>$order1));
 $this->set('result_user3',$result2);
 }
 
@@ -24588,7 +24628,7 @@ $res_society=$this->society_name($s_society_id);
 foreach($res_society as $data)
 {
  $society_name=$data['society']['society_name'];
-
+ $access_tenant=$data['society']['access_tenant'];
 }
 $s_n='';
 $sco_na=$society_name;
@@ -24674,19 +24714,23 @@ foreach($myArray as $child){
 		$this->loadmodel('user_flat');
 		$conditions=array("flat_id" => (int)$child[2],'active'=>0,'family_member'=>array('$ne'=>1));
 		$result4 = $this->user_flat->find('all',array('conditions'=>$conditions));
-		
-		
+		$result_flat=$this->fetch_wing_id_via_flat_id((int)$child[2]);
+		$noc_status=@$result_flat[0]['flat']['noc_ch_tp'];
 		 $n4 = sizeof($result4); 
 		if($n4==1){
 			
 			$tenant=$result4[0]['user_flat']['status'];
 			if($tenant==1){
-				if($tenant==(int)$child[5]){
+				if($noc_status==1){
+					 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already self Occupied');
 					
-				 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already exist owner');	
-					
+				}else{
+					if($tenant==(int)$child[5]){
+						
+					 $report[]=array('tr'=>$c,'td'=>3, 'text' => 'already exist owner');	
+						
+					}
 				}
-				
 				
 			}else{
 				
@@ -24785,10 +24829,12 @@ foreach($myArray as $child)
 	if($tenant==1)
 	{
 	 $committee=(int)$child[6];
+	 $type="Owner";
 	}
 	else
 	{
 	 $committee=2;
+	  $type="Tenant";
 	}
 
 	$role_id[]=2;
@@ -24809,8 +24855,8 @@ foreach($myArray as $child)
 	$random=$random1.$random2 ;	
 	$de_user_id=$this->encode($i,'housingmatters');
 	$random=$de_user_id.'/'.$random;
-	
-
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
+		
 		if(!empty($mobile) && empty($email))
 		{
 			$r_sms=$this->hms_sms_ip();
@@ -24828,6 +24874,10 @@ foreach($myArray as $child)
 			$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms1.'');
 			}
 		}
+		
+	}
+
+		
 
 		/////////// insert code user table ///////////////////////
 		
@@ -24847,6 +24897,7 @@ foreach($myArray as $child)
 			}
 		/////////////  End code ledger sub accounts //////////////////////////
 		$special="'";
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && !empty($mobile))
 		{
 		$login_user=$email;	
@@ -24988,7 +25039,8 @@ foreach($myArray as $child)
 </table>';
 		
 		}
-		
+	}	
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && empty($mobile))
 		{
 			
@@ -25130,7 +25182,10 @@ foreach($myArray as $child)
 </table>';
 			
 		}
-
+	}
+	
+	
+	
 			$from_name="HousingMatters";
 			$reply="support@housingmatters.in";
 			$to=$email;
@@ -25284,6 +25339,7 @@ $k++;
 $this->loadmodel('flat');
 $multipleRowData = Array( Array("flat_id"=>$k, "wing_id"=>$wing, "flat_name"=>(int)$flat_number, "society_id"=>$s_society_id));
 $this->flat->saveAll($multipleRowData);
+
 
 }
 $output = json_encode(array('type'=>'succ', 'text' => 'Record Inserted Successfully'));
@@ -26427,7 +26483,7 @@ $financial_year_to = $to3;
 
 
 ?>
-<select class="m-wrap medium chosen resident_drop_down" id="resident" name="resident">
+<select class="m-wrap medium chosen resident_drop_down" name="resident">
 <option value="" style="display:none;">Select Sub Ledger A/c</option>
 	<?php
 	$this->loadmodel('ledger_sub_account');

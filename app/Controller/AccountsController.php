@@ -23,18 +23,702 @@ function master_ledger_sub_account_ajax()
 //////////////////////////// Start Opening Balance Import (Accounts)//////////////////////////
 function opening_balance_import()
 {
-			if($this->RequestHandler->isAjax()){
-			$this->layout='blank';
-			}else{
-			$this->layout='session';
-			}
-			
-				$this->ath();
-				$this->check_user_privilages();
-				$s_society_id=(int)$this->Session->read('society_id');
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+$this->ath();
+	$this->check_user_privilages();
+	$s_society_id=(int)$this->Session->read('society_id');
+	
+	$value = "";
+	$value = $this->request->query('bbb');
+	if(!empty($value))
+	{
+	$this->loadmodel('opening_balance_csv_converted');
+	$conditions4=array('society_id'=>$s_society_id);
+	$this->opening_balance_csv_converted->deleteAll($conditions4);
+
+	$this->loadmodel('opening_balance_csv');
+	$conditions4=array('society_id'=>$s_society_id);
+	$this->opening_balance_csv->deleteAll($conditions4);
+
+	$this->loadmodel('import_ob_record');
+	$conditions4=array("society_id" => $s_society_id, "module_name" => "OB");
+	$this->import_ob_record->deleteAll($conditions4);	
+	}
+	
+
+				
+	$this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+		$step4=(int)@$data_import["import_ob_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;			
+				
 }
 //////////////////// End Opening Balance Import (Accounts)/////////////////////////////////////
 
+/////////////////// Start upload_opening_balance_csv_file ///////////////////////////////
+function upload_opening_balance_csv_file()
+{
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$this->ath();
+	if(isset($_FILES['file'])){
+		$file_name=$s_society_id.".csv";
+		$file_tmp_name =$_FILES['file']['tmp_name'];
+		$target = "openig_balance_csv_file/";
+		$target=@$target.basename($file_name);
+		move_uploaded_file($file_tmp_name,@$target);
+		
+		
+		$today = date("d-M-Y");
+		
+		$this->loadmodel('import_ob_record');
+		$auto_id=$this->autoincrement('import_ob_record','auto_id');
+		$this->import_ob_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "OB","step1" => 1,"date"=>$today))); 
+		
+		die(json_encode("UPLOADED"));
+	}
+}
+////////////////// End upload_opening_balance_csv_file ////////////////////////////////////
+//////////////////// Start read_csv_file_ob ///////////////////////////////////////
+function read_csv_file_ob()
+{
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$f = fopen('openig_balance_csv_file/'.$s_society_id.'.csv', 'r') or die("ERROR OPENING DATA");
+	$batchcount=0;
+	$records=0;
+	while (($line = fgetcsv($f, 4096, ';')) !== false) {
+	$numcols = count($line);
+	$test[]=$line;
+	++$records;
+	}
+	$i=0;
+	foreach($test as $child){ $i++;
+		if($i>1){
+			$child_ar=explode(',',$child[0]);
+			$group=@$child_ar[0];
+			$subledger_ac=@$child_ar[1];
+			$wing_name=@$child_ar[2];
+			$flat_name=(int)@$child_ar[3];
+			$type=@$child_ar[4];
+			$amount=@$child_ar[5];
+			$penalty=@$child_ar[6];
+			
+			if(!empty($amount) || !empty($penalty))
+			{
+			$this->loadmodel('opening_balance_csv');
+			$auto_id=$this->autoincrement('opening_balance_csv','auto_id');
+			$this->opening_balance_csv->saveAll(Array(Array("auto_id" => $auto_id, "group" => $group,"subledger_ac"=>$subledger_ac,"wing_name"=>$wing_name, "flat_name" => $flat_name, "type" => $type,"amount"=>$amount,"penalty"=>$penalty,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+		} 
+		}
+	   }
+	$this->loadmodel('import_ob_record');
+	$this->import_ob_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));
+	die(json_encode("READ"));	
+	
+}
+///////////////////// End read_csv_file_ob //////////////////////////////////////////
+///////////////////// Start convert_imported_data_ob ///////////////////////////////
+function convert_imported_data_ob()
+{
+$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$this->loadmodel('opening_balance_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
+	$result_import_record = $this->opening_balance_csv->find('all',array('conditions'=>$conditions,'limit'=>20));
+	foreach($result_import_record as $import_record){
+
+$ob_id=(int)@$import_record["opening_balance_csv"]["auto_id"];
+$group_name=trim(@$import_record["opening_balance_csv"]["group"]);
+$account_name=trim(@$import_record["opening_balance_csv"]["subledger_ac"]);
+$wing_name=@$import_record["opening_balance_csv"]["wing_name"];
+$flat_name=(int)@$import_record["opening_balance_csv"]["flat_name"];
+$type=@$import_record["opening_balance_csv"]["type"];
+$amount=@$import_record["opening_balance_csv"]["amount"];
+$penalty=@$import_record["opening_balance_csv"]["penalty"];
+
+//////////////////////////////////////////
+$this->loadmodel('ledger_account'); 
+$conditions=array("ledger_name"=> new MongoRegex('/^' . $group_name . '$/i'));
+$group_detail=$this->ledger_account->find('all',array('conditions'=>$conditions));
+foreach($group_detail as $group_data)
+{
+$group_id = (int)$group_data['ledger_account']['auto_id'];
+}
+
+$this->loadmodel('accounts_group'); 
+$conditions=array("group_name"=> new MongoRegex('/^' .  $group_name . '$/i'));
+$group_detail2=$this->accounts_group->find('all',array('conditions'=>$conditions));
+foreach($group_detail2 as $group_data2)
+{
+$group_id = (int)$group_data2['accounts_group']['auto_id'];
+}
+
+$auto_id = "";
+$validdddnnn=5;
+        
+$account_nameee = trim($account_name);
+$account_nameee = htmlentities($account_nameee);
+		
+$this->loadmodel('ledger_account'); 
+$conditions=array("ledger_name"=> new MongoRegex('/^' .  trim($account_name) . '$/i'),"group_id"=>$group_id);
+$conditions =array( '$or' => array( 
+array("ledger_name"=> new MongoRegex('/^' .  trim($account_name) . '$/i'),"group_id"=>$group_id),
+array("ledger_name"=> $account_name ,"group_id"=>$group_id),
+array("ledger_name"=> $account_nameee,"group_id"=>$group_id)));
+$ledg_ddtaill=$this->ledger_account->find('all',array('conditions'=>$conditions));
+foreach($ledg_ddtaill as $ledgr_dattt)
+{
+$auto_id = (int)$ledgr_dattt['ledger_account']['auto_id'];
+$ledger_type = 2;
+$validdddnnn=555;
+}
+
+if($group_id == 34)
+{
+$this->loadmodel('wing'); 
+$conditions=array("wing_name"=> new MongoRegex('/^' . trim($wing_name) . '$/i'),"society_id"=>$s_society_id);
+$wing_dataaa=$this->wing->find('all',array('conditions'=>$conditions));
+foreach($wing_dataaa as $wing_detaill)
+{
+$wing_id = (int)$wing_detaill['wing']['wing_id'];
+}	
+	
+$this->loadmodel('flat'); 
+$conditions=array("flat_name"=> $flat_name,"society_id"=>$s_society_id,"wing_id"=>$wing_id);
+$flat_data=$this->flat->find('all',array('conditions'=>$conditions));
+foreach($flat_data as $flltdddt)
+{
+$flat_id = (int)$flltdddt['flat']['flat_id'];
+}	
+	    		
+$this->loadmodel('ledger_sub_account'); 
+$conditions=array("flat_id"=>$flat_id,"ledger_id"=>$group_id);
+$subledger_data=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+foreach($subledger_data as $sub_lddrr_dddttt)
+{
+$auto_id = (int)$sub_lddrr_dddttt['ledger_sub_account']['auto_id'];
+$ledger_type = 1;
+$validdddnnn=555;
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_with_brackets'),array('pass'=>array($wing_id,$flat_id)));	
+}
+}
+else
+{
+$this->loadmodel('ledger_sub_account'); 
+$conditions=array("name"=> new MongoRegex('/^' .  trim($account_name) . '$/i'),"ledger_id"=>$group_id);
+$subledger_data=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+foreach($subledger_data as $sub_lddrr_dddttt)
+{
+$auto_id = (int)$sub_lddrr_dddttt['ledger_sub_account']['auto_id'];
+$ledger_type = 1;
+$validdddnnn=555;
+}
+}
+$e = (int)strcasecmp("Debit",$type);
+$c = (int)strcasecmp("Credit",$type);
+if($e == 0)
+{
+$type_id = 1;	
+}
+if($c == 0)
+{
+$type_id = 2;		
+}
+////////////////////////////////////////		
+
+		$this->loadmodel('opening_balance_csv_converted');
+		$auto_iddd=$this->autoincrement('opening_balance_csv_converted','auto_id');
+		$this->opening_balance_csv_converted->saveAll(Array(Array("auto_id" => $auto_iddd, "group_id"=>$group_id,"ledger_id" => $auto_id,"ledger_type" => $ledger_type, "wing_id" => $wing_id, "flat_id" => $flat_id,"type"=>$type_id,"amount"=>$amount,"penalty"=>$penalty,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		
+		$this->loadmodel('opening_balance_csv');
+		$this->opening_balance_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $ob_id));
+	}
+	
+	$this->loadmodel('opening_balance_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
+	$total_converted_records = $this->opening_balance_csv->find('count',array('conditions'=>$conditions));
+	
+	$this->loadmodel('opening_balance_csv');
+	$conditions=array("society_id" => $s_society_id);
+	$total_records = $this->opening_balance_csv->find('count',array('conditions'=>$conditions));
+	
+	$converted_per=($total_converted_records*100)/$total_records;
+	if($converted_per==100){ $again_call_ajax="NO"; 
+		$this->loadmodel('import_ob_record');
+		$this->import_ob_record->updateAll(array("step3" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));
+	}else{
+		$again_call_ajax="YES"; 
+			
+		}
+	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));	
+	
+}
+//////////////////////// End convert_imported_data_ob /////////////////////////////////////
+
+//////////////////////// Start modify_opening_balance ///////////////////////////////////
+function modify_opening_balance($page=null)
+{
+	if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
+	
+	
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);	
+
+
+    $this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+	   $tra_date = @$data_import["import_ob_record"]["tra_date"];
+	}
+	$this->set('tra_date',$tra_date);
+	
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('opening_balance_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page));
+		$this->set('result_bank_receipt_converted',$result_bank_receipt_converted);
+		
+		$this->loadmodel('opening_balance_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_bank_receipt_converted=$this->opening_balance_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+	}
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id);
+$cursor1 = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+$this->loadmodel('ledger_account');
+$cursor2 = $this->ledger_account->find('all');
+$this->set('cursor2',$cursor2);
+
+$this->loadmodel('accounts_group');
+$cursor3 = $this->accounts_group->find('all');
+$this->set('cursor3',$cursor3);
+}
+///////////////////////// End modify_opening_balance ////////////////////////////////////
+//////////////////////// Start auto_save_opening_balance_date ////////////////////////////
+function auto_save_opening_balance_date($record_id=null,$field=null,$value=null)
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 	
+	
+	
+	if($field=="transaction_date")
+	{
+	$this->loadmodel('import_ob_record');
+	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	
+	
+	
+	
+	
+	
+}
+/////////////////////// End auto_save_opening_balance_date ///////////////////////////
+//////////////////////// Start auto_save_opening_balance ////////////////////////////////
+function auto_save_opening_balance($record_id=null,$field=null,$value=null)
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 
+	
+	
+	if($field=="group")
+	{
+		
+	
+	$this->loadmodel('opening_balance_csv_converted');
+	$this->opening_balance_csv_converted->updateAll(array("ledger_id"=>"","group_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";		
+		
+	}
+	if($field=="sub")
+	{
+	
+	$this->loadmodel('opening_balance_csv_converted');
+	$this->opening_balance_csv_converted->updateAll(array("ledger_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";		
+		
+	}
+	
+	if($field=="transaction_date")
+	{
+	$this->loadmodel('import_ob_record');
+	$this->import_ob_record->updateAll(array("tra_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	if($field=="debit"){
+			
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("type"=>1,"amount"=>$value),array("auto_id" => $record_id));
+			echo "T";
+			
+	}
+	
+	if($field=="credit"){
+		
+				
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("type"=>2,"amount"=>$value),array("auto_id" => $record_id));
+			echo "T";
+			
+	}
+	
+	if($field=="penalty"){
+		
+			$this->loadmodel('opening_balance_csv_converted');
+			$this->opening_balance_csv_converted->updateAll(array("penalty" => $value),array("auto_id" => $record_id));
+			echo "T";
+		
+	}
+
+	
+}
+///////////////////////////// End auto_save_opening_balance ///////////////////////////
+////////////////////////// Start modify_opening_balance_ajax /////////////////////////
+function modify_opening_balance_ajax()
+{
+$this->layout='blank';
+
+$this->ath();
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = $this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+
+$value = (int)$this->request->query('vvv');
+$csv_id = (int)$this->request->query('ccc');
+
+$this->set('value',$value);
+$this->set('csv_id',$csv_id);
+
+if($value == 33 || $value == 34 || $value == 35 || $value == 15 || $value == 112)
+{
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id,"ledger_id"=>$value);
+$cursor1 = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+}
+else
+{
+$this->loadmodel('ledger_account');
+$conditions=array("group_id"=>$value);
+$cursor2 = $this->ledger_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+}	
+	
+}
+////////////////////// End modify_opening_balance_ajax ////////////////////////////////
+//////////////////////// Start allow_import_opening_balance ////////////////////////////
+function allow_import_opening_balance()
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = (int)$this->Session->read('society_id');
+    $total_debit = 0;
+	$total_credit = 0;
+	
+	
+	$this->loadmodel('import_ob_record'); 
+	$conditions=array("society_id"=>(int)$s_society_id);
+	$ddddd=$this->import_ob_record->find('all',array('conditions'=>$conditions));
+	foreach($ddddd as $fffff){
+	$tra_date=$fffff['import_ob_record']['tra_date'];
+	}
+	if(empty($tra_date)){ $trr_v=1;   }else{ $trr_v=0;    }
+	
+	
+		    $ddatttt = $tra_date;
+			$dattttt = date('Y-m-d',strtotime($ddatttt));
+			$dddatttt = strtotime($dattttt);
+			
+			$this->loadmodel('financial_year');
+			$conditions=array("society_id"=>$s_society_id,"status"=>1);
+			$cursor=$this->financial_year->find('all',array('conditions'=>$conditions));
+			if(sizeof($cursor) == 0)
+			{
+			$nnnnn = 555;	
+			}
+			foreach($cursor as $dataaa)
+			{
+				$fin_from_date = $dataaa['financial_year']['from'];
+				$fin_to_date = $dataaa['financial_year']['to'];
+				$from_date = date('Y-m-d',$fin_from_date->sec);
+				$to_date = date('Y-m-d',$fin_to_date->sec);
+				$from = strtotime($from_date);
+				$to = strtotime($to_date);
+					if($from <= $dddatttt && $to >= $dddatttt)
+					{
+					$nnnnn = 55;
+					break;
+					}
+					else
+					{
+					$nnnnn = 555;
+					}
+			}
+			
+			if($nnnnn == 555)
+			{
+			$trajection_date_v=1;
+			}
+	   	    else{
+			$trajection_date_v=0;	
+			}
+	
+$this->loadmodel('opening_balance_csv_converted'); 
+$conditions=array("society_id"=>(int)$s_society_id);
+$order=array('opening_balance_csv_converted.auto_id'=>'ASC');
+$result_bank_receipt_converted=$this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions));
+foreach($result_bank_receipt_converted as $receipt_converted){
+$ledger="";
+$ob_id=(int)$receipt_converted["opening_balance_csv_converted"]["auto_id"];
+//$type=$receipt_converted["opening_balance_csv_converted"]["type"];
+$ledger = $receipt_converted["opening_balance_csv_converted"]["ledger_id"];
+$type = (int)$receipt_converted["opening_balance_csv_converted"]["type"];
+$amount = $receipt_converted["opening_balance_csv_converted"]["amount"];
+$penalty=@$receipt_converted["opening_balance_csv_converted"]["penalty"];
+		
+		
+if(empty($ledger)) { $ledger_v = 1; }else{ $ledger_v = 0; } 
+		
+
+if($type == 1)
+{
+if(empty($amount)) { $amount_v = 1;   }else{  $amount_v = 0;  }	
+$total_debit = $total_debit + $amount;
+}
+if($type == 2)
+{
+if(empty($amount) && empty($penalty)) { $amount_v = 1;   }else{  $amount_v = 0;   }		
+$total_credit = $total_credit + $amount + $penalty;
+}		
+if(!empty($penalty))
+{
+if(is_numeric($penalty))
+{ 
+$penalty_v = 0;
+}
+else
+{
+$penalty_v = 1;
+}	
+}
+else
+{
+$penalty_v = 0;	
+}
+
+		
+if(!empty($amount))
+{	
+if(is_numeric($amount))
+{ 
+$amount_vv = 0;
+}
+else
+{
+$amount_vv = 1;
+}
+}
+
+		
+		$v_result[]=array($amount_v,$amount_vv,$ledger_v,$penalty_v);
+		
+	} 
+	
+	
+	
+	
+	
+	//&& ($tt_v == 0) && ($trajection_date_v == 0) && ($trr_v == 0))
+	if($total_credit == $total_debit) { $tt_v = 0;  }else{   $tt_v = 1;   }
+	
+	
+	
+	foreach($v_result as $data){
+		if(array_sum($data)==0) { $tt ="T"; }else{ $tt="F"; break;  }
+	}
+	
+	
+			if($tt == "T" && $trr_v == 0 && $trr_v == 0 && $trajection_date_v == 0 && $tt_v == 0){
+			$this->loadmodel('import_ob_record');
+			$this->import_ob_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "OB"));	
+		    }else{ echo "F"; die; }
+	
+	
+}
+//////////////////////// End allow_import_opening_balance //////////////////////////////
+//////////////////////// Start final_import_opening_balance ////////////////////////////
+function final_import_opening_balance()
+{
+
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	
+	$this->loadmodel('import_ob_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "OB");
+	$result_import_record = $this->import_ob_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_ob_record"]["step1"];
+		$step2=(int)@$data_import["import_ob_record"]["step2"];
+		$step3=(int)@$data_import["import_ob_record"]["step3"];
+		$step4=(int)@$data_import["import_ob_record"]["step4"];
+	 $transaction_date = $data_import['import_ob_record']['tra_date'];
+	
+	}
+	
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	$transaction_date = date('Y-m-d',strtotime($transaction_date));
+	if($process_status==4){
+		$this->loadmodel('opening_balance_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
+		$result_import_converted = $this->opening_balance_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		
+		   foreach($result_import_converted as $import_converted){
+			$debit="";
+			$credit="";
+			
+			$bank_receipt_csv_id=(int)$import_converted["opening_balance_csv_converted"]["auto_id"];
+			$group_id=(int)$import_converted["opening_balance_csv_converted"]["group_id"];
+			$ledger_id=(int)$import_converted["opening_balance_csv_converted"]["ledger_id"];
+			$ledger_type=(int)$import_converted["opening_balance_csv_converted"]["ledger_type"];
+			$type=(int)$import_converted["opening_balance_csv_converted"]["type"];
+			$amount=$import_converted["opening_balance_csv_converted"]["amount"];
+			$penalty=$import_converted["opening_balance_csv_converted"]["penalty"];
+	
+		
+if($type==1)
+{
+$debit=$amount;
+$credit="";	
+}
+else
+{
+$debit="";
+$credit=$amount;		
+}
+	
+	
+	 if(empty($amount) && !empty($penalty) && $group_id==34)
+	 {
+	$this->loadmodel('ledger');
+	$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+	$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$penalty,"credit"=>null,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date),"arrear_int_type"=>"YES"));   
+	}
+	
+	
+	
+	
+		if($group_id==34 && !empty($amount)){
+
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$debit,"credit"=>$credit,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date)));
+
+		
+		if($penalty>0 && $type == 2){
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_id,"debit"=>$penalty,"credit"=>null,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date),"arrear_int_type"=>"YES"));
+		}
+		}
+		else if($group_id==33 || $group_id==35 || $group_id==15 || $group_id==112){
+		
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" =>$group_id,
+		"ledger_sub_account_id" => $ledger_id,"debit"=>$debit,"credit"=>$credit,
+		"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,
+		"transaction_date"=>strtotime($transaction_date)));	
+		}
+		else
+		{
+		$this->loadmodel('ledger');
+		$ledger_auto_id=$this->autoincrement('ledger','auto_id');
+		$this->ledger->saveAll(array("auto_id" => $ledger_auto_id,"ledger_account_id" => $ledger_id,"ledger_sub_account_id" => null,"debit"=>$debit,"credit"=>$credit,"table_name"=>"opening_balance","element_id"=>null,"society_id"=>$s_society_id,"transaction_date"=>strtotime($transaction_date)));
+		}
+		
+$this->loadmodel('opening_balance_csv_converted');
+$this->opening_balance_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => $bank_receipt_csv_id));
+		
+		
+		}
+		
+		
+		$this->loadmodel('opening_balance_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
+		$total_converted_records = $this->opening_balance_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('opening_balance_csv_converted');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->opening_balance_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$converted_per=($total_converted_records*100)/$total_records;
+		
+		
+		if($converted_per==100){ $again_call_ajax="NO"; 
+			
+			$this->loadmodel('opening_balance_csv_converted');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->opening_balance_csv_converted->deleteAll($conditions4);
+			
+			$this->loadmodel('opening_balance_csv');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->opening_balance_csv->deleteAll($conditions4);
+			
+			$this->loadmodel('import_ob_record');
+			$conditions4=array("society_id" => $s_society_id, "module_name" => "OB");
+			$this->import_ob_record->deleteAll($conditions4);
+		}else{
+			$again_call_ajax="YES"; 
+			}
+		die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per_im"=>$converted_per)));
+	}	
+	
+	
+}
+//////////////////////// End final_import_opening_balance ///////////////////////////
 /////////////////////////////////// Start Master Period Status (Accounts)//////////////////////
 function master_financial_period_status()
 {
@@ -3632,7 +4316,7 @@ function opening_balance_import_ajax()
 	$this->layout="blank";
 	$this->ath();
 
-	$s_society_id= (int)$this->Session->read('society_id');
+$s_society_id= (int)$this->Session->read('society_id');
 
 if(isset($_FILES['file'])){
 $file_name=$_FILES['file']['name'];

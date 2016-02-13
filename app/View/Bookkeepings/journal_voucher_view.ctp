@@ -46,10 +46,10 @@ $transaction_date=date('d-m-Y',$transaction_date);
 $result_ledger_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));
 $ledger_ac_name=$result_ledger_account[0]['ledger_account']['ledger_name'];
 
-if($ledger_account_id == 34 ){
-	$result_ledger_sub_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($ledger_sub_account_id)));
+if($ledger_account_id == 34){
+	$result_ledger_sub_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($ledger_sub_account_id)));
 	$flat_id=$result_ledger_sub_account[0]['ledger_sub_account']['flat_id'];	
-	$led_sub_name=$result_ledger_sub_account[0]['ledger_sub_account']['name'];
+	$ledger_ac_name=$result_ledger_sub_account[0]['ledger_sub_account']['name'];
 		//wing_id via flat_id//
 				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 				foreach($result_flat_info as $flat_info){
@@ -58,7 +58,7 @@ if($ledger_account_id == 34 ){
 				
 		$user_detail = $this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'fetch_user_info_via_flat_id'), array('pass' => array($wing_id,$flat_id)));		
 		foreach($user_detail as $data){
-		$user_name = $data['user']['user_name'];
+		$ledger_ac_name = $data['user']['user_name'];
 		}
 		$wing_flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'), array('pass' => array($wing_id,$flat_id))); 
 		
@@ -67,11 +67,11 @@ if($ledger_account_id == 34 ){
 	$wing_flat=null;
 
  }
-	if($ledger_account_id == 33){
+	if($ledger_account_id == 33 || $ledger_account_id == 33 || $ledger_account_id == 35 || $ledger_account_id == 15 || $ledger_account_id == 112){
 		$result_ledger_sub_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($ledger_sub_account_id)));
 		$led_sub_name=$result_ledger_sub_account[0]['ledger_sub_account']['name'];
 		$bank_account=$result_ledger_sub_account[0]['ledger_sub_account']['bank_account'];
-		$user_name.=$led_sub_name.'  '.$bank_account;
+		$ledger_ac_name =$led_sub_name.'  '.$bank_account;
 	}	
 	
 
@@ -89,7 +89,7 @@ $wing_flat_prepared=$this->requestAction(array('controller' => 'hms', 'action' =
 
 ?>
 <tr>
-<td><?php echo $ledger_ac_name ; ?>   <?php echo $user_name; ?> <?php echo $wing_flat; ?>  </td>
+<td><?php echo $ledger_ac_name ; ?> <?php echo $wing_flat; ?>  </td>
 
 <td align="right"><?php echo $debit ; ?>  <?php $total_debit+=$debit; ?></td>
 <td align="right"><?php echo $credit ; ?> <?php $total_credit+=$credit; ?></td>

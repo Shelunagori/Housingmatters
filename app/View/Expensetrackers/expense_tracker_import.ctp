@@ -1,22 +1,11 @@
-<?php
-echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), array('pass' => array()));
-?>				   
-<script>
-$(document).ready(function() {
-$("#fix<?php echo $id_current_page; ?>").removeClass("blue");
-$("#fix<?php echo $id_current_page; ?>").addClass("red");
-});
-</script>
-
-
 <?php foreach($result_import_record as $data_import){
-	$step1=(int)@$data_import["import_ob_record"]["step1"];
-	$step2=(int)@$data_import["import_ob_record"]["step2"];
-	$step3=(int)@$data_import["import_ob_record"]["step3"];
-	$step4=(int)@$data_import["import_ob_record"]["step4"];
-	$step5=(int)@$data_import["import_ob_record"]["step5"];
-	$date=@$data_import["import_ob_record"]["date"];
-	$file_name=@$data_import["import_ob_record"]["file_name"];
+	$step1=(int)@$data_import["import_expense_tracker_record"]["step1"];
+	$step2=(int)@$data_import["import_expense_tracker_record"]["step2"];
+	$step3=(int)@$data_import["import_expense_tracker_record"]["step3"];
+	$step4=(int)@$data_import["import_expense_tracker_record"]["step4"];
+	$step5=(int)@$data_import["import_expense_tracker_record"]["step5"];
+	$date=@$data_import["import_expense_tracker_record"]["date"];
+	$file_name=@$data_import["import_expense_tracker_record"]["file_name"];
 }
 $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 <div id="first_div">
@@ -29,7 +18,7 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 		<form method="post" id="form1" style="margin: 0px;">
 			<h5>Upload CSV file in given format to import Receipts.</h5>
 			<input name="file" class="default" id="image-file" type="file">
-			<a href="open_excel" download="" target="_blank">Download sample format</a><br/><br/>
+			<a href="expense_tracker_export" download="" target="_blank">Download sample format</a><br/><br/>
 			<h5 id="submit_element" >
 			<button type="submit" class="btn blue">IMPORT RECEIPTS</button>
 			</h5>
@@ -37,6 +26,7 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 	</div>
 </div>
 <?php } ?>
+
 
 <?php if(@$process_status==1){ ?>
 <div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
@@ -50,17 +40,18 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 <script>
 $( document ).ready(function() {
     $.ajax({
-		url: "read_csv_file_ob",
+		url: "read_csv_file_expense",
 		dataType: 'json'
 	}).done(function(response){
 		
 		if(response=="READ"){
-			change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_import");
+			change_page_automatically("<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import");
 		}
 	});
 });
 </script>
 <?php } ?>
+
 <?php if(@$process_status==2){ ?>
 <div style="width: 40%; margin: auto; background-color: rgb(210, 243, 196); border: 2px solid rgb(113, 177, 85); padding: 10px;">
 	<img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
@@ -83,7 +74,7 @@ $( document ).ready(function() {
 function convert_csv_data_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "convert_imported_data_ob",
+			url: "convert_imported_data_et",
 			dataType: 'json'
 		}).done(function(response){
 			if(response.again_call_ajax=="YES"){
@@ -91,7 +82,7 @@ function convert_csv_data_ajax(){
 				convert_csv_data_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
-				change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_import");
+				change_page_automatically("<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import");
 			}
 		});
 	});
@@ -111,7 +102,7 @@ function convert_csv_data_ajax(){
 <img src="<?php echo $webroot_path; ?>img/test-pass-icon.png" style="height: 20px;"/>
 <span style="padding-left: 10px; font-weight: bold; color: rgb(0, 106, 0);">Uploaded Data Is Ready To More Modification.</span>
 <br/><br/>
-<a href="<?php echo $webroot_path; ?>Accounts/modify_opening_balance" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
+<a href="<?php echo $webroot_path; ?>Expensetrackers/modify_expense_tracker" class="btn red"  id="pulsate-regular">MODIFY DATA</a>
 </div>
 <?php } ?>
 <?php if(@$process_status==4){ ?>
@@ -143,7 +134,7 @@ $( document ).ready(function() {
 function final_import_opening_balance(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "final_import_opening_balance",
+			url: "final_import_expense_tracker",
 			dataType: 'json'
 		}).done(function(response){
 			//alert(response);
@@ -153,7 +144,7 @@ function final_import_opening_balance(){
 				final_import_opening_balance();
 			}
 			if(response.again_call_ajax=="NO"){
-				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Accounts/opening_balance_import">OK</a> </p></div>');
+				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Expense Tracker record Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import">OK</a> </p></div>');
 			}
 		});
 	});
@@ -174,10 +165,6 @@ function final_import_opening_balance(){
 
 
 
-
-
-
-
 <script>
 $('form#form1').submit( function(ev){
 	ev.preventDefault();
@@ -185,7 +172,7 @@ $('form#form1').submit( function(ev){
 	var m_data = new FormData();
 	m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	$.ajax({
-	url: "<?php echo $webroot_path; ?>Accounts/upload_opening_balance_csv_file",
+	url: "<?php echo $webroot_path; ?>Expensetrackers/upload_expense_tracker_csv_file",
 	data: m_data,
 	processData: false,
 	contentType: false,
@@ -193,7 +180,7 @@ $('form#form1').submit( function(ev){
 	dataType: 'json'
 	}).done(function(response){
 		if(response=="UPLOADED"){
-			change_page_automatically("<?php echo $webroot_path; ?>Accounts/opening_balance_import");
+			change_page_automatically("<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import");
 		}
 	});
 });
@@ -218,8 +205,6 @@ function change_page_automatically(pageurl){
 	window.history.pushState({path:pageurl},'',pageurl);
 }
 </script>
-
-
 
 
 

@@ -41,7 +41,6 @@
 			url: "read_user_info_csv_file",
 			dataType: 'json'
 		}).done(function(response){
-			
 			if(response=="READ"){
 				change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 			}
@@ -77,13 +76,14 @@ function convert_csv_data_ajax(){
 			url: "convert_user_info_data",
 			dataType: 'json'
 		}).done(function(response){
+			//alert(response);
 			if(response.again_call_ajax=="YES"){
 				$("#progress").css("width",response.converted_per+"%");
 				convert_csv_data_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
 				change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
-			}
+			} 
 		});
 	});
 }
@@ -138,13 +138,14 @@ function final_import_user_info_ajax(){
 			url: "final_import_user_info_ajax",
 			dataType: 'json'
 		}).done(function(response){
+			
 			if(response.again_call_ajax=="YES"){
 				$("#progress_im").css("width",response.converted_per_im+"%");
 				$("#text_per_im").html(response.converted_per_im.toFixed(2)+"%");
 				final_import_user_info_ajax();
 			}
 			if(response.again_call_ajax=="NO"){
-				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Receipts Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Hms/email_mobile_update" >OK</a> </p></div>');
+				$("#first_div").html('<div class="alert alert-block alert-success fade in"><h4 class="alert-heading">Success!</h4><p>Email and Mobile Imported successfully.</p><p><a class="btn green" href="<?php echo $webroot_path; ?>Hms/email_mobile_update" >OK</a> </p></div>');
 			}
 		});
 	});

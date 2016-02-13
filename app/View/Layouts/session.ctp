@@ -123,7 +123,7 @@ $webroot_path=$this->requestAction(array('controller' => 'Hms', 'action' => 'web
 <link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<?php echo $webroot_path; ?>assets/css/metro.css" rel="stylesheet" />
 	
-	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.1.css" rel="stylesheet" />
+	<link href="<?php echo $webroot_path; ?>assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
 	<link href="<?php echo $webroot_path; ?>assets/css/style.1.css" rel="stylesheet" />
@@ -457,7 +457,7 @@ $(document).ready(function() {
 
 		<!-- BEGIN TOP NAVIGATION BAR -->
 		<div class="navbar-inner hide_at_print">
-			<div class="container-fluid" style="padding-right: 0px;">
+			<div class="container-fluid navbar" style="padding-right: 0px;">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="<?php echo $webroot_path; ?>Hms/dashboard" style="margin-top:-9px;">
 				<img src="<?php echo $webroot_path; ?>as/hm/hm-logo.png" alt="logo" height="16px" width="120px"/>

@@ -2242,9 +2242,21 @@ $s_society_id = $this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');
 
 $this->set('s_role_id',$s_role_id);
+/*
+$this->loadmodel('ledger_account');
+$cursor = $this->ledger_account->find('all');
+foreach ($cursor as $collection) 
+{
+$auto_id = (int)$collection['ledger_account']['auto_id'];
+$group_id = (int)$collection['ledger_account']['group_id'];
+$ledger_name = $collection['ledger_account']['ledger_name'];
+$lll = trim($ledger_name);
 
+$this->loadmodel('ledger_account');
+$this->ledger_account->updateAll(array("group_id"=>(int)$group_id,'ledger_name'=>$lll),array('auto_id'=>$auto_id));
 
-
+}	
+*/
 
 }
 
@@ -6109,8 +6121,7 @@ $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id = (int)$this->Session->read('user_id');
 
-
-$excel = "Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
+$excel= "Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
 $excel.="12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration \n";
 echo $excel;
 
@@ -8961,10 +8972,706 @@ $this->loadmodel('ledger_sub_account');
 $conditions=array("ledger_id" => 112,"society_id"=>$s_society_id);
 $cursor4=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor4',$cursor4);
-
-	
 }
 //////////////////////// End bank_receipt_update //////////////////////////////////
+///////////////////////// Start bank_payment_import_csv ///////////////////////////
+function bank_payment_import_csv()
+{
+if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+	}else{
+		$this->layout='session';
+	}
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');	
+
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+		$step4=(int)@$data_import["import_payment_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	if(@$process_status==2){
+		$this->loadmodel('bank_receipt_csv');
+		$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
+		$total_converted_records = $this->bank_receipt_csv->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('bank_receipt_csv');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->bank_receipt_csv->find('count',array('conditions'=>$conditions));
+		
+		$this->set("converted_per",($total_converted_records*100)/$total_records);
+	}
+	if(@$process_status==4){
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
+		$total_converted_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('bank_receipt_csv_converted');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = $this->bank_receipt_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->set("converted_per_im",($total_converted_records*100)/$total_records);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+///////////////////// End bank_payment_import_csv ////////////////////////////////////
+/////////////////// Start Upload_Bank_payment_csv_file ///////////////////////////////
+function Upload_Bank_payment_csv_file()
+{
+$s_society_id = $this->Session->read('society_id');
+	$s_user_id=$this->Session->read('user_id');
+	$this->ath();
+	if(isset($_FILES['file'])){
+		$file_name=$s_society_id.".csv";
+		$file_tmp_name =$_FILES['file']['tmp_name'];
+		$target = "Bank_Payment_csv_files/";
+		$target=@$target.basename($file_name);
+		move_uploaded_file($file_tmp_name,@$target);
+		
+		
+		$today = date("d-M-Y");
+		
+		$this->loadmodel('import_payment_record');
+		$auto_id=$this->autoincrement('import_payment_record','auto_id');
+		$this->import_payment_record->saveAll(Array( Array("auto_id" => $auto_id, "file_name" => $file_name,"society_id" => $s_society_id, "user_id" => $s_user_id, "module_name" => "BP", "step1" => 1,"date"=>$today))); 
+		die(json_encode("UPLOADED"));
+	}	
+	
+	
+}
+//////////////////// End Upload_Bank_payment_csv_file //////////////////////////////////
+/////////////////// Start read_payment_csv_file ///////////////////////////////////
+function read_payment_csv_file(){
+	$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$f = fopen('Bank_Payment_csv_files/'.$s_society_id.'.csv', 'r') or die("ERROR OPENING DATA");
+	$batchcount=0;
+	$records=0;
+	while (($line = fgetcsv($f, 4096, ';')) !== false) {
+	$numcols = count($line);
+	$test[]=$line;
+	++$records;
+	}
+	$i=0;
+	foreach($test as $child){ $i++;
+		if($i>1){
+			$child_ar=explode(',',$child[0]);
+			$trajection_date=$child_ar[0];
+			$ledger=$child_ar[1];
+			$amount=$child_ar[2];
+			$tds=$child_ar[3];
+			$mode=$child_ar[4];
+			$instrument=$child_ar[5];
+			$bank=$child_ar[6];
+			$invoice_ref=$child_ar[7];
+			$narration=$child_ar[8];
+			
+			
+			$this->loadmodel('bank_payment_csv');
+			$auto_id=$this->autoincrement('bank_payment_csv','auto_id');
+			$this->bank_payment_csv->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger,"amount"=>$amount, "tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+		}
+	}
+	$this->loadmodel('import_payment_record');
+	$this->import_payment_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));
+	die(json_encode("READ"));
+}
+
+
+
+/////////////////// End read_payment_csv_file ///////////////////////////////////
+////////////////// Start convert_payment_imported_data ////////////////////////////
+function convert_payment_imported_data()
+{
+$this->layout=null;
+	$s_society_id = $this->Session->read('society_id');
+	
+	$this->loadmodel('bank_payment_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "NO");
+	$result_import_record=$this->bank_payment_csv->find('all',array('conditions'=>$conditions,'limit'=>20));
+	foreach($result_import_record as $import_record){
+		$bank_payment_csv_id=$import_record["bank_payment_csv"]["auto_id"];
+		$trajection_date=trim($import_record["bank_payment_csv"]["trajection_date"]);
+		$ledger_ac=trim($import_record["bank_payment_csv"]["ledger_ac"]);
+		$amount=trim($import_record["bank_payment_csv"]["amount"]);
+		$tds=trim($import_record["bank_payment_csv"]["tds"]);
+		$mode=trim($import_record["bank_payment_csv"]["mode"]);
+		$instrument=trim($import_record["bank_payment_csv"]["instrument"]);
+		$bank=trim($import_record["bank_payment_csv"]["bank"]);
+		$invoice_ref=$import_record["bank_payment_csv"]["invoice_ref"];
+		$narration=trim($import_record["bank_payment_csv"]["narration"]);
+		
+$this->loadmodel('ledger_account'); 
+$conditions=array("ledger_name"=> new MongoRegex('/^' . trim($ledger_ac) . '$/i'));
+$ledggrr_acc_datt=$this->ledger_account->find('all',array('conditions'=>$conditions));
+foreach($ledggrr_acc_datt as $ledggrr_acc_datttaa)
+{
+$ledger_id = (int)$ledggrr_acc_datttaa['ledger_account']['auto_id'];
+$typppp = 2;
+}
+
+$this->loadmodel('ledger_sub_account'); 
+$conditions=array("name"=> new MongoRegex('/^' . trim($ledger_ac) . '$/i'),"society_id"=>$s_society_id);
+$ledggr_sub_acc_resulltt = $this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+foreach($ledggr_sub_acc_resulltt as $ledd_detaill)
+{
+$ledger_id = (int)$ledd_detaill['ledger_sub_account']['auto_id'];
+$typppp = 1;
+}			
+
+$this->loadmodel('ledger_sub_account'); 
+$conditions=array("name"=> new MongoRegex('/^' . trim($bank) . '$/i'),"society_id"=>$s_society_id);
+$result_ac=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+foreach($result_ac as $collection)
+{
+$bank_id = (int)$collection['ledger_sub_account']['auto_id'];
+}
+
+		$this->loadmodel('payment_csv_converted');
+		$auto_id=$this->autoincrement('payment_csv_converted','auto_id');
+		$this->payment_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger_id,"type"=>$typppp,"amount"=>$amount,"tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank_id,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		
+		$this->loadmodel('bank_payment_csv');
+		$this->bank_payment_csv->updateAll(array("is_converted" => "YES"),array("auto_id" => $bank_payment_csv_id));
+	}
+	
+	$this->loadmodel('bank_payment_csv');
+	$conditions=array("society_id" => $s_society_id,"is_converted" => "YES");
+	$total_converted_records = $this->bank_payment_csv->find('count',array('conditions'=>$conditions));
+	
+	$this->loadmodel('bank_payment_csv');
+	$conditions=array("society_id" => $s_society_id);
+	$total_records = $this->bank_payment_csv->find('count',array('conditions'=>$conditions));
+	
+	$converted_per=($total_converted_records*100)/$total_records;
+	if($converted_per==100){ $again_call_ajax="NO"; 
+		$this->loadmodel('import_payment_record');
+		$this->import_payment_record->updateAll(array("step3" => 1),array("society_id" => $s_society_id, "module_name"=>"BP"));
+	}else{
+		$again_call_ajax="YES"; 
+			
+		}
+	die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per"=>$converted_per)));	
+	
+	
+}
+////////////////// End convert_payment_imported_data /////////////////////////////
+//////////////////// Start modify_bank_payment_csv_data //////////////////////////
+function modify_bank_payment_csv_data($page=null)
+{
+if($this->RequestHandler->isAjax()){
+	$this->layout='blank';
+	}else{
+	$this->layout='session';
+	}
+	$this->ath();
+	
+	
+	$s_society_id = $this->Session->read('society_id');
+	$page=(int)$page;
+	$this->set('page',$page);
+	
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+	}
+	$process_status= @$step1+@$step2+@$step3;
+	if($process_status==3){
+		$this->loadmodel('payment_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions,"limit"=>20,"page"=>$page));
+		$this->set('result_bank_receipt_converted',$result_bank_receipt_converted);
+		
+		$this->loadmodel('payment_csv_converted'); 
+		$conditions=array("society_id"=>(int)$s_society_id);
+		$count_bank_receipt_converted=$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		$this->set('count_bank_receipt_converted',$count_bank_receipt_converted);
+	   }	
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id, "ledger_id" => 33);
+$cursor2=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor2',$cursor2);
+
+$this->loadmodel('master_tds');
+$cursor3=$this->master_tds->find('all');
+$this->set('cursor3',$cursor3);
+
+$this->loadmodel('reference');
+$conditions=array("auto_id"=>3);
+$cursor = $this->reference->find('all',array('conditions'=>$conditions));
+foreach($cursor as $collection)
+{
+$tds_arr = $collection['reference']['reference'];
+}
+$this->set("tds_arr",$tds_arr);
+
+
+$this->loadmodel('ledger_sub_account');
+$conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
+$cursor11=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
+$this->set('cursor11',$cursor11);
+
+
+$this->loadmodel('accounts_group');
+$conditions=array("accounts_id" => 1);
+$cursor12=$this->accounts_group->find('all',array('conditions'=>$conditions));
+$this->set('cursor12',$cursor12);
+
+$this->loadmodel('accounts_group');
+$conditions=array("accounts_id" => 4);
+$cursor13=$this->accounts_group->find('all',array('conditions'=>$conditions));
+$this->set('cursor13',$cursor13);
+	
+}
+////////////////////// End modify_bank_payment_csv_data /////////////////////////////
+///////////////////// Start allow_import_bank_payment ///////////////////////////////
+function allow_import_bank_payment()
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = (int)$this->Session->read('society_id');
+
+	$this->loadmodel('payment_csv_converted'); 
+	$conditions=array("society_id"=>(int)$s_society_id);
+	$order=array('bank_receipt_csv_converted.auto_id'=>'ASC');
+	$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions));
+	foreach($result_bank_receipt_converted as $receipt_converted){
+		$auto_id=$receipt_converted["payment_csv_converted"]["auto_id"];
+		$trajection_date=$receipt_converted["payment_csv_converted"]["trajection_date"];
+		$ledger = $receipt_converted["payment_csv_converted"]["ledger_ac"];
+		$type = (int)$receipt_converted["payment_csv_converted"]["type"];
+		$invoice = $receipt_converted["payment_csv_converted"]["invoice_ref"];
+		$amount=$receipt_converted["payment_csv_converted"]["amount"];
+		$tds = $receipt_converted["payment_csv_converted"]["tds"];
+		$mode = $receipt_converted["payment_csv_converted"]["mode"];
+		$instrument = $receipt_converted["payment_csv_converted"]["instrument"];
+		$bank=$receipt_converted["payment_csv_converted"]["bank"];
+		$narration=$receipt_converted["payment_csv_converted"]["narration"];
+		
+
+if(empty($trajection_date)){ $trnsaction_v = 1; } else { $trnsaction_v = 0;  }	
+
+
+    	$this->loadmodel('financial_year');
+		$conditions=array("society_id" => $s_society_id,"status"=>1);
+		$cursor = $this->financial_year->find('all',array('conditions'=>$conditions));
+		$abc = 555;
+		foreach($cursor as $collection){
+				$from = $collection['financial_year']['from'];
+				$to = $collection['financial_year']['to'];
+				$from1 = date('Y-m-d',$from->sec);
+				$to1 = date('Y-m-d',$to->sec);
+				$from2 = strtotime($from1);
+				$to2 = strtotime($to1);
+				$transaction1 = date('Y-m-d',strtotime($trajection_date));
+				$transaction2 = strtotime($transaction1);
+					if($transaction2 <= $to2 && $transaction2 >= $from2){
+					$abc = 5;
+					break;
+					}	
+		}
+	if($abc == 555){ $transs_v = 1;	}else { $transs_v = 0;  }
+
+if(empty($ledger)){ $ledger_v = 1; }else { $ledger_v = 0;  }	
+
+if(empty($amount)){ $amount_v = 1;  }else { $amount_v = 0;  }
+
+if(is_numeric($amount))
+{ 
+$amount_vv = 0;
+}
+else
+{
+$amount_vv = 1;
+}
+
+
+if(empty($mode)){ $mode_v = 1; }else{ $mode_v = 0; }	
+
+
+
+if(empty($instrument)){ $inst_v = 1; }else{ $inst_v = 0;  }	
+
+
+if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }		
+		
+		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
+		
+	} 
+	foreach($v_result as $data){
+		if(array_sum($data)==0){ echo "T";
+			$this->loadmodel('import_payment_record');
+			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
+		}else{ echo "F"; die; }
+	}
+	
+	
+}
+/////////////////End allow_import_bank_payment /////////////////////////////////////
+////////////////// Start auto_save_bank_payment /////////////////////////////////////
+
+function auto_save_bank_payment($record_id=null,$field=null,$value=null){
+	$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 
+  
+			
+		
+			  
+	if($field=="transaction_date"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("trajection_date" => $value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	if($field=="ledger_data"){
+		if(empty($value)){ echo "F";}
+		else{
+		$val_arr = explode(',',$value);	
+			$led_id = (int)$val_arr[0];
+			$typp = (int)$val_arr[1];
+			
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("ledger_ac"=>(int)$led_id,"type"=>(int)$typp),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	
+	
+	if($field=="invoice"){
+		
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("invoice_ref"=>$value),array("auto_id" => $record_id));
+			echo "T";
+		
+	}
+	
+	if($field=="amt"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("amount"=>$value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	if($field=="tdss"){
+		
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("tds" => $value),array("auto_id" => $record_id));
+			echo "T";
+		
+	}
+	
+
+	
+	if($field=="mode"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("mode" => $value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	
+	if($field=="inst"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("instrument" => $value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+	
+	if($field=="bankk"){
+		if(empty($value)){ echo "F";}
+		else{
+			$this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("bank" => (int)$value),array("auto_id" => $record_id));
+			echo "T";
+		}
+	}
+
+	if($field=="desc"){
+		$this->loadmodel('payment_csv_converted');
+		$this->payment_csv_converted->updateAll(array("narration"=>$value),array("auto_id" => $record_id));
+		echo "T";
+	}
+	
+	
+	
+}
+
+////////////////// End auto_save_bank_payment /////////////////////////////////////
+////////////// Start check_bank_payment_csv_validation /////////////////////////
+function check_bank_payment_csv_validation()
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = (int)$this->Session->read('society_id');
+	$page=(int)$page;
+
+
+
+		
+		$this->payment_csv_converted->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger_id,"type"=>$typppp,"amount"=>$amount,"tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank_id,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+
+	
+	$this->loadmodel('payment_csv_converted'); 
+	$conditions=array("society_id"=>(int)$s_society_id);
+	$order=array('payment_csv_converted.auto_id'=>'ASC');
+	$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions,'order'=>$order,"limit"=>20,"page"=>$page));
+	foreach($result_bank_receipt_converted as $receipt_converted){
+		$auto_id=(int)$receipt_converted["payment_csv_converted"]["auto_id"];
+		$trajection_date=$receipt_converted["payment_csv_converted"]["trajection_date"];
+		$ledger_ac=$receipt_converted["payment_csv_converted"]["ledger_ac"];
+		$amount=$receipt_converted["payment_csv_converted"]["amount"];
+		$tds=$receipt_converted["payment_csv_converted"]["tds"];
+		$mode=$receipt_converted["payment_csv_converted"]["mode"];
+		$instrument=$receipt_converted["payment_csv_converted"]["instrument"];
+		$bank=(int)$receipt_converted["payment_csv_converted"]["bank"];
+		$invoice_ref=$receipt_converted["payment_csv_converted"]["invoice_ref"];
+		$narration=$receipt_converted["payment_csv_converted"]["narration"];
+		
+		if(empty($trajection_date)){ $trajection_date_v=1; }else{ $trajection_date_v=0; }
+		if(empty($ledger_ac)){ $ledger_ac_in_v=1; }else{ $ledger_ac_in_v=0; }
+		if(empty($amount)){	$amount_in_v=1; }else{ $amount_in_v=0; }
+		if(empty($mode)){	$mode_in_v=1; }else{ $mode_in_v=0; }
+		if(empty($instrument)){ $instrument_in_v=1; }else{ $instrument_in_v=0; }
+		if(empty($bank)){ $bank_in_v=1; }else{ $bank_in_v=0; }
+				
+		$v_result[]=array($trajection_date_v,$ledger_ac_in_v,$amount_in_v,$mode_in_v,$instrument_in_v,$bank_in_v,$auto_id);
+	}
+		
+	die(json_encode($v_result));
+	
+}
+///////////////// End check_bank_payment_csv_validation //////////////////////////////
+/////////////////// Start final_import_bank_payment_ajax ////////////////////////////
+function final_import_bank_payment_ajax()
+{
+$this->layout=null;
+	$s_society_id = (int)$this->Session->read('society_id');
+	$s_user_id= (int)$this->Session->read('user_id');
+	
+	$this->loadmodel('import_payment_record');
+	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
+	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
+	$this->set('result_import_record',$result_import_record);
+	foreach($result_import_record as $data_import){
+		$step1=(int)@$data_import["import_payment_record"]["step1"];
+		$step2=(int)@$data_import["import_payment_record"]["step2"];
+		$step3=(int)@$data_import["import_payment_record"]["step3"];
+		$step4=(int)@$data_import["import_payment_record"]["step4"];
+	}
+	$process_status= @$step1+@$step2+@$step3+@$step4;
+	
+	if($process_status==4){
+		
+		$this->loadmodel('payment_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "NO");
+		$result_import_converted = $this->payment_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
+		
+		foreach($result_import_converted as $import_converted){
+			$bank_payment_csv_id=(int)$import_converted["payment_csv_converted"]["auto_id"];
+			$transaction_date=$import_converted["payment_csv_converted"]["trajection_date"];
+			$ledger_acc=(int)$import_converted["payment_csv_converted"]["ledger_ac"];
+			$acc_type=(int)$import_converted["payment_csv_converted"]["type"];
+			$invoice=$import_converted["payment_csv_converted"]["invoice_ref"];
+			$amount=$import_converted["payment_csv_converted"]["amount"];
+			$tds_id=$import_converted["payment_csv_converted"]["tds"];
+			$mode=$import_converted["payment_csv_converted"]["mode"];
+			$instrument=$import_converted["payment_csv_converted"]["instrument"];
+			$bank_ac=(int)$import_converted["payment_csv_converted"]["bank"];
+			$narration=$import_converted["payment_csv_converted"]["narration"];
+			$transaction_date = date('Y-m-d',strtotime($transaction_date));
+			
+	
+		//////////////////////////////////////////	
+$current_date = date('Y-m-d');		
+$i=$this->autoincrement('new_cash_bank','transaction_id');
+$bbb=$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',2);
+$rr_arr[] = $bbb;
+$this->loadmodel('new_cash_bank');
+$multipleRowData = Array( Array("transaction_id" => $i, "receipt_id" => $bbb,  "current_date" => $current_date, 
+"transaction_date" => strtotime($transaction_date), "prepaired_by" => $s_user_id, 
+"user_id" => $ledger_acc,"invoice_reference" => @$invoice,"narration" => $narration, "receipt_mode" => $mode,
+"receipt_instruction" => $instrument, "account_head" => $bank_ac,  
+"amount" => $amount,"society_id" => $s_society_id, "tds_id" =>$tds_id,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
+$this->new_cash_bank->saveAll($multipleRowData);  
+
+//////////////////// End Insert///////////////////////////////
+///////////// TDS CALCULATION /////////////////////
+$this->loadmodel('reference');
+$conditions=array("auto_id" => 3);
+$cursor4=$this->reference->find('all',array('conditions'=>$conditions));
+foreach($cursor4 as $collection)
+{
+$tds_arr = $collection['reference']['reference'];	
+}
+if(!empty($tds_id))
+{
+for($r=0; $r<sizeof($tds_arr); $r++)
+{
+$tds_sub_arr = $tds_arr[$r];
+$tds_id2 = (int)$tds_sub_arr[1];
+if($tds_id2 == $tds_id)
+{
+$tds_rate = $tds_sub_arr[0];
+break;
+}
+}
+$tds_amount = (round(($tds_rate/100)*$amount));
+$total_tds_amount = ($amount - $tds_amount);
+}
+else
+{
+$total_tds_amount = $amount;
+$tds_amount = 0;
+}
+
+////////////END TDS CALCULATION //////////////////// 
+////////////////START LEDGER ENTRY///////////////////////
+if($acc_type == 1)
+{
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), "debit" => $amount, "credit" =>null,"ledger_account_id" => 15, "ledger_sub_account_id" =>$ledger_acc, "table_name" =>"new_cash_bank","element_id" => $i, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
+else
+{
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), "debit" => $amount,"credit" =>null,"ledger_account_id" =>$ledger_acc, "ledger_sub_account_id" =>null, "table_name" =>"new_cash_bank","element_id" =>$i, "society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
+
+
+
+
+$sub_account_id_a = (int)$bank_ac;
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date), 
+"debit" =>null,"credit" =>$total_tds_amount,"ledger_account_id" =>33, 
+"ledger_sub_account_id" =>$sub_account_id_a, "table_name" =>"new_cash_bank","element_id" =>$i, 
+"society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+
+
+if($tds_amount > 0)
+{
+$sub_account_id_t = 16;
+$l=$this->autoincrement('ledger','auto_id');
+$this->loadmodel('ledger');
+$multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date),
+"debit" =>null,"credit" =>$tds_amount,"ledger_account_id" =>$sub_account_id_t, 
+"ledger_sub_account_id" =>null, "table_name" =>"new_cash_bank","element_id" =>$i, 
+"society_id" => $s_society_id));
+$this->ledger->saveAll($multipleRowData); 
+}
+
+            $this->loadmodel('payment_csv_converted');
+			$this->payment_csv_converted->updateAll(array("is_imported" => "YES"),array("auto_id" => $bank_payment_csv_id));
+//////////////////////////////////////
+		
+	}
+	
+		
+		$this->loadmodel('payment_csv_converted');
+		$conditions=array("society_id" => $s_society_id,"is_imported" => "YES");
+		$total_converted_records = (int)$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		$this->loadmodel('payment_csv_converted');
+		$conditions=array("society_id" => $s_society_id);
+		$total_records = (int)$this->payment_csv_converted->find('count',array('conditions'=>$conditions));
+		
+		
+	
+		$converted_per=($total_converted_records*100)/$total_records;
+		
+		
+			
+		if($converted_per==100){ $again_call_ajax="NO"; 
+			
+		
+			$this->loadmodel('payment_csv_converted');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->payment_csv_converted->deleteAll($conditions4);
+		
+			
+			$this->loadmodel('bank_payment_csv');
+			$conditions4=array('society_id'=>$s_society_id);
+			$this->bank_payment_csv->deleteAll($conditions4);
+			
+			
+			
+			
+			
+			$this->loadmodel('import_payment_record');
+			$conditions4=array("society_id" => $s_society_id, "module_name" => "BP");
+			$this->import_payment_record->deleteAll($conditions4);
+		  }else{
+			$again_call_ajax="YES"; 
+			}
+			
+		die(json_encode(array("again_call_ajax"=>$again_call_ajax,"converted_per_im"=>$converted_per)));
+	}		
 
 }
+//////////////////////// End final_import_bank_payment_ajax ////////////////////////
+////////////////////// Start delete_bank_payment_row /////////////////////////////
+function delete_bank_payment_row($record_id=null)
+{
+$this->layout=null;
+$s_society_id = $this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');
+$this->loadmodel('payment_csv_converted');
+$conditions4=array("auto_id" => (int)$record_id);
+$this->payment_csv_converted->deleteAll($conditions4);
+echo "1";	
+	
+}
+////////////////////// End delete_bank_payment_row ////////////////////////////////
+}
 ?>
+
+
+
+
+
