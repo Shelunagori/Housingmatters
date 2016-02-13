@@ -992,10 +992,84 @@ $this->loadmodel('ledger_sub_account');
 $conditions=array("ledger_id" => 15,"society_id"=>$s_society_id);
 $result_ledger_sub_account=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('result_ledger_sub_account',$result_ledger_sub_account);
+
+}
+///////////////// End modify_expense_tracker ////////////////////////////////////
+///////////////// Start auto_save_expense_tracker //////////////////////////////
+function auto_save_expense_tracker($record_id=null,$field=null,$value=null)
+{
+$this->layout=null;
+	
+	$this->ath();
+	$s_society_id = $this->Session->read('society_id');
+	$record_id=(int)$record_id; 	
+	
+	
+		$this->loadmodel('expense_tracker_csv_converted');
+		$auto_iddd=$this->autoincrement('expense_tracker_csv_converted','auto_id');
+		$this->expense_tracker_csv_converted->saveAll(Array(Array("auto_id" => $auto_iddd, "posting_date"=>$posting_date,"invoice_date" => $invoice_date,"due_date" => $due_date, "party_ac_id" => $party_ac_id, "invoice_ref" => $invoice_ref,"expense_head_id"=>$expense_head_id,"amount"=>$amount,"description"=>$description,"society_id"=>$s_society_id,"is_imported"=>"NO")));
+		
+	if($field=="posting")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("posting_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	
+	if($field=="invoice")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("invoice_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	
+	if($field=="due")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("due_date"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	if($field=="party")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("party_ac_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	if($field=="reference")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("invoice_ref"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	if($field=="expense")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("expense_head_id"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	if($field=="amt")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("amount"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+	if($field=="desc")
+	{
+	$this->loadmodel('expense_tracker_csv_converted');
+	$this->expense_tracker_csv_converted->updateAll(array("description"=>$value),array("auto_id" =>$record_id));
+	echo "T";	
+	}
+	
+		
 	
 	
 }
-///////////////// End modify_expense_tracker ////////////////////////////////////
-
+///////////////// End auto_save_expense_tracker //////////////////////////////////
 }
 ?>

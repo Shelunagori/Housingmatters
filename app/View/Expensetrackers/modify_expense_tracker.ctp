@@ -29,22 +29,22 @@ $description = $data['expense_tracker_csv_converted']['description'];
                     <tr style="background-color:#E8F3FF;">
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" value="<?php echo $posting_date; ?>" style="background-color:white !important;">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" value="<?php echo $posting_date; ?>" style="background-color:white !important;" field="posting" record_id="<?php echo $csv_auto_id; ?>">
                     </td>
                     
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" style="background-color:white !important;" value="<?php echo $invoice_date; ?>">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" style="background-color:white !important;" value="<?php echo $invoice_date; ?>" field="invoice" record_id="<?php echo $csv_auto_id; ?>">
                     </td>
                     
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy"  style="background-color:white !important;" value="<?php echo $due_date; ?>">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy"  style="background-color:white !important;" value="<?php echo $due_date; ?>" field="due" record_id="<?php echo $csv_auto_id; ?>">
                     </td>
                     
                     
                     <td>
-                                <select class="m-wrap span12 chosen">
+                                <select class="m-wrap span12 chosen" field="party" record_id="<?php echo $csv_auto_id; ?>">
                                 <option value="" style="display:none;">Select</option>
                                 <?php 
                                 foreach($result_ledger_sub_account as $data){
@@ -61,7 +61,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                     
                     
                     <td>
-                    <input type="text" class="m-wrap span12" style="text-align:right; background-color:white !important;" value="<?php echo $invoice_ref; ?>">
+                    <input type="text" class="m-wrap span12" style="text-align:right; background-color:white !important;" value="<?php echo $invoice_ref; ?>" field="reference" record_id="<?php echo $csv_auto_id; ?>">
                     </td>
                         
                     </tr>
@@ -75,7 +75,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                      <tr style="background-color:#E8F3FF;">
                      
                      <td>
-                                <select class="m-wrap span12 chosen">
+                                <select class="m-wrap span12 chosen" field="expense" record_id="<?php echo $csv_auto_id; ?>">
                                 <option value="" style="display:none;">Select</option>
                                 <?php
                                 foreach($result_account_group as $data){
@@ -97,7 +97,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                      
                      
                      <td>
-                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" maxlength="7" value="<?php echo $amount; ?>">
+                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" maxlength="7" value="<?php echo $amount; ?>" field="amt" record_id="<?php echo $csv_auto_id; ?>" record_id="<?php echo $csv_auto_id; ?>">
                      </td>
                      
                      
@@ -106,7 +106,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                                 
                                 
                                
-                     <input type="text" class="m-wrap span12" maxlength="100" style="background-color:white !important;" value="<?php echo $description; ?>">
+                     <input type="text" class="m-wrap span12" maxlength="100" style="background-color:white !important;" value="<?php echo $description; ?>" field="desc" record_id="<?php echo $csv_auto_id; ?>">
                      </td>
                      </tr>
                     
@@ -152,7 +152,7 @@ $( document ).ready(function() {
 		var value=$(this).val();
 		
 		$.ajax({
-			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+			url: "<?php echo $webroot_path; ?>Expensetrackers/auto_save_expense_tracker/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
 			
 			if(response=="F"){
@@ -172,7 +172,7 @@ $( document ).ready(function() {
 		var field=$(this).attr("field");
 		var value=$("option:selected",this).val();
 		$.ajax({
-			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_bank_payment/"+record_id+"/"+field+"/"+value,
+			url: "<?php echo $webroot_path; ?>Cashbanks/auto_save_expense_tracker/"+record_id+"/"+field+"/"+value,
 		}).done(function(response){
 			if(response=="F"){
 				$("#main_table tr#"+record_id+" td").each(function(){
