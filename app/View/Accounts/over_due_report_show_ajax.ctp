@@ -81,7 +81,12 @@ else
 {
 foreach($result_flat as $data)	
 {
-	$due_amt="";
+	$due_amt=0;
+$total_amt=0;
+$new_arrear_intrest = 0;
+$new_intrest_on_arrears = 0;
+$new_total = 0;
+$new_arrear_maintenance = 0;
 $flat_id = (int)$data['flat']['flat_id'];	
 $regular_data = $this->requestAction(array('controller' => 'hms', 'action' => 'new_regular_bill_detail_via_flat_id'),array('pass'=>array($flat_id)));				
 foreach ($regular_data as $collection) 
