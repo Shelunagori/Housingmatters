@@ -4661,12 +4661,13 @@ if ($this->request->is('post'))
 					}
 				if($tenant==2){
 					$result_tenant= $this->tenancy_agreement_via_user_fetch($society_id,$user_id);
+					if(!empty($result_tenant)){
 					$t_end_date=$result_tenant[0]['tenant']['t_end_date'];
 						if(strtotime($t_end_date)<strtotime($date2)){
 							goto a;
 						}
 					}
-					
+				}
 					$this->loadmodel('user');
 					$conditions5=array('signup_random'=>$password);
 					$res_n=$this->user->find('all',array('conditions'=>$conditions5));
