@@ -894,7 +894,7 @@ $ep_id=(int)@$import_record["expense_tracker_csv"]["auto_id"];
 $posting_date=trim(@$import_record["expense_tracker_csv"]["posting_date"]);
 $invoice_date=trim(@$import_record["expense_tracker_csv"]["invoice_date"]);
 $due_date=@$import_record["expense_tracker_csv"]["due_date"];
-$party_ac=(int)@$import_record["expense_tracker_csv"]["party_ac"];
+$party_ac=@$import_record["expense_tracker_csv"]["party_ac"];
 $invoice_ref=@$import_record["expense_tracker_csv"]["invoice_ref"];
 $expense_head=@$import_record["expense_tracker_csv"]["expense_head"];
 $amount=@$import_record["expense_tracker_csv"]["amount"];
@@ -969,7 +969,7 @@ if($this->RequestHandler->isAjax()){
 	$step2=(int)@$data_import["import_expense_tracker_record"]["step2"];
 	$step3=(int)@$data_import["import_expense_tracker_record"]["step3"];
 	}
-	
+	$process_status= @$step1+@$step2+@$step3;
 	if($process_status==3){
 		$this->loadmodel('expense_tracker_csv_converted'); 
 		$conditions=array("society_id"=>(int)$s_society_id);
@@ -996,5 +996,6 @@ $this->set('result_ledger_sub_account',$result_ledger_sub_account);
 	
 }
 ///////////////// End modify_expense_tracker ////////////////////////////////////
+
 }
 ?>

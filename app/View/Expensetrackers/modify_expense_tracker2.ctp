@@ -29,23 +29,23 @@ $description = $data['expense_tracker_csv_converted']['description'];
                     <tr style="background-color:#E8F3FF;">
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" value="<?php echo $posting_date; ?>" style="background-color:white !important;">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" value="<?php echo date("d-m-Y"); ?>" style="background-color:white !important;">
                     </td>
                     
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" style="background-color:white !important;" value="<?php echo $invoice_date; ?>">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy" style="background-color:white !important;">
                     </td>
                     
                     
                     <td>
-                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy"  style="background-color:white !important;" value="<?php echo $due_date; ?>">
+                    <input type="text" class="date-picker m-wrap span12" data-date-format="dd-mm-yyyy"  style="background-color:white !important;">
                     </td>
                     
                     
                     <td>
                                 <select class="m-wrap span12 chosen">
-                                <option value="" style="display:none;">Select</option>
+                                <option value="">Select</option>
                                 <?php 
                                 foreach($result_ledger_sub_account as $data){
                                 
@@ -53,7 +53,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                                 $name=$data['ledger_sub_account']['name'];
                                 
                                 ?>
-                                <option value="<?php echo $auto_id; ?>" <?php if($party_ac_id == $auto_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
+                                <option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
                                 
                                 <?php }	?>
                                 </select>
@@ -61,7 +61,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                     
                     
                     <td>
-                    <input type="text" class="m-wrap span12" style="text-align:right; background-color:white !important;" value="<?php echo $invoice_ref; ?>">
+                    <input type="text" class="m-wrap span12" style="text-align:right; background-color:white !important;">
                     </td>
                         
                     </tr>
@@ -76,7 +76,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                      
                      <td>
                                 <select class="m-wrap span12 chosen">
-                                <option value="" style="display:none;">Select</option>
+                                <option value="">Select</option>
                                 <?php
                                 foreach($result_account_group as $data){
                                 $accounts_id=$data['accounts_group']['accounts_id'];
@@ -88,7 +88,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                                 
                                 ?>
                                 
-                                <option value="<?php echo $led_auto_id; ?>" <?php if($expense_head_id == $led_auto_id) { ?>selected="selected" <?php } ?>><?php echo $ledger_name; ?> </option>	
+                                <option value="<?php echo $led_auto_id; ?>"><?php echo $ledger_name; ?> </option>	
                                 
                                 <?php } } ?>
                                 
@@ -97,7 +97,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                      
                      
                      <td>
-                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" maxlength="7" value="<?php echo $amount; ?>">
+                     <input type="text" class="m-wrap span12 amt1" style="text-align:right; background-color:white !important;" onkeyup="amt_val(this.value,1)" maxlength="7" id="ammmttt1">
                      </td>
                      
                      
@@ -106,7 +106,7 @@ $description = $data['expense_tracker_csv_converted']['description'];
                                 
                                 
                                
-                     <input type="text" class="m-wrap span12" maxlength="100" style="background-color:white !important;" value="<?php echo $description; ?>">
+                     <input type="text" class="m-wrap span12" maxlength="100" style="background-color:white !important;">
                      </td>
                      </tr>
                     
