@@ -310,5 +310,39 @@ change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_im
 	
 	window.history.pushState({path:pageurl},'',pageurl);
 }		  
-</script>			  
+</script>	
+
+
+<script>
+$( document ).ready(function() {
+	$( '.delete_row' ).click(function() {
+		var record_id=$(this).attr("record_id");
+		$.ajax({
+			url: "<?php echo $webroot_path; ?>Cashbanks/delete_bank_payment_row/"+record_id,
+		}).done(function(response){
+			response = response.replace(/\s+/g,' ').trim();
+			if(response=="1"){
+				$( '#'+record_id ).addClass('animated zoomOut')
+				setTimeout(function() {
+					$( '#'+record_id ).remove();
+				}, 1000);
+			}
+		});
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		  
 			  
