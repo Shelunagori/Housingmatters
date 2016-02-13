@@ -138,7 +138,7 @@ for($ii=1;$ii<=$loop;$ii++){ ?>
 </ul>
 </div>
 <br/>
-
+<a href="<?php echo $webroot_path; ?>Expensetrackers/expense_tracker_import?fff=55" class="btn purple big" rel="tab"><i class="m-icon-big-swapleft m-icon-white"></i> BACK</a>
 <a class="btn purple big" role="button" id="final_import">IMPORT VOUCHERS <i class="m-icon-big-swapright m-icon-white"></i></a>									
 <div id="check_validation_result"></div>		  
 

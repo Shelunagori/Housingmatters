@@ -799,8 +799,22 @@ $this->ath();
 $this->check_user_privilages();
 $s_society_id=(int)$this->Session->read('society_id');	
 
+$value="";
+$value = $this->request->query('fff');
+if(!empty($value))
+{
+$this->loadmodel('expense_tracker_csv_converted');
+$conditions4=array('society_id'=>$s_society_id);
+$this->expense_tracker_csv_converted->deleteAll($conditions4);
 
+$this->loadmodel('expense_tracker_csv');
+$conditions4=array('society_id'=>$s_society_id);
+$this->expense_tracker_csv->deleteAll($conditions4);
 
+$this->loadmodel('import_expense_tracker_record');
+$conditions4=array("society_id" => $s_society_id, "module_name" => "ET");
+$this->import_expense_tracker_record->deleteAll($conditions4);
+}
 
 $this->loadmodel('import_expense_tracker_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "ET");
