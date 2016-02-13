@@ -1282,6 +1282,13 @@ function over_due_report_show_ajax()
 				{
 					$wing = (int)$this->request->query('wi');
 					$this->set("wing",$wing);
+				
+		$this->loadmodel('flat');
+		$condition=array('wing_id'=>(int)$wing);
+		$order=array('flat.flat_name'=>'ASC');
+		$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
+		$this->set('result_flat',$result_flat);	
+				
 				}
 				else if($wise == 2)
 				{
@@ -1291,6 +1298,12 @@ function over_due_report_show_ajax()
 					$this->set('from',$from);
 					$this->set('to',$to);
 
+					
+			
+					
+					
+					
+					
 				$this->loadmodel('new_regular_bill');
 				$conditions=array("society_id"=> $s_society_id,"approval_status"=>1);
 				$cursor1=$this->new_regular_bill->find('all',array('conditions'=>$conditions));
