@@ -4656,9 +4656,11 @@ if ($this->request->is('post'))
 
 				$result_society= $this->society_name($society_id);
 				$access_tenant=$result_society[0]['society']['access_tenant'];
+				if(!empty($access_tenant)){
 					if($access_tenant==0 && $type=="Tenant"){
 						goto a;
 					}
+				}
 				if($tenant==2){
 					$result_tenant= $this->tenancy_agreement_via_user_fetch($society_id,$user_id);
 					if(!empty($result_tenant)){
