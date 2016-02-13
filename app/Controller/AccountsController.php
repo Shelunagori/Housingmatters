@@ -3667,7 +3667,7 @@ $child_ex=explode(',',$child[0]);
 		@$group_name = $child_ex[0];
 		@$account_name = $child_ex[1];
 		@$wingg_nammm = $child_ex[2];
-		@$flatt_nammm = $child_ex[3];
+		@$flatt_nammm = (int)$child_ex[3];
 		@$debit_or_credit = $child_ex[4];
 		@$priciple_amount = $child_ex[5];
 		@$penalty_amount = $child_ex[6];
@@ -3734,7 +3734,7 @@ $child_ex=explode(',',$child[0]);
 			
 			
 		$this->loadmodel('flat'); 
-		$conditions=array("flat_name"=> new MongoRegex('/^' .  trim($flatt_nammm) . '$/i'),"society_id"=>$s_society_id,"wing_id"=>$wing_id_new);
+		$conditions=array("flat_name"=>$flatt_nammm,"society_id"=>$s_society_id,"wing_id"=>$wing_id_new);
 		$flat_data=$this->flat->find('all',array('conditions'=>$conditions));
 		foreach($flat_data as $flltdddt)
 		{

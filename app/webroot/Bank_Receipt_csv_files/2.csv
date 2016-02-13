@@ -1,39 +1,23 @@
-Tranjection Date,Deposited In,Receipt Mode,Cheque No/Reference/UTR #,Date,Drown In Which Bank?,Branch of Bank,Member Name,Wing,Flat,Receipt Tpye,Amount,Narration 
-    10-12-2015    ,    SBI     ,    Cheque   ,2456555,   10-12-2015   ,uco     ,HIRAN,abhilash,   A   ,101,    MAINTANACE   ,500,test
-10-12-2015,SBI,CHEQUE,2456555,10-12-2015,uco     ,HIRAN,abhilash,    A,101,MAINTANACE,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,     uco,HIRAN,abhilash,A,101,MAINTANACE,500,test
-    10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,MAINTANACE,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,MAINTANACE,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A   ,101,MAINTANACE,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,NEFT,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,neft,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-     10-12-2015,SBI,pg,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,maintanace,500,test
-10-12-2015,SBI,PG,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
-10-12-2015,SBI,Cheque,2456555,10-12-2015,uco,HIRAN,abhilash,A,101,Maintanace,500,test
+Transaction Date,Deposited In,Receipt Mode,Cheque No/Reference/UTR #,Date,Drawn on which Bank?,Branch of Bank,Member Name,Wing,Flat,Receipt Type,Amount,Narration 
+10.1.2016,7.1.2015,Cheque,347903,7.1.2015,Greater Bank,,Rajesh Puri,F,702,M,10489,
+15.1.2016,15.1.2016,Cheque,335123,15.1.2016,PMC Bank,,Bamabhahadur Yadav,SH,1,M,3576,
+14.1.2016,14.1.2016,Cheque,20507,14.1.2016,Axis Bank,,Dinesh Chandra Agarwal,SH,9,M,2702,
+14.1.2016,14.1.2016,Cheque,20508,14.1.2016,Axis Bank,,Dinesh Chandra Agarwal,SH,9,M,25000,(NOC Many)
+14.1.2016,14.1.2016,Cheque,20508,14.1.2016,Axis Bank,,Dinesh Chandra Agarwal,SH,9,M,10000,NOC Sport ( Club Donation)
+14.1.2016,14.1.2016,Cheque,771195,14.1.2016,Punjab National Bank,,Dr. D K Aswal,S,1302,M,10487,
+05.1.2016,05.1.2016,NEFT,,05.1.2016,,,Pradeep Rao Wagh,F,802,M,9129,
+20.1.2016,20.1.2016,Cheque,11,20.1.2016,DCB Bank,,Ravinder K Sharma,F,1603,M,10455,
+18.1.2016,18.1.2016,NEFT,,18.1.2016,,,Uday Powar,F,1702,M,10489,
+25.1.2016,25.1.2016,Cheque,693272,25.1.2016,ICICI Bank,,Darshan Badole,F,201,M,14000,
+27.1.2016,27.1.2016,NEFT,,27.1.2016,,,Shashi Pandey,F,701,M,10519,
+29.1.2016,29.1.2016,Cheque,485486,29.1.2016,ICICI Bank,,Sarojini B. Marks,SH,12,M,8940,
+31.1.2016,9.1.2016,Cheque,150975,9.1.2016,Ace Co Op Bank,,Usha R Supekar,F,503,M,10024,
+27.1.2016,1.1.2016,NEFT,,1.1.2016,,,Parag R. Desai,SH,5,M,9719,
+1.2.2016,1.2.2016,Cheque,678478,1.2.2016,SBH,,Ajay Singh,F,1601,M,10579,
+2.2.2016,2.2.2016,Cheque,252103,2.2.2016,IDBI Bank,,Harish Pant,F,901,M,11417,
+2.2.2016,2.2.2016,Cheque,14,2.2.2016,PMC Bank,,Paramit Kaur,F,1001,M,11254,
+7.2.2016,7.2.2016,Cheque,47,7.2.2016,PMC Bank,,Gurmeet Singh,F,601,M,10579,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
