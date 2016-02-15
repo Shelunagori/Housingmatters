@@ -173,7 +173,12 @@ PG
 $this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down')); ?>
 <label id="resident"></label>
 </div>
-<br>	
+<br>
+<script>
+$(document).ready(function() { 
+$(".resident_drop_down").attr('id', 'resident');
+});
+</script>	
 <?php } ?>
 <?php
 } else { ?>

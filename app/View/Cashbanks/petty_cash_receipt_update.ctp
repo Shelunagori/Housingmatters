@@ -53,6 +53,11 @@ $trnsaction_date = date('d-m-Y',$d_date);
 $this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'));    
 ?>
 <label id="resident"></label>
+<script>
+$(document).ready(function() { 
+$(".resident_drop_down").attr('id', 'resident');
+});
+</script>
 </div>
 	
 <div class="hide" id="two">
