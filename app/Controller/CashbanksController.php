@@ -8985,7 +8985,39 @@ if($this->RequestHandler->isAjax()){
 	$this->ath();
 	$s_society_id = $this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');	
-
+   
+    $value = ""; 
+	$value = $this->request->query('vvv');
+	if(!empty($value))
+	{
+		$this->loadmodel('payment_csv_converted');
+		$conditions4=array('society_id'=>$s_society_id);
+		$this->payment_csv_converted->deleteAll($conditions4);
+					
+		$this->loadmodel('bank_payment_csv');
+		$conditions4=array('society_id'=>$s_society_id);
+		$this->bank_payment_csv->deleteAll($conditions4);
+			
+	$this->loadmodel('import_payment_record');
+	$conditions4=array("society_id" => $s_society_id, "module_name" => "BP");
+	$this->import_payment_record->deleteAll($conditions4);	
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	$this->loadmodel('import_payment_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
 	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
@@ -9325,11 +9357,15 @@ if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }
 		
 	} 
 	foreach($v_result as $data){
-		if(array_sum($data)==0){ echo "T";
+		if(array_sum($data)==0) { $tt ="T"; }else{ $tt="F"; break;  }
+	}
+	
+		
+		if($tt == "T"){ echo"T";
 			$this->loadmodel('import_payment_record');
 			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
-		}else{ echo "F"; die; }
-	}
+ }else{  echo "F"; die; }
+	
 	
 	
 }

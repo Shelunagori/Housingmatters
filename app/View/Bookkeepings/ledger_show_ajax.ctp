@@ -80,12 +80,12 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 ?>
 <div style="font-size:14px;">
 	<span style="color:#6F6D6D;font-size:16px;">LEDGER REPORT</span><br/>
-	<!--<span><b><?php echo $ledger_account_name; ?> </b></span>
+	<span><b><?php echo $ledger_account_name; ?> </b></span>
 	<?php if(!empty($sub_ledger_name)){
 		echo '<i class="icon-chevron-right" style="font-size: 11px;"></i>';
 	} ?>
 	
-	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>-->
+	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>
 	<span>From: <?php echo date("d-m-Y",strtotime($from)); ?> To: <?php echo date("d-m-Y",strtotime($to)); ?></span>
 </div>
 <table width="100%" class="table table-bordered table-striped">

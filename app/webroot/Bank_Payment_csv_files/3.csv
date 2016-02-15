@@ -1,5 +1,7 @@
-Posting Date,Date of invoice,Due Date,Party account head,Invoice Reference,Expense Head,Amount of invoice, Description 
-13-02-2016,13-02-2016,13-02-2016,Happy,test,House keeping charges,1000,description
-13-02-2016,13-02-2016,13-02-2016,Happy,test,Pest control,1000,description
-13-02-2016,13-02-2016,13-02-2016,Happy,test,Building R&M,20000,description
-13-02-2016,13-02-2016,13-02-2016,Happy,test,Salaries,4000,description
+
+
+
+
+
+Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration 
+12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration 
