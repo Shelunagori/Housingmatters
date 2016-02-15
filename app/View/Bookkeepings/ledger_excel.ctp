@@ -63,6 +63,18 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 }
 
 ?>
+
+<table border="1">
+<tr><td colspan="7" style="text-align:center;">LEDGER REPORT</td></tr>
+<tr><th colspan="7" style="text-align:center;"><?php echo $ledger_account_name; ?> 
+	<?php if(!empty($sub_ledger_name)){
+		echo '<i class="icon-chevron-right" style="font-size: 11px;"></i>';
+	} ?>
+	
+	 <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></th></tr><tr><td colspan="7" style="text-align:center;">
+	From: <?php echo date("d-m-Y",strtotime($from)); ?> To: <?php echo date("d-m-Y",strtotime($to)); ?></td></tr></table>
+
+
 <table border="1">
 	<thead>
 		<tr>
