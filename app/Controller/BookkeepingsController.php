@@ -397,13 +397,13 @@ $collection = $m->selectCollection('accounts', 'ledger_account');
 $cursor = $collection->find();
 
 $this->loadmodel('ledger_account');
-$cursor1=$this->ledger_account->find('all');
+$conditions = array( '$or' => array(array('society_id' =>$s_society_id),array('society_id' =>0)));
+$cursor1=$this->ledger_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 
-
-$this->loadmodel('flat');
+$this->loadmodel('ledger_sub_account');
 $conditions=array("society_id" => $s_society_id);
-$cursor2=$this->flat->find('all',array('conditions'=>$conditions));
+$cursor2=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 }

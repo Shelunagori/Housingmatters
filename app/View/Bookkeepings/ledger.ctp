@@ -36,11 +36,11 @@ $default_date_to = date('d-m-Y')
 				</td>
 		
 		
-				<td id="sub_ledger_ajax_view">
+				<!--<td id="sub_ledger_ajax_view">
 						<select class="medium m-wrap" tabindex="1" name="user_name" id="sub_id" style="margin-top:7px;">
 						<option value="0">Select Sub Ledger A/c</option>
 						</select>
-				</td>
+				</td>-->
 
 				<td>
 					<input type="text" placeholder="From Date" id="date1" class="date-picker medium m-wrap" data-date-format="dd-mm-yyyy" name="from" style="background-color:white !important; margin-top:7px;" value="<?php echo $default_date_from; ?>">
@@ -64,7 +64,7 @@ $default_date_to = date('d-m-Y')
 <!-----------------------------------End Ledger Form ------------------------------------------>
  		
 <!------------------------------------ Start Java Script --------------------------------->
-<script>
+<script>/*
 $(document).ready(function(){
 	
 	    $("#ledger_account").bind('change',function(){
@@ -73,7 +73,7 @@ $(document).ready(function(){
 		  $("#sub_ledger_ajax_view").load("ledger_ajax?ledger_account_id=" +ledger_account_id+ "");
 	    });
 	
-});
+}); */
 </script>			
 		
 <script>
