@@ -60,8 +60,8 @@ $total=0;$total_debit=0;$total_credit=0;
 foreach($result_journal as $data){
 	$journal_id=$data['journal']['journal_id'];
 	$voucher_id=$data['journal']['voucher_id'];
-	echo $ledger_account_id=(int)$data['journal']['ledger_account_id'];
-	echo $ledger_sub_account_id=(int)$data['journal']['ledger_sub_account_id'];
+	 $ledger_account_id=(int)$data['journal']['ledger_account_id'];
+	$ledger_sub_account_id=(int)$data['journal']['ledger_sub_account_id'];
 	$user_id=$data['journal']['user_id'];
 	$transaction_date=$data['journal']['transaction_date'];
 	$transaction_date=date('d-m-Y',$transaction_date);
@@ -69,7 +69,7 @@ foreach($result_journal as $data){
 	$credit=$data['journal']['credit'];
 	$debit=$data['journal']['debit'];
 	$remark=$data['journal']['remark'];
-	exit;
+	
 	$result_ledger_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));
 	$ledger_ac_name=$result_ledger_account[0]['ledger_account']['ledger_name'];
 	
@@ -108,7 +108,7 @@ $prepaired_by = $dataaaa['user']['user_name'];
 		$result_ledger_sub_account=$this->requestAction(array('controller' => 'Hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($ledger_sub_account_id)));
 		$led_sub_name=$result_ledger_sub_account[0]['ledger_sub_account']['name'];
 		$bank_account=$result_ledger_sub_account[0]['ledger_sub_account']['bank_account'];
-		$ledger_ac_name.=$led_sub_name.'  '.$bank_account;
+		$ledger_ac_name=$led_sub_name.'  '.$bank_account;
 	}	
 	if($ledger_account_id == 112)
 	{
