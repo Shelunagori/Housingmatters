@@ -165,8 +165,9 @@ $('form#form1').submit( function(ev){
 	processData: false,
 	contentType: false,
 	type: 'POST',
-	dataType: 'json'
+	//dataType: 'json'
 	}).done(function(response){
+		alert(response);
 		if(response=="UPLOADED"){
 			change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 		}

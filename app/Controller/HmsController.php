@@ -92,7 +92,8 @@ function Upload_user_info_csv_file(){
 	if(isset($_FILES['file'])){
 		$file_name=$s_society_id.".csv";
 		$file_tmp_name =$_FILES['file']['tmp_name'];
-		$target = "user_email_mobile_csv/";
+		 
+		 $target = "".$this->webroot_path()."user_email_mobile_csv/";  
 		$target=@$target.basename($file_name);
 		move_uploaded_file($file_tmp_name,@$target);
 		
