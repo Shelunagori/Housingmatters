@@ -258,9 +258,9 @@ url: "<?php echo $webroot_path; ?>Cashbanks/allow_import_bank_payment",
 	
 	response = response.replace(/\s+/g,' ').trim();
 	
-if(response=="F"){
+if(response.type=="error"){
 $("#check_validation_result").html("");
-alert("Your Data Is Not Valid.");
+alert(response.text);
 }else{
 	
 change_page_automatically("<?php echo $webroot_path; ?>Cashbanks/bank_payment_import_csv");
