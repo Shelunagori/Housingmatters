@@ -123,14 +123,14 @@ $zz=$last;
 }
 $this->set('zz',$zz);   
 
-$this->loadmodel('amount_category');
-$cursor1=$this->amount_category->find('all');
+$this->loadmodel('ledger_account');
+$conditions = array( '$or' => array(array('society_id' =>$s_society_id),array('society_id' =>0)));
+$cursor1=$this->ledger_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 
-
-
-$this->loadmodel('ledger_account');
-$cursor2=$this->ledger_account->find('all');
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id);
+$cursor2=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 
@@ -338,12 +338,13 @@ $t = $this->request->query('con');
 $this->set('t',$t);
 
 $this->loadmodel('ledger_account');
-$cursor1=$this->ledger_account->find('all');
+$conditions = array( '$or' => array(array('society_id' =>$s_society_id),array('society_id' =>0)));
+$cursor1=$this->ledger_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor1',$cursor1);
 
-
-$this->loadmodel('amount_category');
-$cursor2=$this->amount_category->find('all');
+$this->loadmodel('ledger_sub_account');
+$conditions=array("society_id" => $s_society_id);
+$cursor2=$this->ledger_sub_account->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 }
@@ -372,9 +373,9 @@ $cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions))
 $this->set('cursor1',$cursor1);
 
 }
-//////////////////////////////////////////////////////////// End Show Ledger Type Journal(Accounts) ///////////////////////////////////////////////////
+//////////////////////// End Show Ledger Type Journal(Accounts) ////////////////////////
 
-////////////////////////// Start Ledger (Accounts)//////////////////////////////////////////////////////////////////
+////////////////////////// Start Ledger (Accounts)/////////////////////////////////////
 function ledger()
 {
 if($this->RequestHandler->isAjax()){
@@ -701,22 +702,13 @@ foreach($myArray as $child){
 	$output = json_encode(array('type'=>'error', 'text' => 'Ledger Account is Required in row '.$c));
 	die($output);
 	}
-	if(!empty($child[2]) and !empty($child[3])){
-	$output = json_encode(array('type'=>'error', 'text' => 'Please Fill only Debit or  Credit in row '.$c));
-	die($output);
-	}
-	if($child[0] == 15 || $child[0] == 33 || $child[0] == 34 || $child[0] == 35){	
 	
-	if(empty($child[1])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Ledger Sub Account is Required in row '.$c));
-		die($output);
-	}	
-	if(empty($child[2]) and empty($child[3])){
+	if(empty($child[1]) and empty($child[2])){
 	$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit is Required in row '.$c));
 	die($output);
 	}
 	
-	if(is_numeric($child[2]) || is_numeric($child[3])){
+	if(is_numeric($child[1]) || is_numeric($child[2])){
 	}	
 	else
 	{
@@ -725,22 +717,10 @@ foreach($myArray as $child){
 	}
 	$total_debit = $total_debit + $child[2];
 	 $total_credit = $total_credit + $child[3];
- }	
- else{
-		if(empty($child[2]) and empty($child[3])){
-		$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit is Required in row '.$c));
-		die($output);
-		}	
-		if(is_numeric($child[2]) || is_numeric($child[3]))
-		{
-		}	
-	else{
-		$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit Should be Numeric Value in row '.$c));
-		die($output);
-	}
-	 $total_debit = $total_debit + $child[2];
-	 $total_credit = $total_credit + $child[3];
-  }	
+
+		
+	
+  
 
 }	
 	if($total_debit != $total_credit){
@@ -751,10 +731,29 @@ foreach($myArray as $child){
 	$voucher_id=$this->autoincrement_with_society_ticket('journal','voucher_id');
 	foreach($myArray as $child){
 	
-			$ledger = (int)$child[0];
-			$debit = $child[2];
-			$credit = $child[3];
-			$desc = $child[4];
+			$ledger = $child[0];
+			$ledgerr_arrr = explode(',',$ledger);
+			$type = (int)$ledgerr_arrr[1];
+			$flat_id = null;
+if($type == 1)
+{
+ $ledger_sub_account = (int)$ledgerr_arrr[0];
+$ledger_sub_data = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account)));
+foreach($ledger_sub_data as $sub_ledgerr)
+{
+$ledger = (int)$sub_ledgerr['ledger_sub_account']['ledger_id'];	
+$flat_id = (int)$sub_ledgerr['ledger_sub_account']['flat_id'];
+}
+}	
+else
+{
+$ledger = (int)$ledgerr_arrr[0];	
+}	
+			
+			
+			$debit = $child[1];
+			$credit = $child[2];
+			$desc = $child[3];
 			
 			if(empty($debit)){
 				$debit=null;
@@ -765,24 +764,14 @@ foreach($myArray as $child){
 				
 			}
 			
-			if($ledger == 15 || $ledger == 33 ||  $ledger == 35 || $ledger == 112){
+			
 				
-				$ledger_sub_account = (int)$child[1];
-				}else{
-					
-					$ledger_sub_account=null;
-					
-				}
-				if($ledger == 34){
-				$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_SubAccount_dattta_by_flat_id'),array('pass'=>array((int)$child[1])));
-				foreach($result_flat_info as $flat_info){
-				$ledger_sub_account = (int)$flat_info["ledger_sub_account"]["auto_id"];
-				}
-				}
+				
+				
 		$journal_id=$this->autoincrement('journal','journal_id');
 		$this->loadmodel('journal');
 		$multipleRowData = Array( Array("journal_id" => $journal_id, 
-		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>(int)$child[1],"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
+		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>(int)$flat_id,"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
 		$this->journal->saveAll($multipleRowData);
 		
 		$this->loadmodel('ledger');
