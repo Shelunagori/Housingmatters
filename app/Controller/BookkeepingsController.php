@@ -754,7 +754,8 @@ $ledger_sub_account = (int)$flat_id;
 }	
 else
 {
-$ledger = (int)$ledgerr_arrr[0];	
+$ledger = (int)$ledgerr_arrr[0];
+$ledger_sub_account2=null;	
 }	
 			
 			
