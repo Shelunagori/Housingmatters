@@ -29,9 +29,38 @@ $default_date_to = date('d-m-Y')
 							 {
 							   $auto_id = (int)$collection['ledger_account']['auto_id'];
 							   $name = $collection['ledger_account']['ledger_name'];
+						if($auto_id != 34 && $auto_id != 33 && $auto_id != 35 && $auto_id != 15 && $auto_id != 112)
+						{
 						?>
-						<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
-						<?php } ?>
+						<option value="<?php echo $auto_id; ?>,2"><?php echo $name; ?></option>
+							 <?php }}
+                             foreach ($cursor2 as $collection) 
+							 {
+							$account_number = "";
+							$wing_flat = "";
+							 $auto_id2 = (int)$collection['ledger_sub_account']['auto_id'];
+							 $name2 = $collection['ledger_sub_account']['name']; 
+                             $ledger_id = (int)$collection['ledger_sub_account']['ledger_id'];
+						
+						if($ledger_id == 34)
+						{							
+$flat_id = @$collection['ledger_sub_account']['flat_id'];
+$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach($wing_detailll as $wing_dataaa)
+{
+$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
+}
+$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_id)));
+						}
+						if($ledger_id == 33){
+$account_number = $collection['ledger_sub_account']['bank_account'];  	
+							
+						}
+							 ?>
+                          
+					<option value="<?php echo $auto_id2; ?>,1"><?php echo $name2; ?> &nbsp;&nbsp; <?php echo @$wing_flat; ?><?php echo @$account_number; ?></option>
+						  
+						  <?php } ?>
 						</select>
 				</td>
 		
