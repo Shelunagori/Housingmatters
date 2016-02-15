@@ -715,8 +715,8 @@ foreach($myArray as $child){
 	$output = json_encode(array('type'=>'error', 'text' => 'Debit or Credit Should be Numeric Value in row '.$c));
 	die($output);
 	}
-	$total_debit = $total_debit + $child[2];
-	 $total_credit = $total_credit + $child[3];
+	$total_debit = $total_debit + $child[1];
+	 $total_credit = $total_credit + $child[2];
 
 		
 	
