@@ -18,10 +18,9 @@ $socc_namm = str_replace(' ', '_', $society_name);
 	header ("Content-type: application/vnd.ms-excel");
 	header ("Content-Disposition: attachment; filename=".$filename.".xls");
 	header ("Content-Description: Generated Report" );
-	
-	
-	
-	?>
+?>
+<?php if($wise == 2){ ?>
+
 <table style="width:100%; background-color:white;" border="1">
 <tr>
 <th colspan="6" style="text-align:center;">
@@ -153,3 +152,114 @@ $total_bill_amt = number_format($total_bill_amt);
 <td style="text-align:right;"><b><?php echo $total_due_amt; ?></b></td>
 </tr>
 </table>
+<?php } else{ ?> 
+
+<table  style="width:100%;" border="1">
+<thead>
+<tr>
+<th colspan="6" style="text-align:center;">
+Over Due Report  (<?php echo $society_name; ?> Society)
+</th>
+</tr>
+<tr id="bg_color">
+<th style="text-align:center;">Bill No</th>
+<th style="text-align:center;">Name of Owner</th>
+<th style="text-align:center;">Bill Date</th>
+<th style="text-align:center;">Due date</th>
+<th style="text-align:center;">Bill Amount</th>
+<th style="text-align:center;">Due Amount</th>
+</tr>
+</thead>
+<tbody id="table">	
+<?php
+$c=0;
+$total_due_amt = 0;
+$total_bill_amt = 0;	
+foreach($result_flat as $data)	
+{
+$flat_id = (int)$data['flat']['flat_id'];	
+$due_amt=0;
+$total_amt=0;
+$new_arrear_intrest = 0;
+$new_intrest_on_arrears = 0;
+$new_total = 0;
+$new_arrear_maintenance = 0;
+$regular_data = $this->requestAction(array('controller' => 'hms', 'action' => 'new_regular_bill_detail_via_flat_id'),array('pass'=>array($flat_id)));				
+foreach ($regular_data as $collection) 
+{
+$auto_id = (int)@$collection['new_regular_bill']['auto_id'];
+$bill_no = @$collection['new_regular_bill']['bill_no'];	
+$date_from = @$collection['new_regular_bill']['bill_start_date'];	
+$date_to = @$collection['new_regular_bill']['bill_daterange_to'];	
+$due_date = @$collection['new_regular_bill']['due_date'];	
+$total_amt = (int)@$collection['new_regular_bill']['due_for_payment'];
+$flat_id = (int)@$collection['new_regular_bill']['flat_id'];
+$date = @$collection['new_regular_bill']['date'];
+$new_arrear_intrest = @$collection['new_regular_bill']['new_arrear_intrest'];
+$new_arrear_maintenance = @$collection['new_regular_bill']['new_arrear_maintenance'];
+$new_intrest_on_arrears = @$collection['new_regular_bill']['new_intrest_on_arrears'];
+$new_total = @$collection['new_regular_bill']['new_total'];
+}
+if(empty($new_total) && empty($new_intrest_on_arrears) && empty($new_arrear_maintenance) && empty($new_arrear_intrest))
+{
+$due_amt = $total_amt;	
+}
+else
+{
+$due_amt = (($new_arrear_intrest)+($new_arrear_maintenance)+($new_intrest_on_arrears)+($new_total));
+}
+
+$total_amount = $total_amt;
+$bill_start_date = date('d-M-Y',($date_from));
+$due_date2 = date('d-M-Y',($due_date));
+
+
+$flat_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));				
+foreach ($flat_detailll as $collection2) 
+{
+$wing_id = (int)$collection2['flat']['wing_id']; 
+}				
+
+$ledger_sub_accc = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($flat_id)));				
+foreach ($ledger_sub_accc as $dataaaa) 
+{
+$user_name = $dataaaa['ledger_sub_account']['name']; 
+}	
+
+$wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_id,$flat_id))); 
+	
+if($date_from >= $from1 && $date_from <= $to1)
+{
+if($due_amt > 0)
+{
+$total_bill_amt = $total_bill_amt+$total_amt;
+$total_due_amt=$total_due_amt+$due_amt;
+
+$total_amt = number_format($total_amt);
+$due_amt2 = number_format($due_amt);
+
+?>
+<tr>
+<td style="text-align:center;"><?php echo $bill_no; ?></td>
+<td style="text-align:center;"><?php echo $user_name; ?> &nbsp;&nbsp; <?php echo $wing_flat; ?></td>
+<td style="text-align:center;"><?php echo $bill_start_date; ?></td>
+<td style="text-align:center;"><?php echo $due_date2; ?></td>
+<td style="text-align:right;"><?php echo $total_amt; ?></td>
+<td style="text-align:right;"><?php echo $due_amt2; ?></td>
+</tr>
+<?php
+}
+}
+}
+
+$total_due_amt = number_format($total_due_amt);
+$total_bill_amt = number_format($total_bill_amt);
+?>
+<tr>
+<td style="text-align:right;" colspan="4"><b>Total</b></td>
+<td style="text-align:right;"><b><?php echo $total_bill_amt; ?></b></td>
+<td style="text-align:right;"><b><?php echo $total_due_amt; ?></b></td>
+</tr>
+</tbody>
+</table>
+<?php } ?>

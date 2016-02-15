@@ -1341,6 +1341,13 @@ $this->layout = 'blank';
 			{
 			$wing = (int)$this->request->query('wi');
 			$this->set("wing",$wing);
+			
+		$this->loadmodel('flat');
+		$condition=array('wing_id'=>(int)$wing);
+		$order=array('flat.flat_name'=>'ASC');
+		$result_flat=$this->flat->find('all',array('conditions'=>$condition,'order'=>$order));
+		$this->set('result_flat',$result_flat);	
+			
 			}
 			else if($wise == 2)
 			{
