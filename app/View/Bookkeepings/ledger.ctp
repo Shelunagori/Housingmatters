@@ -10,7 +10,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </script>
 </div>
 		
-<!-------------------------------Start Ledger Form ------------------------------------------------->
+<!-------------------------------Start Ledger Form --------------------------->
 <?php  
 $default_date_from = date('1-m-Y'); 
 $default_date_to = date('d-m-Y')
