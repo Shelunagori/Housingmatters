@@ -434,7 +434,7 @@ $this->set('cursor1',$cursor1);
 function ledger_excel()
 {
 $this->layout=null;
-
+$this->ath();
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');
@@ -461,21 +461,13 @@ $this->set('socc_namm',$socc_namm);
 $ledger_account_id=(int)$this->request->query('l');
 $ledger_sub_account_id=(int)$this->request->query('sl');
 
-if($ledger_account_id == 34){	
-$ledger_sub_detail=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_subLedger_detail_via_flat_id'), array('pass' => array($ledger_sub_account_id)));
-foreach($ledger_sub_detail as $dataa)
-{
-$ledger_sub_account_id= (int)$dataa['ledger_sub_account']['auto_id'];
-}
-}
-
-
 $this->set('ledger_account_id',$ledger_account_id);
 $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 
 		
-	if($ledger_account_id == 15 || $ledger_account_id == 33 || $ledger_account_id == 34 || $ledger_account_id == 35)
+	if($ledger_account_id == 15 || $ledger_account_id == 33 || $ledger_account_id == 34 || $ledger_account_id == 35 || $ledger_account_id == 112)
 	{
+		
 		$this->loadmodel('ledger');
 		$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,"ledger_sub_account_id"=>$ledger_sub_account_id,'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
 		$order=array('ledger.transaction_date'=>'ASC');
@@ -507,7 +499,7 @@ $this->set("tds_arr",$tds_arr);
 //////////////////////////// End Ledger Excel (Accounts)/////////////////////////////
 
 ////////////////////////////////////////////// Start Ledger Show Ajax (Accounts)////////////////////////////////////////////////////////////////////////
-function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account_id=null,$from=null,$to=null){
+function ledger_show_ajax($page=null,$ledger_account_id=null,$from=null,$to=null){
 	$this->layout='blank';
 	$this->ath();
 	$s_role_id=$this->Session->read('role_id');
@@ -515,9 +507,30 @@ function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account
 	$s_user_id=$this->Session->read('user_id');
 	$this->set('s_role_id',$s_role_id);
 
-
-	$ledger_account_id = (int)$ledger_account_id;
-	$ledger_sub_account_id = (int)$ledger_sub_account_id;
+	
+if(empty($ledger_account_id)){
+			echo '<center><span style="color:red;"> Please select ledger accounts.</span></center>';
+			exit;
+		}
+$id_arr = explode(',',$ledger_account_id);
+ $type = (int)$id_arr[1];	
+if($type == 1)
+{
+ $ledger_sub_account_id = (int)$id_arr[0];
+$ledger_sub_data = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account_id)));
+foreach($ledger_sub_data as $sub_ledgerr)
+{
+$ledger_account_id = (int)$sub_ledgerr['ledger_sub_account']['ledger_id'];	
+}
+}	
+else
+{
+$ledger_account_id = (int)$id_arr[0];	
+}	
+	
+	
+	//$ledger_account_id = (int)$ledger_account_id;
+	//$ledger_sub_account_id = (int)$ledger_sub_account_id;
 	$from = date("Y-m-d",strtotime($from));
 	$to = date("Y-m-d",strtotime($to));
 	$this->set('ledger_account_id',$ledger_account_id);
@@ -525,20 +538,9 @@ function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account
 	$this->set('from',$from);
 	$this->set('to',$to);
 	
-		if(empty($ledger_account_id)){
-			echo '<center><span style="color:red;"> Please select ledger accounts.</span></center>';
-			exit;
-		}
-		if($ledger_account_id == 15 || $ledger_account_id == 33 || $ledger_account_id == 34 || $ledger_account_id == 35 || $ledger_account_id == 112){
-			if(empty($ledger_sub_account_id)){
-			echo '<center><span style="color:red;"> Please select sub-ledger accounts.</span></center>';
-			exit;
-		   }
-		}
-		if($from>$to){
-			echo '<center><span style="color:red;"> Please select valid date range.</span></center>';
-			exit;
-		}
+		
+		
+		
 	$this->loadmodel('ledger');
 	$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
 	$order=array('ledger.transaction_date'=>'ASC');
@@ -561,14 +563,8 @@ function ledger_show_ajax($page=null,$ledger_account_id=null,$ledger_sub_account
 	
 	if($ledger_account_id == 15 || $ledger_account_id == 33 || $ledger_account_id == 34 || $ledger_account_id == 35 || $ledger_account_id == 112){
 
-if($ledger_account_id == 34){	
-$ledger_sub_detail=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_subLedger_detail_via_flat_id'), array('pass' => array($ledger_sub_account_id)));
-foreach($ledger_sub_detail as $dataa)
-{
-$ledger_sub_account_id= (int)$dataa['ledger_sub_account']['auto_id'];
-}
-}
-$this->loadmodel('ledger');
+
+        $this->loadmodel('ledger');
 		$conditions=array('society_id'=>$s_society_id,"ledger_account_id"=>$ledger_account_id,
 		"ledger_sub_account_id"=>$ledger_sub_account_id,
 		'transaction_date'=>array('$gte'=>strtotime($from),'$lte'=>strtotime($to)));
