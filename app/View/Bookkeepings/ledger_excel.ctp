@@ -90,6 +90,7 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 	<tbody id="table">
 	<?php 
 	
+	
 	$i=0; $total_debit=0; $total_credit=0;
 	foreach($result_ledger as $data){ $i++;
 	     $created_by = "";
