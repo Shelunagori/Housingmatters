@@ -1,4 +1,5 @@
 <div id="first_div">
+
 <?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;" id="myModal4">
 	<div class="portlet-title">
@@ -158,6 +159,7 @@ $('form#form1').submit( function(ev){
 	ev.preventDefault();
 	$("#submit_element").html("<img src='<?php echo $webroot_path; ?>as/loding.gif' /> Please Wait, Csv file is Uploading...");
 	var m_data = new FormData();
+	//m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	$.ajax({
 	url: "Upload_user_info_csv_file",
