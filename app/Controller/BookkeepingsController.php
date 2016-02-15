@@ -737,12 +737,19 @@ foreach($myArray as $child){
 			$flat_id = null;
 if($type == 1)
 {
- $ledger_sub_account = (int)$ledgerr_arrr[0];
+$ledger_sub_account = (int)$ledgerr_arrr[0];
+$ledger_sub_account2 = (int)$ledger_sub_account;
+
 $ledger_sub_data = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account)));
 foreach($ledger_sub_data as $sub_ledgerr)
 {
 $ledger = (int)$sub_ledgerr['ledger_sub_account']['ledger_id'];	
+if($ledger == 34)
+{
 $flat_id = (int)$sub_ledgerr['ledger_sub_account']['flat_id'];
+$ledger_sub_account = (int)$flat_id;
+
+}
 }
 }	
 else
@@ -771,12 +778,12 @@ $ledger = (int)$ledgerr_arrr[0];
 		$journal_id=$this->autoincrement('journal','journal_id');
 		$this->loadmodel('journal');
 		$multipleRowData = Array( Array("journal_id" => $journal_id, 
-		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>(int)$flat_id,"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
+		"ledger_account_id" => $ledger,"ledger_sub_account_id"=>(int)$ledger_sub_account,"user_id" => $s_user_id, "transaction_date" => $transaction_date,"current_date" => $date, "credit" => $credit,'debit'=>$debit, "remark" => $desc ,"society_id" => $s_society_id,'voucher_id'=>$voucher_id));
 		$this->journal->saveAll($multipleRowData);
 		
 		$this->loadmodel('ledger');
 		$auto_id=$this->autoincrement('ledger','auto_id');
-		$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => $ledger,"ledger_sub_account_id" =>$ledger_sub_account,"debit"=>$debit,"credit"=>$credit,"table_name"=>"journal","element_id"=>$journal_id,"society_id"=>$s_society_id,"transaction_date"=>$transaction_date));
+		$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => $ledger,"ledger_sub_account_id" =>$ledger_sub_account2,"debit"=>$debit,"credit"=>$credit,"table_name"=>"journal","element_id"=>$journal_id,"society_id"=>$s_society_id,"transaction_date"=>$transaction_date));
 
 	
 	}
