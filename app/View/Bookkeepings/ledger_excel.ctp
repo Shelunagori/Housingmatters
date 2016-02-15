@@ -1,15 +1,4 @@
 <?php
-$filename="".$socc_namm."_Ledger_Report_".$fdddd."_".$tdddd."";
-header ("Expires: 0");
-header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-header ("Cache-Control: no-cache, must-revalidate");
-header ("Pragma: no-cache");
-header ("Content-type: application/vnd.ms-excel");
-header ("Content-Disposition: attachment; filename=".$filename.".xls");
-header ("Content-Description: Generated Report" );
-
-
-
 function substrwords($text, $maxchar, $end='...') {
     if (strlen($text) > $maxchar || $text == '') {
         $words = preg_split('/\s/', $text);      
@@ -61,7 +50,15 @@ $user_id = (int)$result_income_head2[0]['ledger_sub_account']['user_id'];
 $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' => 'wing_flat'), array('pass' => array($wing_id,$flat_id)));
 
 }
-
+$filename="".$socc_namm."_Ledger_Report_".$fdddd."_".$tdddd." of ".$ledger_account_name."-
+".$sub_ledger_name." ";
+header ("Expires: 0");
+header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+header ("Cache-Control: no-cache, must-revalidate");
+header ("Pragma: no-cache");
+header ("Content-type: application/vnd.ms-excel");
+header ("Content-Disposition: attachment; filename=".$filename.".xls");
+header ("Content-Description: Generated Report" );
 ?>
 
 <table border="1">
