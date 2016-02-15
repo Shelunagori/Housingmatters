@@ -460,6 +460,16 @@ $this->set('socc_namm',$socc_namm);
 
 $ledger_account_id=(int)$this->request->query('l');
 $ledger_sub_account_id=(int)$this->request->query('sl');
+
+if($ledger_account_id == 34){	
+$ledger_sub_detail=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_subLedger_detail_via_flat_id'), array('pass' => array($ledger_sub_account_id)));
+foreach($ledger_sub_detail as $dataa)
+{
+$ledger_sub_account_id= (int)$dataa['ledger_sub_account']['auto_id'];
+}
+}
+
+
 $this->set('ledger_account_id',$ledger_account_id);
 $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 
