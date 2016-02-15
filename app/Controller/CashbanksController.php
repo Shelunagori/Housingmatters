@@ -9356,16 +9356,16 @@ if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }
 		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
 		
 	} 
-	$nnn = 0;
 	foreach($v_result as $data){
-		$nnn++;
-		if(array_sum($data)==0){ echo "T";
+		if(array_sum($data)==0) { $tt ="T"; }else{ $tt="F"; break;  }
+	}
+	
+		
+		if($tt == "T"){ echo"T";
 			$this->loadmodel('import_payment_record');
 			$this->import_payment_record->updateAll(array("step4" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));	
-		}else{ echo "F"; 
+ }else{  echo "F"; die; }
 	
-		 }
-	}
 	
 	
 }
