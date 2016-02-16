@@ -30,7 +30,7 @@ $nnn = 5555;
 <br>
 
 
-<table id="report_tb" border="1" style="width:100%;">
+<table   style="width:100%; background-color:white;" class="table table-bordered table-striped table-hover">
 <tr>
 <th style="text-align:center; background-color:white;" colspan="7"><?php echo $society_name; ?> Cash Book Report Register From: <?php echo $from; ?> To: <?php echo $to; ?></th>
 </tr>
@@ -65,9 +65,11 @@ $account_type = (int)$dataaa['new_cash_bank']['account_type'];
 $receipt_amount = $dataaa['new_cash_bank']['amount'];
 $payment_amount = "";
 $payment_amount2 = "";
+
+
 if($account_type == 1)
 {
-	$subleddger_detaill=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_sub_account_fetch'), array('pass' => array($account_id)));
+	$subleddger_detaill=$this->requestAction(array('controller' => 'Hms', 'action' => 'ledger_sub_account_fetch3'), array('pass' => array($account_id)));
 	foreach($subleddger_detaill as $subledger_datttaa)
 	{
 	$user_name = $subledger_datttaa['ledger_sub_account']['name'];
