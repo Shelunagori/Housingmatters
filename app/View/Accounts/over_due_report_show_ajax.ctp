@@ -119,7 +119,7 @@ foreach ($flat_detailll as $collection2)
 {
 $wing_id = (int)$collection2['flat']['wing_id'];  
 }		
-if($date_from >= $from1 && $date_from <= $to1)
+if(@$date_from >= $from1 && @$date_from <= $to1)
 {
 if($due_amt > 0)
 {
