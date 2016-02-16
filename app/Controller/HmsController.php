@@ -21491,8 +21491,6 @@ return $this->ledger_account->find('all',array('conditions'=>$conditions,'order'
 }
 
 
-
-
 //////////////////////////////////////// End Ledger Account Fetch (Accounts)////////////////////////////////////////////////////////////////////////
 
 function ledger_fetch_new($sub_id)

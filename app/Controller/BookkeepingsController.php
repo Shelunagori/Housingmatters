@@ -458,7 +458,7 @@ $this->set('tdddd',$tdddd);
 $socc_namm = str_replace(' ', '_', $society_name);
 $this->set('socc_namm',$socc_namm);
 
-
+$account_name = "";
 $ledger_account_id=(int)$this->request->query('l');
 $ledger_sub_account_id=(int)$this->request->query('sl');
 
@@ -474,6 +474,15 @@ $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 		$order=array('ledger.transaction_date'=>'ASC');
 		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
 		$this->set('result_ledger',$result_ledger);
+	
+	
+	$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account_id)));
+	foreach($result_income_head2 as $data)
+	{
+	$account_name = $data['ledger_sub_account']['name'];	
+	}
+	
+	$this->set('account_name',$account_name);
 	}
 	else{
 		
@@ -483,7 +492,12 @@ $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
 		$this->set('result_ledger',$result_ledger);
 		
-		
+		$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));
+		foreach($result_income_head2 as $data)
+		{
+		$account_name = $data['ledger_account']['ledger_name'];	
+		}
+		$this->set('account_name',$account_name);
 	}
 
 ///////////////////////////////////////
