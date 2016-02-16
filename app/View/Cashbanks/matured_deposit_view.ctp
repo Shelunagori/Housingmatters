@@ -141,8 +141,8 @@ $file_name = $data['fix_deposit']['file_name'];
 $creation_date = $data['fix_deposit']['current_date'];
 $creater_id = (int)$data['fix_deposit']['prepaired_by'];
 @$renewal = @$data['fix_deposit']['renewal'];
-$move_by_id = (int)$data['fix_deposit']['move_by'];
-$move_on_date = $data['fix_deposit']['move_on'];
+@$move_by_id = (int)$data['fix_deposit']['move_by'];
+@$move_on_date = $data['fix_deposit']['move_on'];
 
 $move_on = date('d-m-Y',strtotime($move_on_date));
 $result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($move_by_id)));
