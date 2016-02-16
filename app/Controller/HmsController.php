@@ -10859,6 +10859,7 @@ if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
 if($p==4) { $d="Family Member"; }
+if($p==5) { $d="Tenant"; }
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
 $this->role->saveAll(array("auto_id" => $k, "role_name" => $d, 'role_id'=>$p, "society_id" => $society_id));
@@ -11073,13 +11074,13 @@ $this->user_temp->deleteAll($conditions);
 
 
 //////////////// Role to assign code for Society  //////////////////////////
-for($p=1;$p<=4;$p++)
+for($p=1;$p<=5;$p++)
 {
 if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
 if($p==4) { $d="Family Member"; }
-
+if($p==5) { $d="Tenant"; }
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
 $this->role->saveAll(array("auto_id" => $k, "role_name" => $d, 'role_id'=>$p, "society_id" => $society_id));
@@ -11319,7 +11320,7 @@ if(!empty($da_society_id))
 	$this->set('mess',$message);
 }
 $this->loadmodel('society');
-$result=$this->society->find('all');
+$result=$this->society->find('all',array('conditions'=>array('aprvl_status'=>1)));
 $this->set('result_society',$result);
 if ($this->request->is('post')) 
 {
@@ -11543,7 +11544,7 @@ function hm_society_member_view()
 $this->layout='session';
 $this->ath();	
 $this->loadmodel('society');	
-$this->set('result_society',$this->society->find('all'));
+$this->set('result_society',$this->society->find('all',array('conditions'=>array('aprvl_status'=>1))));
 $this->loadmodel('user');
 $order=array('user.user_name'=>'ASC');		
 $result1=$this->user->find('all',array('conditions'=>array('deactive'=>0),'order'=>$order));	
@@ -17765,7 +17766,7 @@ function hm_new_user_enrollment()
 $this->layout="session";
 $this->ath();	
 $this->loadmodel('society');
-$result=$this->society->find('all');	
+$result=$this->society->find('all',array('conditions'=>array('')));	
 $this->set('result_society',$result);
 if($this->request->is('post')) 
 {
