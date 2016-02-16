@@ -83,7 +83,7 @@ $tds_id = (int)@$dataaa['new_cash_bank']['tds_id'];
 		}
 	}
 	
-	$tds_amount = (round(($tds_tax/100)*$amount));
+	$tds_amount = (round((@$tds_tax/100)*$amount));
 	$total_tds_amount = ($amount - $tds_amount);
 	
 	
