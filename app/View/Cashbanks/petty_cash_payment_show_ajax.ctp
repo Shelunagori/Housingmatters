@@ -4,6 +4,8 @@ jQuery('.tooltips').tooltip();
 });
 </script> 
 <style>
+
+<!--
 #bg_color th{
 font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
@@ -23,7 +25,7 @@ height: 15px !important;
 border: none !important;
 margin-bottom: 0px !important;
 font-size: 12px;
-}
+} -->
 </style>
 
 <?php
@@ -105,12 +107,12 @@ if($nnn == 555)
 <div style="width:100%; overflow:auto;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>
-<table width="100%" style="background-color:white;" id="report_tb">
+<table width="100%" style="background-color:white;" class="table table-bordered table-striped table-hover">
 <thead>
 <tr >
 <th colspan="5" style="text-align:center;"><?php echo $society_name; ?> Petty Cash Payment Register From : <?php echo $from; ?> To : <?php echo $to; ?></th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>PC Payment Vochure</th>
 <th>Transaction Date</th>
 <th>Paid To</th>
