@@ -10330,10 +10330,7 @@ $randm=$q_new[1];
 		$result_society=$this->society_name($society_id);
 		$access_tenant=@$result_society[0]['society']['access_tenant'];
 
-		if($tenant==2 && $access_tenant==0){
-			$this->redirect(array('action' => 'tenant_access'));
-
-		 }
+		
 
 $this->loadmodel('user');
 $conditions =array( '$or' => array( 
@@ -24834,16 +24831,18 @@ foreach($myArray as $child)
 		 $type="Owner";
 		 $role_id[]=2;
 		 $email_content="owner/resident/staff";
+		 $default_role_id=2;
 	}
 	else{
 			$committee=2;
 			$type="Tenant";
 			$role_id[]=5;
 			$email_content="Tenant/resident/staff";
+			 $default_role_id=5;
 	}
 
 	
-	$default_role_id=2;
+	
 	if($committee==1)
 	{
 		$role_id[]=1;
