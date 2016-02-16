@@ -207,7 +207,7 @@ foreach($result_ledger as $ledger_data){
 		</div>
 	</div>
 	<div>
-		<table id="report_tb" width="100%">
+		<table class="table table-bordered table-striped table-hover" width="100%">
 			<thead>
             <tr>
 				<th>Date</th>
