@@ -93,7 +93,7 @@ $prepaired_by_name = $collection['user']['user_name'];
 <td class="hide_at_print" style="width:12%;">
 <?php if(!empty($file_name)){ ?><a href="<?php echo $webroot_path ; ?>/fix_deposit/<?php echo $file_name; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: 
-	<?php echo $prepaired_by_name; ?> on: <?php echo $creation_date; ?>"></i>
+	<?php echo @$prepaired_by_name; ?> on: <?php echo $creation_date; ?>"></i>
 </td>
 </tr>
 <?php
