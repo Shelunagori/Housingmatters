@@ -999,7 +999,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
-Configure::write('debug', 0);
+  //Configure::write('debug', 0);
 }
 
 
@@ -24829,22 +24829,24 @@ foreach($myArray as $child)
 	$residing=(int)$child[7];
 	$tenant=(int)$child[5];
 
-	if($tenant==1)
-	{
-	 $committee=(int)$child[6];
-	 $type="Owner";
+	if($tenant==1){
+		 $committee=(int)$child[6];
+		 $type="Owner";
+		 $role_id[]=2;
+		 $email_content="owner/resident/staff";
 	}
-	else
-	{
-	 $committee=2;
-	  $type="Tenant";
+	else{
+			$committee=2;
+			$type="Tenant";
+			$role_id[]=5;
+			$email_content="Tenant/resident/staff";
 	}
 
-	$role_id[]=2;
+	
 	$default_role_id=2;
 	if($committee==1)
 	{
-	$role_id[]=1;
+		$role_id[]=1;
 	}
 
 
@@ -24872,7 +24874,7 @@ foreach($myArray as $child)
 		if($sms_allow==1){
 			
 			$user_name_short=$this->check_charecter_name($name);
-			$sms="".$user_name_short.", Your housing society ".$s_n." has enrolled you in HousingMatters portal. Pls log into www.housingmatters.co.in One Time Password ".$random."";
+			$sms="".$user_name_short.", Your housing society ".$s_n." has enrolled you in HousingMatters portal. Pls log into www.housingmatters.in One Time Password ".$random."";
 			$sms1=str_replace(" ", '+', $sms);
 			$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms1.'');
 			}
@@ -24900,7 +24902,7 @@ foreach($myArray as $child)
 			}
 		/////////////  End code ledger sub accounts //////////////////////////
 		$special="'";
-	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
+	
 		if(!empty($email) && !empty($mobile))
 		{
 		$login_user=$email;	
@@ -24981,7 +24983,7 @@ foreach($myArray as $child)
 								
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
+										As you are an '.$email_content.' of '.$society_name.', we have added your email address in HousingMatters portal.
 										</td>
 																
 								</tr>
@@ -25042,8 +25044,8 @@ foreach($myArray as $child)
 </table>';
 		
 		}
-	}	
-	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
+
+	
 		if(!empty($email) && empty($mobile))
 		{
 			
@@ -25124,7 +25126,7 @@ foreach($myArray as $child)
 								
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
+										As you are an '.$email_content.' of '.$society_name.', we have added your email address in HousingMatters portal.
 										</td>
 																
 								</tr>
@@ -25185,7 +25187,7 @@ foreach($myArray as $child)
 </table>';
 			
 		}
-	}
+	
 	
 	
 	
@@ -25200,11 +25202,13 @@ foreach($myArray as $child)
 			 $from=$collection['email']['from'];
 			}
 			 $subject="Welcome to ".$society_name." portal ";
+			 
+		if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 			if(!empty($email))
 			{
 			$this->send_email($to,$from,$from_name,$subject,@$message_web,$reply);
 			}
-			
+		}
 
 				////////////////Notification email user all checked code  //////////////////////////
 				$this->loadmodel('email');	
@@ -25220,13 +25224,11 @@ foreach($myArray as $child)
 
 				//////////////// End all checked code   //////////////////////////
 
-			if(empty($email) && empty($mobile))
-			{
-			}else{
+			
 				////////////////////  insert login table  ///////////////////
 				$this->loadmodel('login');
-				$this->login->saveAll(array('login_id'=>$log_i,'user_name'=>$login_user,'password'=>$random,'signup_random'=>$random,'mobile'=>$mobile));
-			}
+				$this->login->saveAll(array('login_id'=>$log_i,'user_name'=>@$login_user,'password'=>@$random,'signup_random'=>@$random,'mobile'=>@$mobile));
+			
 			//////////////////////////////////////////////////////////////////
 		
 unset($role_id);
