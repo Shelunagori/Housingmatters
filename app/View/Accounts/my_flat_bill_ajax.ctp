@@ -47,7 +47,7 @@ foreach($result_ledger as $ledger_data){
 		</div>
 	</div>
 	<div>
-		<table id="report_tb" width="100%">
+		<table class="table table-bordered table-striped table-hover" width="100%">
 			<thead>
             <tr>
 				<th>Date</th>
@@ -64,7 +64,7 @@ foreach($result_ledger as $ledger_data){
 			if(sizeof($result_ledger)==0){
 				?>
 				<tr>
-					<td colspan="8" align="center">No Record Found for above selected period.</td>
+					<td colspan="9" align="center">No Record Found for above selected period.</td>
 				</tr>
                
 				<?php
