@@ -1,6 +1,13 @@
 <style>
 
- #bg_color th{
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
+
+ <!--#bg_color th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
 #report_tb td{
@@ -19,7 +26,7 @@
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+} -->
 </style>
 <?php //////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <?php
@@ -46,12 +53,12 @@ if($nnn == 555)
 <div style="width:100%; overflow:auto; margin-top:10px;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
-<table  width="100%" style=" background-color:white;" id="report_tb">
+<table  width="100%" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
-<th colspan="10"><?php echo $society_name; ?> Bank Receipt Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
+<th colspan="10" style="text-align:center;"><?php echo $society_name; ?> Bank Receipt Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Receipt#</th>
 <th>Receipt Date </th>
 <th>Receipt Type</th>
@@ -85,7 +92,7 @@ if($nnn == 555)
             $current_date = $collection['new_cash_bank']['current_date']; 			
             $current_datttt = date('d-m-Y',strtotime($current_date));
             $creater_user_id =(int)@$collection['new_cash_bank']['prepaired_by'];
-			$is_cancel = $collection['new_cash_bank']['is_cancel'];
+			$is_cancel = @$collection['new_cash_bank']['is_cancel'];
 			$approved_by = (int)@$collection['new_cash_bank']['approved_by'];
 			$approved_date = @$collection['new_cash_bank']['approved_date'];
 			
