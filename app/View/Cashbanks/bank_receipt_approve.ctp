@@ -24,7 +24,6 @@ if($s_role_id == 3)
 </div>
 </center>
 <br>
-<style>
 <?php	
 $nnn=55;
 foreach ($cursor1 as $collection) 
@@ -33,13 +32,18 @@ $nnn = 555;
 }
 ?>
 
+<style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
 
 
 
 
-
-
-
+<!--
  #bg_color th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
@@ -59,16 +63,16 @@ $nnn = 555;
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+} -->
 </style>
 
 
 <?php if($nnn == 555)
 {
 	?>
-<table  width="100%" style=" background-color:white;" id="report_tb">
+<table  width="100%" class="table table-bordered table-striped table-hover">
 <thead>
-<tr id="bg_color">
+<tr>
 <th>Sr#</th>
 <th>Receipt Date </th>
 <th>Receipt Type</th>

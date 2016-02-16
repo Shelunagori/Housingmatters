@@ -1,5 +1,5 @@
 <?php
-$filename="".$socc_namm."_Ledger_Report_".$fdddd."_".$tdddd."";
+$filename="".$socc_namm."_Ledger_Report_".$fdddd."_".$tdddd."-".$account_name."";
 header ("Expires: 0");
 header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
 header ("Cache-Control: no-cache, must-revalidate");
@@ -33,7 +33,7 @@ function substrwords($text, $maxchar, $end='...') {
     return $output;
 }
 
-
+$sub_ledger_name="";
 $result_income_head = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));	
 $ledger_account_name=$result_income_head[0]["ledger_account"]["ledger_name"];
 

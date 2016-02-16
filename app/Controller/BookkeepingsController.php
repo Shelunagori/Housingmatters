@@ -458,7 +458,7 @@ $this->set('tdddd',$tdddd);
 $socc_namm = str_replace(' ', '_', $society_name);
 $this->set('socc_namm',$socc_namm);
 
-
+$account_name = "";
 $ledger_account_id=(int)$this->request->query('l');
 $ledger_sub_account_id=(int)$this->request->query('sl');
 
@@ -474,6 +474,15 @@ $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 		$order=array('ledger.transaction_date'=>'ASC');
 		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
 		$this->set('result_ledger',$result_ledger);
+	
+	
+	$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account_id)));
+	foreach($result_income_head2 as $data)
+	{
+	$account_name = $data['ledger_sub_account']['name'];	
+	}
+	
+	$this->set('account_name',$account_name);
 	}
 	else{
 		
@@ -483,7 +492,12 @@ $this->set('ledger_sub_account_id',$ledger_sub_account_id);
 		$result_ledger=$this->ledger->find('all',array('conditions'=>$conditions,'order'=>$order)); 
 		$this->set('result_ledger',$result_ledger);
 		
-		
+		$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));
+		foreach($result_income_head2 as $data)
+		{
+		$account_name = $data['ledger_account']['ledger_name'];	
+		}
+		$this->set('account_name',$account_name);
 	}
 
 ///////////////////////////////////////
@@ -514,7 +528,7 @@ if(empty($ledger_account_id)){
 			exit;
 		}
 $id_arr = explode(',',$ledger_account_id);
- $type = (int)$id_arr[1];	
+ @$type = (int)$id_arr[1];	
 if($type == 1)
 {
  $ledger_sub_account_id = (int)$id_arr[0];
@@ -535,7 +549,7 @@ $ledger_account_id = (int)$id_arr[0];
 	$from = date("Y-m-d",strtotime($from));
 	$to = date("Y-m-d",strtotime($to));
 	$this->set('ledger_account_id',$ledger_account_id);
-	$this->set('ledger_sub_account_id',$ledger_sub_account_id);
+	$this->set('ledger_sub_account_id',@$ledger_sub_account_id);
 	$this->set('from',$from);
 	$this->set('to',$to);
 	

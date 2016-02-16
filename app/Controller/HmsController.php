@@ -17766,7 +17766,7 @@ function hm_new_user_enrollment()
 $this->layout="session";
 $this->ath();	
 $this->loadmodel('society');
-$result=$this->society->find('all',array('conditions'=>array('')));	
+$result=$this->society->find('all',array('conditions'=>array('aprvl_status'=>1)));	
 $this->set('result_society',$result);
 if($this->request->is('post')) 
 {
@@ -21489,8 +21489,6 @@ $conditions=array("group_id" => $auto_id);
 $order=array("ledger_account.ledger_name"=>"ASC");
 return $this->ledger_account->find('all',array('conditions'=>$conditions,'order'=>$order));
 }
-
-
 
 
 //////////////////////////////////////// End Ledger Account Fetch (Accounts)////////////////////////////////////////////////////////////////////////

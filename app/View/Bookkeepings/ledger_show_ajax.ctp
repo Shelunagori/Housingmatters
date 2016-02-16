@@ -48,10 +48,12 @@ function substrwords($text, $maxchar, $end='...') {
 </div>	
 <div style="background-color:#fff;" align="center">
 <?php
+$sub_ledger_name = "";
+
 $result_income_head = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));	
 $ledger_account_name=$result_income_head[0]["ledger_account"]["ledger_name"];
 
-$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($ledger_sub_account_id)));
+$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account_id)));
 $account_number = "";
 $wing_flat = "";
 

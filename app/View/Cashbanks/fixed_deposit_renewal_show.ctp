@@ -32,12 +32,12 @@ $c_date = date('d-m-Y');
 ?>
 <br>
 
-<table width="100%" style="background-color:white;" id="report_tb">
+<table width="100%" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
 <th colspan='10' style='text-align:center;'><?php echo $society_name; ?> Fixed Deposit Register on <?php echo $c_date; ?></th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Deposit ID</th>
 <th>Bank name</th>
 <th>Bank Branch</th>
@@ -118,6 +118,13 @@ $prepaired_by_name = $collection['user']['user_name'];
 }
 ?>
 <style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
+<!--
 #bg_color th{
 font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
@@ -137,5 +144,5 @@ height: 15px !important;
 border: none !important;
 margin-bottom: 0px !important;
 font-size: 12px;
-}
+} -->
 </style>
