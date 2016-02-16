@@ -1,4 +1,12 @@
 <style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;
+}
+
+<!--
 #tbb th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F; 
 }
@@ -18,7 +26,7 @@
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+} -->
 </style>
 
 <div class="hide_at_print">
@@ -70,7 +78,7 @@ if($nnn == 555)
 </div>
 <div class="portlet-body form">
 
-<table id="tbb" style="width:100%;">
+<table class="table table-bordered table-striped table-hover" style="width:100%;">
 <tr>
 <th>Receipt Date</th>
 <th>Receipt No.</th>
@@ -270,16 +278,16 @@ $total_debit =  $total_debit + $amount;
 if($deposit_status == 1)
 {
 ?>
-<tr  style="background-color:#E8EAE8;">
-<td><?php echo $receipt_date; ?></td>
-<td><?php echo $receipt_no; ?></td>
-<td><?php echo $party_name; ?> &nbsp;&nbsp; <?php echo $wing_flat; ?></td>
-<td><?php echo $deposited_bank_name; ?>&nbsp;(<?php echo $bank_account; ?>)</td>
-<td><?php echo $cheque_number; ?></td>
-<td><?php echo $cheque_date; ?></td>
-<td><?php echo $drawn_on_which_bank; ?></td>
-<td style="text-align:right;"><?php $amount2 = number_format($amount); echo $amount2; ?></td>
-<td style="text-align:center;">
+<tr>
+<td style="background-color:#FFC;"><?php echo $receipt_date; ?></td>
+<td style="background-color:#FFC;"><?php echo $receipt_no; ?></td>
+<td style="background-color:#FFC;"><?php echo $party_name; ?> &nbsp;&nbsp; <?php echo $wing_flat; ?></td>
+<td style="background-color:#FFC;"><?php echo $deposited_bank_name; ?>&nbsp;(<?php echo $bank_account; ?>)</td>
+<td style="background-color:#FFC;"><?php echo $cheque_number; ?></td>
+<td style="background-color:#FFC;"><?php echo $cheque_date; ?></td>
+<td style="background-color:#FFC;"><?php echo $drawn_on_which_bank; ?></td>
+<td style="text-align:right; background-color:#FFC;"><?php $amount2 = number_format($amount); echo $amount2; ?></td>
+<td style="text-align:center; background-color:#FFC;">
 <label class="checkbox">
 <div class="checker" id="uniform-undefined"><span>
 <input type="checkbox" value="<?php echo $transaction_id; ?>" style="opacity: 0;" class="dep" name="dd<?php echo $transaction_id; ?>"></span></div>
