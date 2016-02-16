@@ -52,6 +52,9 @@ foreach($result_expense_tracker as $data){
 	$posting_date=date('d-m-Y',$posting_date);
 	$creation_date = $data['expense_tracker']['current_date'];
 	$due_date=$data['expense_tracker']['due_date'];
+	
+	$creation_date = date('Y-m-d',strtotime($creation_date));
+	
 	if(!empty($due_date)){
 	$due_date=date('d-m-Y',$due_date);
 	}
