@@ -528,7 +528,7 @@ if(empty($ledger_account_id)){
 			exit;
 		}
 $id_arr = explode(',',$ledger_account_id);
- $type = (int)$id_arr[1];	
+ @$type = (int)$id_arr[1];	
 if($type == 1)
 {
  $ledger_sub_account_id = (int)$id_arr[0];
@@ -549,7 +549,7 @@ $ledger_account_id = (int)$id_arr[0];
 	$from = date("Y-m-d",strtotime($from));
 	$to = date("Y-m-d",strtotime($to));
 	$this->set('ledger_account_id',$ledger_account_id);
-	$this->set('ledger_sub_account_id',$ledger_sub_account_id);
+	$this->set('ledger_sub_account_id',@$ledger_sub_account_id);
 	$this->set('from',$from);
 	$this->set('to',$to);
 	
