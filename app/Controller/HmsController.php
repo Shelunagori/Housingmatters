@@ -4655,7 +4655,7 @@ if ($this->request->is('post'))
 				$date2=date("d-m-Y");
 
 				$result_society= $this->society_name($society_id);
-				$access_tenant=$result_society[0]['society']['access_tenant'];
+				$access_tenant=@$result_society[0]['society']['access_tenant'];
 				if(!empty($access_tenant)){
 					if($access_tenant==0 && $type=="Tenant"){
 						goto a;
