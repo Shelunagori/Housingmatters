@@ -18547,7 +18547,7 @@ function import_user_ajax()
 				$wing_id=$result_wing[0]['wing']['wing_id'];
 				
 				$this->loadmodel('flat'); 
-				$conditions=array("wing_id"=>$wing_id,"flat_name"=> int($flat_name));
+				$conditions=array("wing_id"=>$wing_id,"flat_name"=> (int)$flat_name);
 				$result_flat=$this->flat->find('all',array('conditions'=>$conditions));
 				$result_flat_count=sizeof($result_flat);
 
