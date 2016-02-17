@@ -215,7 +215,7 @@ $(document).ready(function(){
 	
 	   $('form#form1').submit( function(ev){
 		ev.preventDefault();
-		
+		alert();
 		im_name=$("#image-file").val();
 		var insert = 1;
 		if(im_name==""){
