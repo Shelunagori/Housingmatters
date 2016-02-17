@@ -142,7 +142,7 @@ $i++;
 									<span style="color:red;"><i class="icon-warning-sign"></i></span> &nbsp;<b style="font-size:16px; font-family:'Times New Roman', Times, serif;">Are you sure you want to delete new society ?</b>
 									</div>
 									<div class="modal-footer">
-                                        <a href="society_approve_reject?con=<?php echo $email; ?> &con1=<?php echo $da_user_id ;?>" role="button"  class="btn blue" >Yes</a>
+                                        <a href="society_approve_reject?con=<?php echo $email; ?>&con1=<?php echo $da_user_id ;?>"  class="btn blue" >Yes</a>
                                         <button class="btn " data-dismiss="modal" aria-hidden="true">No</button>
 									</div>
 								</div>
