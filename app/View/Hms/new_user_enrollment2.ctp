@@ -274,6 +274,7 @@ $(document).ready(function(){
 		var sub="no";
 		ar.push([n,w,f,e,m,o,c,r,sub]);
 		}
+		alert('second');
 		var myJsonString = JSON.stringify(ar);
 		myJsonString=encodeURIComponent(myJsonString);
 		$.ajax({
