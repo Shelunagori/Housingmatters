@@ -17,7 +17,7 @@
 <div class="portlet box ">
 
 <div class="portlet-body">
-<table class="table table-striped table-bordered" id="">
+<table class="table table-striped table-bordered" id="sample_1">
 <thead>
 <tr>
 <th>Sr No.</th>

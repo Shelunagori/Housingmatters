@@ -25,7 +25,7 @@ $category_name=$data['master_notice_category']['category_name'];
 </div>
 <br/><br/>
 <div style="background-color:#fff;padding:10px;">
-<table class="table table-striped table-bordered" id="sample_2">
+<table class="table table-striped table-bordered" id="sample_1">
 <thead>
     <tr>
     <th width="7%"> Sr. No.</th>
@@ -123,7 +123,7 @@ $i++;
 <?php } }  ?> 
 </tbody>
 </table> 
-<?php if(sizeof($result_notice_publish)==0){ echo '<div align="center">No Notices published yet</div>'; } ?>
+<?php //if(sizeof($result_notice_publish)==0){ echo '<div align="center">No Notices published yet</div>'; } ?>
 </div>
 
 
