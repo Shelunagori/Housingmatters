@@ -39,7 +39,7 @@
 	<script>
 	$( document ).ready(function() {
 		$.ajax({
-			url: "read_user_info_csv_file",
+			url: "<?php echo $webroot_path; ?>Hms/read_user_info_csv_file",
 			dataType: 'json'
 		}).done(function(response){
 			if(response=="READ"){
@@ -74,7 +74,7 @@ $( document ).ready(function() {
 function convert_csv_data_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "convert_user_info_data",
+			url: "<?php echo $webroot_path; ?>Hms/convert_user_info_data",
 			dataType: 'json'
 		}).done(function(response){
 			//alert(response);
@@ -136,7 +136,7 @@ $( document ).ready(function() {
 function final_import_user_info_ajax(){
 	$( document ).ready(function() {
 		$.ajax({
-			url: "final_import_user_info_ajax",
+			url: "<?php echo $webroot_path; ?>Hms/final_import_user_info_ajax",
 			dataType: 'json'
 		}).done(function(response){
 			
@@ -162,7 +162,7 @@ $('form#form1').submit( function(ev){
 	//m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	$.ajax({
-	url: "Upload_user_info_csv_file",
+	url: "<?php echo $webroot_path; ?>Hms/Upload_user_info_csv_file",
 	data: m_data,
 	processData: false,
 	contentType: false,
