@@ -58,6 +58,14 @@ function check_charecter_name($name){
 	
 }
 
+function count_society_member($s_id){
+	
+$this->loadmodel('user_flat');	
+$conditions1=array('society_id'=>$s_id,'active'=>0);
+return $result_user_owner=$this->user_flat->find('count',array('conditions'=>$conditions1));	
+//$this->set('result_user_owner',$result_user_owner);	
+	
+}
 
 function email_mobile_update(){
 	
@@ -3527,6 +3535,14 @@ function fetch_subLedger_detail_via_flat_id($flat_id){
 
 function fetch_wing_id_via_flat_id($flat_id){
 	$s_society_id = (int)$this->Session->read('society_id');
+	$flat_id = (int)$flat_id;
+	$this->loadmodel('flat');
+	$conditions=array("flat_id" =>$flat_id,"society_id" => $s_society_id);
+	return $this->flat->find('all',array('conditions'=>$conditions));
+}
+
+function fetch_wing_id_via_flat_id_hm($flat_id,$s_id){
+	$s_society_id = (int)$s_id;
 	$flat_id = (int)$flat_id;
 	$this->loadmodel('flat');
 	$conditions=array("flat_id" =>$flat_id,"society_id" => $s_society_id);
