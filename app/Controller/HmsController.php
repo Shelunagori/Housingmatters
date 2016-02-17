@@ -3533,15 +3533,6 @@ function fetch_wing_id_via_flat_id($flat_id){
 	return $this->flat->find('all',array('conditions'=>$conditions));
 }
 
-function fetch_wing_id_via_flat_id_hm($flat_id,$s_id){
-	$s_society_id = (int)$s_id;
-	$flat_id = (int)$flat_id;
-	$this->loadmodel('flat');
-	$conditions=array("flat_id" =>$flat_id,"society_id" => $s_society_id);
-	return $this->flat->find('all',array('conditions'=>$conditions));
-}
-
-
 function fetch_user_info_via_flat_id($wing,$flat){
 	$s_society_id=$this->Session->read('society_id');
 	$this->loadmodel('user_flat');
@@ -11121,7 +11112,7 @@ $this->ledger_account->saveAll(array('auto_id'=>$h,'ledger_name'=>$ledger_name,'
 
 function society_approve_reject()
 {
-$this->layout=null;	
+$this->layout='blank';	
 $email=htmlentities($this->request->query('con'));
 $user_id=(int)htmlentities($this->request->query('con1'));
 $this->loadmodel('user_temp');
@@ -11416,18 +11407,10 @@ $password=$collection['user']['password'];
 $wing=(int)$collection['user']['wing'];
 $flat=(int)$collection['user']['flat'];
 $tenant=(int)$collection['user']['tenant'];
-//$residing=(int)$collection['user']['residing'];
+$residing=(int)$collection['user']['residing'];
 
 }
 ///////////end fetch data ////////////////////
-if(!empty($email) and !empty($mobile)){
-		
-	$page_name='send_sms_for_verify_mobile';		
-	
-}else{
-	
-	$page_name='set_new_password';
-}
 
 $random1=mt_rand(1000000000,9999999999);
 $random2=mt_rand(1000000000,9999999999);
@@ -11456,129 +11439,37 @@ $s_name=$data['society']['society_name'];
 ///////////////////////////////////////////// approve mail functionality ///////////////////////////////////////
 
 $to=$email;
+$message_web="<div>
+<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
+<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
+<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
+<p style='color:green;'><strong>Reminder!</strong></p>
+<p>Dear  $user_name,</p>
+<p>'We at $s_name use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent &amp; smart management of housing society affairs.</p>
+<p>As you are an owner/resident/staff of $s_name, we have added your email address in HousingMatters portal.</p>
+<p>Here are some of the important features related to our portal on HousingMatters:</p>
+
+<li>log &amp; track complaints</li>
+<li>start new discussions</li>
+<li>check your maintenance dues</li>
+<li>post classifieds</li>
+<li>receive important SMS &amp; emails from your committee</li>
+<li>and much more in the portal.</li>
 
 
- $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-          <tbody>
-			<tr>
-                <td>
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tbody>
-						
-				
-								
-								<tr>
-									<td colspan="2">
-									<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
-								<tbody>
-								<tr><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
-								<tr>
-								<td style="height:32;line-height:0px" align="left" valign="middle" width="32"><a href="#" style="color:#3b5998;text-decoration:none" target="_blank"><img src="'.$ip.$this->webroot.'as/hm/HM-LOGO-small.jpg" style="border:0" height="50" width="50"></a></td>
-								<td style="display:block;width:15px" width="15">&nbsp;&nbsp;&nbsp;</td>
-								<td width="100%"><a href="#" style="color:#3b5998;text-decoration:none;font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:19px;line-height:32px" target="_blank"><span style="color:#00A0E3">Housing</span><span style="color:#777776">Matters</span></a></td>
-								<td align="right"><a href="https://www.facebook.com/HousingMatters.co.in" target="_blank"><img  src="'.$ip.$this->webroot.'as/hm/SMLogoFB.png" style="max-height:30px;min-height:30px;width:30px;max-width:30px" height="30px" width="30px"></a>
-									
-								</td>
-								</tr>
-								<tr style="border-bottom:solid 1px #e5e5e5"><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
-								</tbody>
-								</table>
-									
-									</td>
-								</tr>
-								
-									
-								
-						</tbody>
-					</table>
-					
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tbody>
-						
 
-									<tr>
-										<td style="padding:5px;" width="100%" align="left">
-										<span style="color:rgb(100,100,99)" align="justify"> <p style="color:green;"><strong>Reminder!</strong></p> </span> 
-										</td>
-																
-									</tr>
-									<tr>
-										<td style="padding:5px;" width="100%" align="left">
-										<span  align="justify"> Dear '.$user_name.', </span> 
-										</td>
-																
-									</tr>
+<p><b><a href='$ip".$this->webroot."/hms/send_sms_for_verify_mobile?q=$random' target='_blank'><button style='width:100px; height:30px;  background-color:#00A0E3;color:white'>Click here</button></a> for one time verification of your mobile number and Login into HousingMatters  for making life simpler for all your housing matters!</b></p>
 
-								<tr>
-										<td style="padding:5px;" width="100%" align="left">
-										 '.$special.'We at '.$s_name.' use HousingMatters - a dynamic web portal to interact with all owners/residents/staff for transparent & smart management of housing society affairs.
-										
-										
-										
-										
-										</td>
-																
-								</tr>
-								
-								<tr>
-										<td style="padding:5px;" width="100%" align="left">
-										As you are an owner/resident/staff of '.$s_name.', we have added your email address in HousingMatters portal.
-										</td>
-																
-								</tr>
-								
-								<tr>
-										<td style="padding:5px;" width="100%" align="left">
-												Here are some of the important features related to our portal on HousingMatters:
-										</td>
-																
-								</tr>
-								
-								<tr>
-										<td style="padding:5px;" width="100%" align="left">
-											<ul>
-													<li>log &amp; track complaints</li>
-													<li>start new discussions</li>
-													<li>check your maintenance dues</li>
-													<li>post classifieds</li>
-													<li>receive important SMS &amp; emails from your committee</li>
-													<li>and much more in the portal.</li>
-											</ul>		
-										</td>
-																
-								</tr>
 
-									
-								<tr>
-										<td style="padding:5px;" width="100%" align="left"><br/>
-											<span  align="justify"> <b>
-											<a href="'.$ip.$this->webroot.'hms/'.$page_name.'?q='.$random.'" style="text-decoration:none;" > Click here </a> for one time verification of your mobile number and Login into HousingMatters for making life simpler for all your housing matters!</b>
-											</span> 
-										</td>
-																
-								</tr>
-								
-								
-								
-								<tr>
-									<td style="padding:5px;" width="100%" align="left">
-											<span > 
-												Regards,<br/>
-												Administrator of '.$s_name.'<br/>
-												PS: add <a href="http://www.housingmatters.in" target="_blank" style="text-decoration:none;">www.housingmatters.in</a> in your favorite bookmarks for future use.
-											</span>
-									</td>
-																
-								</tr>
-					
-					</table>
-					
-				</td>
-			</tr>
+<p>Regards,</p>
+<p>Administrator of $s_name</p>
 
-        </tbody>
-</table>';
+<p>PS: add <a href='http://www.housingmatters.co.in' target='_blank'>www.housingmatters.co.in</a> in your favorite bookmarks for future use.</p>
 
+
+
+</div >
+</div>";
 
 $subject="[$s_name]";
 $from_name="HousingMatters";
@@ -11645,14 +11536,7 @@ function hm_resident_approve_resend_sms()
 
 
 }
-function count_society_member($s_id){
-	
-$this->loadmodel('user_flat');	
-$conditions1=array('society_id'=>$s_id,'active'=>0);
-return $result_user_owner=$this->user_flat->find('count',array('conditions'=>$conditions1));	
-//$this->set('result_user_owner',$result_user_owner);	
-	
-}
+
 
 function hm_society_member_view()
 {
@@ -18547,7 +18431,7 @@ function import_user_ajax()
 				$wing_id=$result_wing[0]['wing']['wing_id'];
 				
 				$this->loadmodel('flat'); 
-				$conditions=array("wing_id"=>$wing_id,"flat_name"=> (int)$flat_name);
+				$conditions=array("wing_id"=>$wing_id,"flat_name"=> new MongoRegex('/^' .  $flat_name . '$/i'));
 				$result_flat=$this->flat->find('all',array('conditions'=>$conditions));
 				$result_flat_count=sizeof($result_flat);
 

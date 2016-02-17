@@ -30,9 +30,19 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 			<h5>Upload CSV file in given format to import Receipts.</h5>
 			<input name="file" class="default" id="image-file" type="file">
 			<a href="open_excel" download="" target="_blank">Download sample format</a><br/><br/>
+			<br>
+<h4>Instruction set to import users</h4>
+<ol>
+<li>All the field are compulsory.</li>
+<li>Opening Balance Amount should be Numeric</li>
+<li>Amount Type should be 'Debit' or 'Credit'</li>
+<li>Total Debit should be same to total Credit</li>
+</ol>
+			
 			<h5 id="submit_element" >
 			<button type="submit" class="btn blue">IMPORT RECEIPTS</button>
 			</h5>
+			
 		</form>
 	</div>
 </div>
