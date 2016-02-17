@@ -215,7 +215,7 @@ $(document).ready(function(){
 	
 	   $('form#form1').submit( function(ev){
 		ev.preventDefault();
-		alert();
+		
 		im_name=$("#image-file").val();
 		var insert = 1;
 		if(im_name==""){
@@ -274,7 +274,7 @@ $(document).ready(function(){
 		var sub="no";
 		ar.push([n,w,f,e,m,o,c,r,sub]);
 		}
-		alert('second');
+		
 		var myJsonString = JSON.stringify(ar);
 		myJsonString=encodeURIComponent(myJsonString);
 		$.ajax({

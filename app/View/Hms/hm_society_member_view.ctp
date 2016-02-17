@@ -51,6 +51,8 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 									if(($designation_id==$role_id))
 									{
 										 $result_count_member = $this->requestAction(array('controller' => 'hms', 'action' => 'count_society_member'),array('pass'=>array($role_id)));
+										  $result_user_data = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($da_user_id)));
+										  $date_society_enrol=$result_user_data[0]['user']['date'];
 									$r++;
 									$u_name[]=$user_name; 
 									$dad_user_id[]=$da_user_id;
@@ -62,7 +64,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 									
 										<div class="accordion-heading">
 										
-										<div style="float:right; padding:5px; "><span style="float:left;width: 155px;">10-12-2016</span><span class="label label-info pull" style=" float:right;font-size:14px;width: 20px;"><?php echo $result_count_member; ?></span> </div>
+										<div style="float:right; padding:5px; "><span style="float:left;width: 155px;"><?php echo $date_society_enrol; ?></span><span class="label label-info pull" style=" float:right;font-size:14px;width: 20px;"><?php echo $result_count_member; ?></span> </div>
 											<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1<?php echo $j ; ?>" style="text-decoration:none;">
 											
 											<b><?php echo $designation_name; ?> </b>
