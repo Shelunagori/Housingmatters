@@ -94,7 +94,7 @@ if(wise === undefined) { $('#validate_result').html('<div style="background-colo
 		}
 		else if(wise == 2)
 		{
-		var user_id = $("#mem").val();
+		var user_id = $(".resident_drop_down").val();
 		if(user_id === '') { $('#validate_result').html('<div style="background-color:white; color:red; padding:5px;">Please Select Member </div>'); return false; }
 		}
 		

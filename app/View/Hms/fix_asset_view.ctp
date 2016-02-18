@@ -10,6 +10,16 @@ $current_date = date('d-m-Y');
 </div>
 
 <style>
+
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
+
+
+<!--
 #tbb th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;white-space: nowrap !important; 
 }
@@ -29,7 +39,7 @@ $current_date = date('d-m-Y');
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+}-->
 </style>
 
 
@@ -48,10 +58,10 @@ $current_date = date('d-m-Y');
 </div>	
 
 
-<table class="" style="" id="tbb" width="100%" style=" background-color:white;">
+<table class="table table-bordered table-striped table-hover" width="100%">
 <thead>
 <tr>
-<td colspan="11" align="center"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
+<td colspan="11" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
 </tr>
 <tr>
 <th >Sr.No.</th>

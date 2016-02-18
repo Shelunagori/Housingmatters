@@ -1,5 +1,5 @@
 <style>
- #bg_color th{
+ <!-- #bg_color th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
 #report_tb td{
@@ -18,7 +18,7 @@
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+}-->
 </style>
 <?php
 $m_from = date("Y-m-d", strtotime($from));
@@ -110,13 +110,13 @@ if($nnn == 555)
 if($tp == 1)
 {
 ?>
-<table style="background-color:white; width:100%;" id="report_tb">
+<table style="background-color:white; width:100%;" class="table table-bordered table-striped table-hover">
 <tr>
 <th colspan="9" style="text-align:center;">
 <?php echo $society_name; ?> Supplimentry Bill Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?>
 </th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Sr No.</th>
 <th>Bill No</th>
 <th>Generated on</th>
@@ -249,14 +249,14 @@ echo $grand_total; ?></b></td>
 if($tp == 2)
 {
 ?>
-<table style="background-color:white; width:100%;" id="report_tb">
+<table style="background-color:white; width:100%;" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
 <th colspan="8" style="text-align:center;">
 <?php echo $society_name; ?> Supplimentry Bill Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?>
 </th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Sr No.</th>
 <th>Bill No</th>
 <th>Generated on</th>
@@ -365,7 +365,7 @@ echo $grand_total; ?></b></td>
 if($tp == 3)
 {
 ?>	
-<table id="report_tb" style="background-color:white; width:100%;">
+<table class="table table-bordered table-striped table-hover" style="background-color:white; width:100%;">
 <thead>
 <tr>
 <th colspan="8" style="text-align:center;">
@@ -373,7 +373,7 @@ if($tp == 3)
 </th>
 </tr>
 
-<tr id="bg_color">
+<tr>
 <th>Sr No.</th>
 <th>Bill No</th>
 <th>Generated on</th>

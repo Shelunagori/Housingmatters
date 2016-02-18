@@ -229,11 +229,6 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		
-		
-		
-		
-		
 		$(".import_btn").text("Importing...");
 		var m_data = new FormData();
 		m_data.append( 'file', $('input[name=file]')[0].files[0]);
@@ -247,56 +242,8 @@ $(document).ready(function(){
 				$("#myModal3").hide();
 				$("#url_main table").html(response);
 
-		var count = $("#myTable tr").length;
-		var ar = [];
-		for(var i=1;i<=count;i++)
-		{
-			$("#url_main table tr:nth-child("+i+") span.report").remove();
-			$("#url_main table tr:nth-child("+i+") td").css("background-color", "#fff");
-			
-		var n=$("#url_main table tr:nth-child("+i+")  input[name=name]").val();
-		var w=$("#url_main table tr:nth-child("+i+") td:nth-child(2) select").val();
-		var f=$("#url_main table tr:nth-child("+i+") td:nth-child(3) select").val();
-		var e=$("#url_main table tr:nth-child("+i+")  input[name=email]").val();
-		var m=$("#url_main table tr:nth-child("+i+")  input[name=mobile]").val();
 		
-		
-		
-		
-		var qw1='input:radio:checked';
-		var o=$("#url_main table tr:nth-child("+i+") td:nth-child(6) "+qw1).val();
-	
-		var qw2='input:radio:checked';
-		var c=$("#url_main table tr:nth-child("+i+") td:nth-child(7) "+qw2).val();
-		
-		var qw3='input:radio:checked';
-		var r=$("#url_main table tr:nth-child("+i+") td:nth-child(8) "+qw3).val();
-		var sub="no";
-		ar.push([n,w,f,e,m,o,c,r,sub]);
-		}
-		var myJsonString = JSON.stringify(ar);
-		myJsonString=encodeURIComponent(myJsonString);
-		$.ajax({
-			url: "check_email_already_exist?q="+myJsonString,
-			type: 'POST',
-			dataType:'json',
-		}).done(function(response) {
-			
-			if(response.report_type=='error'){
-				jQuery.each(response.report, function(i, val) {
-					$("#url_main table tr:nth-child("+val.tr+") td:nth-child("+val.td+")").append('<span class="report" style="color:red;">'+val.text+'</span>');
-					$("#url_main table tr:nth-child("+val.tr+") td:nth-child("+val.td+")").css("background-color", "#f2dede");
-				});
-			}
-			if(response.report_type=='already_error'){
-				$("#report_id").html("<div class='alert alert-block alert-success fade in'><p>"+response.text+"</p></div>");
-				setTimeout( function(){$('#report_id').html('');} , 5000);
-			}
-			$(".import_btn").text("Import");
-		});
-		
-	});
 	});
 });
-
+});
 </script>

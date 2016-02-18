@@ -1,4 +1,7 @@
 <style>
+
+
+<!--
 #report_tb th{
 	font-size: 14px !important;background-color:#C8EFCE;padding:5px;border:solid 1px #55965F;
 }
@@ -8,7 +11,7 @@
 }
 table#report_tb tr:hover td {
 background-color: #E6ECE7;
-}
+} -->
 </style>
 <?php
 foreach($cursor1 as $dataaaa)
@@ -33,7 +36,7 @@ $nnn = 5555;
 </span>
 </div>
 <br>
-<table id="report_tb" border="1" style="width:100%;">
+<table style="text-align:center; background-color:white;" style="width:100%;" class="table table-bordered table-striped table-hover">
 <tr>
 <th colspan="7" style="text-align:center; background-color:white;"><?php echo $society_name; ?> Bank Book Report Register From: <?php echo $from; ?> To: <?php echo $to; ?>
 &nbsp;&nbsp;&nbsp;&nbsp;(<?php echo $bank_name; ?>-<?php echo $bank_account; ?>)

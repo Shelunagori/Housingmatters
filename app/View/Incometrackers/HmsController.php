@@ -58,14 +58,6 @@ function check_charecter_name($name){
 	
 }
 
-function count_society_member($s_id){
-	
-$this->loadmodel('user_flat');	
-$conditions1=array('society_id'=>$s_id,'active'=>0);
-return $result_user_owner=$this->user_flat->find('count',array('conditions'=>$conditions1));	
-//$this->set('result_user_owner',$result_user_owner);	
-	
-}
 
 function email_mobile_update(){
 	
@@ -98,24 +90,14 @@ function Upload_user_info_csv_file(){
 	$s_user_id=$this->Session->read('user_id');
 	$this->ath();
 	if(isset($_FILES['file'])){
-<<<<<<< HEAD
-		//$file_name=$s_society_id.".csv";
-		 $file_name=$_FILES['file']['name']; 
-		 $file_tmp_name =$_FILES['file']['tmp_name'];
-		 $target = "user_email_mobile_csv/"; 
-		 $target=@$target.basename($file_name);
-		 move_uploaded_file($file_tmp_name,@$target);
-		 $today = date("d-M-Y");
-=======
 		$file_name=$s_society_id.".csv";
 		$file_tmp_name =$_FILES['file']['tmp_name'];
-		 
-		$target = "user_email_mobile_csv/";  
+		$target = "user_email_mobile_csv/";
 		$target=@$target.basename($file_name);
 		move_uploaded_file($file_tmp_name,@$target);
-			
+		
+		
 		$today = date("d-M-Y");
->>>>>>> a18754b5701fbff35ec5a5c13c4800d853fcf5cc
 		
 		$this->loadmodel('user_info_import_record');
 		$auto_id=$this->autoincrement('user_info_import_record','auto_id');
@@ -1017,7 +999,7 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
-  Configure::write('debug', 0);
+Configure::write('debug', 0);
 }
 
 
@@ -3551,14 +3533,6 @@ function fetch_wing_id_via_flat_id($flat_id){
 	return $this->flat->find('all',array('conditions'=>$conditions));
 }
 
-function fetch_wing_id_via_flat_id_hm($flat_id,$s_id){
-	$s_society_id = (int)$s_id;
-	$flat_id = (int)$flat_id;
-	$this->loadmodel('flat');
-	$conditions=array("flat_id" =>$flat_id,"society_id" => $s_society_id);
-	return $this->flat->find('all',array('conditions'=>$conditions));
-}
-
 function fetch_user_info_via_flat_id($wing,$flat){
 	$s_society_id=$this->Session->read('society_id');
 	$this->loadmodel('user_flat');
@@ -4681,7 +4655,7 @@ if ($this->request->is('post'))
 				$date2=date("d-m-Y");
 
 				$result_society= $this->society_name($society_id);
-				$access_tenant=@$result_society[0]['society']['access_tenant'];
+				$access_tenant=$result_society[0]['society']['access_tenant'];
 				if(!empty($access_tenant)){
 					if($access_tenant==0 && $type=="Tenant"){
 						goto a;
@@ -10356,7 +10330,10 @@ $randm=$q_new[1];
 		$result_society=$this->society_name($society_id);
 		$access_tenant=@$result_society[0]['society']['access_tenant'];
 
-		
+		if($tenant==2 && $access_tenant==0){
+			$this->redirect(array('action' => 'tenant_access'));
+
+		 }
 
 $this->loadmodel('user');
 $conditions =array( '$or' => array( 
@@ -10885,7 +10862,6 @@ if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
 if($p==4) { $d="Family Member"; }
-if($p==5) { $d="Tenant"; }
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
 $this->role->saveAll(array("auto_id" => $k, "role_name" => $d, 'role_id'=>$p, "society_id" => $society_id));
@@ -11100,13 +11076,13 @@ $this->user_temp->deleteAll($conditions);
 
 
 //////////////// Role to assign code for Society  //////////////////////////
-for($p=1;$p<=5;$p++)
+for($p=1;$p<=4;$p++)
 {
 if($p==1) { $d="Committee Member"; }
 if($p==2) { $d="Resident"; }
 if($p==3) { $d="Admin"; }
 if($p==4) { $d="Family Member"; }
-if($p==5) { $d="Tenant"; }
+
 $this->loadmodel('role');
 $k=$this->autoincrement('role','auto_id');
 $this->role->saveAll(array("auto_id" => $k, "role_name" => $d, 'role_id'=>$p, "society_id" => $society_id));
@@ -11346,7 +11322,7 @@ if(!empty($da_society_id))
 	$this->set('mess',$message);
 }
 $this->loadmodel('society');
-$result=$this->society->find('all',array('conditions'=>array('aprvl_status'=>1)));
+$result=$this->society->find('all');
 $this->set('result_society',$result);
 if ($this->request->is('post')) 
 {
@@ -11570,7 +11546,7 @@ function hm_society_member_view()
 $this->layout='session';
 $this->ath();	
 $this->loadmodel('society');	
-$this->set('result_society',$this->society->find('all',array('conditions'=>array('aprvl_status'=>1))));
+$this->set('result_society',$this->society->find('all'));
 $this->loadmodel('user');
 $order=array('user.user_name'=>'ASC');		
 $result1=$this->user->find('all',array('conditions'=>array('deactive'=>0),'order'=>$order));	
@@ -17792,7 +17768,7 @@ function hm_new_user_enrollment()
 $this->layout="session";
 $this->ath();	
 $this->loadmodel('society');
-$result=$this->society->find('all',array('conditions'=>array('aprvl_status'=>1)));	
+$result=$this->society->find('all');	
 $this->set('result_society',$result);
 if($this->request->is('post')) 
 {
@@ -18457,7 +18433,7 @@ function import_user_ajax()
 				$wing_id=$result_wing[0]['wing']['wing_id'];
 				
 				$this->loadmodel('flat'); 
-				$conditions=array("wing_id"=>$wing_id,"flat_name"=>(int)$flat_name);
+				$conditions=array("wing_id"=>$wing_id,"flat_name"=> new MongoRegex('/^' .  $flat_name . '$/i'));
 				$result_flat=$this->flat->find('all',array('conditions'=>$conditions));
 				$result_flat_count=sizeof($result_flat);
 
@@ -21515,6 +21491,8 @@ $conditions=array("group_id" => $auto_id);
 $order=array("ledger_account.ledger_name"=>"ASC");
 return $this->ledger_account->find('all',array('conditions'=>$conditions,'order'=>$order));
 }
+
+
 
 
 //////////////////////////////////////// End Ledger Account Fetch (Accounts)////////////////////////////////////////////////////////////////////////
@@ -24851,26 +24829,22 @@ foreach($myArray as $child)
 	$residing=(int)$child[7];
 	$tenant=(int)$child[5];
 
-	if($tenant==1){
-		 $committee=(int)$child[6];
-		 $type="Owner";
-		 $role_id[]=2;
-		 $email_content="owner/resident/staff";
-		 $default_role_id=2;
+	if($tenant==1)
+	{
+	 $committee=(int)$child[6];
+	 $type="Owner";
 	}
-	else{
-			$committee=2;
-			$type="Tenant";
-			$role_id[]=5;
-			$email_content="Tenant/resident/staff";
-			 $default_role_id=5;
+	else
+	{
+	 $committee=2;
+	  $type="Tenant";
 	}
 
-	
-	
+	$role_id[]=2;
+	$default_role_id=2;
 	if($committee==1)
 	{
-		$role_id[]=1;
+	$role_id[]=1;
 	}
 
 
@@ -24898,7 +24872,7 @@ foreach($myArray as $child)
 		if($sms_allow==1){
 			
 			$user_name_short=$this->check_charecter_name($name);
-			$sms="".$user_name_short.", Your housing society ".$s_n." has enrolled you in HousingMatters portal. Pls log into www.housingmatters.in One Time Password ".$random."";
+			$sms="".$user_name_short.", Your housing society ".$s_n." has enrolled you in HousingMatters portal. Pls log into www.housingmatters.co.in One Time Password ".$random."";
 			$sms1=str_replace(" ", '+', $sms);
 			$payload = file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey='.$working_key.'&sender='.$sms_sender.'&to='.$mobile.'&message='.$sms1.'');
 			}
@@ -24926,7 +24900,7 @@ foreach($myArray as $child)
 			}
 		/////////////  End code ledger sub accounts //////////////////////////
 		$special="'";
-	
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && !empty($mobile))
 		{
 		$login_user=$email;	
@@ -25007,7 +24981,7 @@ foreach($myArray as $child)
 								
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										As you are an '.$email_content.' of '.$society_name.', we have added your email address in HousingMatters portal.
+										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
 										</td>
 																
 								</tr>
@@ -25068,8 +25042,8 @@ foreach($myArray as $child)
 </table>';
 		
 		}
-
-	
+	}	
+	if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 		if(!empty($email) && empty($mobile))
 		{
 			
@@ -25150,7 +25124,7 @@ foreach($myArray as $child)
 								
 								<tr>
 										<td style="padding:5px;" width="100%" align="left">
-										As you are an '.$email_content.' of '.$society_name.', we have added your email address in HousingMatters portal.
+										As you are an owner/resident/staff of '.$society_name.', we have added your email address in HousingMatters portal.
 										</td>
 																
 								</tr>
@@ -25211,7 +25185,7 @@ foreach($myArray as $child)
 </table>';
 			
 		}
-	
+	}
 	
 	
 	
@@ -25226,13 +25200,11 @@ foreach($myArray as $child)
 			 $from=$collection['email']['from'];
 			}
 			 $subject="Welcome to ".$society_name." portal ";
-			 
-		if(($access_tenant==1 && $type=="Tenant") || $type=="Owner"){
 			if(!empty($email))
 			{
 			$this->send_email($to,$from,$from_name,$subject,@$message_web,$reply);
 			}
-		}
+			
 
 				////////////////Notification email user all checked code  //////////////////////////
 				$this->loadmodel('email');	
@@ -25248,11 +25220,13 @@ foreach($myArray as $child)
 
 				//////////////// End all checked code   //////////////////////////
 
-			
+			if(empty($email) && empty($mobile))
+			{
+			}else{
 				////////////////////  insert login table  ///////////////////
 				$this->loadmodel('login');
-				$this->login->saveAll(array('login_id'=>$log_i,'user_name'=>@$login_user,'password'=>@$random,'signup_random'=>@$random,'mobile'=>@$mobile));
-			
+				$this->login->saveAll(array('login_id'=>$log_i,'user_name'=>$login_user,'password'=>$random,'signup_random'=>$random,'mobile'=>$mobile));
+			}
 			//////////////////////////////////////////////////////////////////
 		
 unset($role_id);

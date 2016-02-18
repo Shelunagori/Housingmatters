@@ -48,10 +48,12 @@ function substrwords($text, $maxchar, $end='...') {
 </div>	
 <div style="background-color:#fff;" align="center">
 <?php
+$sub_ledger_name = "";
+
 $result_income_head = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($ledger_account_id)));	
 $ledger_account_name=$result_income_head[0]["ledger_account"]["ledger_name"];
 
-$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_subLedger_detail_via_flat_id'),array('pass'=>array($ledger_sub_account_id)));
+$result_income_head2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($ledger_sub_account_id)));
 $account_number = "";
 $wing_flat = "";
 
@@ -80,12 +82,12 @@ $wing_flat=$this->requestAction(array('controller' => 'Bookkeepings', 'action' =
 ?>
 <div style="font-size:14px;">
 	<span style="color:#6F6D6D;font-size:16px;">LEDGER REPORT</span><br/>
-	<!--<span><b><?php echo $ledger_account_name; ?> </b></span>
+	<span><b><?php echo $ledger_account_name; ?> </b></span>
 	<?php if(!empty($sub_ledger_name)){
 		echo '<i class="icon-chevron-right" style="font-size: 11px;"></i>';
 	} ?>
 	
-	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>-->
+	<span ><b> <?php echo $sub_ledger_name; ?> &nbsp;&nbsp; <?php echo $account_number; ?>  <?php echo $wing_flat; ?></b></span><br/>
 	<span>From: <?php echo date("d-m-Y",strtotime($from)); ?> To: <?php echo date("d-m-Y",strtotime($to)); ?></span>
 </div>
 <table width="100%" class="table table-bordered table-striped">

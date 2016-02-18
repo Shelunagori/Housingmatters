@@ -26,12 +26,12 @@ $income_head_array=$regular_bill["new_regular_bill"]["income_head_array"];
 }
 ?>
 <style>
-#report_tb th{
-	white-space: nowrap !important; 
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
 }
-#report_tb td{
-	white-space: nowrap !important; 
-}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
 </style>
 
 
@@ -45,7 +45,7 @@ $income_head_array=$regular_bill["new_regular_bill"]["income_head_array"];
 <div style="width:100%; overflow:auto; margin-top:10px;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>
-<table id="report_tb">
+<table class="table table-bordered table-striped table-hover">
 	<thead>
 		<tr>
 			<th>Unit Number</th>

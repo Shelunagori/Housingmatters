@@ -9,6 +9,7 @@ $tomm = strtotime($to2);
 ?>
 
 <style>
+<!--
  #bg_color th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
@@ -28,7 +29,7 @@ $tomm = strtotime($to2);
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+}-->
 </style>
 
 <div style="width:100%;" class="hide_at_print">
@@ -41,13 +42,13 @@ $tomm = strtotime($to2);
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
-<table  width="100%" style=" background-color:white;" id="report_tb">
+<table  width="100%" style="background-color:white;" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
-<th colspan="12"><?php echo $society_name; ?> TDS Payment Report Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
+<th colspan="12" style="text-align:center;"><?php echo $society_name; ?> TDS Payment Report Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
 </tr>
-<tr id="bg_color">
-<th style="width:10%;">Date of Payment</th>
+<tr>
+<th style="width:15%;">Date of Payment</th>
 <th style="width:30%;">Name of Party</th>
 <th>PAN Number</th>
 <th>Cheque/NEFT/PG Ref</th>
@@ -82,7 +83,7 @@ $tds_id = (int)@$dataaa['new_cash_bank']['tds_id'];
 		}
 	}
 	
-	$tds_amount = (round(($tds_tax/100)*$amount));
+	$tds_amount = (round((@$tds_tax/100)*$amount));
 	$total_tds_amount = ($amount - $tds_amount);
 	
 	

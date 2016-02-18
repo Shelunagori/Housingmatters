@@ -205,7 +205,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
        
                           
 <div class="form-actions">
-<button type="submit" class="btn blue">Save</button>
+<button type="submit" class="btn blue">Submit</button>
 <button type="button" class="btn">Cancel</button>
 </div>
 </div>

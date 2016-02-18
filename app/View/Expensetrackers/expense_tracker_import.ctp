@@ -12,7 +12,7 @@ $process_status= @$step1+@$step2+@$step3+@$step4+@$step5; ?>
 <?php if(sizeof($result_import_record)==0){ ?>
 <div class="portlet box green" style="width: 50%; margin: auto;">
 	<div class="portlet-title">
-		<h4><i class="icon-cogs"></i> Import Receipts</h4>
+		<h4><i class="icon-cogs"></i> Import Expense Tracker</h4>
 	</div>
 	<div class="portlet-body" align="">
 		<form method="post" id="form1" style="margin: 0px;">

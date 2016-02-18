@@ -99,7 +99,7 @@ $default_date = date('d-m-Y');
 		            <th>Select Resident</th>
 		            <th>Receipt Type</th>
 		            <th>Amount (Rupees)</th>
-                    <th>Narration</th>
+                    <th>Remarks</th>
 				 </tr>
 				
 				 <tr style="background-color:#E8F3FF;">

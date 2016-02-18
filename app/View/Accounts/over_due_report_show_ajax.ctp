@@ -1,9 +1,12 @@
 <?php
+
 $from1 = date("Y-m-d", strtotime($from));
 $from1 = strtotime($from1);
 $to1 = date("Y-m-d", strtotime($to));
 $to1 = strtotime($to1);  ?>
 <style>
+
+<!--
 #bg_color th{
 font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
@@ -23,7 +26,7 @@ height: 15px !important;
 border: none !important;
 margin-bottom: 0px !important;
 font-size: 12px;
-}
+}-->
 </style>
 <?php
  /////////////////////////////////////////////////////////////////////////////////////////////// ?>
@@ -118,7 +121,7 @@ foreach ($flat_detailll as $collection2)
 {
 $wing_id = (int)$collection2['flat']['wing_id'];  
 }		
-if($date_from >= $from1 && $date_from <= $to1)
+if(@$date_from >= $from1 && @$date_from <= $to1)
 {
 if($due_amt > 0)
 {
@@ -156,14 +159,14 @@ else if($wise == 2)
 if($wise == 2)
 {
 ?>
-<table id="report_tb" style="width:100%; background-color:white;">
+<table class="table table-bordered table-striped table-hover" style="width:100%; background-color:white;">
 <thead>
 <tr>
 <th colspan="8" style="text-align:center;">
 Over Due Report  (<?php echo $society_name; ?> Society)
 </th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th style="text-align:center;">Bill No</th>
 <th style="text-align:center;">Name of Owner</th>
 <th style="text-align:center;">Bill Date</th>
@@ -312,14 +315,14 @@ $total_bill_amt = number_format($total_bill_amt);
 </table>
 <?php }else 
 { ?>
-<table id="report_tb" style="width:100%; background-color:white;">
+<table class="table table-bordered table-striped table-hover" style="width:100%; background-color:white;">
 <thead>
 <tr>
 <th colspan="8" style="text-align:center;">
 Over Due Report  (<?php echo $society_name; ?> Society)
 </th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th style="text-align:center;">Bill No</th>
 <th style="text-align:center;">Name of Owner</th>
 <th style="text-align:center;">Bill Date</th>

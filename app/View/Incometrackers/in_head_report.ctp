@@ -16,6 +16,13 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </div>
 <?php /////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>		
 <style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
+<!--
 #report_tb th{
 	font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;white-space: nowrap !important; 
 }
@@ -35,7 +42,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 	border: none !important;
 	margin-bottom: 0px !important;
 	font-size: 12px;
-}
+} -->
 </style>
 <?php ////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>		
 
@@ -175,7 +182,7 @@ else
 <div style="width:100%; overflow:auto; margin-top:10px;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
-<table id="report_tb">
+<table class="table table-bordered table-striped table-hover">
 	        <thead>
 		    <tr>
 			<th>Unit Number</th>

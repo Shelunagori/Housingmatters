@@ -55,9 +55,14 @@ $("#result").html('<div align="center" style="padding:10px;"><img src="<?php ech
  
  
  
- 
- <style>
-#bg_color th{
+<style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
+<!--#bg_color th{
 font-size: 10px !important;background-color:#C8EFCE;padding:2px;border:solid 1px #55965F;
 }
 #report_tb td{
@@ -76,7 +81,7 @@ height: 15px !important;
 border: none !important;
 margin-bottom: 0px !important;
 font-size: 12px;
-}
+} -->
 </style>
 <?php
 
@@ -98,12 +103,12 @@ if($nnn == 5555)
 <div style="width:100%; overflow:auto;" class="hide_at_print">
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>
-<table width="100%" style="background-color:white;" id="report_tb">
+<table width="100%" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
 <th colspan='10' style='text-align:center;'><?php echo $society_name; ?> Fixed Deposit Register</th>
 </tr>
-<tr id="bg_color">
+<tr>
 <th>Deposit ID</th>
 <th>Bank name</th>
 <th>Bank Branch</th>
@@ -136,8 +141,8 @@ $file_name = $data['fix_deposit']['file_name'];
 $creation_date = $data['fix_deposit']['current_date'];
 $creater_id = (int)$data['fix_deposit']['prepaired_by'];
 @$renewal = @$data['fix_deposit']['renewal'];
-$move_by_id = (int)$data['fix_deposit']['move_by'];
-$move_on_date = $data['fix_deposit']['move_on'];
+@$move_by_id = (int)$data['fix_deposit']['move_by'];
+@$move_on_date = $data['fix_deposit']['move_on'];
 
 $move_on = date('d-m-Y',strtotime($move_on_date));
 $result_gh = $this->requestAction(array('controller' => 'hms', 'action' => 'profile_picture'),array('pass'=>array($move_by_id)));

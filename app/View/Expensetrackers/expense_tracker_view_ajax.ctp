@@ -1,4 +1,11 @@
-
+<style>
+table th{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+}
+table td{
+   background-color:#FFF;padding:3px 5px 3px 5px !important;  white-space: nowrap;
+} 
+</style>
 
 <div style="">
 <div align="center"> 
@@ -17,7 +24,7 @@
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
-<table class="" style="" id="tbb" width="100%">
+<table class="table table-bordered table-striped table-hover" width="100%">
 <thead>
 <tr>
 <th >Voucher Id</th>
@@ -45,6 +52,9 @@ foreach($result_expense_tracker as $data){
 	$posting_date=date('d-m-Y',$posting_date);
 	$creation_date = $data['expense_tracker']['current_date'];
 	$due_date=$data['expense_tracker']['due_date'];
+	
+	$creation_date = date('d-m-Y',strtotime($creation_date));
+	
 	if(!empty($due_date)){
 	$due_date=date('d-m-Y',$due_date);
 	}
@@ -55,7 +65,7 @@ foreach($result_expense_tracker as $data){
 	$party_ac_head=$data['expense_tracker']['party_ac_head'];
 	$ammount_of_invoice=$data['expense_tracker']['ammount_of_invoice'];
 	$description=$data['expense_tracker']['description'];
-	$file=$data['expense_tracker']['file'];
+	@$file=$data['expense_tracker']['file'];
 	$result_ledger_account = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch2'),array('pass'=>array($expense_head)));
 	foreach($result_ledger_account as $collection)
 	{

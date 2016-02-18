@@ -81,7 +81,6 @@ $default_date = date('d-m-Y');
 <thead>
 <tr class="table table-bordered table-hover" style="font-size:16px;" >
 <th>Ledger A/c</th>
-<th>Subledger</th>
 <th>Debits</th>
 <th>Credits</th>
 <th></th>
@@ -90,24 +89,47 @@ $default_date = date('d-m-Y');
 <tbody>
 <tr class="table table-bordered table-hover" id="tr1">
 <td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; ">
-<select class="all_validate  m-wrap chosen" onchange="show_ledger_type(this.value,1)" name="l_type_id1" id="lac1">
-<option value="">--SELECT--</option>					
-<?php
-foreach ($cursor2 as $collection) 
+<select class="large m-wrap chosen">
+						<option value="" style="display:none;">Select Ledger A/c</option>
+						<?php
+							 foreach ($cursor1 as $collection) 
+							 {
+							   $auto_id = (int)$collection['ledger_account']['auto_id'];
+							   $name = $collection['ledger_account']['ledger_name'];
+						if($auto_id != 34 && $auto_id != 33 && $auto_id != 35 && $auto_id != 15 && $auto_id != 112)
+						{
+						?>
+						<option value="<?php echo $auto_id; ?>,2"><?php echo $name; ?></option>
+							 <?php }}
+                             foreach ($cursor2 as $collection) 
+							 {
+							$account_number = "";
+							$wing_flat = "";
+							 $auto_id2 = (int)$collection['ledger_sub_account']['auto_id'];
+							 $name2 = $collection['ledger_sub_account']['name']; 
+                             $ledger_id = (int)$collection['ledger_sub_account']['ledger_id'];
+						
+						if($ledger_id == 34)
+						{							
+$flat_id = @$collection['ledger_sub_account']['flat_id'];
+$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach($wing_detailll as $wing_dataaa)
 {
-$auto_id = (int)$collection['ledger_account']['auto_id'];
-$name = $collection['ledger_account']['ledger_name'];
-?>
-<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
-<?php } ?>               
-</select>
+$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
+}
+$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_id)));
+						}
+						if($ledger_id == 33){
+$account_number = $collection['ledger_sub_account']['bank_account'];  	
+							
+						}
+							 ?>
+                          
+					<option value="<?php echo $auto_id2; ?>,1"><?php echo $name2; ?> &nbsp;&nbsp; <?php echo @$wing_flat; ?><?php echo @$account_number; ?></option>
+						  
+						  <?php } ?>
+						</select>
 </td>	
-
-
-				
-<td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; " id="show_ledger_type1">
-</td>					
-
 				
 <td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px;">
 <div class="control-group">
@@ -132,23 +154,49 @@ $name = $collection['ledger_account']['ledger_name'];
 
 <td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; ">
 
-<select class="all_validate  m-wrap chosen qwerty" onchange="show_ledger_type(this.value,2)" name="l_type_id2" id="lac2">
-<option value="">--SELECT--</option>
-<?php
-foreach ($cursor2 as $collection) 
+<select class="large m-wrap chosen">
+						<option value="" style="display:none;">Select Ledger A/c</option>
+						<?php
+							 foreach ($cursor1 as $collection) 
+							 {
+							   $auto_id = (int)$collection['ledger_account']['auto_id'];
+							   $name = $collection['ledger_account']['ledger_name'];
+						if($auto_id != 34 && $auto_id != 33 && $auto_id != 35 && $auto_id != 15 && $auto_id != 112)
+						{
+						?>
+						<option value="<?php echo $auto_id; ?>,2"><?php echo $name; ?></option>
+							 <?php }}
+                             foreach ($cursor2 as $collection) 
+							 {
+							$account_number = "";
+							$wing_flat = "";
+							 $auto_id2 = (int)$collection['ledger_sub_account']['auto_id'];
+							 $name2 = $collection['ledger_sub_account']['name']; 
+                             $ledger_id = (int)$collection['ledger_sub_account']['ledger_id'];
+						
+						if($ledger_id == 34)
+						{							
+$flat_id = @$collection['ledger_sub_account']['flat_id'];
+$wing_detailll = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
+foreach($wing_detailll as $wing_dataaa)
 {
-$auto_id = (int)$collection['ledger_account']['auto_id'];
-$name = $collection['ledger_account']['ledger_name'];
-?>
-<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>               
-<?php } ?>               
-</select>
+$wing_idddd = (int)$wing_dataaa['flat']['wing_id'];	
+}
+$wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat_new'),array('pass'=>array($wing_idddd,$flat_id)));
+						}
+						if($ledger_id == 33){
+$account_number = $collection['ledger_sub_account']['bank_account'];  	
+							
+						}
+							 ?>
+                          
+					<option value="<?php echo $auto_id2; ?>,1"><?php echo $name2; ?> &nbsp;&nbsp; <?php echo @$wing_flat; ?><?php echo @$account_number; ?></option>
+						  
+						  <?php } ?>
+						</select>
 
 </td>
 
-
-<td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; width:25%;" id="show_ledger_type2">
-</td>
 <td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; width:20%;">
 <div class="control-group">
 <div class="controls">
@@ -175,7 +223,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <tfoot>
 <tr class="table table-bordered table-hover">
 
-<td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; text-align:right;" colspan="2">
+<td style="padding-left:5px; padding-right:5px; padding-top:5px; padding-bottom:0px; text-align:right;">
 <div align="left">
 <input type="text"  name="remark1" class="all_validate span10 m-wrap m-ctrl-medium"  style="background-color:#FFF !important;"placeholder="Narration" id="desc1">
 <span style="float:right;"> <b> Total </b> </span>
@@ -349,22 +397,12 @@ $(document).ready(function() {
 		for(var i=1;i<=hidden;i++)
 		{
 		var ledger = $("#main_table tbody tr:nth-child("+i+") td:nth-child(1) select").val();
-		
-		if(ledger == 15 || ledger == 33 || ledger == 35 || ledger == 34 || ledger == 112)
-		{		
-		var ledger_sub = $("#main_table tbody tr:nth-child("+i+") td:nth-child(2) select").val();
-		}
-		var debit = $("#main_table tbody tr:nth-child("+i+") td:nth-child(3) input").val();
-		var credit = $("#main_table tbody tr:nth-child("+i+") td:nth-child(4) input").val();
+		var debit = $("#main_table tbody tr:nth-child("+i+") td:nth-child(2) input").val();
+		var credit = $("#main_table tbody tr:nth-child("+i+") td:nth-child(3) input").val();
 		var desc = $("#desc1").val();
-		if(ledger == 15 || ledger == 33 || ledger == 35 || ledger == 34 || ledger == 112)
-		{
-		ar.push([ledger,ledger_sub,debit,credit,desc]);
-		}
-		else
-		{
-		ar.push([ledger,ledger_sub,debit,credit,desc]);
-		}
+		
+		ar.push([ledger,debit,credit,desc]);
+		
 		var myJsonString = JSON.stringify(ar);
 		var date2 = JSON.stringify(date)
 		}
