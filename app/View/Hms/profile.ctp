@@ -269,8 +269,8 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 										<div class="" style="background-color:#FFFFFF; padding-left:10px;">
 											<table width="100%" >
                                         <tr>
-                                        <td width="40%" style="font-size:14px; ">Mobile Number</td>
-                                        <td width="40%"><input type="text" class="m-wrap" value="<?php echo $c_mobile; ?>" name="mobile1" maxlength="10"></td>
+                                        <td width="37%" style="font-size:14px; ">Mobile Number</td>
+                                        <td width="43%"><span style="color:red">+91</span> <input type="text" class="m-wrap" value="<?php echo $c_mobile; ?>" name="mobile1" maxlength="10"></td>
 											<td width="15%">
 										<div id="show_public"> </div>
                                  <select class="span12 m-wrap" data-placeholder="Choose a Category" tabindex="1" name="sel_private" onchange="check_public(this.value)" id="check_id">

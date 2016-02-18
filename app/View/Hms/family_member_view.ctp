@@ -77,7 +77,7 @@ if(($type=="owner" && $family_member==1) || ($type=="tenant" && $family_member_t
 </td>
 
 <td width="10%" > 
-<label> &nbsp;Mobile </label>
+<label> &nbsp;Mobile  <span style="color:red;"> +91</span></label>
 <input type="text"   class="span12 m-wrap" placeholder="Mobile No"style="font-size:16px;" id="mobile1" maxlength="10" name="mobile1" >
 
 
