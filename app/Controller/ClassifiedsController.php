@@ -318,9 +318,14 @@ function submit_ad(){
 				
 		@$ip=$this->hms_email_ip();
 		
-		$this->loadmodel('notification_email');
+		/*$this->loadmodel('notification_email');
 		$conditions=array('module_id'=>3,'chk_status'=>0);
-		$result_users=$this->notification_email->find('all',array('conditions'=>$conditions));
+		$result_users=$this->notification_email->find('all',array('conditions'=>$conditions));*/
+		
+		$this->loadmodel('user');
+		$conditions=array('society_id'=>$s_society_id,'deactive'=>0);
+		$result_users=$this->user->find('all',array('conditions'=>$conditions));
+		
 		
 		$this->loadmodel('email');
 		$conditions=array('auto_id'=>3);
@@ -338,14 +343,12 @@ function submit_ad(){
 		}
 		
 		foreach($result_users as $data){
-			$user_id=$data["notification_email"]["user_id"];
-			$result_user=$this->profile_picture($user_id);
-			@$user_name=@$result_user[0]['user']['user_name'];
-			@$to=@$result_user[0]['user']['email'];
-			@$deactive=@$result_user[0]['user']['deactive'];
-			if($deactive==0)
-			{
-			 $message_web="<div>
+			
+			@$user_name=@$data['user']['user_name'];
+			@$to=@$data['user']['email'];
+			
+			
+			/* $message_web="<div>
 			<img src='$ip".$this->webroot."/as/hm/hm-logo.png'/><span  style='float:right; margin:2.2%;'>
 			<span class='test' style='margin-left:5px;'><a href='https://www.facebook.com/HousingMatters.co.in' target='_blank' ><img src='$ip".$this->webroot."/as/hm/fb.png'/></a></span>
 			<a href='#' target='_blank'><img src='$ip".$this->webroot."/as/hm/tw.png'/></a><a href'#'><img src='$ip".$this->webroot."/as/hm/ln.png'/ class='test' style='margin-left:5px;'></a></span>
@@ -361,20 +364,101 @@ function submit_ad(){
 			<p>For any software related queries, please contact <span style='color:#00A0E3;'> support@housingmatters.in </span></p>
 			www.housingmatters.co.in
 			</div>
-			</div>";
+			</div>";  */
 			
-		@$subject.= '['. $society_name . ']' .' New Classified ad created';
+		$message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody>
+			<tr>
+                <td>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+									<td colspan="2">
+										<table style="border-collapse:collapse" cellpadding="0" cellspacing="0" width="100%">
+										<tbody>
+										<tr><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										<tr>
+										<td style="height:32;line-height:0px" align="left" valign="middle" width="32"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/HM-LOGO-small.jpg" style="border:0" height="50" width="50"></a></td>
+										<td style="display:block;width:15px" width="15">&nbsp;&nbsp;&nbsp;</td>
+										<td width="100%"><a href="#150d7894359a47c6_" style="color:#3b5998;text-decoration:none;font-family:Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif;font-size:19px;line-height:32px"><span style="color:#00a0e3">Housing</span><span style="color:#777776">Matters</span></a></td>
+										<td align="right"><a href="https://www.facebook.com/HousingMatters.co.in" target="_blank"><img class="CToWUd" src="'.$ip.$this->webroot.'as/hm/SMLogoFB.png" style="max-height:30px;min-height:30px;width:30px;max-width:30px" height="30px" width="30px"></a>
+											
+										</td>
+										</tr>
+										<tr style="border-bottom:solid 1px #e5e5e5"><td style="line-height:16px" colspan="4" height="16">&nbsp;</td></tr>
+										</tbody>
+										</table>
+									</td>
+								</tr>
+								
+									
+								
+						</tbody>
+					</table>
+					
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tbody>
+						
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify"> Dear '.$user_name.', </span> <br>
+										</td>
+								
+								
+								</tr>
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+										<span style="color:rgb(100,100,99)" align="justify"> A new Classified ad has been posted.</span> <br>
+										</td>
+								
+								
+								</tr>
+														
+								
+								<tr>
+										<td style="padding:5px;" width="100%" align="left">
+											<p>To view / respond
+											<a href="'.$ip.$this->webroot.'hms"><button style="width:100px; height:30px;  background-color:#00A0E3;color:white"> Click Here </button></a></p>
+										</td>
+															
+								</tr>
+								
+					
+								<tr>
+									<td style="padding:5px;" width="100%" align="left">
+											<span style="color:rgb(100,100,99)"> 
+												<p>For any software related queries, please contact <span> support@housingmatters.in </span></p>
+												www.housingmatters.in
+											</span>
+									</td>
+																
+								</tr>
+
+					
+					</table>
+					
+				</td>
+			</tr>
+
+        </tbody>
+</table>';
+			
+		
+			
+		@$subject.= ' '.$society_name.' New Classified  ad created'; 
 		if(!empty($to))
 		{
 		$this->send_email($to,$from,$from_name,$subject,$message_web,$reply);
 		$subject="";
 		}
-		}
+	
 		}
 			
 		
 		$this->loadmodel('user');
-		$conditions=array('deactive'=>0);
+		$conditions=array('deactive'=>0,'society_id'=>$s_society_id);
 		$result_users=$this->user->find('all',array('conditions'=>$conditions));
 		foreach($result_users as $data){
 			$users[]=$data["user"]["user_id"];
