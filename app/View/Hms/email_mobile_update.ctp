@@ -160,25 +160,15 @@ $('form#form1').submit( function(ev){
 	ev.preventDefault();
 	$("#submit_element").html("<img src='<?php echo $webroot_path; ?>as/loding.gif' /> Please Wait, Csv file is Uploading...");
 	var m_data = new FormData();
-<<<<<<< HEAD
-	m_data.append('file', $('input[name=file]')[0].files[0]);
-=======
-	//m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	m_data.append( 'file', $('input[name=file]')[0].files[0]);
->>>>>>> a18754b5701fbff35ec5a5c13c4800d853fcf5cc
 	$.ajax({
 	url: "<?php echo $webroot_path; ?>Hms/Upload_user_info_csv_file",
 	data: m_data,
 	processData: false,
 	contentType: false,
 	type: 'POST',
-	//dataType: 'json'
+	dataType: 'json'
 	}).done(function(response){
-<<<<<<< HEAD
-		alert(response);
-=======
-		
->>>>>>> a18754b5701fbff35ec5a5c13c4800d853fcf5cc
 		if(response=="UPLOADED"){
 			change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 		}
