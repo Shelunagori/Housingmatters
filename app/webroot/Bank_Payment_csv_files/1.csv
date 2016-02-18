@@ -1,7 +1,36 @@
-
-
-
-
-
-Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration 
-12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration 
+Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration ,
+1.1.2016,Mr MS patil,22845,,Cheque,8888,UCO Bank 6122,N/A,Renewed Building Insurance Policy for 5 Jan 2016 To 4 Jan 2017,
+5.1.2016,Shree ganesh cleaner,16792,,Cheque,8891,UCO Bank 6122,N/A,Paid water Bill For Oct Nov 2015,
+5.1.2016,Ram bharat gupta,8000,,Cheque,8893,UCO Bank 6122,N/A,Paid Manager  Salary For Dec 2015,
+5.1.2016,Transcreek engineer pvt ltd,6336,,Cheque,8892,UCO Bank 6122,N/A,"Paid TDS Excel Col. Pvt Ltd 5704, Pioneer Ent 92, security 386 &  housekeeping 154",
+5.1.2016,B.B.S auto electrical,38138,,Cheque,8894,UCO Bank 6122,N/A,Paid Security Guard Salary Dec 2015,
+5.1.2016,Prashant labhe,15189,,Cheque,8894,UCO Bank 6122,N/A,Paid House Keeping Salary Dec 2015,
+10.1.2016,S.B. Patil,5748,,Cheque,8896,UCO Bank 6122,N/A,Paid House Keeping ,
+20.1.2016,Pioneer sports,28000,,Cheque,8897,UCO Bank 6122,N/A,Paid Service Tax Bhoomi Ratna CHS Ltd to Cidco Ltd,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,

@@ -1,6 +1,9 @@
 Name,wing,unit,owner/tenant,email,mobile 
-Abhilash,Wing A,102,owner,abhilashlohar01@gmail.com,6346346346
-Ankit,Wing A,103,owner,ankit@sisodiya.in, 
-Nikhilesh Vyas,,,owner,nikhileshvyas4455@gmail.com,9799463210
-Rohit,Wing A,101,owner,joshirohit98@yahoo.com,9887779123
-sunny,,,owner,abhilashlohar01@gmail.com,6346346346
+Abhilash,Wing A,102,owner,, 
+Ankit,Wing A,103,owner,, 
+Nikhilesh Vyas,,,owner,, 
+Rohit,Wing A,101,tenant,rohitkumarjoshi43@gmail.com, 
+Rohit,Wing A,101,owner,joshirohit988@yahoo.com,9887779123 
+Sudhir,Wing A,104,owner,ankit@phppoets.com, 
+hello,Wing A,103,tenant,rohit@phpoets.com, 
+tenancy test1,Wing A,104,tenant,info@housingmatters.in, 
