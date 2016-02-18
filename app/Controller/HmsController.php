@@ -98,15 +98,7 @@ function Upload_user_info_csv_file(){
 	$s_user_id=$this->Session->read('user_id');
 	$this->ath();
 	if(isset($_FILES['file'])){
-<<<<<<< HEAD
-		//$file_name=$s_society_id.".csv";
-		 $file_name=$_FILES['file']['name']; 
-		 $file_tmp_name =$_FILES['file']['tmp_name'];
-		 $target = "user_email_mobile_csv/"; 
-		 $target=@$target.basename($file_name);
-		 move_uploaded_file($file_tmp_name,@$target);
-		 $today = date("d-M-Y");
-=======
+
 		$file_name=$s_society_id.".csv";
 		$file_tmp_name =$_FILES['file']['tmp_name'];
 		 
@@ -115,7 +107,7 @@ function Upload_user_info_csv_file(){
 		move_uploaded_file($file_tmp_name,@$target);
 			
 		$today = date("d-M-Y");
->>>>>>> a18754b5701fbff35ec5a5c13c4800d853fcf5cc
+
 		
 		$this->loadmodel('user_info_import_record');
 		$auto_id=$this->autoincrement('user_info_import_record','auto_id');
