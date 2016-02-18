@@ -98,6 +98,7 @@ function Upload_user_info_csv_file(){
 	$s_user_id=$this->Session->read('user_id');
 	$this->ath();
 	if(isset($_FILES['file'])){
+
 		$file_name=$s_society_id.".csv";
 		$file_tmp_name =$_FILES['file']['tmp_name'];
 		 
@@ -106,6 +107,7 @@ function Upload_user_info_csv_file(){
 		move_uploaded_file($file_tmp_name,@$target);
 			
 		$today = date("d-M-Y");
+
 		
 		$this->loadmodel('user_info_import_record');
 		$auto_id=$this->autoincrement('user_info_import_record','auto_id');

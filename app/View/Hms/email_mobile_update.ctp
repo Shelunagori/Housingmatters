@@ -7,7 +7,7 @@
 	</div>
 	
 	<div class="portlet-body" align="">
-		<form method="post" id="form1" style="margin: 0px;">
+		<form method="post" id="form1" style="margin: 0px;" enctype="multipart/form-data">
 			<h5>Upload CSV file in given format to import email and mobile update.</h5>
 			<input name="file" class="default" id="image-file1" type="file">
 			<label id="vali1"></label>
@@ -42,6 +42,7 @@
 			url: "<?php echo $webroot_path; ?>Hms/read_user_info_csv_file",
 			dataType: 'json'
 		}).done(function(response){
+			
 			if(response=="READ"){
 				change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 			}
@@ -159,7 +160,6 @@ $('form#form1').submit( function(ev){
 	ev.preventDefault();
 	$("#submit_element").html("<img src='<?php echo $webroot_path; ?>as/loding.gif' /> Please Wait, Csv file is Uploading...");
 	var m_data = new FormData();
-	//m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	m_data.append( 'file', $('input[name=file]')[0].files[0]);
 	$.ajax({
 	url: "<?php echo $webroot_path; ?>Hms/Upload_user_info_csv_file",
@@ -169,7 +169,6 @@ $('form#form1').submit( function(ev){
 	type: 'POST',
 	dataType: 'json'
 	}).done(function(response){
-		
 		if(response=="UPLOADED"){
 			change_page_automatically("<?php echo $webroot_path; ?>Hms/email_mobile_update");
 		}
