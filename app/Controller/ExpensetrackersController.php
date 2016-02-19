@@ -8,9 +8,47 @@ public $components = array(
 );
 var $name = 'Expensetrackers';
 
+///////////////////// Start Expense Tracker Pie Chart (Accounts)///////////////////////////////
+function expense_tracker_pie_chart()
+{
+if($this->RequestHandler->isAjax()){
+		$this->layout='blank';
+	}else{
+		$this->layout='session';
+	}
+$this->ath();
+$this->check_user_privilages();	
+	
+	
+	
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
 
+}
+///////////////////// End Expense Tracker Pie Chart (Accounts)/////////////////////////////////
 
+///////////////Start Expense Tracker Pie Chart Ajax(Accounts)//////////////////////////////////
 
+function expense_tracker_pie_chart_ajax()
+{
+$this->layout = 'blank';
+$s_role_id=$this->Session->read('role_id');
+$s_society_id = (int)$this->Session->read('society_id');
+$s_user_id=$this->Session->read('user_id');	
+
+$date1 = $this->request->query('date1');
+$date2 = $this->request->query('date2');
+$this->set('date1',$date1);
+$this->set('date2',$date2);
+
+$this->loadmodel('expense_tracker');
+$conditions=array("society_id" => $s_society_id);
+$cursor1=$this->expense_tracker->find('all',array('conditions'=>$conditions));
+$this->set('cursor1',$cursor1);
+
+}
+///////////////End Expense Tracker Pie Chart Ajax(Accounts)//////////////////////////////////
 function add_new_party_account_head($party_name=null){
 	$this->layout=null;
 	$s_society_id = (int)$this->Session->read('society_id');

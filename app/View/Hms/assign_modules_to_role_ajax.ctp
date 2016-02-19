@@ -20,9 +20,9 @@ $( document ).ready( function() {
 
 
 <div class="portlet-body" style=''>
-	<div class="accordion in collapse" id="accordion1" style="height: auto;">
+<div class="accordion in collapse" id="accordion1" style="height:auto;">
 								
-								<?php
+<?php
 $i=0;
 $k=15;
 foreach ($result_module_type as $collection) 
@@ -121,9 +121,8 @@ foreach ($result_data as $collection)
 				
 			</div>
 			</div>
-		</div>
-	
-									
+		    </div>
+							
 <?php }  ?>	
 				
 	</div>			
@@ -140,12 +139,12 @@ foreach ($result_data as $collection)
 									
 <?php }  ?>	
 								
-	<div style="padding: 10px;" >
+<div style="padding: 10px;" >
 <button type="submit" name="add_role"  class="btn blue">Assign Modules</button>
 </div>	
 </form>							
-		</div>
-	</div>
+</div>
+</div>
 	
 	
 
@@ -169,6 +168,5 @@ $(".all_chk" +c).attr('checked','checked');
 
 </script>
 
-</script>
 	
 

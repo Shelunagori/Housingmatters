@@ -38,7 +38,7 @@ $role_id1=$collection['role']['role_id'];
 </select>
 </span>
 <br/>
-<div id="ajax_contant" ></div>
+<div id="ajax_contant"></div>
 </form>
 </div>
 </div>

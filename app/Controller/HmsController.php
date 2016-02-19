@@ -11186,16 +11186,16 @@ $s_society_id=$this->Session->read('society_id');
 
 //$role_id=$this->request->query('con');
 
-if (isset($this->request->data['add_role'])) 
+if(isset($this->request->data['add_role'])) 
 {
- $role_id=(int)$this->request->data['r_name'];
+$role_id=(int)$this->request->data['r_name'];
 
 $this->loadmodel('hm_modules_assign');
 $conditions=array("society_id" => $s_society_id);
 $result_hm_modules_assign=$this->hm_modules_assign->find('all',array('conditions'=>$conditions));
 foreach($result_hm_modules_assign as $data)
 {
- $module_id=$data['hm_modules_assign']['module_id'];
+$module_id=$data['hm_modules_assign']['module_id'];
 
 $this->loadmodel('sub_modules');
 $conditions=array("module_id" => $module_id);
@@ -26706,9 +26706,9 @@ $this->ledger->updateAll(array("ledger_sub_account_id" => $assert_supplier_id,"c
 
 $output=json_encode(array('type'=>'success','text'=>'Fixed Asset  is generated successfully'));
 die($output); 
-
-
 }
 /////////////////////////End fix_asset_update_json /////////////////////////////////////	
+
+
 }
 ?>
