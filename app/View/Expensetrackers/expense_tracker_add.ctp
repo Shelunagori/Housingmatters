@@ -33,7 +33,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 
-
+<div id="party_acc_head_body">
 
 <!----- import functioality start --------->
 
@@ -90,7 +90,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
                             <th style="width:20%;">Posting date</th>
                             <th style="width:20%;">Date of Invoice</th>
                             <th style="width:20%;">Due Date</th>
-                            <th style="width:20%;">Party Account Head</th>
+                            <th style="width:20%;">Party Account Head
+							<a id="new_party_acc" class="btn blue mini" style="float:right;">
+							<i class="icon-plus"></i>
+							</a>
+							</th>
                             <th style="width:20%;">Invoice Reference</th>
 		    </tr>
                     
@@ -213,7 +217,26 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </div>
 </form>
 <!------------------------------ End New Expense Tracker Form ------------------------->
+<div id="party_acc_popup" class="hide">
+<div class="modal-backdrop fade in"></div>
+<div   class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div class="modal-body">
+<label style="font-size:14px;">Party Name</label>
+<div class="controls">
+<input type="text" class="m-wrap span10" id="party_acc_head">
+</div>
+</div>
+<div class="modal-footer">
+<a class="btn" id="close_div">Cancel</a>
+<a class="submit_btn btn red">Add</a>
+</div>
+</div>
+</div>
 
+
+
+
+</div>
 
 
 <script>
@@ -259,8 +282,8 @@ $('.content_'+ttt).remove();
 $(document).ready(function(){
 	
 	
-$("#new_party_acc").live('click',function(){	
-	$('#party_acc_popup').show();
+$("#new_party_acc").live('click',function(){
+  $('#party_acc_popup').show();
 });	
 
 $("#close_div").live('click',function(){	
@@ -398,3 +421,13 @@ ar.push([posting_date,date_of_invoice,due_date,ex_head,invoice_ref,party_ac,amt_
 </div>
 </div>
 </div> 
+
+
+
+
+
+
+
+
+
+
