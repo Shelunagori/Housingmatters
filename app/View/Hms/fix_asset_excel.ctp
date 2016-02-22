@@ -21,12 +21,13 @@ header ("Content-Description: Generated Report" );
 <td colspan="11" align="center"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
 </tr>
 <tr>
-<th >Sr.No.</th>
+<th >Voucher No.</th>
+<th width="5%">Date of Purchase</th>
 <th>Asset Category</th>
 <th>Asset Name</th>
 <th>Narration</th>
 <th>Date of Purchase</th>
-<th width="5%">Date of Purchase</th>
+
 <th>Cost of Purchase</th>
 <th>Supplier</th>
 <th>Warranty From</th>
@@ -68,10 +69,11 @@ $ammount=$data['fix_asset']['cost_of_purchase'];
 ?>
 <tr>
 <td><?php echo $fix_receipt_id; ?></td>
+<td><?php echo $purchase_date; ?></td>
 <td><?php echo $asset_category_name; ?></td>
 <td><?php echo $asset_name; ?></td>
 <td><?php echo $description; ?></td>
-<td><?php echo $purchase_date; ?></td>
+
 <td><?php echo $ammount; ?></td>
 <td align="right"><?php echo $amount; ?><?php $total_amount+=$amount; ?></td>
 <td><?php echo $asset_supplier_name; ?></td>
