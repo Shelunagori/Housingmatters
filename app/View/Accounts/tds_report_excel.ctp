@@ -39,7 +39,7 @@ $account_type = (int)$dataaa['new_cash_bank']['account_type'];
 $amount = $dataaa['new_cash_bank']['amount'];
 $instrument_utr = $dataaa['new_cash_bank']['receipt_instruction'];
 $tds_id = (int)@$dataaa['new_cash_bank']['tds_id']; 
-
+$tds_tax = 0;
 	foreach($tds_arr as $tds_ddd)
 	{
 		$tdsss_taxxx = (int)$tds_ddd[0];  
@@ -87,7 +87,8 @@ else
 	$user_name = $collection['ledger_account']['ledger_name'];  
 	}		
 }
-
+if($tds_amount > 0)
+{
 $total = $total+$amount;
 $total_tds = $total_tds + $tds_amount;
 $net_amt = $net_amt + $total_tds_amount;
@@ -104,7 +105,7 @@ $net_amt = $net_amt + $total_tds_amount;
 <td style="text-align:right;"><?php $tds_amount2 = number_format($tds_amount);  echo $tds_amount2; ?></td>
 <td style="text-align:right;"><?php $amount2 = number_format($amount); echo $amount2; ?></td>
 </tr>
-<?php } ?>
+<?php }} ?>
 <td colspan="4" style="text-align:right;"><b>Total</b></td>
 <td style="text-align:right;"><b><?php $net_amt2 = number_format($net_amt); echo $net_amt2; ?></b></td>
 <td style="text-align:right;"><b><?php $total_tds2 = number_format($total_tds); echo $total_tds2; ?></b></td>
