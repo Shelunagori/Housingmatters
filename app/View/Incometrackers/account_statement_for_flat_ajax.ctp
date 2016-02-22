@@ -245,6 +245,8 @@ foreach($result_ledger as $ledger_data){
 				$credit=$ledger_data["ledger"]["credit"];
 				$arrear_int_type=@$ledger_data["ledger"]["arrear_int_type"];
 				$intrest_on_arrears=@$ledger_data["ledger"]["intrest_on_arrears"];
+				$credits="";
+				$maint_charges="";
 				if($table_name=="opening_balance"){
 					$description="Opening Balance/Arrears";
 					$refrence_no="";
@@ -254,10 +256,18 @@ foreach($result_ledger as $ledger_data){
 						$account_balance=$account_balance+(int)$interest;
 					}else{
 						$interest="";
-						$maint_charges=$debit+$credit;
+						if(!empty($debit))
+						{
+						$maint_charges=$debit+$credit;	
 						$account_balance=$account_balance+(int)$maint_charges;
+						}
+						else
+						{
+						$credits = $debit+$credit;
+                        $account_balance=$account_balance-$credits;						
+						}
 					}
-					$credits="";
+					
 					
 					
 				}
