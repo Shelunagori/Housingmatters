@@ -64,11 +64,11 @@ table td{
 <td colspan="11" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
 </tr>
 <tr>
-<th >Sr.No.</th>
+<th >Voucher No.</th>
+<th width="5%">Date of Purchase</th>
 <th>Asset Category</th>
 <th>Asset Name</th>
 <th>Narration</th>
-<th width="5%">Date of Purchase</th>
 <th>Cost of Purchase</th>
 <th>Supplier</th>
 <th>Warranty From</th>
@@ -117,10 +117,11 @@ $prepaired_by = $data['user']['user_name'];
 ?>
 <tr>
 <td><?php echo $fix_receipt_id; ?></td>
+<td><?php echo $purchase_date; ?></td>
 <td><?php echo $asset_category_name; ?></td>
 <td><?php echo $asset_name; ?></td>
 <td><?php echo $description; ?></td>
-<td><?php echo $purchase_date; ?></td>
+
 
 <td align="right"><?php echo $amount; ?><?php $total_amount+=$amount; ?></td>
 
@@ -154,6 +155,7 @@ $prepaired_by = $data['user']['user_name'];
 </tbody>
 </table>
 </div>
+
 <script>
 		 var $rows = $('#count_row tr');
 		 $('#search').keyup(function() {
