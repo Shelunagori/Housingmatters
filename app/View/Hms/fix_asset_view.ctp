@@ -57,7 +57,7 @@ table td{
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
-
+<div style="width:100%; overflow:auto;">
 <table class="table table-bordered table-striped table-hover" width="100%">
 <thead>
 <tr>
@@ -153,7 +153,7 @@ $prepaired_by = $data['user']['user_name'];
 </tr>
 </tbody>
 </table>
-
+</div>
 <script>
 		 var $rows = $('#count_row tr');
 		 $('#search').keyup(function() {
