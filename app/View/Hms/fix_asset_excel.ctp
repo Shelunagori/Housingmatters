@@ -80,7 +80,7 @@ $ammount=$data['fix_asset']['cost_of_purchase'];
 <?php } ?>
 <tr>
 <td colspan="5" align="right"> <b>Total</b> </td>
-<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td><td></td>
+<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td>
 </tr>
 </tbody>
 </table>
