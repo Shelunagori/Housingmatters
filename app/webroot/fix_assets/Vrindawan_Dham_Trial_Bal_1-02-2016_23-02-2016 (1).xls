@@ -1,0 +1,146 @@
+
+<div align="center">
+	
+<span style="font-size:14px;">Vrindawan Dham</span><br/>
+<span>Summarized Trial balance (w/o subledgers)</span><br/>
+From: 1-02-2016 To: 23-02-2016</div>
+<div style="background-color:#FFF;">
+<table border="1" width="100%">
+	<thead>
+		<tr>
+			<th></th>
+			<th style="text-align: center;" colspan="2">Opening Balance</th>
+            <th style="text-align: center;" colspan="2">Transactions</th>
+			<th style="text-align: center;" colspan="2">Closing Balance</th>
+		</tr>
+		<tr>
+			<th>Ledger Accounts</th>
+			<th style="text-align: right;width: 10%;">Debit</th>
+			<th style="text-align: right;width: 10%;">Credit</th>
+            <th style="text-align: right;width: 10%;">Debit</th>
+            <th style="text-align: right;width: 10%;">Credit</th>
+			<th style="text-align: right;width: 10%;">Debit</th>
+			<th style="text-align: right;width: 10%;">Credit</th>
+		</tr>
+	</thead>
+	<tbody>
+				<tr>
+				<td>Bank Accounts</td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">10000</td>
+				<td style="text-align: right;">0</td>
+				
+									<td style="text-align: right;">
+						10000					</td>
+					<td style="text-align: right;">0</td>
+								
+				
+			</tr>
+						<tr>
+				<td>Members Control Accounts</td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">63000</td>
+				<td style="text-align: right;">20000</td>
+				
+									<td style="text-align: right;">
+						43000					</td>
+					<td style="text-align: right;">0</td>
+								
+				
+			</tr>
+						<tr>
+				<td>Maintenance charges</td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">0</td>
+				<td style="text-align: right;">23000</td>
+				
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">
+						23000					</td>
+									
+				
+			</tr>
+						<tr>
+				<td>Repair Fund</td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">0</td>
+				<td style="text-align: right;">30000</td>
+				
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">
+						30000					</td>
+									
+				
+			</tr>
+					
+		<tr>
+			<th><b>TOTAL</b></th>
+			<th style="text-align: right;">0</th>
+			<th style="text-align: right;">0</th>
+            <th style="text-align: right;">73000</th>
+            <th style="text-align: right;">73000</th>
+			<th style="text-align: right;">53000</th>
+			<th style="text-align: right;">53000</th>
+		</tr>
+	</tbody>
+</table>
+</div><script>
+var test = $("input[type=checkbox]:not(.toggle), input[type=radio]:not(.toggle)");
+if (test) {
+	test.uniform();
+}
+$('.date-picker').datepicker().on('changeDate', function(){
+ $(this).blur();
+}); 
+ $('.timepicker-default').timepicker();
+$(".chosen").chosen(); 
+ $('#sample_1').dataTable({
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }]
+        });
+$('.text-toggle-button').toggleButtons({
+	width: 200,
+	label: {
+		enabled: "Active",
+		disabled: "Deactive"
+	}
+});
+$('.basic-toggle-button').toggleButtons();
+if (App.isTouchDevice()) { // if touch device, some tooltips can be skipped in order to not conflict with click events
+	jQuery('.tooltips:not(.no-tooltip-on-touch-device)').tooltip();
+} else {
+	jQuery('.tooltips').tooltip();
+}
+$('.wysihtml5').wysihtml5();
+$('.scroller').each(function () {
+	$(this).slimScroll({
+		//start: $('.blah:eq(1)'),
+		size: '7px',
+		color: '#a1b2bd',
+		height: $(this).attr("data-height"),
+		alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
+		railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
+		disableFadeOut: true
+	});
+});
+jQuery('.popovers').popover();
+</script>
