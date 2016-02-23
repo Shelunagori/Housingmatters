@@ -96,7 +96,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 							  
 							  
 					<td>
-					<input type="text" class="m-wrap span12" placeholder="Drawn on which bank?" id="bnkkk1" 
+					<input type="text" class="m-wrap span12" placeholder="SBI" id="bnkkk1" 
 					style="background-color:#FFF !important; margin-top:3px;" data-provide="typeahead" 
 			   data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]">
 					</td>

@@ -123,7 +123,7 @@ PG
 
 <label style="font-size:14px;">Drawn on which bank?<span style="color:red;">*</span> </label>
 <div class="controls">
-<input type="text"  name="drawn_on_which_bank" class="m-wrap span9 chhh3 ignore" placeholder="Drawn on which bank?" style="background-color:white !important;" id="ins" data-provide="typeahead" data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" value="<?php echo @$which_bank; ?>">
+<input type="text"  name="drawn_on_which_bank" class="m-wrap span9 chhh3 ignore" placeholder="SBI" style="background-color:white !important;" id="ins" data-provide="typeahead" data-source="[<?php if(!empty($kendo_implode)) { echo $kendo_implode; } ?>]" value="<?php echo @$which_bank; ?>">
 <label id="ins"></label>
 </div>
 <br />
