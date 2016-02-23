@@ -1,6 +1,6 @@
 <div class="hide_at_print">	
 <?php
-echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), array('pass' => array()));
+echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu_as_per_role_privilage'), array('pass' => array()));
 
 foreach($result_society as $data){
 $income_heads=$data["society"]["income_head"];
