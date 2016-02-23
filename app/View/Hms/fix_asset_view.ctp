@@ -121,10 +121,7 @@ $prepaired_by = $data['user']['user_name'];
 <td><?php echo $asset_category_name; ?></td>
 <td><?php echo $asset_name; ?></td>
 <td><?php echo $description; ?></td>
-
-
 <td align="right"><?php echo $amount; ?><?php $total_amount+=$amount; ?></td>
-
 <td><?php echo @$asset_supplier_name; ?></td>
 <td><?php echo $warranty_period_from; ?></td>
 <td><?php echo $warranty_period_to; ?></td>
@@ -138,10 +135,6 @@ $prepaired_by = $data['user']['user_name'];
 <li><a href="fix_asset_update/<?php echo $fix_asset_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
 </ul>
 </div>
-
-
-
-
 <?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date22; ?>">
   </i>
