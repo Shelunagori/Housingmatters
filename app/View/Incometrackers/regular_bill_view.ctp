@@ -126,7 +126,13 @@ echo '<div align="center" style="padding: 2px;font-size: 14px;font-weight: bold;
 				For '.$society_name.'<br/><br/><br/>'.$sig_title.'
 				</div>
 				</td>
-			</tr>
+				</tr>
+		        <tr>
+				<td>
+				<td align="center"><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a></b>
+				<b>+91-9869157561</b></td>
+				</td>
+		</tr>
 		</table>
 		
 </td>
