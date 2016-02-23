@@ -141,16 +141,23 @@ echo '<div align="center" style="background-color: rgb(0, 141, 210);padding: 5px
 					<tr>
 						<td align="center"><br/>'.$sig_title.'</td>
 					</tr>
+					<tr>
+					<td align="center"><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a></b>
+                                       <b>+91-9869157561</b></td>
+					</tr>
 				</table>
 			</td>
 			</tr>
 		</table>
 </td>
 </tr>
+<tr>
+<td style="text-align:center;"></td>
+</tr>
 </table>';
 echo '</div>';
 ?>
-
+ <!--<td width="104" style="color:#FFF !important;text-decoration: none;">-->
 <style>
 @media screen {
     .bill_on_screen {
