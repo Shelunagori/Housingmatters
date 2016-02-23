@@ -120,18 +120,9 @@ $(document).ready(function() {
 function paginttion2(ii)
 {
 var ledger_account_id = $('#ledger_account').val();
-		
-		if(ledger_account_id==15 ||  ledger_account_id==33 || ledger_account_id==35 || ledger_account_id == 112){
-			var sub_ledger_id = $("#sub_id").val();
-		    }else if(ledger_account_id==34){
-		    var sub_ledger_id = $('.resident_drop_down').val();
-			}else{
-			var sub_ledger_id = null;
-		    }
-			
-		var date1=$('#date1').val();
-		var date2=$('#date2').val();
-		$("#ledger_view").html('<div align="center" style="padding:10px;"><img src="<?php echo $webroot_path; ?>as/loding.gif" />Loading....</div>').load("ledger_show_ajax/"+ii+"/" +ledger_account_id+ "/" +sub_ledger_id+ "/" +date1+ "/" +date2+"");	
+var date1=$('#date1').val();
+var date2=$('#date2').val();
+		$("#ledger_view").html('<div align="center" style="padding:10px;"><img src="<?php echo $webroot_path; ?>as/loding.gif" />Loading....</div>').load("ledger_show_ajax/"+ii+"/" +ledger_account_id + "/" +date1+ "/" +date2+"");	
 	
 	
 }
