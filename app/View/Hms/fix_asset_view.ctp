@@ -61,7 +61,7 @@ table td{
 <table class="table table-bordered table-striped table-hover" width="100%">
 <thead>
 <tr>
-<td colspan="11" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
+<td colspan="12" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
 </tr>
 <tr>
 <th >Voucher No.</th>
@@ -74,6 +74,7 @@ table td{
 <th>Warranty From</th>
 <th>Warranty To</th>
 <th>Maintanance Schedule</th>
+<th>Location</th>
 <th>Action</th>
 </tr>
 
@@ -97,6 +98,7 @@ foreach($result_fix_asset as $data){
 	$maintanance_schedule=$data['fix_asset']['maintanance_schedule'];
 	$prepaired_by_id = (int)$data['fix_asset']['user_id'];
 	$current_date22 = $data['fix_asset']['current_date'];
+	$location = @$data['fix_asset']['location'];
 	$user_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));
 foreach($user_detaill as $data)
 {
@@ -126,6 +128,7 @@ $prepaired_by = $data['user']['user_name'];
 <td><?php echo $warranty_period_from; ?></td>
 <td><?php echo $warranty_period_to; ?></td>
 <td><?php echo $maintanance_schedule; ?></td>
+<td><?php echo $location; ?></td>
 <td>
 <div class="btn-group">
 <a class="btn blue mini" href="#" data-toggle="dropdown">
@@ -143,7 +146,7 @@ $prepaired_by = $data['user']['user_name'];
 <?php } ?>
 <tr>
 <td colspan="5" align="right"> <b>Total</b> </td>
-<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td><td></td>
+<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td><td></td><td></td>
 </tr>
 </tbody>
 </table>
