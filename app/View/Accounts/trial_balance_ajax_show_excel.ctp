@@ -5,8 +5,8 @@ $society_name=$society_result[0]["society"]["society_name"];
 ?>
 <div align="center">
 	
-<span style="font-size: 14px;"><?php echo $society_name; ?></span><br/>
-<span >Trial-Balance Report</span><br/>
+<span style="font-size:14px;"><?php echo $society_name; ?></span><br/>
+<span>Summarized Trial balance (w/o subledgers)</span><br/>
 From: <?php echo $from; ?> To: <?php echo $to; ?>
 </div>
 <div style="background-color:#FFF;">

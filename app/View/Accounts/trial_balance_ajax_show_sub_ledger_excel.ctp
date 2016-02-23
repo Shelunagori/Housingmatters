@@ -4,7 +4,7 @@ $society_name=$society_result[0]["society"]["society_name"];
 ?>
 <div align="center">
 <span style="font-size: 14px;"><?php echo $society_name; ?></span><br/>
-<span >Trail-Balance Report</span><br/>
+<span ><?php echo $title; ?></span><br/>
 From: <?php echo $from; ?> To: <?php echo $to; ?>
 </div>
 

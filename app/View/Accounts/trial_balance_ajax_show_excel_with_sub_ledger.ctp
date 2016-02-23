@@ -6,15 +6,13 @@ table td{
    background-color:#FFF;padding:3px 5px 3px 5px !important;
 }
 </style>
-
-
 <?php
 $society_result=$this->requestAction(array('controller' => 'Hms', 'action' => 'society_name'),array('pass'=>array($s_society_id)));
 $society_name=$society_result[0]["society"]["society_name"];
 ?>
 <div align="center">
 <span style="font-size: 14px;"><?php echo $society_name; ?></span><br/>
-<span >Trial-Balance Report</span><br/>
+<span >Detailed trial balance (with subledger)</span><br/>
 From: <?php echo $from; ?> To: <?php echo $to; ?>
 </div>
 
