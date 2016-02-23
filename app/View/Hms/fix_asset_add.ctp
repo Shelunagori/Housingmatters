@@ -22,8 +22,8 @@
 		       <th style="width:20%;">Asset Category</th>
 		       <th style="width:20%;">Date of Purchase</th>
                <th style="width:20%;">Name of Supplier</th>
-               <th style="width:20%;">Rupees</th>
-			   <th style="width:20%;">Asset Name</th>
+               <th style="width:17%;">Rupees</th>
+			   <th style="width:23%;">Asset Name</th>
                </tr>
 		
 
@@ -117,6 +117,10 @@
 					<i class="icon-upload-alt"></i>
 					<input type="file" class="default">
 					</span>
+					
+					<input type="text" class="m-wrap span9" Placeholder="Location" style="background-color:white !important;">
+					
+					
 			   </td>			   
 			   </tr>
 
@@ -135,7 +139,7 @@
 </div>
 </div>
 </form>
-<!-----------------------------------End Fixed Assets Form ---------------------------------------->
+<!------------------------------- End Fixed Assets Form ------------------------>
 <script>
 function add_rowwss()
 {
@@ -193,8 +197,9 @@ $(document).ready(function() {
 		var to_war = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(2) input").val();
 		var desc = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(3) input").val();
 		var shedule = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(4) input").val();
+		var location = $("#main_table tr:nth-child("+i+") td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(5) input[type=text]").val();
 		m_data.append('file'+i,$('#main_table tr:nth-child('+i+') td:nth-child(1) #subb_table tr:nth-child(4) td:nth-child(5) input[type=file]')[0].files[0]);
-		ar.push([asset_cat,purchase_date,supplier,cost,asset_name,from_war,to_war,desc,shedule]);
+		ar.push([asset_cat,purchase_date,supplier,cost,asset_name,from_war,to_war,desc,shedule,location]);
 		}
 		var myJsonString = JSON.stringify(ar);
 		m_data.append('myJsonString',myJsonString);
