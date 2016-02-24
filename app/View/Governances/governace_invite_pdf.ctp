@@ -22,6 +22,7 @@ $tcpdf->SetLineWidth(0.1);
 
 foreach($result_gov_invite as $data){
 $gov_id=$data['governance_invite']['governance_invite_id'];
+$gov_invite_me_id=(int)$data['governance_invite']['gov_invite_me_id'];
 $subject=$data['governance_invite']['subject'];
 $notice_of_date=@$data['governance_invite']['notice_of_date'];
 $message_web=$data['governance_invite']['message'];
@@ -59,7 +60,7 @@ $html='<div style="background-color:#fff; width:100%;">
 <table  cellpadding="5" width="100%;" border="1" >
 <tr>
 <td width="50%" ><span  style="font-size:12px;"><b> Type : </b></span><br/> <span>'. @$moc.'</span></td>
-<td width="25%" ><span  style="font-size:12px;"><b> ID : </b></span> <br/> <span>'.$gov_id.'</span></td>
+<td width="25%" ><span  style="font-size:12px;"><b> ID : </b></span> <br/> <span>'.$gov_invite_me_id.'</span></td>
 <td width="25%" ><span  style="font-size:12px;"><b>Date of Notice: </b></span> <br/> <span>'. $notice_of_date.'</span></td>
 </tr>
 <tr>

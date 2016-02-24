@@ -29,6 +29,7 @@ $any_other=@$data['governance_minute']['any_other'];
 $result_gov_invite=$this->requestAction(array('controller' => 'governances', 'action' => 'governace_invite_meeting'), array('pass' => array($meeting_id)));
 foreach($result_gov_invite as $data1)
 	{
+		$gov_invite_me_id=(int)$data1['governance_invite']['gov_invite_me_id'];
 		$title=$data1['governance_invite']['subject'];
 		$date=$data1['governance_invite']['date'];
 		$time=$data1['governance_invite']['time'];
@@ -56,7 +57,7 @@ $html.='<div  style="padding: 5px;" >
 <table  cellpadding="5" width="100%" border="1">
 <tr>
 <td width="50%" ><span  style="font-size:12px;"><b> Type : </b></span><br/> <span style="font-size:12px;"> '.@$moc.'</span></td>
-<td width="25%" ><span  style="font-size:12px;"><b> ID : </b></span> <br/><span style="font-size:12px;"> '.$meeting_id.'</span></td>
+<td width="25%" ><span  style="font-size:12px;"><b> ID : </b></span> <br/><span style="font-size:12px;"> '.$gov_invite_me_id.'</span></td>
 <td width="25%"><span  style="font-size:12px;"><b> Date of Notice : </b></span> <br/><span style="font-size:12px;"> '.$notice_of_date.'</span></td>
 </tr>
 <tr>

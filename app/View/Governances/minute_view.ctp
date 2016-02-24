@@ -31,6 +31,7 @@ $i=0;
 foreach($result_gov_inv as $data1)
 {
 	$governance_minute_id=(int)$data1['governance_minute']['governance_minute_id'];
+	
 	$meeting_id=(int)$data1['governance_minute']['meeting_id'];
 	$final=(int)@$data1['governance_minute']['final'];
 	$invite_us=@$data1['governance_minute']['user'];
@@ -39,6 +40,7 @@ $result_gov_invite=$this->requestAction(array('controller' => 'governances', 'ac
 
 foreach($result_gov_invite as $data){
 $gov_id=(int)$data['governance_invite']['governance_invite_id'];
+$gov_invite_me_id=(int)$data['governance_invite']['gov_invite_me_id'];
 $subject=$data['governance_invite']['subject'];
 $message_web=$data['governance_invite']['message'];
 $date=$data['governance_invite']['date'];
@@ -75,7 +77,7 @@ $sub_visible=$data['governance_invite']['sub_visible'];
 $i++;
 ?>
 <tr>
-    <td><?php echo $gov_id; ?></td>
+    <td><?php echo $gov_invite_me_id; ?></td>
     <td><?php echo $subject ; ?></td>
 	 <td><?php echo $moc ; ?></td>
     <td><?php echo $date ; ?></td>

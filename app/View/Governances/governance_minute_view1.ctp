@@ -21,6 +21,7 @@ foreach($result_gov_minute as $data){
 	
 	foreach($result_gov_invite as $data1)
 	{
+		$gov_invite_me_id=(int)$data1['governance_invite']['gov_invite_me_id'];
 		$title=$data1['governance_invite']['subject'];
 		$date=$data1['governance_invite']['date'];
 		$time=$data1['governance_invite']['time'];
@@ -55,7 +56,7 @@ foreach($result_gov_minute as $data){
 <table  cellpadding='5' width='100%;' border="1">
 <tr class='tr_heading'>
 <td width="30%" ><span  style="font-size:14px;"><b> Type : </b></span><br/> <span><?php echo @$moc; ?></span></td>
-<td width="20%" ><span  style="font-size:14px;"><b> ID : </b></span> <br/><span><?php echo $meeting_id; ?></span></td>
+<td width="20%" ><span  style="font-size:14px;"><b> ID : </b></span> <br/><span><?php echo $gov_invite_me_id; ?></span></td>
 <td width="20%"><span  style="font-size:14px;"><b> Date of Notice : </b></span> <br/><span><?php echo $notice_of_date; ?></span></td>
 </tr>
 <tr class='tr_heading'>

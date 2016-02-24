@@ -13,6 +13,7 @@ table th{ font-size:12px !important; }
 
 </style>
 <?php 
+
 foreach ($result_society as $collection){ 
 	$society_name=$collection['society']['society_name'];
 }
@@ -28,8 +29,11 @@ foreach ($result_society as $collection){
 		<a class="btn mini green"><?php echo $result_user_owner; ?></a> <span>Owner &nbsp; 
 		</span> <a class="btn mini purple"><?php echo $result_user_tenant; ?></a> <span> &nbsp; Tenant &nbsp; 
 		&nbsp; 
+		<a class="btn mini yellow "><?php echo $result_user_family; ?></a> <span>Family Member &nbsp; 
+		</span>
 		<span style="color:red; font-size:14px;"> <i class=' icon-star'></i> </span> 
 		<span> Awaiting User Validation  </span>
+		
 	</div>
 </div>
 
@@ -91,7 +95,7 @@ foreach ($result_society as $collection){
 					$role_name_des=implode(",",$role_name);
 					unset($role_name);?>
 					
-						<tr id="tr<?php echo $user_flat_id; ?>">
+						<tr id="tr<?php echo $user_flat_id; ?>" style="">
 						<td><?php echo $i; ?></td>
 									<td style="color:<?php echo $color; ?>">
 									

@@ -1,7 +1,7 @@
 
 
 <a href="<?php echo $this->webroot; ?>Governances/groups_new" rel="tab" class="btn  blue"><i class="icon-caret-left"></i> All Groups</a><br/><br/>
-<div class="span9">
+<div class="span9" >
 	<!-- BEGIN BORDERED TABLE PORTLET-->
 	<div class="portlet box green">
 		<div class="portlet-title">
@@ -11,7 +11,7 @@
 		<div class="pull-left">Total Members :<span class="label label-info"><?php echo sizeof($result_group_info); ?></span></div>
 		<form  method="POST">
 		<a href="#myModal1" role="button" class="btn btn-primary pull-right" data-toggle="modal">Add or Remove Members</a>
-		<div id="myModal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style="display: none;">
+		<div id="myModal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" style="display: none;background-color: azure;">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 				<h3 id="myModalLabel1">Add or Remove Members</h3>
@@ -22,12 +22,15 @@
 				$user_id=$user['user']['user_id'];
 				$name=$user['user']['user_name'];
 				$profile_pic=$user['user']['profile_pic'];
+				$wing=$user['user']['wing'];
 				
+				$flat=$user['user']['flat'];
+$flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'),array('pass'=>array($wing,$flat)));
 				?>
 				
 					<div  style="width:49%;float:left;">
 					<label class="checkbox">
-					<table width="100%" class="user_div">
+					<table width="100%" class="user_div " id="">
 						<tr>
 						<td width="20px">
 						<div class="checker" id="uniform-undefined"><span>
@@ -38,7 +41,7 @@
 						<table width="100%">
 							<tr>
 							<td width="35px"><img src="<?php echo $this->webroot; ?>profile/<?php echo $profile_pic; ?>" style="width: 35px;height: 35px;"/><td>
-							<td valign="top"><div style="font-size:16px;"><?php echo $name; ?></div><div style="font-size:14px;">A-101</div><td>
+							<td valign="top"><div style="font-size:16px;"><?php echo $name; ?></div><div style="font-size:14px;"><?php echo $flat ; ?></div><td>
 							</tr>
 						</table>
 						</td>
@@ -102,3 +105,21 @@
 background-color:#F0EFEF;
 }
 </style>
+<script>
+<?php 
+$status1=(int)$this->Session->read('group_status');
+if($status1==1)
+{ ?>
+$.gritter.add({
+               
+               title: ' Group',
+               text: '<p>The group is successfully create.</p>',
+               sticky: false,
+                time: '10000',
+				
+            });
+
+<?php 
+$this->requestAction(array('controller' => 'hms', 'action' => 'griter_notification'), array('pass' => array('group_create')));
+} ?>
+</script>

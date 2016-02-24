@@ -622,8 +622,16 @@ function griter_notification($id)
 		$this->Session->delete('bill_update_status');
 	}
 	
+	
 //////////////////// end ///////////////////////////
+////// group create governance////////
 
+	if($id=="group_create"){
+		$this->Session->delete('group_status');
+		
+	}
+
+////////// end ////////////////////
 ////////////////// Start document /////////////////////////
 
 	if($id==4)
@@ -1009,7 +1017,10 @@ $this->redirect(array('action' => 'index'));
 
 function beforeFilter()
 {
- Configure::write('debug', 0);
+
+  //Configure::write('debug', 0);
+
+
 }
 
 
@@ -17591,6 +17602,12 @@ $this->loadmodel('user_flat');
 $conditions1=array('society_id'=>$s_society_id,'active'=>0,'status'=>2);
 $result_user_tenant=$this->user_flat->find('count',array('conditions'=>$conditions1,'order'=>$order));	
 $this->set('result_user_tenant',$result_user_tenant);
+
+$this->loadmodel('user_flat');	
+$conditions1=array('society_id'=>$s_society_id,'family_member'=>1);
+$result_user_family=$this->user_flat->find('count',array('conditions'=>$conditions1,'order'=>$order));	
+$this->set('result_user_family',$result_user_family);
+
 }
 
 function society_member_excel()
