@@ -10,6 +10,7 @@
 $i=0;
 foreach($result_gov_invite as $data){
 $gov_id=$data['governance_invite']['governance_invite_id'];
+$gov_invite_me_id=(int)$data['governance_invite']['gov_invite_me_id'];
 $subject=$data['governance_invite']['subject'];
 $notice_of_date=@$data['governance_invite']['notice_of_date'];
 $message_web=$data['governance_invite']['message'];
@@ -53,7 +54,7 @@ $any_other_note=$data['governance_invite']['any_other_note'];
 <table  cellpadding='5' width='100%;' border="1">
 <tr class='tr_heading'>
 <td width="30%" ><span  style="font-size:14px;"><b> Type : </b></span><br/> <span><?php echo @$moc; ?></span></td>
-<td width="20%" ><span  style="font-size:14px;"><b> ID : </b></span> <br/><span><?php echo $gov_id; ?></span></td>
+<td width="20%" ><span  style="font-size:14px;"><b> ID : </b></span> <br/><span><?php echo $gov_invite_me_id; ?></span></td>
 <td width="20%"><span  style="font-size:14px;"><b> Date of Notice  : </b></span> <br/><span><?php echo $notice_of_date; ?></span></td>
 </tr>
 <tr class='tr_heading'>

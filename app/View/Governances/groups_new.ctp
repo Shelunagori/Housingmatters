@@ -1,12 +1,7 @@
 <?php
 echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), array('pass' => array()));
 ?>
-<script>
-$(document).ready(function() {
-$("#fix<?php echo $id_current_page; ?>").removeClass("blue");
-$("#fix<?php echo $id_current_page; ?>").addClass("red");
-});
-</script>
+
 
 <?php if(!empty($error_addgroup)) { ?>
 <div class="alert alert-error">
@@ -16,8 +11,8 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 
 
 
-
-<div class="span9" style="margin: inherit;">
+<div style="width:80%;margin:auto;">
+<div class="span" >
 	<!-- BEGIN BORDERED TABLE PORTLET-->
 	<div class="portlet box green">
 		<div class="portlet-title">
@@ -47,7 +42,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 							<td><?php echo $i; ?></td>
 							<td><?php echo $group_name; ?></td>
 							<td><span class="label label-info"><?php echo sizeof($users_d); ?></span></td>
-							<td><a href="groupview/<?php echo $group_id; ?>" rel="tab" class="btn mini yellow" >View</a></td>
+							<td>
+							<a href="groupview/<?php echo $group_id; ?>" rel="tab" class="btn mini yellow" >View</a>
+							
+							<a  role="button" class="btn red mini delete_group" group="<?php echo $group_id; ?>" ><i class=" icon-remove-sign"></i></a>
+							</td>
 						</tr>
 					<?php } ?>
 				</tbody>
@@ -68,4 +67,22 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 	</div>
 	<!-- END BORDERED TABLE PORTLET-->
 </div>
-
+</div>
+<div id="show_div"> </div>
+<script>
+$(document).ready(function(){
+	
+$("#fix<?php echo $id_current_page; ?>").removeClass("blue");
+$("#fix<?php echo $id_current_page; ?>").addClass("red");
+	$(".delete_group").bind('click', function(){
+		var id=$(this).attr('group');
+					
+					$('#show_div').show().html('<div class="modal-backdrop fade in"></div><div class="modal" id="poll_edit_content"><div class="modal-body"><span style="font-size:16px;"><i class="icon-warning-sign" style="color:#d84a38;"></i>  Are you sure you want to delete group ? </span></div><div class="modal-footer"><a href="group_delete?con='+id+'" class="btn red tooltips"  role=""> Yes</a><button class="btn" id="close_div">No</button></div></div>');
+	
+	});
+	$("#close_div").die().live('click', function(){
+		$('#show_div').hide();
+		
+	});
+});
+</script>

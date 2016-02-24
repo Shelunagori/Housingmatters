@@ -33,13 +33,14 @@ background-color:rgba(207, 202, 255, 0.32);
 		foreach($result_governance_invite as $data)
 		{
 		    $gov_invite_id=$data['governance_invite']['governance_invite_id'];
+			$gov_invite_me_id=(int)$data['governance_invite']['gov_invite_me_id'];
 		    $subject=$data['governance_invite']['subject'];
 			$date=$data['governance_invite']['date'];
 			//$time=$data['governance_invite']['time'];
 			//$location=$data['governance_invite']['location'];
 	 
  ?>
- <option value="<?php echo $gov_invite_id ; ?>"> <?php echo $gov_invite_id ; ?> - <?php echo $subject ; ?> - <?php echo $date ; ?></option>
+ <option value="<?php echo $gov_invite_id ; ?>"> <?php echo $gov_invite_me_id ; ?> - <?php echo $subject ; ?> - <?php echo $date ; ?></option>
  <?php } ?>
  </select>
  <label report="subject" class="remove_report"></label>
@@ -56,35 +57,14 @@ background-color:rgba(207, 202, 255, 0.32);
 <label style="font-size:14px; font-weight:bold;">Select attendees present </label>
 
 <!------------------------->
-<div class="control-group" id="" >
-  <div class="controls">
-   
-<select data-placeholder="Select attendees user"  name="multi" id="multi" class="chosen span9" multiple="multiple" tabindex="6">
-<?php
-foreach ($result_users as $collection) 
-{
-$user_id=$collection["user"]["user_id"];
-$user_name=$collection["user"]["user_name"];
-$email=$collection["user"]["email"];
-$wing=$collection["user"]["wing"];
-$flat=$collection["user"]["flat"];
 
-
-$flat=$this->requestAction(array('controller' => 'hms', 'action' => 'wing_flat'), array('pass' => array($wing,$flat)));
-
-?>
-<option value="<?php echo $user_id; ?>"><?php echo $user_name; ?>&nbsp;&nbsp;<?php echo $flat; ?></option>
-<?php } ?>           
-		  
-	 </select>
-	 
-  </div>
-  <label report="multi" class="remove_report"></label>
-</div>
 
 <!------------------------->
 <div id="display_meeting">
-
+<select data-placeholder="Select attendees user"  name="multi" id="multi" class="chosen span9" multiple="multiple" tabindex="6">
+<option>
+</option>
+</select>
 
 </div>
 

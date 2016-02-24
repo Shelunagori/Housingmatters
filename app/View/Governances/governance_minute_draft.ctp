@@ -1,6 +1,6 @@
 <?php
 $i=0;
-//pr($result_gov_minute);
+
 foreach($result_gov_minute as $data){
 
 	$message_web=$data['governance_minute']['message'];
@@ -14,6 +14,7 @@ foreach($result_gov_minute as $data){
 	
 	foreach($result_gov_invite as $data1){
 		$title=$data1['governance_invite']['subject'];
+		$gov_invite_me_id=(int)$data1['governance_invite']['gov_invite_me_id'];
 		$date=$data1['governance_invite']['date'];
 		$time=$data1['governance_invite']['time'];
 		$location=$data1['governance_invite']['location'];
@@ -38,7 +39,7 @@ foreach($result_gov_minute as $data){
 <div class="controls">
  <select name="meeting_id" id="meeting_id" class="chosen span12 change_ag">
  <option></option>
-  <option  selected value="<?php echo $meeting_id ; ?>"> <?php echo $meeting_id ; ?> - <?php echo $title ; ?> - <?php echo $date ; ?></option>
+  <option  selected value="<?php echo $meeting_id ; ?>"> <?php echo $gov_invite_me_id ; ?> - <?php echo $title ; ?> - <?php echo $date ; ?></option>
 
  </select>
  <label report="subject" class="remove_report"></label>
@@ -346,67 +347,10 @@ $('form#contact-form').submit( function(ev){
 	
 	m_data.append('minute_agenda',minute);
 	m_data.append( 'edit_attachment', $('#edit_att').val());
-	/*var Invitations =$('input:radio[name=radio]:checked').val();
-	m_data.append( 'Invitations_type',Invitations );
-	if(Invitations==1)
-	{
-		
-		var invite=$('select[name=multi12]').val();
-		m_data.append( 'Invite_user1',invite );
-		
-	}
 	
-	if(Invitations==2)
-	{
-		//var other=$('input[name=other_user]').val();
-		var group_n = [];
-		$('.group_name:checked').each(function() {
-		group_n.push($(this).val());
-		});
-		
-		//m_data.append( 'Invite_user2',other );
-		m_data.append( 'Invite_group',group_n );
-	}
-	
-	if(Invitations==3)
-	{
-		var visible=$('input:radio[name=visible]:checked').val();
-		m_data.append( 'visible',visible );
-	
-		if(visible==2){
-			var allVals = [];
-			$('.v2:checked').each(function() {
-			allVals.push($(this).val());
-			});
-			
-			if(allVals.length==0){
-				m_data.append( 'sub_visible', 0);
-			}else{
-				m_data.append( 'sub_visible', allVals);
-			}
-			
-		}
-		if(visible==3){
-			var allVals = [];
-			$('.v3:checked').each(function() {
-			allVals.push($(this).val());
-			});
-			if(allVals.length==0){
-				m_data.append( 'sub_visible', 0);
-			}else{
-				m_data.append( 'sub_visible', allVals);
-			}
-			
-		}
-		if(visible==1 || visible==4 || visible==5){
-			m_data.append( 'sub_visible', 0);
-		}
-		
-		
-	} */
 	
 	$.ajax({
-			url: "<?php echo $webroot_path; ?>Governances/governance_minute_drft_submit",
+			url: "<?php echo $webroot_path; ?>Governances/governance_minute_drft_submit_new",
 			data: m_data,
 			processData: false,
 			contentType: false,
@@ -414,7 +358,7 @@ $('form#contact-form').submit( function(ev){
 			dataType:'json',
 			}).done(function(response) { 
 			
-			//$("#output").html(response);
+			$("#output").html(response);
 				if(response.type=='created'){
 					$(".portal").remove();
 				$(".alert-success").show().append("<p>"+response.text+"</p><p><a class='btn green' href='<?php echo $webroot_path; ?>Governances/minute_view' rel='tab' >ok</a></p>");
