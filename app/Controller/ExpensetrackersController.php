@@ -248,13 +248,14 @@ function expense_tracker_json(){
 						die($output);
 				}
 	
-	if(empty($child[2])){
+	/*if(empty($child[2])){
 					
 						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required in row '.$c));
 						die($output);
-				}
+				} */
 	
-	
+	if(!empty($child[2]))
+	{
 	$invoice_date = $child[1];
 	$due_date = $child[2];
 	$invoice_date = date('Y-m-d',strtotime($invoice_date));
@@ -267,7 +268,7 @@ function expense_tracker_json(){
 	$output=json_encode(array('report_type'=>'error','text'=>'Due Date should be Greater Than Invoice date in row '.$c));
 	die($output);	
 	}
-	
+	}
 	
 	
 	

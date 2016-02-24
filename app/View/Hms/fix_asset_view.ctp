@@ -57,23 +57,24 @@ table td{
 <label class="m-wrap pull-right"><input type="text" id="search" class="m-wrap medium" style="background-color:#FFF !important;" placeholder="Search"></label>	
 </div>	
 
-
+<div style="width:100%; overflow:auto;">
 <table class="table table-bordered table-striped table-hover" width="100%">
 <thead>
 <tr>
-<td colspan="11" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
+<td colspan="12" style="text-align:center;"><span style="font-size:14px;"><b><?php echo $society_name; ?> Fixed Assets Register on <?php echo $current_date; ?></b></span></td>
 </tr>
 <tr>
-<th >Sr.No.</th>
+<th >Voucher No.</th>
+<th width="5%">Date of Purchase</th>
 <th>Asset Category</th>
 <th>Asset Name</th>
 <th>Narration</th>
-<th width="5%">Date of Purchase</th>
 <th>Cost of Purchase</th>
 <th>Supplier</th>
 <th>Warranty From</th>
 <th>Warranty To</th>
 <th>Maintanance Schedule</th>
+<th>Location</th>
 <th>Action</th>
 </tr>
 
@@ -97,6 +98,7 @@ foreach($result_fix_asset as $data){
 	$maintanance_schedule=$data['fix_asset']['maintanance_schedule'];
 	$prepaired_by_id = (int)$data['fix_asset']['user_id'];
 	$current_date22 = $data['fix_asset']['current_date'];
+	$location = @$data['fix_asset']['location'];
 	$user_detaill = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch'),array('pass'=>array($prepaired_by_id)));
 foreach($user_detaill as $data)
 {
@@ -117,17 +119,16 @@ $prepaired_by = $data['user']['user_name'];
 ?>
 <tr>
 <td><?php echo $fix_receipt_id; ?></td>
+<td><?php echo $purchase_date; ?></td>
 <td><?php echo $asset_category_name; ?></td>
 <td><?php echo $asset_name; ?></td>
 <td><?php echo $description; ?></td>
-<td><?php echo $purchase_date; ?></td>
-
 <td align="right"><?php echo $amount; ?><?php $total_amount+=$amount; ?></td>
-
 <td><?php echo @$asset_supplier_name; ?></td>
 <td><?php echo $warranty_period_from; ?></td>
 <td><?php echo $warranty_period_to; ?></td>
 <td><?php echo $maintanance_schedule; ?></td>
+<td><?php echo $location; ?></td>
 <td>
 <div class="btn-group">
 <a class="btn blue mini" href="#" data-toggle="dropdown">
@@ -137,10 +138,6 @@ $prepaired_by = $data['user']['user_name'];
 <li><a href="fix_asset_update/<?php echo $fix_asset_id; ?>"><i class="icon-edit"></i>Edit</a> </li>
 </ul>
 </div>
-
-
-
-
 <?php if(!empty($file)){ ?><a href="<?php echo $webroot_path ; ?>/fix_assets/<?php echo $file; ?>" target="_blank" class=""  download="download"> <i class=" icon-download-alt"></i> </a> <?php } ?>
 <i class="icon-info-sign tooltips" data-placement="left" data-original-title="Created by: <?php echo $prepaired_by; ?> on: <?php echo $current_date22; ?>">
   </i>
@@ -149,10 +146,11 @@ $prepaired_by = $data['user']['user_name'];
 <?php } ?>
 <tr>
 <td colspan="5" align="right"> <b>Total</b> </td>
-<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td><td></td>
+<td align="right"><b><?php echo $total_amount; ?></b></td><td></td><td></td><td></td><td></td><td></td><td></td>
 </tr>
 </tbody>
 </table>
+</div>
 
 <script>
 		 var $rows = $('#count_row tr');

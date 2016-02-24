@@ -13,9 +13,9 @@ $society_result=$this->requestAction(array('controller' => 'Hms', 'action' => 's
 $society_name=$society_result[0]["society"]["society_name"];
 ?>
 <div align="center">
-<span style="font-size: 14px;"><?php echo $society_name; ?></span><br/>
-<span >Trial-Balance Report</span><br/>
-From: <?php echo $from; ?> To: <?php echo $to; ?>
+<span style="font-size: 18px;"><b><?php echo $society_name; ?></b></span><br/>
+<span style="font-size:16px;"><b>Detailed trial balance (with subledger)</b></span><br/>
+<b style="font-size:16px;">From: <?php echo $from; ?> To: <?php echo $to; ?></b>
 	<div style="overflow: auto;">
 		<a href="trial_balance_ajax_show_excel_with_sub_ledger/<?php echo $from; ?>/<?php echo $to; ?>/<?php echo $wise; ?>" class="btn mini blue pull-right" ><i class="icon-download"></i> </a>
 	</div>

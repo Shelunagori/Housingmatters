@@ -10,8 +10,8 @@ $default_date = date('d-m-Y');
 		       <th style="width:20%;">Asset Category</th>
 		       <th style="width:20%;">Date of Purchase</th>
                <th style="width:20%;">Name of Supplier</th>
-               <th style="width:20%;">Rupees</th>
-			   <th style="width:20%;">Asset Name</th>
+               <th style="width:17%;">Rupees</th>
+			   <th style="width:23%;">Asset Name</th>
                </tr>
 		
 
@@ -104,6 +104,8 @@ $default_date = date('d-m-Y');
 					<i class="icon-upload-alt"></i>
 					<input type="file" class="default">
 					</span>
+					
+					<input type="text" class="m-wrap span9" Placeholder="Location" style="background-color:white !important;">
 			   </td>			   
 			   </tr>
 

@@ -3869,21 +3869,25 @@ function trial_balance_ajax_show_sub_ledger($from=null,$to=null,$wise=null)
 	if($wise==1){
 		$conditions=array("ledger_id" => 15);
 		$this->set('ledger_account_id',15);
+	    $title = "Sundry Creditors Control A/c Trial Balance";
 	}
 	if($wise==2){
 		$conditions=array("ledger_id" =>34);
 		$this->set('ledger_account_id',34);
+		$title = "Members Control Accounts Trial Balance";
 	}
 	if($wise==3){
 		$conditions=array("ledger_id" => 33);
 		$this->set('ledger_account_id',33);
+		$title = "Bank Accounts Trial Balance";
 	}
 	if($wise==6)
 	{
 	$conditions=array("ledger_id" => 112);
-	$this->set('ledger_account_id',112);	
+	$this->set('ledger_account_id',112);
+    $title = "Sundry Creditors Control A/c Trial Balance";	
 	}
-
+    $this->set('title',$title);
 	
 	$new_flats_for_bill = array();
 	$this->loadmodel('wing');
@@ -3950,26 +3954,28 @@ header ("Content-Description: Generated Report" );
 	$this->set('to',$to);
 	$this->set('wise',$wise);
 	
-	
-	
 	if($wise==1){
 		$conditions=array("ledger_id" => 15);
 		$this->set('ledger_account_id',15);
+		 $title = "Sundry Creditors Control A/c Trial Balance";
 	}
 	if($wise==2){
 		$conditions=array("ledger_id" =>34);
 		$this->set('ledger_account_id',34);
+		$title = "Members Control Accounts Trial Balance";
 	}
 	if($wise==3){
 		$conditions=array("ledger_id" => 33);
 		$this->set('ledger_account_id',33);
+		$title = "Bank Accounts Trial Balance";
 	}
     if($wise==6)
 	{
 	$conditions=array("ledger_id" => 112);
-	$this->set('ledger_account_id',112);	
+	$this->set('ledger_account_id',112);
+    $title = "Sundry Creditors Control A/c Trial Balance";		
 	}
-	
+	$this->set('title',$title);
 	
 	$new_flats_for_bill = array();
 	$this->loadmodel('wing');

@@ -153,7 +153,7 @@ $amount = $collection['new_cash_bank']['amount'];
 $current_date = $collection['new_cash_bank']['current_date'];		
 $ac_type = (int)$collection['new_cash_bank']['account_type'];
 $tds_id = (int)$collection['new_cash_bank']['tds_id']; 
-
+    $tds_tax = 0;
 	foreach($tds_arr as $tds_ddd)
 	{
 	$tdsss_taxxx = (int)$tds_ddd[0];  
