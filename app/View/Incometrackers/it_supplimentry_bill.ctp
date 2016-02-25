@@ -100,7 +100,7 @@ $default_date = date('d-m-Y');
 			?>
 			<option value="<?php echo $income_heads_id; ?>"><?php echo $income_heads_name; ?></option>
 			<?php } } ?>
-			<option value="43">Non Occupancy Charges</option>
+			
 			</select>	
 			</td>
 		

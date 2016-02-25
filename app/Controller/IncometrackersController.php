@@ -3195,7 +3195,7 @@ $this->set('cursor11',$cursor11);
 
 $this->loadmodel('ledger_account');
 $conditions =array( '$or' => array( 
-array("society_id" => 0,"group_id"=>7),
+array("group_id"=>7),
 array("society_id" => $s_society_id,"group_id"=>7)
 ));
 $cursor2=$this->ledger_account->find('all',array('conditions'=>$conditions));
