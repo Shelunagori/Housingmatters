@@ -19,6 +19,8 @@
 </style>
 
 <?php
+$ip = $this->requestAction(array('controller' => 'hms', 'action' => 'hms_email_ip'),
+array('pass'=>array()));
 
 
 $html='<div style="margin: 0px;">
@@ -357,16 +359,16 @@ Your Society is empowered by HousingMatters - <b/> <i>"Making Life Simpler"</i>
 </td>
 </tr>
 <tr>
-<td width="50" align="right"><b>Email :</b></td>
-<td  width="120" style="color:#FFF !important;"> 
-<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
-</td>
-<td align="center"></td>
-<td align="right" width="50"><b>Phone :</b></td>
-<td width="84" style="color:#FFF !important;text-decoration: none;"><b>022-41235568</b></td>
-<td align="center"></td>
-<td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
-</tr>
+                                        <td width="20" align="right"><b></b></td>
+                                        <td  width="120" style="color:#FFF !important;"> 
+										<a href="mailto:support@housingmatters.in" target="_blank" style="color:#FFF !important;"><b>support@housingmatters.in</b></a>
+                                        </td>
+										<td align="center"></td>
+                                        <td align="right" width="50"><b><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a></b></td>
+                                        <td width="104" style="color:#FFF !important;text-decoration: none;"><b>+91-9869157561</b></td>
+										<td align="center"></td>
+                                        <td width="100" style="padding-right: 10px;text-decoration: none;"> <a href="http://www.housingmatters.in" target="_blank" style="color:#FFF !important;"><b>www.housingmatters.in</b></a></td>
+                                    </tr>
 </tbody>
 </table>
 				
