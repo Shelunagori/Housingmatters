@@ -3321,6 +3321,7 @@ function supplimentry_bill_view2()
 if(isset($this->request->data['sub_sup']))
 {
 	$from = $this->request->data['from'];
+	
 	$due_date = $this->request->data['due_date'];
 	$desc = @$this->request->data['desc'];
 	$type = (int)$this->request->data['type'];
@@ -3446,7 +3447,7 @@ $r_sms=$this->hms_sms_ip();
 $working_key=$r_sms->working_key;
 $sms_sender=$r_sms->sms_sender; 
 $sms_allow=(int)$r_sms->sms_allow;
-$subject="[".$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".date('d-M-Y',$from)." against Unit ".@$wing_flat."";
+$subject="[".$society_name."]- e-Supplimentry Bill of Rs ".$amount." on ".$from." against Unit ".@$wing_flat."";
 $this->send_email($email,'accounts@housingmatters.in','HousingMatters',$subject,$html_bill,'donotreply@housingmatters.in');
 }
 			
