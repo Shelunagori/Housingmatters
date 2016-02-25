@@ -92,12 +92,15 @@ $default_date = date('d-m-Y');
 			<?php  
 			foreach ($cursor2 as $collection) 
 			{
+
 			$income_heads_id= (int)$collection['ledger_account']["auto_id"];
 			$income_heads_name=$collection['ledger_account']["ledger_name"];
+			if($income_heads_id != 43 && $income_heads_id != 39 && $income_heads_id != 40){
+				
 			?>
 			<option value="<?php echo $income_heads_id; ?>"><?php echo $income_heads_name; ?></option>
-			<?php } ?>
-			<option value="43">Non Occupancy Charges</option>
+			<?php } } ?>
+			
 			</select>	
 			</td>
 		
