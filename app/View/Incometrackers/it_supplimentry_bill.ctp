@@ -197,7 +197,7 @@ $(document).ready(function() {
 		var income_id = $("#incmm").val();
 		var amount = $("#amttt").val();
 		var desc = $("#descc").val();
-				
+		var desc = encodeURIComponent(desc);		
 		ar.push([billing_date,due_date,bill_type,user_id,income_id,amount,company_name,desc]);
 		
 		
