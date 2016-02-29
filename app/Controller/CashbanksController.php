@@ -7270,7 +7270,7 @@ $html_receipt='<table style="padding:24px;background-color:#34495e" align="cente
                                         </td>
 										<td align="center" style="font-size: 10px;"></td>
                                         <td align="right" style="font-size: 10px;"><b>Phone :</b></td>
-                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b>022-41235568</b></td>
+                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a>022-41235568</b></td>
 										<td align="center" style="font-size: 10px;"></td>
                                         <td width="100" style="padding-right:10px;text-decoration:none"> <a href="http://www.housingmatters.in" style="color:#fff!important" target="_blank"><b>www.housingmatters.in</b></a></td>
                                     </tr>
