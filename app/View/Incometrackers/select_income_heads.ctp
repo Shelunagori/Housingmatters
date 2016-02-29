@@ -8,7 +8,8 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 });
 </script>
 
-<?php ////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
+<?php /////////////////////////////////////////////////////////////////////////////////// ?>
+<center>
 <table  align="center" border="1" bordercolor="#FFFFFF" cellpadding="0">
 <tr>
 <td><a href="<?php echo $webroot_path; ?>Incometrackers/select_income_heads" class="btn yellow" rel='tab'>Selection of Income Heads</a>
@@ -32,7 +33,8 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 </td>
 </tr>
 </table> 
-<?php /////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
+</center>
+<?php /////////////////////////////////////////////////////////////////////// ?>
 <?php
 $result1 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_account_fetch'),array('pass'=>array(7)));			
 foreach($result1 as $collection)

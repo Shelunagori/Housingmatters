@@ -27,7 +27,9 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 }
 */
 </script>
-<?php /////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?><table  align="center" border="1" bordercolor="#FFFFFF" cellpadding="0">
+<?php ////////////////////////////////////////////////////////////////////////////// ?>
+<center>
+<table  align="center" border="1" bordercolor="#FFFFFF" cellpadding="0">
 <tr>
 <td><a href="<?php echo $webroot_path; ?>Incometrackers/select_income_heads" class="btn" rel='tab'>Selection of Income Heads</a>
 <td>
@@ -49,7 +51,8 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 </td>
 </tr>
 </table> 
-<?php /////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
+</center>
+<?php ////////////////////////////////////////////////////////////////////////////////// ?>
 <div id="validate_result"></div>
 <div class="alert alert-error hide" id="mgg">
 <button class="close" data-dismiss="alert"></button>
@@ -57,7 +60,6 @@ if(rs1=== '') { $('#validate_result').html('<div style="background-color:white; 
 <strong>Record Updated Successfully</strong>
 </center>
 </div>
-
 
 <form method="post" onsubmit="">
 <center>
