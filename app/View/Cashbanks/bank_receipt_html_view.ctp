@@ -141,18 +141,39 @@ echo '<div align="center" style="background-color: rgb(0, 141, 210);padding: 5px
 					<tr>
 						<td align="center"><br/>'.$sig_title.'</td>
 					</tr>
-					<tr>
-					<td align="center"><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a></b>
-                                       <b>+91-9869157561</b></td>
-					</tr>
+					
 				</table>
+						
 			</td>
 			</tr>
+		
 		</table>
 </td>
 </tr>
-<tr>
-<td style="text-align:center;"></td>
+<tr><td>
+  <table style="background-color:#008dd2;font-size:11px;color:#fff;border:solid 1px #767575;border-top:none" width="100%" cellspacing="0">
+                                 <tbody>
+								 
+									<tr>
+                                        <td align="center" colspan="7"><b>
+										Your Society is empowered by HousingMatters - <b> <i>"Making Life Simpler"</i>
+										</b></b></td>
+                                    </tr>
+									<tr>
+                                        <td width="50" align="right" style="font-size: 10px;"><b>Email :</b></td>
+                                        <td width="120" style="color:#fff!important;font-size: 10px;"> 
+										<a href="mailto:support@housingmatters.in" style="color:#fff!important" target="_blank"><b>support@housingmatters.in</b></a>
+                                        </td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td align="right" style="font-size: 10px;"></td>
+                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a>022-41235568</b></td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td width="100" style="padding-right:10px;text-decoration:none"> <a href="http://www.housingmatters.in" style="color:#fff!important" target="_blank"><b>www.housingmatters.in</b></a></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+							</table></td>
 </tr>
 </table>';
 echo '</div>';

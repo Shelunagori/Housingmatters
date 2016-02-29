@@ -83,7 +83,7 @@ $date=date("d-m-Y",($d_date));
 ?>
 <?php 
 echo '<div style="width:540px;margin:auto;border:solid 1px;background-color:#FFF;margin-top:2px;" class="">';
-echo '<div align="center" style="padding: 2px;font-size: 14px;font-weight: bold;color: #000;border-bottom: solid 1px;">RECEIPT</div>
+echo '<div align="center" style="padding: 2px;font-size: 14px;font-weight: bold;color: #fff; border-bottom: solid 1px; background-color: rgb(0, 141, 210);">RECEIPT</div>
 
 <table width="100%" >
 <tr>
@@ -127,15 +127,35 @@ echo '<div align="center" style="padding: 2px;font-size: 14px;font-weight: bold;
 				</div>
 				</td>
 				</tr>
-		        <tr>
-				<td>
-				<td align="center"><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a></b>
-				<b>+91-9869157561</b></td>
-				</td>
-		</tr>
+		        
 		</table>
 		
 </td>
+</tr>
+<tr><td>
+ <table style="background-color:#008dd2;font-size:11px;color:#fff;border:solid 1px #767575;border-top:none" width="100%" cellspacing="0">
+                                 <tbody>
+								 
+									<tr>
+                                        <td align="center" colspan="7"><b>
+										Your Society is empowered by HousingMatters - <b> <i>"Making Life Simpler"</i>
+										</b></b></td>
+                                    </tr>
+									<tr>
+                                        <td width="50" align="right" style="font-size: 10px;"><b>Email :</b></td>
+                                        <td width="120" style="color:#fff!important;font-size: 10px;"> 
+										<a href="mailto:support@housingmatters.in" style="color:#fff!important" target="_blank"><b>support@housingmatters.in</b></a>
+                                        </td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td align="right" style="font-size: 10px;"></td>
+                                        <td width="84" style="color:#fff!important;text-decoration:none;font-size:10px;"><b><a href="intent://send/+919869157561#Intent;scheme=smsto;package=com.whatsapp;action=android.intent.action.SENDTO;end"><img src="'.$ip.$this->webroot.'/as/hm/whatsup.png"  width="18px" /></a>022-41235568</b></td>
+										<td align="center" style="font-size: 10px;"></td>
+                                        <td width="100" style="padding-right:10px;text-decoration:none"> <a href="http://www.housingmatters.in" style="color:#fff!important" target="_blank"><b>www.housingmatters.in</b></a></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+							</table></td>
 </tr>
 </table>';
 echo '</div>';
