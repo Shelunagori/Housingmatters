@@ -94,7 +94,7 @@ echo '<div align="center" style="background-color: rgb(0, 141, 210);padding: 5px
 				<br/>
 				Rupees '.$am_in_words.' Only
 				<br/>';
-				if($receipt_mode=="cheque"){
+				if($receipt_mode=="cheque" || $receipt_mode == "Cheque"){
 					echo 'Via '.$receipt_mode.'-'.$cheque_number.' drawn on '.$which_bank.' dated '.$cheque_date;
 				}
 				else{
