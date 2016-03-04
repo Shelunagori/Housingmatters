@@ -41,14 +41,14 @@ $petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 <div class="controls">
 <select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)" id="type">
 <option value="" style="display:none;">Select</option>
-<option value="1" selected="selected">Sundry Creditors Control A/c</option>
-<option value="2">All Expenditure A/cs</option>
+<option value="1" <?php if($account_type == 1){ ?>selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
+<option value="2" <?php if($account_type == 2){ ?>selected="selected" <?php } ?>>All Expenditure A/cs</option>
 </select>
 <label id="type"></label>
 </div>
 <br />
 
-<div id="one">
+<div <?php if($account_type == 2){ ?>class="hide"<?php } ?> id="one">
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
 <select name="party1" class="m-wrap large chosen" id="party1">
 <option value="" style="display:none;">Select</option>
@@ -58,7 +58,7 @@ foreach($cursor1 as $data)
 $auto_id = (int)$data['ledger_sub_account']['auto_id'];
 $name = $data['ledger_sub_account']['name'];	
 ?>
-<option value="<?php echo $auto_id; ?>"><?php echo $name; ?></option>
+<option value="<?php echo $auto_id; ?>" <?php if($auto_id == $user_id){ ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
 <?php	
 }
 ?>
@@ -67,7 +67,7 @@ $name = $data['ledger_sub_account']['name'];
 </div>
 
 
-<div id="two" class="hide">
+<div id="two" <?php if($account_type == 1){ ?> class="hide" <?php } ?>>
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
 <select name="pppppp" class="m-wrap large chosen ignore" id="party2">
 <option value="" style="display:none;">Select</option>
@@ -81,7 +81,7 @@ foreach($result_ledger_account as $collection2)
 $sub_id = (int)$collection2['ledger_account']['auto_id'];
 $name = $collection2['ledger_account']['ledger_name'];
 ?>
-<option value="<?php echo $sub_id; ?>"><?php echo $name; ?></option>
+<option value="<?php echo $sub_id; ?>" <?php if($user_id == $sub_id){ ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
 <?php	
 }}
 ?>
