@@ -26499,7 +26499,7 @@ $this->set('result_ledger_sub_account',$result_ledger_sub_account);
 //////////////////////// End fix_assets_add_row ///////////////////////////////////////
 
 ////////////////////////// Start Resident drop down ////////////////////////////////////
-function resident_drop_down()
+function resident_drop_down($flat_id2=null)
 {
 $s_society_id=(int)$this->Session->read('society_id');
 
@@ -26524,9 +26524,7 @@ $financial_year_to = $to3;
 }
 }
 
-
-
-
+$flat_id2 = (int)$flat_id2;
 ?>
 <select class="m-wrap medium chosen resident_drop_down" name="resident">
 <option value="" style="display:none;">Select Sub Ledger A/c</option>
@@ -26550,7 +26548,7 @@ $wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_
    if(($financial_year_from <= $exit_date && $financial_year_to >= $exit_date && $deactive == 1) || ($deactive == 0))
    {
    ?>		
-    <option value="<?php echo $flat_id; ?>"><?php echo $name; ?> <?php echo $wing_flat; ?></option>
+    <option value="<?php echo $flat_id; ?>" <?php if(@$flat_id2 == $flat_id){ ?> selected="selected" <?php } ?>><?php echo $name; ?> <?php echo $wing_flat; ?></option>
 	<?php 
 	} }
 	?>
