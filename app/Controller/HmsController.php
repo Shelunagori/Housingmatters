@@ -26548,7 +26548,7 @@ $wing_flat= $this->requestAction(array('controller' => 'hms', 'action' => 'wing_
    if(($financial_year_from <= $exit_date && $financial_year_to >= $exit_date && $deactive == 1) || ($deactive == 0))
    {
    ?>		
-    <option value="<?php echo $flat_id; ?>" <?php if($flat_id2 == $flat_id){ ?> selected="selected" <?php } ?>><?php echo $name; ?> <?php echo $wing_flat; ?></option>
+    <option value="<?php echo $flat_id; ?>" <?php if(@$flat_id2 == $flat_id){ ?> selected="selected" <?php } ?>><?php echo $name; ?> <?php echo $wing_flat; ?></option>
 	<?php 
 	} }
 	?>

@@ -50,7 +50,7 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <div id="one">
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
 <?php
-$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'));    
+$this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'),array('pass'=>array($user_id)));    
 ?>
 <label id="resident"></label>
 <script>
