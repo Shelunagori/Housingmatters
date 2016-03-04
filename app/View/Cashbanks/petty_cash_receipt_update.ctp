@@ -40,14 +40,14 @@ $trnsaction_date = date('d-m-Y',$d_date);
 <div class="controls">
 <select name="type" class="m-wrap span9 chosen" onchange="show_party(this.value)" id="type">
 <option value="" style="display:none;">Select</option>
-<option value="1" selected="selected">Sundry Debtors Control A/c</option>
-<option value="2">Other Income</option>
+<option value="1" <?php if($account_type == 1){ ?>selected="selected" <?php } ?>>Sundry Debtors Control A/c</option>
+<option value="2" <?php if($account_type == 2){ ?>selected="selected" <?php } ?>>Other Income</option>
 </select>
 <label id="type"></label>
 </div>
 <br />
 
-<div id="one">
+<div id="one" <?php if($account_type == 2){ ?> class="hide" <?php } ?>>
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
 <?php
 $this->requestAction(array('controller' => 'Hms', 'action' => 'resident_drop_down'),array('pass'=>array($user_id)));    
@@ -60,7 +60,7 @@ $(".resident_drop_down").attr('id', 'resident');
 </script>
 </div>
 	
-<div class="hide" id="two">
+<div <?php if($account_type == 1){ ?> class="hide" <?php } ?> id="two">
 <label style="font-size:14px;">Income/Party A/c<span style="color:red;">*</span></label>
 <select name="party" class="m-wrap chosen large ignore" id="party">
 <option value="" style="display:none;">Select</option>
@@ -70,7 +70,7 @@ foreach ($cursor2 as $collection)
 $auto_id = (int)$collection['ledger_account']['auto_id'];
 $name = $collection['ledger_account']['ledger_name'];
 ?>
-<option value="<?php echo $auto_id; ?>" <?php if($ussidd == $auto_id) { ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
+<option value="<?php echo $auto_id; ?>" <?php if($user_id == $auto_id) { ?> selected="selected"  <?php } ?>><?php echo $name; ?></option>
 <?php } ?>
 </select>
 <label id="party"></label>
