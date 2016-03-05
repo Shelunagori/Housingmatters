@@ -14,12 +14,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <center>
 <div class="hide_at_print">
 <?php
-if($s_role_id == 3)
-{
+
 ?>
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_payment" class="btn" rel='tab'>Create</a>
 <a href="<?php echo $webroot_path; ?>Cashbanks/bank_payment_view" class="btn yellow" rel='tab'>View</a>
-<?php } ?>
+
 </div>
 <?php ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
   
