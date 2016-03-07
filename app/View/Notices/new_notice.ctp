@@ -155,8 +155,9 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 	<div class="form-actions">
 	  <button type="submit" class="btn blue form_post" name="publish" submit_type="post">Publish Notice</button>
 	  <button type="submit" class="btn blue form_post" name="draft" submit_type="draft">Save as Draft</button>
-	  <div style="display:none;" id='wait'><img src="<?php echo $webroot_path; ?>as/fb_loading.gif" /> Please Wait...</div>
+	 
 	</div>
+	 <div style="display:none;" id='wait'><img src="<?php echo $webroot_path; ?>as/fb_loading.gif" /> Please Wait...</div>
 </form>
 <!-- END FORM-->
 </div>
@@ -217,7 +218,9 @@ $(document).ready(function() {
 
 			
 	$('form').submit( function(ev){
+		
 	ev.preventDefault();
+	
 		if( $(this).find(".clicked").attr("submit_type") === "post" ){
 			var post_type=1;
 		}
@@ -261,8 +264,8 @@ $(document).ready(function() {
 		if(visible==1 || visible==4 || visible==5){
 			m_data.append( 'sub_visible', 0);
 		}
+		$(".form-actions").hide();
 		
-		$(".form_post").addClass("disabled");
 		$("#wait").show();
 			
 			$.ajax({
@@ -273,6 +276,7 @@ $(document).ready(function() {
 			type: 'POST',
 			dataType:'json',
 			}).done(function(response) {
+				
 			//$("#output").html(response);
 			if(response.type=='approve'){
 				$(".portlet").remove();
@@ -291,6 +295,7 @@ $(document).ready(function() {
 			}
 			if(response.type=='error'){
 				$("#output").html('<div class="alert alert-error">'+response.text+'</div>');
+				 $('.form-actions').show();
 			}
 			$("html, body").animate({
 			scrollTop:0
