@@ -36,7 +36,8 @@ function resource_add()
 	$role_result=$this->role->find('all',array('conditions'=>$conditions));
 	$this->set('role_result',$role_result);
 	$this->loadmodel('wing');
-	$wing_result=$this->wing->find('all');
+	$conditions=array("society_id" => $s_society_id);
+	$wing_result=$this->wing->find('all',array('conditions'=>$conditions));
 	$this->set('wing_result',$wing_result);
 
 

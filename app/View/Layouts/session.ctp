@@ -795,17 +795,7 @@ if(sizeof(@$result)>0){
 
 
 <!---------Commitee member------------->
-<?php if($s_role_id==1)	{ ?>
-<li>
-	<a href="new_tenant_enrollment_view">
-	<i class="icon-home"></i> Tenant
-	</a>					
-</li>
 
-
-
-
-<?php } ?>
 <!--------- end Commitee member------------->
 <?php 
 $s_society_id=$this->Session->read('society_id');
