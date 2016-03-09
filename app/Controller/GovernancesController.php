@@ -119,7 +119,7 @@ function governance_invite_submit()
 				$file_att="";
 				if(!empty($file_name))
 				{
-				@$file_att='<br/><a href="'.$ip.'/'.$this->webroot.'governances_file/'.$file_name.'" download>Download attachment</a>';
+				@$file_att='<br/><a href="http://123.63.2.150:8080/upload/Urgent_SGBM.pdf" download>Download attachment</a>';
 				}
 
 				
@@ -358,7 +358,9 @@ function governance_invite_submit()
 									<td style="padding:5px;" width="100%" align="left">
 											<span > 
 													For  '.$society_name.' .<br/>
-													'.$user_name.'<br/>
+													'.$user_name.'<br/><br/>
+													'.@$file_att.'
+				
 													
 											</span>
 									</td>
@@ -638,8 +640,8 @@ $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" 
 									<td style="padding:5px;" width="100%" align="left">
 											<span > 
 													For  '.$society_name.' .<br/>
-													'.$user_name.'<br/>
-													
+													'.$user_name.'<br/><br/>
+													'.@$file_att.'
 											</span>
 									</td>
 																
@@ -912,8 +914,8 @@ $message_web='<table  align="center" border="0" cellpadding="0" cellspacing="0" 
 									<td style="padding:5px;" width="100%" align="left">
 											<span > 
 													For  '.$society_name.' .<br/>
-													'.$user_name.'<br/>
-													
+													'.$user_name.'<br/><br/>
+													'.@$file_att.'
 											</span>
 									</td>
 																
