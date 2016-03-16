@@ -1,0 +1,132 @@
+<div align="center">
+<span style="font-size: 14px;">Vrindawan Dhaam</span><br/>
+<span >Sundry Creditors Control A/c Trial Balance</span><br/>
+From: 1-02-2016 To: 23-02-2016</div>
+
+<!-------------------new code --------------------------------------->
+<!--------------------End new code ----------------------------------->
+
+<table border="1" width="100%">
+	<thead>
+		<tr>
+					<th></th>
+			<th style="text-align: center;" colspan="2">Opening Balance</th>
+            <th style="text-align: center;" colspan="2">Transactions</th>
+			<th style="text-align: center;" colspan="2">Closing Balance</th>
+		</tr>
+		<tr>			<th>Ledger Accounts</th>
+			<th style="text-align: right;width: 10%;">Debit</th>
+			<th style="text-align: right;width: 10%;">Credit</th>
+            <th style="text-align: right;width: 10%;">Debit</th>
+            <th style="text-align: right;width: 10%;">Credit</th>
+			<th style="text-align: right;width: 10%;">Debit</th>
+			<th style="text-align: right;width: 10%;">Credit</th>
+		</tr>
+	</thead>
+	<tbody>
+				<tr> 
+				<td>Raju <span style="padding-left: 10px;font-weight: 100;"></span></td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">10000</td>
+				<td style="text-align: right;">77660</td>
+				
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">
+						67660					</td>
+									
+				
+			</tr>
+						<tr> 
+				<td>Vicky <span style="padding-left: 10px;font-weight: 100;"></span></td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">10100</td>
+				<td style="text-align: right;">250100</td>
+				
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">
+						240000					</td>
+									
+				
+			</tr>
+						<tr> 
+				<td>nikhilesh vyas <span style="padding-left: 10px;font-weight: 100;"></span></td>
+									<td style="text-align: right;">0</td>
+					<td style="text-align: right;">0</td>
+									
+				<td style="text-align: right;">100</td>
+				<td style="text-align: right;">0</td>
+				
+									<td style="text-align: right;">
+						100					</td>
+					<td style="text-align: right;">0</td>
+								
+				
+			</tr>
+					
+		<tr>			<th><b>TOTAL</b></th>
+			<th style="text-align: right;">0</th>
+			<th style="text-align: right;">0</th>
+            <th style="text-align: right;">20200</th>
+            <th style="text-align: right;">327760</th>
+			<th style="text-align: right;">100</th>
+			<th style="text-align: right;">307660</th>
+		</tr>
+	</tbody>
+</table>
+
+<script>
+var test = $("input[type=checkbox]:not(.toggle), input[type=radio]:not(.toggle)");
+if (test) {
+	test.uniform();
+}
+$('.date-picker').datepicker().on('changeDate', function(){
+ $(this).blur();
+}); 
+ $('.timepicker-default').timepicker();
+$(".chosen").chosen(); 
+ $('#sample_1').dataTable({
+            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ records per page",
+                "oPaginate": {
+                    "sPrevious": "Prev",
+                    "sNext": "Next"
+                }
+            },
+            "aoColumnDefs": [{
+                'bSortable': false,
+                'aTargets': [0]
+            }]
+        });
+$('.text-toggle-button').toggleButtons({
+	width: 200,
+	label: {
+		enabled: "Active",
+		disabled: "Deactive"
+	}
+});
+$('.basic-toggle-button').toggleButtons();
+if (App.isTouchDevice()) { // if touch device, some tooltips can be skipped in order to not conflict with click events
+	jQuery('.tooltips:not(.no-tooltip-on-touch-device)').tooltip();
+} else {
+	jQuery('.tooltips').tooltip();
+}
+$('.wysihtml5').wysihtml5();
+$('.scroller').each(function () {
+	$(this).slimScroll({
+		//start: $('.blah:eq(1)'),
+		size: '7px',
+		color: '#a1b2bd',
+		height: $(this).attr("data-height"),
+		alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
+		railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
+		disableFadeOut: true
+	});
+});
+jQuery('.popovers').popover();
+</script>
