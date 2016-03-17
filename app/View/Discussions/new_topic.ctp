@@ -155,7 +155,7 @@ display:block;
 </div>
 
 <br/><br/>
-<div style="padding-top:25px;"><button type="submit" class="btn green" name="sub">Start Topic</button></div>
+<div style="padding-top:25px;" id="load"><button type="submit" class="btn green" name="sub">Start Topic</button></div>
 
 
 	<!-------content----------->
@@ -189,6 +189,8 @@ $.validator.addMethod('filesize', function(value, element, param) {
 });
 
 $(document).ready(function(){
+	
+		 
 			var checkboxes = $('.requirecheck1');
 			var checkbox_names = $.map(checkboxes, function(e, i) {
 				return $(e).attr("name")
@@ -199,6 +201,8 @@ $(document).ready(function(){
 			var checkbox_names2 = $.map(checkboxes2, function(e, i) {
 				return $(e).attr("name")
 			}).join(" ");
+			
+			
 			
 			
 			
@@ -256,8 +260,12 @@ $(document).ready(function(){
 				element
 				.text('OK!').addClass('valid')
 				.closest('.control-group').removeClass('error').addClass('success');
-			}
-		
+			},
+			submitHandler: function (form) {
+				$('#load').html('Submitting data........');
+				$('button[type=submit]').hide();
+				 form.submit();
+			  },
 	  });
 
 }); 
