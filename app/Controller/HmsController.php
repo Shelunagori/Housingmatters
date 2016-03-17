@@ -6185,6 +6185,7 @@ if($this->RequestHandler->isAjax()){
 	$this->layout='session';
 	}
 	
+	
 	/* $s_society_id = $this->Session->read('society_id');
 	$this->loadmodel('flat');
 	$result_flat = $this->flat->find('all');
