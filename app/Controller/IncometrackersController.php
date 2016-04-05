@@ -7483,14 +7483,14 @@ foreach($myArray as $child)
 		
 		if(empty($child[0]))
 		{
-		$output = json_encode(array('type'=>'error', 'text' => 'Billing Cycle is Required'));
-		die($output);
+		//$output = json_encode(array('type'=>'error', 'text' => 'Billing Cycle is Required'));
+		//die($output);
 		}	
 	
 	    if(empty($child[1]))
 	    {
-		$output = json_encode(array('type'=>'error', 'text' => 'Billing Start date is Required'));
-		die($output);
+		//$output = json_encode(array('type'=>'error', 'text' => 'Billing Start date is Required'));
+		//die($output);
 		}	
 	
 
@@ -7525,8 +7525,8 @@ $nnnnn = 555;
 			
 if($nnnnn == 555)
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Billing Date Should be in Open Financial Year'));
-die($output);
+//$output = json_encode(array('type'=>'error', 'text' => 'Billing Date Should be in Open Financial Year'));
+//die($output);
 }
 	
 if(empty($child[2]))
@@ -7540,14 +7540,14 @@ $dueee_datee = strtotime($due_date2);
 	
 if($dueee_datee < $dddatttt)
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Due Date Should be Greater Than or Equal to the Billing Start Date'));
-die($output);	 
+//$output = json_encode(array('type'=>'error', 'text' => 'Due Date Should be Greater Than or Equal to the Billing Start Date'));
+//die($output);	 
 }
 	     
 if(empty($child[3]))
 {
-$output = json_encode(array('type'=>'error', 'text' => 'Bill For is Required'));
-die($output);	 	 
+//$output = json_encode(array('type'=>'error', 'text' => 'Bill For is Required'));
+//die($output);	 	 
 }
 $bill_for = (int)$child[3];		
 	
@@ -7609,8 +7609,8 @@ $bill_for = (int)$child[3];
 		
 	if(!empty($wing_name_array2))	
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for Wing '.$wing_name_array2.' for this Period'));
-	die($output);	
+	//$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for Wing '.$wing_name_array2.' for this Period'));
+	//die($output);	
 	}
 	}
 	if($bill_for == 2)				
@@ -7625,16 +7625,16 @@ $bill_for = (int)$child[3];
 		}
 		if($regular_to >= $dddatttt)
 		{
-	$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for this Period'));
-	die($output);	
+	//$output = json_encode(array('type'=>'error', 'text' => 'Bill Already Genarated for this Period'));
+	//die($output);	
 			
 	}
 	}
 	
 	if(empty($child[5]))
 	{
-	$output = json_encode(array('type'=>'error', 'text' => 'Penalty is Required'));
-	die($output);	
+	//$output = json_encode(array('type'=>'error', 'text' => 'Penalty is Required'));
+	//die($output);	
 	}
 	
 }	
