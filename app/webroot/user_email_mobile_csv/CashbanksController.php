@@ -1002,7 +1002,7 @@ function bank_receipt_show_ajax()
 
 		$this->ath();
 		$s_role_id=$this->Session->read('role_id');
-		$s_society_id = $this->Session->read('society_id'); 
+		$s_society_id = $this->Session->read('society_id');
 		$s_user_id=$this->Session->read('user_id');
 
 	$this->set('s_user_id',$s_user_id);
@@ -1011,8 +1011,8 @@ function bank_receipt_show_ajax()
 		$from = $this->request->query('date1');
 		$to = $this->request->query('date2');
 
-	 $date_from = date('Y-m-d',strtotime($from));
-	 $date_to = date('Y-m-d',strtotime($to));
+	$date_from = date('Y-m-d',strtotime($from));
+	$date_to = date('Y-m-d',strtotime($to));
 
 		$from_strtotime = strtotime($date_from);
 		$to_strtotime = strtotime($date_to);
