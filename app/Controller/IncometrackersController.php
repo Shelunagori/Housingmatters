@@ -473,11 +473,13 @@ function regular_bill_preview_screen_new(){
 		}
 		
 		if(sizeof(@$other_charges_array)>0){
+			
 			foreach($other_charges_array as $other_charges_data){
 				foreach($other_charges_data as $key=>$vlaue){
 					$other_charges_ids[]=$key;
 				}
-			} 
+			}
+			
 			$other_charges_ids=array_unique($other_charges_ids);
 			
 			$this->set('other_charges_ids',$other_charges_ids);
@@ -504,9 +506,8 @@ function regular_bill_preview_screen_new(){
 		
 		foreach($new_flats_for_bill as $flat_data_id){ $inc++;
 		    
-			$flat_id = $flat_data_id;
-			//$flat_id = (int)$this->request->data['flat_id'.$inc];
-			//wing_id via flat_id//
+			 $flat_id = $flat_data_id;
+			
 			$result_flat_info=$this->requestAction(array('controller' => 'Hms', 'action' => 'fetch_wing_id_via_flat_id'),array('pass'=>array($flat_id)));
 			foreach($result_flat_info as $flat_info){
 				  $wing_id=$flat_info["flat"]["wing_id"];
@@ -551,17 +552,18 @@ function regular_bill_preview_screen_new(){
 			
 			$noc_charges = (int)@$this->request->data['noc_charges'.$inc];
 			
-		
 			if(sizeof(@$other_charges_ids)>0){
+				
 				foreach($other_charges_ids as $other_charges_id){
+					
 					$flat_other_charges=@$other_charges_array[$flat_id];
 					
-					if(sizeof($flat_other_charges)>0){
-						$other_charges_amount=(int)@$this->request->data['other_charges'.$other_charges_id.'_'.$inc];
+					
+						 $other_charges_amount=(int)@$this->request->data['other_charges'.$other_charges_id.'_'.$inc];
 						if(!empty($other_charges_amount)){
 							$other_charges_insert[$other_charges_id]=$other_charges_amount;
 						}
-					}
+					
 				}
 			}
 			
