@@ -1062,6 +1062,7 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 		$deposited_bank_id=$data["new_cash_bank"]["deposited_bank_id"];
 		$flat_id=(int)$data["new_cash_bank"]["flat_id"];
 		$bill_one_time_id=$data["new_cash_bank"]["bill_one_time_id"];
+		$receipt_date=$data["new_cash_bank"]["receipt_date"];
 	}
 	
 	$this->loadmodel('ledger_sub_account');
@@ -1071,8 +1072,8 @@ function cancel_receipt_due_to_check_bounce($record_id=null){
 		$ledger_sub_account_id=$data["ledger_sub_account"]["auto_id"];
 	}
 	
-	$current_date = date('Y-m-d');
-	$current_date = strtotime($current_date); 
+	$current_date = $receipt_date;
+	
 	
 	$voucher_id=$this->autoincrement_with_society_ticket('journal','voucher_id');
 	$journal_id=$this->autoincrement('journal','journal_id');
