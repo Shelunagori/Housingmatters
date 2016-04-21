@@ -186,8 +186,7 @@ $party_name = $dataaa['ledger_sub_account']['name'];
 				$bank_account = $rrrr['ledger_sub_account']['bank_account'];
 			}			
 			
-		if($s_role_id == 3)
-		{
+		
 			$TransactionDate = date('d-m-Y',$TransactionDate);
 			$total_debit =  $total_debit + $amount; 
 		if(empty($reference_utr))
@@ -252,7 +251,7 @@ if($is_cancel=="NO" && $maximum_one_time_id==$bill_one_time_id){ ?>
 </td>
 </tr>
 <?php	
-}		 
+	 
 }
 
 ?>

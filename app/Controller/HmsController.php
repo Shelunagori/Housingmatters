@@ -6128,6 +6128,7 @@ if($n>0)
 foreach ($result_user as $collection) 
 {
 $user_id=$collection['user']["user_id"];
+$login_id=(int)$collection['user']["login_id"]; 
 $society_id=$collection['user']["society_id"];
 $user_name=$collection['user']["user_name"];
 $role_id=$collection['user']["default_role_id"];
@@ -6138,6 +6139,9 @@ $this->Session->write('society_id', $society_id);
 $this->Session->write('user_name', $user_name);
 $this->loadmodel('user');
 $this->user->updateAll(array('password'=>$pass),array('user.email'=>$emil));
+
+$this->loadmodel('login');
+$this->login->updateAll(array('password'=>$pass),array('login.login_id'=>$login_id));
 $this->redirect(array('action' => 'dashboard'));
 }
 

@@ -9,6 +9,14 @@ public $components = array(
 );
 var $name = 'Incometrackers';
 
+
+function count_receipts_from_last_bill_start_date($start_date,$flat_id){
+	$s_society_id = (int)$this->Session->read('society_id');
+	$this->loadmodel('new_cash_bank');
+	$conditions=array("society_id" => $s_society_id,"receipt_source" => 1,"flat_id"=>(int)$flat_id,'receipt_date'=> array('$gte' => $start_date));
+	return $this->new_cash_bank->find('count',array('conditions'=>$conditions));
+}
+
 function fetch_last_receipts_info_via_flat_id_for_no_bill($flat_id){
 	$this->loadmodel('new_cash_bank');
 	$condition=array( '$or' => array( 
@@ -5896,15 +5904,30 @@ if($email_is_on_off==1){
 			}
 			
 			if(!empty($credit_stock)){
-				$this->loadmodel('ledger');
-				$auto_id=$this->autoincrement('ledger','auto_id');
-				$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 88,"ledger_sub_account_id" => null,"debit"=>abs($credit_stock),"credit"=>null,"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
 				
-				$this->loadmodel('ledger');
-				$auto_id=$this->autoincrement('ledger','auto_id');
-				$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_sub_account_id,"debit"=>null,"credit"=>abs($credit_stock),"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
+				if($credit_stock>0){
+					
+					$this->loadmodel('ledger');
+					$auto_id=$this->autoincrement('ledger','auto_id');
+					$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 88,"ledger_sub_account_id" => null,"debit"=>null,"credit"=>abs($credit_stock),"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
+
+					$this->loadmodel('ledger');
+					$auto_id=$this->autoincrement('ledger','auto_id');
+					$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_sub_account_id,"debit"=>abs($credit_stock),"credit"=>null,"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
+				}
+				if($credit_stock<0){
+						$this->loadmodel('ledger');
+						$auto_id=$this->autoincrement('ledger','auto_id');
+						$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 88,"ledger_sub_account_id" => null,"debit"=>abs($credit_stock),"credit"=>null,"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
+
+						$this->loadmodel('ledger');
+						$auto_id=$this->autoincrement('ledger','auto_id');
+						$this->ledger->saveAll(array("auto_id" => $auto_id,"ledger_account_id" => 34,"ledger_sub_account_id" => $ledger_sub_account_id,"debit"=>null,"credit"=>abs($credit_stock),"table_name"=>"new_regular_bill","element_id"=>$new_regular_bill_auto_id,"society_id"=>$s_society_id,"transaction_date"=>$bill_start_date));
+				}
+				
 			}	
-	
+				
+			
 		//Receipt Apply
 		$this->loadmodel('new_cash_bank');
 		$condition=array('society_id'=>$s_society_id,"flat_id"=>$flat_id,"bill_one_time_id"=>$one_time_id,"edit_status"=>"NO");
