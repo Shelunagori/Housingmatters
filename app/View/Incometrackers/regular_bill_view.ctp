@@ -63,7 +63,7 @@ $wing_flat = "";
 }
 else
 {
-$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'user_fetch2'),array('pass'=>array($flat_id)));
+$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_user_info_via_flat_id'),array('pass'=>array(4,$flat_id)));
 foreach($result_lsa as $collection)
 {
 $wing_id = $collection['user']['wing'];  
