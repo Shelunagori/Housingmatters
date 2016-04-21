@@ -2870,7 +2870,7 @@ Login page
 
 /* logo page */
 .login {
-  background-color: #444 !important;
+  //background-color: rgba(229, 229, 229, 0.45) !important;
 }
 
 .login .logo {

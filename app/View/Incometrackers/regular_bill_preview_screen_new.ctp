@@ -141,7 +141,10 @@ foreach($result_society as $data){
 			<tbody>
 				<?php
 				$inc=0;
-				 $bill_number = $this->requestAction(array('controller' => 'Hms', 'action' => 'autoincrement_with_society_ticket'),array('pass'=>array('new_regular_bill','bill_no')));  $bill_number--;
+				 $bill_number = $this->requestAction(array('controller' => 'Hms', 'action' => 'autoincrement_with_society_ticket'),array('pass'=>array('new_regular_bill','bill_no'))); 
+					$bill=explode('-',$bill_number);
+					$bill_number=$bill[0];
+				 $bill_number--;
 				
 				foreach($new_flats_for_bill as $flat){ $inc++;  $total=0; $due_for_payment=0;
 				
@@ -179,15 +182,30 @@ foreach($result_society as $data){
 					$result_new_regular_bill = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_bill_info_via_flat_id'),array('pass'=>array($flat)));
 					
 					$credit_adjustment=0;
+					//echo sizeof($result_new_regular_bill);
 					if(sizeof($result_new_regular_bill)==1){
 						foreach($result_new_regular_bill as $last_bill){
-							$last_arrear_intrest=$last_bill["arrear_intrest"];
-							$last_intrest_on_arrears=$last_bill["intrest_on_arrears"];
-							$last_total=$last_bill["total"];
-							$last_arrear_maintenance=(int)@$last_bill["arrear_maintenance"];
+							$last_bill_start_date=@$last_bill["bill_start_date"];
+							
+							$have_feild = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'count_receipts_from_last_bill_start_date'),array('pass'=>array($last_bill_start_date,$flat)));
+							
+							if($have_feild==0){
+								$last_arrear_intrest=$last_bill["arrear_intrest"];
+								$last_intrest_on_arrears=$last_bill["intrest_on_arrears"];
+								$last_total=$last_bill["total"];
+								$last_arrear_maintenance=(int)@$last_bill["arrear_maintenance"];
+							}else{
+								$last_arrear_intrest=$last_bill["new_arrear_intrest"];
+								$last_intrest_on_arrears=$last_bill["new_intrest_on_arrears"];
+								$last_total=$last_bill["new_total"];
+								$last_arrear_maintenance=(int)@$last_bill["new_arrear_maintenance"];
+							}
+							
+							
+							
 							
 							$last_due_date=@$last_bill["due_date"];
-							$last_bill_start_date=@$last_bill["bill_start_date"];
+							
 							$last_bill_one_time_id=@$last_bill["one_time_id"];
 							
 							$last_new_arrear_intrest=(int)@$last_bill["new_arrear_intrest"];
@@ -246,7 +264,7 @@ foreach($result_society as $data){
 					$result_new_cash_bank = $this->requestAction(array('controller' => 'Incometrackers', 'action' => 'fetch_last_receipt_info_via_flat_id'),array('pass'=>array($flat,$last_bill_one_time_id)));
 					
 					
-					
+					//echo sizeof($result_new_cash_bank);
 					if(sizeof($result_new_cash_bank)>=1){
 						foreach($result_new_cash_bank as $last_receipt){
 							$receipt_date=@$last_receipt["new_cash_bank"]["receipt_date"]; 
@@ -459,7 +477,7 @@ foreach($result_society as $data){
 								$difference2=strtotime($bill_start_date)-$last_bill_start_date;
 								$days_difference2=floor($difference2/(60*60*24)); 
 								$y=(($arrear_maintenance-$last_total)*$penalty)*($days_difference2/365);
-							$intrest_on_arrears+=round($x+$y);
+							 $intrest_on_arrears+=round($x+$y);
 							}
 							//case-3
 							if($arrear_maintenance<=$last_total){

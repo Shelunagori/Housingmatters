@@ -9,6 +9,14 @@ public $components = array(
 );
 var $name = 'Incometrackers';
 
+
+function count_receipts_from_last_bill_start_date($start_date,$flat_id){
+	$s_society_id = (int)$this->Session->read('society_id');
+	$this->loadmodel('new_cash_bank');
+	$conditions=array("society_id" => $s_society_id,"receipt_source" => 1,"flat_id"=>(int)$flat_id,'receipt_date'=> array('$gte' => $start_date));
+	return $this->new_cash_bank->find('count',array('conditions'=>$conditions));
+}
+
 function fetch_last_receipts_info_via_flat_id_for_no_bill($flat_id){
 	$this->loadmodel('new_cash_bank');
 	$condition=array( '$or' => array( 
@@ -5918,7 +5926,8 @@ if($email_is_on_off==1){
 				}
 				
 			}	
-	
+				
+			
 		//Receipt Apply
 		$this->loadmodel('new_cash_bank');
 		$condition=array('society_id'=>$s_society_id,"flat_id"=>$flat_id,"bill_one_time_id"=>$one_time_id,"edit_status"=>"NO");

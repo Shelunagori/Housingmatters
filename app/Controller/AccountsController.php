@@ -5399,7 +5399,7 @@ $cursor2=$this->new_cash_bank->find('all',array('conditions'=>$conditions,'order
 $this->set('cursor2',$cursor2);	
 }
 ////////////////////////////// End cash_book_report_show_ajax /////////////////////////////////////
-///////////////////////////// Start bank_book_report /////////////////////////////////////////////////
+//Start bank_book_report//
 function bank_book_report()
 {
         if($this->RequestHandler->isAjax())
@@ -5470,7 +5470,7 @@ $this->set('cursor1',$cursor1);
 $this->loadmodel('new_cash_bank');
 //$order=array('$or' => array(array('new_cash_bank.transaction_date'=> 'ASC'),
 //array('new_cash_bank.transaction_date'=> 'ASC')));
-$conditions=array('$or' => array(array('society_id'=>$s_society_id,"receipt_source"=>1,"deposited_bank_id"=>$bank_id,
+$conditions=array('$or' => array(array('society_id'=>$s_society_id,"receipt_source"=>1,"deposited_bank_id"=>$bank_id,"edit_status"=>"NO",
 'new_cash_bank.receipt_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime)),
 array('society_id'=>$s_society_id,"receipt_source"=>2,"account_head"=>$bank_id,
 'new_cash_bank.transaction_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime))));
@@ -5521,7 +5521,7 @@ $this->set('cursor1',$cursor1);
 $this->loadmodel('new_cash_bank');
 //$order=array('$or' => array(array('new_cash_bank.transaction_date'=> 'ASC'),
 //array('new_cash_bank.transaction_date'=> 'ASC')));
-$conditions=array('$or' => array(array('society_id'=>$s_society_id,"receipt_source"=>1,"deposited_bank_id"=>$bank_id,
+$conditions=array('$or' => array(array('society_id'=>$s_society_id,"receipt_source"=>1,"deposited_bank_id"=>$bank_id,"edit_status"=>"NO",
 'new_cash_bank.receipt_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime)),
 array('society_id'=>$s_society_id,"receipt_source"=>2,"account_head"=>$bank_id,
 'new_cash_bank.transaction_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime))));

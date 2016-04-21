@@ -1025,6 +1025,7 @@ function bank_receipt_show_ajax()
 		$conditions=array('society_id'=>$s_society_id,"receipt_source"=>1,"edit_status"=>"NO",
 		'new_cash_bank.receipt_date'=>array('$gte'=>$from_strtotime,'$lte'=>$to_strtotime));
 		$cursor2=$this->new_cash_bank->find('all',array('conditions'=>$conditions,'order'=>$order));
+		
 		$this->set('cursor2',$cursor2);
 
 			$this->loadmodel('society');
