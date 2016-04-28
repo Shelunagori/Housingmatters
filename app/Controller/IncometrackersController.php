@@ -6956,10 +6956,7 @@ if(isset($this->request->data['approve'])){
 				if($email_is_on_off==1){
 					////EMAIL CODE//
 					if(!empty($email)){
-							$r_sms=$this->hms_sms_ip();
-							$working_key=$r_sms->working_key;
-							$sms_sender=$r_sms->sms_sender; 
-							$sms_allow=(int)$r_sms->sms_allow;
+							
 
 							$subject="[".$society_name."]- Maintenance e-bill, ".date('d-M',$bill_start_date)." to ".date('d-M-Y',$bill_end_date)."";
 							$this->send_email($email,'accounts@housingmatters.in','HousingMatters',$subject,$bill_html,'donotreply@housingmatters.in');
@@ -6970,6 +6967,10 @@ if(isset($this->request->data['approve'])){
 					////SMS CODE//
 					if(!empty($mobile)){
 						
+							$r_sms=$this->hms_sms_ip();
+							$working_key=$r_sms->working_key;
+							$sms_sender=$r_sms->sms_sender; 
+							$sms_allow=(int)$r_sms->sms_allow;
 							//$sms="Dear ".$user_name." ".$wing_flat.",your maintenance bill for period ".date('d-M',$bill_start_date)." to ".date('d-M-Y',$bill_end_date)." is Rs ".$due_for_payment.".Kindly pay by ".date('d-M',$due_date).".".$society_name;
 							//echo $user_name; echo'<br/>';
 							
@@ -6977,10 +6978,10 @@ if(isset($this->request->data['approve'])){
 							
 							 //$sms="Dear ".$user_name." ".$wing_flat.",your maintenance bill of Rs ".$due_for_payment." for ".date('d-M',$bill_start_date)." to ".date('d-M-Y',$bill_end_date)." is sent via email,kindly check %26 pay by ".date('d-M',$due_date).".".$society_name;
 							if($period_id==1){
-							 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
+							 $sms="Hi! Your ".$society_name." ".$wing_flat." bill - Rs ".$due_for_payment." of ".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
 							}else{
 								
-								 $sms="Hi! Your ".$society_name." ".$wing_flat." maintenance bill - Rs ".$due_for_payment." of ".date('M',$bill_start_date)."-".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
+								 $sms="Hi! Your ".$society_name." ".$wing_flat." bill - Rs ".$due_for_payment." of ".date('M',$bill_start_date)."-".date('M Y',$bill_end_date)." is sent via email, kindly check %26 pay by ".date('d-M',$due_date).". Whatsapp queries 9869157561";
 							}
 							
 							
