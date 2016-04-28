@@ -6210,7 +6210,21 @@ if($this->RequestHandler->isAjax()){
 	//$sms1=str_replace(" ", '+', $sms);
 	//echo file_get_contents('http://alerts.sinfini.com/api/web2sms.php?workingkey=Ac47f5663efae985cc42d0081ef8e95b7&sender=NMINVT&to=9636653883&message='.$sms1);
 	//exit;
-	
+	$date_convert=strtotime('15-02-2016');
+	//$s_society_id = $this->Session->read('society_id');
+	$this->loadmodel('flat');
+	$result_flat = $this->flat->find('all',array('conditions'=>array('wing_id'=>15,'society_id'=>8)));
+	foreach($result_flat as $data){
+					$flat_id=$data['flat']['flat_id'];
+					$this->loadmodel('new_regular_bill');
+					$result_flat_reg = $this->new_regular_bill->find('all',array('conditions'=>array('one_time_id'=>4,'society_id'=>$s_society_id,'flat_id'=>$flat_id,'edit_status'=>'NO')));
+
+			foreach($result_flat_reg as $data){
+			
+			   $auto_id=$data['new_regular_bill']['auto_id'];
+			  $this->new_regular_bill->updateAll(array('due_date'=>$date_convert),array('auto_id'=>$auto_id));
+		}
+	}	
 
 $r=$this->request->query('try');
 $s_user_id=$this->Session->read('user_id');
