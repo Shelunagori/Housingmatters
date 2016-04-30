@@ -17651,6 +17651,39 @@ $this->set('result_role',$this->role->find('all',array('conditions'=>$conditions
 }
 
 
+function society_data_modify()
+{
+$this->layout="";
+$s_society_id=$this->Session->read('society_id');
+
+$filename='user_list';
+@header("Expires: 0");
+@header("border: 1");
+@header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+@header("Cache-Control: no-cache, must-revalidate");
+@header("Pragma: no-cache");
+@header("Content-type: application/vnd.ms-excel");
+@header("Content-Disposition: attachment; filename=".$filename.".xls");
+@header("Content-Description: Generated Report");
+
+$this->ath();
+	
+$s_society_id=$this->Session->read('society_id');
+$this->loadmodel('society');	
+$conditions=array('society_id'=>$s_society_id);	
+$this->set('result_society',$this->society->find('all',array('conditions'=>$conditions)));
+$this->loadmodel('user');	
+$conditions1=array('society_id'=>$s_society_id,'deactive'=>0);
+$order=array('user.user_name'=>'ASC');
+$result1=$this->user->find('all',array('conditions'=>$conditions1,'order'=>$order));	
+$this->set('result_user',$result1);
+$this->set('n',sizeof($result1));
+$this->loadmodel('role');	
+$conditions2=array('society_id'=>$s_society_id);
+$this->set('result_role',$this->role->find('all',array('conditions'=>$conditions2)));
+
+}
+
 
 ////////////////////////////////////////////End Society member view /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
