@@ -2922,20 +2922,32 @@ $this->layout='session';
 	$this->ath();
 	
 	
-	/*this code to run production system 
+
 		
 	$s_society_id=$this->Session->read('society_id');	
 	$this->loadmodel('user');
-	$conditions=array('deactive'=>0,'society_id'=>$s_society_id);
-	$result_user=$this->user->find('all');
+	$conditions=array('deactive'=>0,'society_id'=>$s_society_id,'profile_status'=>2);
+	$result_user=$this->user->find('all',array('conditions'=>$conditions));
 	foreach($result_user as $data){
 		
-		 $user_id=$data['user']['user_id'];
-		  $society_id=$data['user']['society_id'];
-		 $tenant=$data['user']['tenant'];
-		 $wing=$data['user']['wing'];
-		 $flat=$data['user']['flat'];
-		 $multiple_flat=@$data['user']['multiple_flat'];
+		$user_id=$data['user']['user_id'];
+		$user_name=$data['user']['user_name'];
+		$login_id=(int)$data['user']['login_id'];
+		$this->loadmodel('login');
+		 $result_login=$this->login->find('all',array('conditions'=>array('login_id'=>$login_id)));
+			 foreach($result_login as $data){
+				 $login_user=$data['login']['user_name'];
+				 $login_mobile=$data['login']['mobile'];
+				 $login_password=$data['login']['password'];
+				  $signup_random=$data['login']['signup_random'];
+				  
+				$new_fetch_data[]=array('user_id'=>$user_id,'user_name'=>$user_name,'login_user_name'=>$login_user,'login_mobile'=>$login_mobile,'login_password'=>$login_password);  
+			 }
+	} 
+		 
+	$this->set('result_user',$new_fetch_data);	 
+		// $multiple_flat=@$data['user']['multiple_flat'];
+	/*this code to run production system 
 		if(!empty($multiple_flat)){
 			
 			foreach($multiple_flat as $dd){
@@ -2975,7 +2987,7 @@ $this->layout='session';
 		
 	}
 	
-	*/
+
 	echo $bill_html='<div style="margin: 0px;">
         <table style="padding:24px;background-color:#34495e" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="main_table">
             <tbody><tr>
@@ -3179,9 +3191,9 @@ $this->layout='session';
             </tr>
         </tbody></table>
                    
-            </div>';
+            </div>';	*/ 
 	
-	exit; 
+	
 }
 
 
