@@ -6008,7 +6008,7 @@ $this->ledger->saveAll($multipleRowData);
 }
 
 $this->Session->write('petty_cc_pp',1);
-
+exit;
 $rr_shww = implode(",",$rrr_arr);
 $output = json_encode(array('type'=>'success', 'text' => 'Petty Cash Payment voucher '.$rr_shww.' generated successfully'));
 die($output);
