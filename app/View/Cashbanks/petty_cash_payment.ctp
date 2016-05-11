@@ -143,13 +143,13 @@ $(document).ready(function() {
 		var amount = $("#tbbb tr:nth-child("+i+") td:nth-child(5) input").val();
 		var narration = $("#tbbb tr:nth-child("+i+") td:nth-child(6) input").val();
 		ar.push([transaction_date,ac_group,party_ac,paid_from,amount,narration]);
-		
 		}
 		var myJsonString = JSON.stringify(ar);
 			$.ajax({
 			url: "petty_cash_payment_json?q="+myJsonString,
-			dataType:'json',
+			//dataType:'json',
 			}).done(function(response){
+			alert(response);
 			if(response.type == 'error'){
 			
 			 $("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">'+response.text+'</div>');

@@ -5975,6 +5975,7 @@ $paid_from = (int)$child[3];
 $amount = $child[4];
 $narration = $child[5];
 
+//$narration2=htmlspecialchars($narration);
 $current_date = date('Y-m-d');
 
 $auto=$this->autoincrement('new_cash_bank','transaction_id');
