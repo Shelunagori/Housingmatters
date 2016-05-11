@@ -166,14 +166,12 @@ $("#validation").html('');
 	
 }
 
-
-
-
 });
 });
 </script>
 
 <script>
+
 function show_party(kk)
 {
 if(kk == 1)
@@ -191,6 +189,7 @@ $("#party1").addClass("ignore");
 $("#party2").removeClass("ignore");		
 }
 }
+
 </script>
 
 
