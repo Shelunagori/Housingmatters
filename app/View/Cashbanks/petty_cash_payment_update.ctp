@@ -166,9 +166,6 @@ $("#validation").html('');
 	
 }
 
-alert();
-
-
 });
 });
 </script>
