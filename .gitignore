@@ -8,6 +8,7 @@
 /build
 /dist
 /tags
+/new_version
 *.mo
 
 # IDE and editor specific files #

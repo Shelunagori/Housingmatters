@@ -17,7 +17,7 @@ $transaction_date = date('d-m-Y',($d_date));
 $petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 }
 ?>
-
+<input type="hidden" id="account_type_id" value="<?php echo $account_type; ?>">
 <form method="post" id="contact-form">
 <div class="portlet box blue">
 <div class="portlet-title">
@@ -130,7 +130,24 @@ $name = $collection2['ledger_account']['ledger_name'];
 <input type="hidden" value="<?php echo $petty_cash_payment_id; ?>" name="petty_cash_id">
 </form>
 <script>
-$(document).ready(function() {
+$(document).ready(function(){
+	
+var ac_type = $('#account_type_id').val();	
+if(ac_type == 1)
+{
+$("#party1").removeClass("ignore");
+$("#party2").addClass("ignore");
+}
+if(ac_type == 2)
+{
+$("#party1").addClass("ignore");
+$("#party2").removeClass("ignore");		
+}	
+
+	
+	
+	
+	
 $("#petty_payment").bind('click',function(){
 
 var from_date = document.getElementById("from").value;
@@ -166,14 +183,12 @@ $("#validation").html('');
 	
 }
 
-
-
-
 });
 });
 </script>
 
 <script>
+
 function show_party(kk)
 {
 if(kk == 1)
@@ -191,6 +206,7 @@ $("#party1").addClass("ignore");
 $("#party2").removeClass("ignore");		
 }
 }
+
 </script>
 
 
