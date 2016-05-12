@@ -43,12 +43,13 @@ $petty_cash_payment_id = (int)$collection['new_cash_bank']['transaction_id'];
 <option value="" style="display:none;">Select</option>
 <option value="1" <?php if($account_type == 1){ ?>selected="selected" <?php } ?>>Sundry Creditors Control A/c</option>
 <option value="2" <?php if($account_type == 2){ ?>selected="selected" <?php } ?>>All Expenditure A/cs</option>
+<option value="3" <?php if($account_type == 3){ ?>selected="selected" <?php } ?>>Liability</option>
 </select>
 <label id="type"></label>
 </div>
 <br />
 
-<div <?php if($account_type == 2){ ?>class="hide"<?php } ?> id="one">
+<div <?php if($account_type == 2 || $account_type == 3){ ?>class="hide"<?php } ?> id="one">
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
 <select name="party1" class="m-wrap large chosen" id="party1">
 <option value="" style="display:none;">Select</option>
@@ -85,6 +86,7 @@ $name = $collection2['ledger_account']['ledger_name'];
 <?php	
 }}
 ?>
+<option value="16" <?php if($user_id == 16){ ?> selected="selected"  <?php } ?>>Tax deducted at source (TDS payable)</option>
 </select>
 <label id="party2"></label>
 </div>
@@ -132,13 +134,20 @@ $name = $collection2['ledger_account']['ledger_name'];
 <script>
 $(document).ready(function(){
 	
+	
+	
+	
+	
+	
+	
+	
 var ac_type = $('#account_type_id').val();	
 if(ac_type == 1)
 {
 $("#party1").removeClass("ignore");
 $("#party2").addClass("ignore");
 }
-if(ac_type == 2)
+if(ac_type == 2 || ac_type == 3)
 {
 $("#party1").addClass("ignore");
 $("#party2").removeClass("ignore");		

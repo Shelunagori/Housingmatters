@@ -95,8 +95,10 @@ foreach($result33 as $collection)
 $auto_id = (int)$collection['ledger_account']['auto_id'];
 $name = $collection['ledger_account']['ledger_name'];
 ?>
-<option value="<?php echo $auto_id; ?>,2" <?php if($account_type == 1 && $user_id == $auto_id) { ?> selected="selected" <?php } ?> ><?php echo $name; ?></option>
+<option value="<?php echo $auto_id; ?>,2" <?php if($account_type == 2 && $user_id == $auto_id) { ?> selected="selected" <?php } ?>><?php echo $name; ?></option>
 <?php }} ?>
+
+<option value="32,2" <?php if($account_type == 2 && $user_id == 32) { ?> selected="selected" <?php } ?> >Cash-in-hand</option>
 </select>
 <label id="led"></label>
 </div>
@@ -114,7 +116,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <label style="font-size:14px;">TDS in Percentage<span style="color:red;">*</span></label></td>
 <div class="controls">
 <select name="tds_p" id="go" class="m-wrap chosen span9">
-<option value="" style="display:none;">Select</option>
+<option value="">Select</option>
 <?php
 for($k=0; $k<sizeof($tds_arr); $k++)
 {
@@ -129,7 +131,7 @@ $tds_tax = $tds_sub_arr[0];
 </div>
 <br />
 <?php
-$tax_amt = round(($tax/100)*$amount);
+$tax_amt = round((@$tax/100)*$amount);
 $net_amt = $amount - $tax_amt;
 
 ?>

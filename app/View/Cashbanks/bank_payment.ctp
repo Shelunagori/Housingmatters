@@ -106,7 +106,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 			  
 			  
 				<td><select class="m-wrap chosen span12" onchange="tdssssamt(this.value,1)" id="tdssss1">
-				<option value="" style="display:none;">Select</option>
+				<option value="">Select</option>
 				<?php
 				for($k=0; $k<sizeof($tds_arr); $k++)
 				{

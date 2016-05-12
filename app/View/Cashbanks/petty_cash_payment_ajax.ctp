@@ -39,7 +39,7 @@ else if($value1==3){
 ?>
 <select class="m-wrap span12 chosen">
 <option value="" style="display:none;">Select</option>
-<option value="16">Tax deducted at source (TDS payable)</option>
+<option value="16" <?php if(!empty($ussidd) && $ussidd != 0) { if($ussidd == 16) { ?> selected="selected" <?php } } ?>>Tax deducted at source (TDS payable)</option>
 </select>	
 <?php	
 }

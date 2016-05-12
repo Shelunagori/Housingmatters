@@ -5889,7 +5889,7 @@ $this->set('cursor1',$cursor1);
 		$this->loadmodel('accounts_group');
 		$conditions=array("accounts_id" => 4);
 		$cursor13=$this->accounts_group->find('all',array('conditions'=>$conditions));
-		$this->set('cursor13',$cursor13);	
+		$this->set('cursor13',$cursor13);
 	
 }
 /////////////////////// End Bank_Payment_Update /////////////////////////////////////////
