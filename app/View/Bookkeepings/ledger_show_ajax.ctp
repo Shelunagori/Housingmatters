@@ -301,8 +301,9 @@ $creater_name = $ussrrr['user']['user_name'];
 							
 			$tds_amount = (round(($tds_tax/100)*$debit));
 			$total_tds_amount = ($debit - $tds_amount);				
-			
+			if($tds_amount > 0){
 			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
+			}
             $tds_array_for_bank_payment[] = array($total_tds_amount,$description,$creater_name,$current_datttt);			
 							
 			}
@@ -354,8 +355,9 @@ $creater_name = $ussrrr['user']['user_name'];
 							
 			$tds_amount = (round(($tds_tax/100)*$debit));
 			$total_tds_amount = ($debit - $tds_amount);				
-			
+			if($tds_amount > 0){
 			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
+			}
             $tds_array_for_bank_payment[] = array($total_tds_amount,$description,$creater_name,$current_datttt);	
 
 			}
