@@ -94,10 +94,6 @@ $name = $collection2['ledger_account']['ledger_name'];
 
 
 
-
-
-
-
 </div>
 <div class="span6">
 <label style="font-size:14px;">Paid From<span style="color:red;">*</span> </label>
