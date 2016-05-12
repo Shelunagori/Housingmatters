@@ -6202,8 +6202,8 @@ if($this->RequestHandler->isAjax()){
 	}
 	$this->ath();
 	
-	/* $s_society_id = $this->Session->read('society_id');
-	$this->loadmodel('flat');
+	 $s_society_id = $this->Session->read('society_id');
+	/* $this->loadmodel('flat');
 	$result_flat = $this->flat->find('all');
 	foreach($result_flat as $data){
 		$flat_id=(int)$data["flat"]["flat_id"];
