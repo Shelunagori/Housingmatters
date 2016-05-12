@@ -164,14 +164,37 @@ $("#ttt").removeClass("ignore");
 	
 	
 $("#petty_payment").bind('click',function(){
-
-var from_date = document.getElementById("from").value;
-var to_date = document.getElementById("to").value;
-var count = document.getElementById("count").value;
-var fromm = from_date.split(",");
-var tomm = to_date.split(",");
+var result="";
+//var from_date = document.getElementById("from").value;
+//var to_date = document.getElementById("to").value;
+//var count = document.getElementById("count").value;
+//var fromm = from_date.split(",");
+//var tomm = to_date.split(",");
 var transaction_date = $("#date").val();
 
+	$.ajax({
+	url:"<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_validation/"+transaction_date, 
+	async: false,
+	success: function(data){
+		data = data.replace(/\s+/g,' ').trim();
+		result=data;
+	}
+	});
+	
+if(result==="not_match")
+{
+$("#validation").html('Transaction Date Should be in Open Financial Year');	
+return false;	
+}
+
+
+
+
+
+
+});
+
+/*
 var nnn = 55;
 for(var i=0; i<count; i++)
 {
@@ -198,7 +221,7 @@ $("#validation").html('');
 	
 }
 
-});
+}); */
 });
 </script>
 
