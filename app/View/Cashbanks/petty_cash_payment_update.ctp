@@ -68,9 +68,9 @@ $name = $data['ledger_sub_account']['name'];
 </div>
 
 
-<div id="two" <?php if($account_type == 1){ ?> class="hide" <?php } ?>>
+<div id="two" <?php if($account_type == 1 || $account_type == 3){ ?> class="hide" <?php } ?>>
 <label style="font-size:14px;">Expense/Party A/c<span style="color:red;">*</span></label>
-<select name="pppppp" class="m-wrap large chosen ignore" id="party2">
+<select name="pppppp" class="m-wrap large chosen" id="party2">
 <option value="" style="display:none;">Select</option>
 <?php
 foreach($cursor2 as $collection)
@@ -86,12 +86,19 @@ $name = $collection2['ledger_account']['ledger_name'];
 <?php	
 }}
 ?>
-<option value="16" <?php if($user_id == 16){ ?> selected="selected"  <?php } ?>>Tax deducted at source (TDS payable)</option>
 </select>
 <label id="party2"></label>
 </div>
 <br>
 
+<div id="third" <?php if($account_type == 1 || $account_type == 2){ ?> class="hide" <?php } ?>>
+<select name="third_party" id="ttt" class="m-wrap large chosen">
+<option value="">Select</option>
+<option value="16" <?php if($user_id == 16){ ?> selected="selected"  <?php } ?>>Tax deducted at source (TDS payable)</option>
+</select>
+<label id="ttt"></label>
+</div>
+<br>
 
 
 </div>
@@ -134,27 +141,25 @@ $name = $collection2['ledger_account']['ledger_name'];
 </form>
 <script>
 $(document).ready(function(){
-	
-	
-	
-	
-	
-	
-	
-	
 var ac_type = $('#account_type_id').val();	
 if(ac_type == 1)
 {
 $("#party1").removeClass("ignore");
 $("#party2").addClass("ignore");
+$("#ttt").addClass("ignore");
 }
-if(ac_type == 2 || ac_type == 3)
+if(ac_type == 2)
 {
 $("#party1").addClass("ignore");
-$("#party2").removeClass("ignore");		
+$("#party2").removeClass("ignore");	
+$("#ttt").addClass("ignore");	
 }	
-
-	
+if(ac_type == 3)
+{
+$("#party1").addClass("ignore");
+$("#party2").addClass("ignore");	
+$("#ttt").removeClass("ignore");	
+}	
 	
 	
 	
@@ -205,16 +210,31 @@ if(kk == 1)
 {
 $("#one").show();	
 $("#two").hide();
+$("#third").hide();
 $("#party1").removeClass("ignore");
 $("#party2").addClass("ignore");
+$("#ttt").addClass("ignore");
 }
 if(kk == 2)
 {
 $("#one").hide();	
 $("#two").show();
+$("#third").hide();
 $("#party1").addClass("ignore");
-$("#party2").removeClass("ignore");		
+$("#party2").removeClass("ignore");
+$("#ttt").addClass("ignore");		
 }
+if(kk == 3)
+{
+$("#one").hide();	
+$("#two").hide();
+$("#third").show();
+$("#party1").addClass("ignore");
+$("#party2").addClass("ignore");
+$("#ttt").removeClass("ignore");		
+	
+}
+
 }
 
 </script>
@@ -272,7 +292,10 @@ error.appendTo('label#' + element.attr('id'));
             number: true,
             notEqual: "0"			
 			},
-							
+			third_party: {
+			required: true	
+				
+			},				
 
 		
 		},

@@ -5570,9 +5570,13 @@ function petty_cash_payment_update($auto_id=null)
 		{
 		$party_ac = (int)$this->request->data['party1'];
 		}
-		else
+		else if($ac_group == 2)
 		{
 		$party_ac = (int)$this->request->data['pppppp'];	
+		}
+		else
+		{
+		$party_ac = (int)$this->request->data['third_party'];	
 		}
 		$paid_from = (int)$this->request->data['account_head'];
 		$amount = $this->request->data['ammount'];

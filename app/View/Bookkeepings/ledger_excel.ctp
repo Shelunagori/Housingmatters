@@ -229,7 +229,7 @@ $creater_name = $user_detailll['user']['user_name'];
 	if($receipt_source == 2)
 	{
 		$tds_array_for_bank_payment = array();
-		
+		$tds="";
 		$source="Bank payment";
 		$trans_id = (int)$result_cash_bank[0]["new_cash_bank"]["transaction_id"];  
 		$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
@@ -274,6 +274,7 @@ $creater_name = $ussrrr['user']['user_name'];
 			/////////////////////////////////
 			if($tds_ledger_id == 15)
 			{
+				$tds_tax=0;
 							foreach($tds_arr as $tds_ddd)
 							{
 							$tdsss_taxxx = (int)$tds_ddd[0];  
@@ -327,7 +328,7 @@ $creater_name = $ussrrr['user']['user_name'];
 			{
 			$user_name = $ledger_datttaa['ledger_account']['ledger_name'];
 			}
-				
+				$tds_tax=0;
                 foreach($tds_arr as $tds_ddd)
 							{
 							$tdsss_taxxx = (int)$tds_ddd[0];  
