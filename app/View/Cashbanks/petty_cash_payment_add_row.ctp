@@ -11,6 +11,7 @@ $default_date = date('d-m-Y');
         <select name="type" class="m-wrap span12 chosen" onchange="type_ajjxx(this.value,<?php echo $count; ?>)">						        <option value="" style="display:none;">Select</option>
         <option value="1">Sundry Creditors Control A/c</option>
         <option value="2">All Expenditure A/cs</option>
+		<option value="3">Liability</option>
         </select>
         </td> 
 

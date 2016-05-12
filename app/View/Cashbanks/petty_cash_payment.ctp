@@ -11,12 +11,11 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <input type="hidden" id="ti" value="<?php echo $datet1; ?>" />
 <input type="hidden" id="cn" value="<?php echo $count; ?>" />
 							
-<?php ///////////////////////////////////////////////////////////////////////////////////////////////////////////// ?>
 <center>
 <a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment" class="btn yellow" rel='tab'>Create</a>
 <a href="<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_view" class="btn" rel='tab'>View</a>
 </center>	   
-<?php ////////////////////////////////////////////////////////////////////////////////////////////////// ?>	
+
 <?php
 $default_date = date('d-m-Y');
 ?>
@@ -49,6 +48,7 @@ $default_date = date('d-m-Y');
 <option value="" style="display:none;">Select</option>
 <option value="1">Sundry Creditors Control A/c</option>
 <option value="2">All Expenditure A/cs</option>
+<option value="3">Liability</option>
 </select>
 </td valign="top">
 <td id="show_user1" valign="top">

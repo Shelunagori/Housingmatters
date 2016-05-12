@@ -1787,9 +1787,8 @@ $this->set("tds_arr",$tds_arr);
 
 
 }
-/////////////////////////////////////End Bank Payment Show Ajax (Accounts)////////////////////////////////////////
-
-////////////////////////////// Start Bank Payment Excel //////////////////////////////
+//End Bank Payment Show Ajax (Accounts)//
+//Start Bank Payment Excel//
 function bank_payment_excel()
 {
 $this->layout="";
@@ -1875,6 +1874,9 @@ $excel="<table border='1'>
 		$cursor2=$this->new_cash_bank->find('all',array('conditions'=>$conditions,'order'=>$order));
 		foreach ($cursor2 as $collection) 
 		{
+			$tds_amount="";
+			$total_tds_amount="";
+			$tds_id="";
 			$receipt_no = $collection['new_cash_bank']['receipt_id'];
 			$transaction_id = (int)$collection['new_cash_bank']['transaction_id'];	
 			$date = $collection['new_cash_bank']['transaction_date'];
@@ -1889,7 +1891,7 @@ $excel="<table border='1'>
 			$current_date = $collection['new_cash_bank']['current_date'];		
 			$ac_type = $collection['new_cash_bank']['account_type'];
 		    $tds_id = (int)$collection['new_cash_bank']['tds_id']; 
-
+    $tds_tax = 0;
 	foreach($tds_arr as $tds_ddd)
 	{
 	$tdsss_taxxx = (int)$tds_ddd[0];  
@@ -1901,7 +1903,7 @@ $excel="<table border='1'>
 	}
 	
 	$tds_amount = (round(($tds_tax/100)*$amount));
-	$total_tds_amount = ($amount - $tds_amount);	
+	$total_tds_amount=($amount - $tds_amount);	
 
 
 
@@ -1935,7 +1937,7 @@ $excel="<table border='1'>
 		$result_lsa2 = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($account_id))); 					   
 		foreach ($result_lsa2 as $collection) 
 		{
-		$account_no = $collection['ledger_sub_account']['bank_account'];  
+		$account_no = $collection['ledger_sub_account']['name'];  
 		}    		
 if($date >= $m_from && $date <= $m_to)
 {
@@ -2873,7 +2875,14 @@ foreach ($result_la as $collection)
 $user_name = $collection['ledger_account']['ledger_name'];	  
 }
 }   										
-
+else if($account_type == 3)
+{
+$result_la = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_amount'),array('pass'=>array($user_id)));
+foreach ($result_la as $collection) 
+{
+$user_name = $collection['ledger_account']['ledger_name'];	  
+}
+} 
 if($date >= $m_from && $date <= $m_to)
 {
 if($s_role_id == 3)

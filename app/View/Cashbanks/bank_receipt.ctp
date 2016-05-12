@@ -10,11 +10,6 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 <a style="background-color:#D9D1FA "
 <!--  Start Bank Receipt form Front End  -->
 
-
-
-
-
-
 <!---- Start Import Code -->
         <div id='suces'>
         <div id="error_msg"></div>

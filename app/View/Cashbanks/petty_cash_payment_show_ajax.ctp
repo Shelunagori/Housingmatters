@@ -110,12 +110,13 @@ if($nnn == 555)
 <table width="100%" style="background-color:white;" class="table table-bordered table-striped table-hover">
 <thead>
 <tr >
-<th colspan="5" style="text-align:center;"><?php echo $society_name; ?> Petty Cash Payment Register From : <?php echo $from; ?> To : <?php echo $to; ?></th>
+<th colspan="6" style="text-align:center;"><?php echo $society_name; ?> Petty Cash Payment Register From : <?php echo $from; ?> To : <?php echo $to; ?></th>
 </tr>
 <tr>
 <th>PC Payment Vochure</th>
 <th>Transaction Date</th>
 <th>Paid To</th>
+<th>Narration</th>
 <th>Amount</th>
 <th class="hide_at_print">Action </th>
 </tr>
@@ -133,7 +134,7 @@ $account_type = (int)$collection['new_cash_bank']['account_type'];
 $user_id = (int)$collection['new_cash_bank']['user_id'];
 $date = $collection['new_cash_bank']['transaction_date'];
 $prepaired_by = (int)$collection['new_cash_bank']['prepaired_by'];   
-$narration = $collection['new_cash_bank']['narration'];
+@$narration = @$collection['new_cash_bank']['narration'];
 $account_head = $collection['new_cash_bank']['account_head'];
 $amount = $collection['new_cash_bank']['amount'];
 $current_date = $collection['new_cash_bank']['current_date'];
@@ -161,7 +162,14 @@ foreach ($result_la as $collection)
 $user_name = $collection['ledger_account']['ledger_name'];	  
 }
 }      
-
+else if($account_type == 3)
+{
+$result_la = $this->requestAction(array('controller' => 'hms', 'action' => 'fetch_amount'),array('pass'=>array($user_id)));
+foreach ($result_la as $collection) 
+{
+$user_name = $collection['ledger_account']['ledger_name'];	  
+}
+} 
 											
 
 
@@ -180,7 +188,7 @@ $user_name = $collection['ledger_account']['ledger_name'];
                                             <td><?php echo $receipt_no; ?> </td>
 											<td><?php echo $date; ?> </td>
 											 <td><?php echo $user_name; ?> </td>
-                                                                        
+                                             <td><?php echo $narration; ?></td>                        
                                             <td><?php echo $amount; ?></td>
                                           
 <td class="hide_at_print">
@@ -218,7 +226,7 @@ $user_name = $collection['ledger_account']['ledger_name'];
 									    
 									?>
  <tr>
-                                    <td colspan="3" style="text-align:right;"><b>Total</b></td>
+                                    <td colspan="4" style="text-align:right;"><b>Total</b></td>
                                     <td><b><?php 
 									$total_debit = number_format($total_debit);
 									echo $total_debit; ?></b></td>

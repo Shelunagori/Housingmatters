@@ -35,6 +35,14 @@ $name = $collection2['ledger_account']['ledger_name'];
 </select>
 <?php
 }
+else if($value1==3){
+?>
+<select class="m-wrap span12 chosen">
+<option value="" style="display:none;">Select</option>
+<option value="16">Tax deducted at source (TDS payable)</option>
+</select>	
+<?php	
+}
 else
 {
 ?>	

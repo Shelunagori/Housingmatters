@@ -89,6 +89,7 @@ $("#fix<?php echo $id_current_page; ?>").addClass("red");
 					?>
 					<option value="<?php echo $auto_id; ?>,2" ><?php echo $name; ?></option>
 					<?php }} ?>
+					<option value="32,2">Cash-in-hand</option>
 					</select>
 					</td>
 
