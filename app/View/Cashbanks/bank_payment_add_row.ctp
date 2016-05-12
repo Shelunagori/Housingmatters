@@ -77,7 +77,7 @@ $default_date = date('d-m-Y');
 			  
 			  
 				<td><select class="m-wrap chosen span12" onchange="tdssssamt(this.value,<?php echo $count; ?>)" id="tdssss<?php echo $count; ?>">
-				<option value="" style="display:none;">Select</option>
+				<option value="">Select</option>
 				<?php
 				for($k=0; $k<sizeof($tds_arr); $k++)
 				{
