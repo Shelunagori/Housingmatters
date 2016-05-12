@@ -1,9 +1,10 @@
 <?php 
 foreach($result_expense_tracker as $data)
 {
+$due_date="";	
 $posting_date = $data['expense_tracker']['posting_date'];
-$invoice_date = $data['expense_tracker']['due_date'];
-$due_date = $data['expense_tracker']['date_of_invoice'];
+$invoice_date = $data['expense_tracker']['date_of_invoice'];
+$due_date = $data['expense_tracker']['due_date'];
 $party_account_head = (int)$data['expense_tracker']['party_ac_head'];
 $invoice_reference = $data['expense_tracker']['invoice_reference'];
 $expense_head = (int)$data['expense_tracker']['expense_head'];
@@ -11,7 +12,12 @@ $amount = $data['expense_tracker']['ammount_of_invoice'];
 $description = $data['expense_tracker']['description'];
 $posting_date2 = date('d-m-Y',($posting_date));
 $invoice_date2 = date('d-m-Y',($invoice_date));
+if(!empty($due_date)){
 $due_date2 = date('d-m-Y',($due_date));
+}else{
+	$due_date2="";
+}
+
 }
 ?>
 <form method="post" id="form3">

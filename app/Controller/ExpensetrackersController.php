@@ -593,8 +593,8 @@ $this->loadmodel('accounts_group');
 	
 	
 }
-////////////////////////////End expense_tracker_update /////////////////////////////////////
-//////////////////////////// Start expense_tracker_update_json ///////////////////////////
+//End expense_tracker_update//
+//Start expense_tracker_update_json//
 function expense_tracker_update_json()
 {
 $this->layout='blank';
@@ -684,14 +684,10 @@ $this->layout='blank';
 						die($output);
 				}
 	
-	if(empty($child[2])){
-					
-						$output=json_encode(array('report_type'=>'error','text'=>'Due Date is Required'));
-						die($output);
-				}
 	
 	
 	
+	if(!empty($child[2])){
 	$invoice_date = $child[1];
 	$due_date = $child[2];
 	$invoice_date = date('Y-m-d',strtotime($invoice_date));
@@ -704,7 +700,7 @@ $this->layout='blank';
 	$output=json_encode(array('report_type'=>'error','text'=>'Due Date should be Greater Than Invoice date'));
 	die($output);	
 	}
-	
+	}
 	
 	
 	
