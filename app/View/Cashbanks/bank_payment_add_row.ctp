@@ -72,11 +72,11 @@ $default_date = date('d-m-Y');
 			  
 			  <td><input type="text" class="m-wrap span12" id="amttt<?php echo $count; ?>" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" maxlength="10" 
-			  onkeyup="numeric_vali(this.value,<?php echo $count; ?>)" onchange="tdssssamt2(this.value,<?php echo $count; ?>)">
+			  onkeyup="numeric_vali(this.value,<?php echo $count; ?>)" onchange="tds_calculation1(this.value,<?php echo $count; ?>)">
 			  </td>
 			  
 			  
-				<td><input type="text" id="tds_tax<?php echo $count; ?>" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;">
+				<td><input type="text" id="tds_tax<?php echo $count; ?>" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,1)">
 				</td>
 			  </tr>
 
@@ -135,8 +135,8 @@ $default_date = date('d-m-Y');
 
 </td>
 <td style="border:solid 1px blue;">
- <a  class="btn green mini adrww" onclick="add_rowwwww()"><i class="icon-plus"></i></a><br>
-<a  class="btn red mini" onclick="delete_row(<?php echo $count; ?>)"><i class=" icon-remove"></i></a><br>
+ <a class="btn green mini adrww" onclick="add_rowwwww()"><i class="icon-plus"></i></a><br>
+<a class="btn red mini" onclick="delete_row(<?php echo $count; ?>)"><i class=" icon-remove"></i></a><br>
 
 </td>
 </tr>

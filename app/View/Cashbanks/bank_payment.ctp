@@ -96,12 +96,12 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 			  
 			  <td><input type="text" class="m-wrap span12" id="amttt1" 
 			  style="text-align:right; background-color:white !important; margin-top:2.5px;" maxlength="10" 
-			  onkeyup="numeric_vali(this.value,1)" onchange="tdssssamt2(this.value,1)">
+			  onkeyup="numeric_vali(this.value,1)" onchange="tds_calculation1(this.value,1)">
 			  </td>
 			  
 			  
 			<td>
-			<input type="text" id="tds_tax1" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;">
+			<input type="text" id="tds_tax1" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,1)">
 			</td>
 			  </tr>
 
@@ -174,18 +174,6 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 <!----------------------------------- End Bank Payment Form ----------------------------------->	
 
 <script>
-	$(document).ready(function(){
-		$("#import").bind('click',function(){
-		$("#myModal3").show();
-		});
-
-		$("#close_div").bind('click',function(){
-		$("#myModal3").hide();
-		});
-	});
-</script>
-
-<script>
 	function numeric_vali(vv,dd)
 	{
 		if($.isNumeric(vv)){
@@ -217,27 +205,17 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 		$('.content_'+ttt).remove();	
 	}
 </script>
-          
-<script>
-	$(document).ready(function() {
-		$("#go").live('change',function(){
-			var tds = document.getElementById('go').value;
-			var amount=document.getElementById('amount').value;
-			$("#result").load('bank_payment_tds_ajax?tds='+tds+'&amount='+amount+'');
-		});
-	});
-</script>
 	
 <script>
-	function tdssssamt(vv,cc)
+	function tds_calculation2(vv,cc)
 	{
 		var amt = $("#amttt" + cc).val();
 		$("#tds_show" + cc).load('bank_payment_tds_ajax?tds='+vv+'&amount='+amt+'');
 	}
 	
-	function tdssssamt2(vvv,ccc)
+	function tds_calculation1(vvv,ccc)
 	{
-		var tdsss = $("#tdssss" + ccc).val();
+		var tdsss = $("#tds_tax" + ccc).val();
 		$("#tds_show" + ccc).load('bank_payment_tds_ajax?tds='+tdsss+'&amount='+vvv+'');	
 	}
 </script>

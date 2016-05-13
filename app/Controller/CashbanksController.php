@@ -3429,9 +3429,8 @@ $cursor1=$this->ledger_sub_account->find('all',array('conditions'=>$conditions))
 $this->set('cursor1',$cursor1);
 
 }
-//////////////////////// End bank receipt Ajax (Accounts)/////////////////////////////////
-
-//////////////////////////////////////////////////////////// Start tds Bank Payment Ajax (Accounts)//////////////////////////////////////////////////////
+//End bank receipt Ajax (Accounts)//
+//Start tds Bank Payment Ajax (Accounts)//
 function bank_payment_tds_ajax()
 {
 $this->layout='blank';
@@ -3439,29 +3438,10 @@ $s_role_id=$this->Session->read('role_id');
 $s_society_id = $this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');
 
-$tds = (int)$this->request->query('tds');
-$amount = (int)$this->request->query('amount');
+$tds = $this->request->query('tds');
+$amount = $this->request->query('amount');
 
-
-$this->loadmodel('reference');
-$conditions=array("auto_id" => 3);
-$cursor1=$this->reference->find('all',array('conditions'=>$conditions));
-foreach ($cursor1 as $collection) 
-{
-$tds_arr = $collection['reference']['reference'];
-}
-for($t=0; $t<sizeof($tds_arr); $t++)
-{
-$tds_arr2 = $tds_arr[$t];
-$tds_id = (int)$tds_arr2[1];
-if($tds_id == $tds)
-{
-$charge = $tds_arr2[0];
-break;
-}
-}
-$tds_charge = (float)((@$charge/100)*$amount);
-$total_amount = round($amount - $tds_charge); 
+$total_amount = round($amount - $tds); 
 $this->set('total_amount',$total_amount);
 }
 /////////////////////// End tds bank Payment Ajax (Accounts)///////////////////////
