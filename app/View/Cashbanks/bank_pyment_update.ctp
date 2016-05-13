@@ -1,22 +1,19 @@
-<input type="hidden" id="from" value="<?php echo $datefrom; ?>" />
-<input type="hidden" id="to" value="<?php echo $datetto; ?>" />
-<input type="hidden" id="count" value="<?php echo $count; ?>" />
 <?php
 	foreach($cursor1 as $data){
-	$tds_amount=0;
-	$receipt_id=$data["new_cash_bank"]["receipt_id"];
-	$transaction_date=$data["new_cash_bank"]["transaction_date"];
-	$transaction_date=date("d-m-Y",($transaction_date));
-	$user_id= (int)$data["new_cash_bank"]["user_id"];
-	$invoice_ref=@$data["new_cash_bank"]["invoice_reference"];
-	$narration=@$data["new_cash_bank"]["narration"];
-	$receipt_mode = @$data["new_cash_bank"]["receipt_mode"];
-	$receipt_instruction = @$data["new_cash_bank"]["receipt_instruction"];
-	$account_head = (int)@$data["new_cash_bank"]["account_head"];	
-	$amount = (int)@$data["new_cash_bank"]["amount"];
-	$tds_amount=$data['new_cash_bank']['tds_tax_amount'];
-	$account_type = (int)@$data["new_cash_bank"]["account_type"];	
-	$transaction_id = (int)$data['new_cash_bank']['transaction_id'];
+		$tds_amount=0;
+		$receipt_id=$data["new_cash_bank"]["receipt_id"];
+		$transaction_date=$data["new_cash_bank"]["transaction_date"];
+		$transaction_date=date("d-m-Y",($transaction_date));
+		$user_id= (int)$data["new_cash_bank"]["user_id"];
+		$invoice_ref=@$data["new_cash_bank"]["invoice_reference"];
+		$narration=@$data["new_cash_bank"]["narration"];
+		$receipt_mode = @$data["new_cash_bank"]["receipt_mode"];
+		$receipt_instruction = @$data["new_cash_bank"]["receipt_instruction"];
+		$account_head = (int)@$data["new_cash_bank"]["account_head"];	
+		$amount = (int)@$data["new_cash_bank"]["amount"];
+		$tds_amount=$data['new_cash_bank']['tds_tax_amount'];
+		$account_type = (int)@$data["new_cash_bank"]["account_type"];	
+		$transaction_id = (int)$data['new_cash_bank']['transaction_id'];
 	}
 	if($account_type == 1)
 	{
@@ -35,11 +32,11 @@
 		}	
 	}
 
-$ledger_sub_dettt = $this->requestAction(array('controller' => 'hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($account_head)));
-foreach ($ledger_sub_dettt as $sub_leddg_dataa) 
-{
-$ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
-}	
+	$ledger_sub_dettt = $this->requestAction(array('controller' => 'hms', 'action' => 'subledger_fetch_by_auto_id'),array('pass'=>array($account_head)));
+	foreach ($ledger_sub_dettt as $sub_leddg_dataa) 
+	{
+	$ac_head_name = $sub_leddg_dataa['ledger_sub_account']['name'];
+	}	
 
 ?>
 <form method="post" id="contact-form">
@@ -117,7 +114,7 @@ $name = $collection['ledger_account']['ledger_name'];
 <label style="font-size:14px;">TDS Amount<span style="color:red;">*</span></label></td>
 <div class="controls">
 <input type="text" class="m-wrap span9" name="tds_amount" value="<?php echo $tds_amount; ?>" style="text-align:right;" id="go">
-
+<span style="font-size:14px; color:red" id="tds_validation"></span>
 </div>
 <br />
 <?php
@@ -191,14 +188,6 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 <br />
 
 
-
-
-
-
-
-
-
-
 </div>
 </div>                          
 <div class="form-actions">
@@ -212,47 +201,39 @@ $sub_account_name =$db['ledger_sub_account']['name'];
 </form>
 
 <script>
-$(document).ready(function() {
-$("#save_bank_voucher").bind('click',function(){
-
-var from_date = document.getElementById("from").value;
-var to_date = document.getElementById("to").value;
-var count = document.getElementById("count").value;
-var fromm = from_date.split(",");
-var tomm = to_date.split(",");
-var transaction_date = $("#date").val();
-
-var nnn = 55;
-for(var i=0; i<count; i++)
-{
-var frmm = fromm[i]; 
-var too	= tomm[i];
-      if(frmm == ""){
-			nnn = 555;
-			break;	
-	    }
- else if(Date.parse(transaction_date) >= Date.parse(frmm) && Date.parse(transaction_date) <= Date.parse(too))  
- {
- nnn = 5;
- break; 
- }
-}
-
-if(nnn == 55)
-{
-$("#validation").html('Transaction Date Should be in Open Financial Year');	
-return false;	
-}
-else{
-$("#validation").html('');		
-	
-}
-
-
-
-
-});
-});
+	$(document).ready(function() {
+		$("#save_bank_voucher").bind('click',function(){
+			var transaction_date = $("#date").val();
+			$.ajax({
+				url:"<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_validation/"+transaction_date, 
+				async: false,
+				success: function(data){
+				data = data.replace(/\s+/g,' ').trim();
+				result=data;
+			}
+			});
+			if(result==="not_match")
+			{
+				$("#validation").html('Transaction Date Should be in Open Financial Year');	
+				return false;	
+			}
+			else{
+				$("#validation").html('');		
+			}
+			
+			var tds = document.getElementById('go').value;
+			var amount=document.getElementById('amount').value;
+			var tds2 = Math.round(tds);
+			if(tds2 >= amount)
+			{
+			$("#tds_validation").html('Tds amount should be small than Amount');	
+			return false;		
+			}
+			else{
+			$("#tds_validation").html('');	
+			}
+		});
+	});
 </script>
 
 
@@ -277,7 +258,6 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-	
 jQuery.validator.addMethod("notEqual", function(value, element, param) {
 return this.optional(element) || value !== param;
 }, "Please choose Other value!");

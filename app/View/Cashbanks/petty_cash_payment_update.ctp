@@ -140,89 +140,48 @@ $name = $collection2['ledger_account']['ledger_name'];
 <input type="hidden" value="<?php echo $petty_cash_payment_id; ?>" name="petty_cash_id">
 </form>
 <script>
-$(document).ready(function(){
-var ac_type = $('#account_type_id').val();	
-if(ac_type == 1)
-{
-$("#party1").removeClass("ignore");
-$("#party2").addClass("ignore");
-$("#ttt").addClass("ignore");
-}
-if(ac_type == 2)
-{
-$("#party1").addClass("ignore");
-$("#party2").removeClass("ignore");	
-$("#ttt").addClass("ignore");	
-}	
-if(ac_type == 3)
-{
-$("#party1").addClass("ignore");
-$("#party2").addClass("ignore");	
-$("#ttt").removeClass("ignore");	
-}	
+	$(document).ready(function(){
+		var ac_type = $('#account_type_id').val();	
+		if(ac_type == 1)
+		{
+			$("#party1").removeClass("ignore");
+			$("#party2").addClass("ignore");
+			$("#ttt").addClass("ignore");
+		}
+		if(ac_type == 2)
+		{
+			$("#party1").addClass("ignore");
+			$("#party2").removeClass("ignore");	
+			$("#ttt").addClass("ignore");	
+		}	
+		if(ac_type == 3)
+		{
+			$("#party1").addClass("ignore");
+			$("#party2").addClass("ignore");	
+			$("#ttt").removeClass("ignore");	
+		}	
 	
-	
-	
-$("#petty_payment").bind('click',function(){
-var result="";
-//var from_date = document.getElementById("from").value;
-//var to_date = document.getElementById("to").value;
-//var count = document.getElementById("count").value;
-//var fromm = from_date.split(",");
-//var tomm = to_date.split(",");
-var transaction_date = $("#date").val();
-
-	$.ajax({
-	url:"<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_validation/"+transaction_date, 
-	async: false,
-	success: function(data){
-		data = data.replace(/\s+/g,' ').trim();
-		result=data;
-	}
+		$("#petty_payment").bind('click',function(){
+			var result="";
+			var transaction_date = $("#date").val();
+			$.ajax({
+			url:"<?php echo $webroot_path; ?>Cashbanks/petty_cash_payment_validation/"+transaction_date, 
+			async: false,
+			success: function(data){
+				data = data.replace(/\s+/g,' ').trim();
+				result=data;
+			}
+			});
+			if(result==="not_match")
+			{
+				$("#validation").html('Transaction Date Should be in Open Financial Year');	
+				return false;	
+			}
+			else{
+				$("#validation").html('');		
+			}
+		});
 	});
-	
-if(result==="not_match")
-{
-$("#validation").html('Transaction Date Should be in Open Financial Year');	
-return false;	
-}
-
-
-
-
-
-
-});
-
-/*
-var nnn = 55;
-for(var i=0; i<count; i++)
-{
-var frmm = fromm[i]; 
-var too	= tomm[i];
-      if(frmm == ""){
-			nnn = 555;
-			break;	
-	    }
- else if(Date.parse(transaction_date) >= Date.parse(frmm) && Date.parse(transaction_date) <= Date.parse(too))  
- {
- nnn = 5;
- break; 
- }
-}
-
-if(nnn == 55)
-{
-$("#validation").html('Transaction Date Should be in Open Financial Year');	
-return false;	
-}
-else{
-$("#validation").html('');		
-	
-}
-
-}); */
-});
 </script>
 
 <script>
