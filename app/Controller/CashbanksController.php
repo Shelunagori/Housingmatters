@@ -9525,7 +9525,7 @@ $this->layout=null;
 $s_society_id = $this->Session->read('society_id');	
 $this->ath();	
 
-	$this->loadmodel('new_cash_bank');
+/*	$this->loadmodel('new_cash_bank');
 	$conditions=array("receipt_source"=>2);
 	$result_bank_payment=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
     foreach($result_bank_payment as $data)
@@ -9562,7 +9562,7 @@ $this->ath();
 
 	$this->loadmodel('new_cash_bank');
 	$this->new_cash_bank->updateAll(array("tds_tax_amount"=>$tds_amount),array("transaction_id"=>$transaction_id));
-	}
+	} */
 	
 }
 //End bank_payment_database_modification// 
