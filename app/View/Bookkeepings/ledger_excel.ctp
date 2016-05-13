@@ -229,7 +229,7 @@ $creater_name = $user_detailll['user']['user_name'];
 	if($receipt_source == 2)
 	{
 		$tds_array_for_bank_payment = array();
-		$tds="";
+		$tds_amount=0;
 		$source="Bank payment";
 		$trans_id = (int)$result_cash_bank[0]["new_cash_bank"]["transaction_id"];  
 		$description = @$result_cash_bank[0]["new_cash_bank"]["narration"];
@@ -238,7 +238,7 @@ $creater_name = $user_detailll['user']['user_name'];
 		$vendor_id = (int)$result_cash_bank[0]["new_cash_bank"]["user_id"];
 		$account_type = (int)$result_cash_bank[0]["new_cash_bank"]["account_type"];	
 		$amttt = $result_cash_bank[0]["new_cash_bank"]["amount"];			
-		$tds = (int)$result_cash_bank[0]["new_cash_bank"]["tds_id"];		
+		$tds_amount = $result_cash_bank[0]["new_cash_bank"]["tds_tax_amount"];		
 		$current_date = $result_cash_bank[0]['new_cash_bank']['current_date'];
 		$prepaired_by_id = (int)$result_cash_bank[0]['new_cash_bank']['prepaired_by'];
 		
@@ -285,19 +285,7 @@ $creater_name = $ussrrr['user']['user_name'];
 			/////////////////////////////////
 			if($tds_ledger_id == 15)
 			{
-				$tds_tax=0;
-							foreach($tds_arr as $tds_ddd)
-							{
-							$tdsss_taxxx = (int)$tds_ddd[0];  
-							$tds_iddd = (int)$tds_ddd[1];  
-							   if($tds_iddd == $tds) 
-							   {
-								$tds_tax = $tdsss_taxxx;   
-							   }
-							}
-							
-			$tds_amount = (round(($tds_tax/100)*$debit));
-			$total_tds_amount = ($debit - $tds_amount);				
+			$total_tds_amount = $debit - $tds_amount;				
 			if($tds_amount > 0){
 			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
 			}
@@ -339,19 +327,8 @@ $creater_name = $ussrrr['user']['user_name'];
 			{
 			$user_name = $ledger_datttaa['ledger_account']['ledger_name'];
 			}
-				$tds_tax=0;
-                foreach($tds_arr as $tds_ddd)
-							{
-							$tdsss_taxxx = (int)$tds_ddd[0];  
-							$tds_iddd = (int)$tds_ddd[1];  
-							   if($tds_iddd == $tds) 
-							   {
-								$tds_tax = $tdsss_taxxx;   
-							   }
-							}
-							
-			$tds_amount = (round(($tds_tax/100)*$debit));
-			$total_tds_amount = ($debit - $tds_amount);				
+				
+			$total_tds_amount = $debit - $tds_amount;			
 			if($tds_amount > 0){
 			$tds_array_for_bank_payment[] = array($tds_amount,"tds payable",$creater_name,$current_datttt);
 			}
