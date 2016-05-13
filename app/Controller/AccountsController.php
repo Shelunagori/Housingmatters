@@ -5284,7 +5284,7 @@ $this->set("tds_arr",$tds_arr);
 function tds_report_excel()
 {
 $this->layout=null;
-
+$this->ath();
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');

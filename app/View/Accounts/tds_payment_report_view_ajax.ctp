@@ -45,7 +45,7 @@ $tomm = strtotime($to2);
 <table  width="100%" style="background-color:white;" class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
-<th colspan="12" style="text-align:center;"><?php echo $society_name; ?> TDS Payment Report Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
+<th colspan="7" style="text-align:center;"><?php echo $society_name; ?> TDS Payment Report Register From : <?php echo $from; ?> &nbsp;&nbsp; To : <?php echo $to; ?></th>
 </tr>
 <tr>
 <th style="width:15%;">Date of Payment</th>
@@ -62,29 +62,19 @@ $tomm = strtotime($to2);
 $total = 0;
 $total_tds = 0;
 $net_amt = 0;
-foreach($cursor1 as $dataaa)
-{
-$transaction_date = $dataaa['new_cash_bank']['transaction_date'];	
-$payment_date = date('d-m-Y',($transaction_date));
-//$cheque_number = $dataaa['new_cash_bank'][''];
-$user_id = (int)$dataaa['new_cash_bank']['user_id'];
-$account_type = (int)$dataaa['new_cash_bank']['account_type'];
-$amount = $dataaa['new_cash_bank']['amount'];
-$instrument_utr = $dataaa['new_cash_bank']['receipt_instruction'];
-$tds_id = (int)@$dataaa['new_cash_bank']['tds_id']; 
-$tds_tax = 0;
-	foreach($tds_arr as $tds_ddd)
+	foreach($cursor1 as $dataaa)
 	{
-		$tdsss_taxxx = (int)$tds_ddd[0];  
-		$tds_iddd = (int)$tds_ddd[1];  
-		if($tds_iddd == $tds_id) 
-		{
-		$tds_tax = $tdsss_taxxx;   
-		}
-	}
-	
-	$tds_amount = (round((@$tds_tax/100)*$amount));
-	$total_tds_amount = ($amount - $tds_amount);
+		$tds_amount=0;
+		$transaction_date = $dataaa['new_cash_bank']['transaction_date'];	
+		$payment_date = date('d-m-Y',($transaction_date));
+		//$cheque_number = $dataaa['new_cash_bank'][''];
+		$user_id = (int)$dataaa['new_cash_bank']['user_id'];
+		$account_type = (int)$dataaa['new_cash_bank']['account_type'];
+		$amount = $dataaa['new_cash_bank']['amount'];
+		$instrument_utr = $dataaa['new_cash_bank']['receipt_instruction'];
+		$tds_amount=@$dataaa['new_cash_bank']['tds_tax_amount']; 
+
+	$total_tds_amount = $amount - $tds_amount;
 	
 	
 	if($account_type == 1)
