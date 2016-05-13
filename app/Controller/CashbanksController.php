@@ -1873,7 +1873,7 @@ $excel="<table border='1'>
 		$cursor2=$this->new_cash_bank->find('all',array('conditions'=>$conditions,'order'=>$order));
 		foreach ($cursor2 as $collection) 
 		{
-			$tds_amount="";
+			$tds_amount=0;
 			$total_tds_amount="";
 			$tds_id="";
 			$receipt_no = $collection['new_cash_bank']['receipt_id'];
@@ -1889,36 +1889,19 @@ $excel="<table border='1'>
 			$amount = $collection['new_cash_bank']['amount'];
 			$current_date = $collection['new_cash_bank']['current_date'];		
 			$ac_type = $collection['new_cash_bank']['account_type'];
-		    $tds_id = (int)$collection['new_cash_bank']['tds_id']; 
-    $tds_tax = 0;
-	foreach($tds_arr as $tds_ddd)
-	{
-	$tdsss_taxxx = (int)$tds_ddd[0];  
-	$tds_iddd = (int)$tds_ddd[1];  
-	if($tds_iddd == $tds_id) 
-	{
-	$tds_tax = $tdsss_taxxx;   
-	}
-	}
-	
-	$tds_amount = (round(($tds_tax/100)*$amount));
-	$total_tds_amount=($amount - $tds_amount);	
-
-
-
-
-
-
-		
-	//$creation_date = date('d-m-Y',strtotime($current_date));											
-	if($ac_type == 1)
-	{						
-	$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($user_id)));  
-	foreach ($result_lsa as $collection) 
-	{
-	$user_name = $collection['ledger_sub_account']['name'];  
-	}	
-	}											
+			$tds_amount=$collection['new_cash_bank']['tds_tax_amount'];
+		    //$tds_id = (int)$collection['new_cash_bank']['tds_id']; 
+    
+		$total_tds_amount=$amount-$tds_amount;
+										
+		if($ac_type == 1)
+		{						
+		$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'ledger_sub_account_fetch'),array('pass'=>array($user_id)));  
+		foreach ($result_lsa as $collection) 
+		{
+		$user_name = $collection['ledger_sub_account']['name'];  
+		}	
+		}											
 		else if($ac_type == 2)
 		{
 		$result_lsa = $this->requestAction(array('controller' => 'hms', 'action' => 'expense_head'),array('pass'=>array($user_id)));  
@@ -9790,11 +9773,11 @@ $this->ath();
 	$tds_amount = (round((@$tds_tax/100)*$amount));
 	$total_tds_amount = ($amount - $tds_amount);
 
-echo $tds_amount; echo "<br>";
-	//$this->loadmodel('new_cash_bank');
-	//$this->new_cash_bank->updateAll(array("tds_tax_amount"=>$tds_amount),array("transaction_id"=>$transaction_id));
+
+	$this->loadmodel('new_cash_bank');
+	$this->new_cash_bank->updateAll(array("tds_tax_amount"=>$tds_amount),array("transaction_id"=>$transaction_id));
 	}
-	exit;
+	
 }
 //End bank_payment_database_modification// 
 
