@@ -11,7 +11,7 @@ $default_date = date('d-m-Y');
 			  <th style="width:20%;">Ledger A/c</th>
 			  <th style="width:20%;">Invoice Reference</th>
 			  <th style="width:20%;">Amount</th>
-			  <th style="width:20%;">TDS%</th>
+			  <th style="width:20%;">TDS Amount</th>
 			  </tr>
 
 
@@ -76,18 +76,7 @@ $default_date = date('d-m-Y');
 			  </td>
 			  
 			  
-				<td><select class="m-wrap chosen span12" onchange="tdssssamt(this.value,<?php echo $count; ?>)" id="tdssss<?php echo $count; ?>">
-				<option value="">Select</option>
-				<?php
-				for($k=0; $k<sizeof($tds_arr); $k++)
-				{
-				$tds_sub_arr = $tds_arr[$k];	
-				$tds_id = (int)$tds_sub_arr[1];
-				$tds_tax = $tds_sub_arr[0];	
-				?>
-				<option value= "<?php echo $tds_id; ?>"><?php echo $tds_tax; ?></option>
-				<?php } ?>                           
-				</select>
+				<td><input type="text" id="tds_tax<?php echo $count; ?>" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;">
 				</td>
 			  </tr>
 
