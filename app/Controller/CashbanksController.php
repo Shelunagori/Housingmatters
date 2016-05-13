@@ -1736,9 +1736,8 @@ $s_user_id=$this->Session->read('user_id');
 
 $this->set('s_role_id',$s_role_id);
 }
-//////////////////////// End Bank Payment View (Accounts) ///////////////////////////
-
-//////////////////////Start Bank Payment Show Ajax (Accounts)////////////////////////
+//End Bank Payment View (Accounts)//
+//Start Bank Payment Show Ajax (Accounts)//
 function bank_payment_show_ajax()
 {
 $this->layout='blank';
@@ -9718,7 +9717,8 @@ $this->payment_csv_converted->deleteAll($conditions4);
 echo "1";	
 	
 }
-////////////////////// End delete_bank_payment_row ////////////////////////////////
+//End delete_bank_payment_row//
+//Start petty_cash_payment_validation// 
 function petty_cash_payment_validation($transaction_date=null)
 {
 $this->layout=null;
@@ -9748,10 +9748,55 @@ $s_society_id = $this->Session->read('society_id');
 		echo "match";
 	}
 }
+//End petty_cash_payment_validation//
+//Start bank_payment_database_modification//  
+function bank_payment_database_modification()
+{
+$this->layout=null;
+$s_society_id = $this->Session->read('society_id');	
+$this->ath();	
+
+	$this->loadmodel('new_cash_bank');
+	$conditions=array("receipt_source"=>2);
+	$result_bank_payment=$this->new_cash_bank->find('all',array('conditions'=>$conditions));
+    foreach($result_bank_payment as $data)
+	{
+	$tds_id="";
+    $tds_amount=0;	
+	$transaction_id=(int)$data['new_cash_bank']['transaction_id'];
+	$tds_id=$data['new_cash_bank']['tds_id'];	
+	$amount=$data['new_cash_bank']['amount'];	
+	
+	
+	$this->loadmodel('reference');
+	$conditions=array("auto_id"=>3);
+	$cursor = $this->reference->find('all',array('conditions'=>$conditions));
+	foreach($cursor as $collection){
+	$tds_arr = $collection['reference']['reference'];
+	}
 
 
+    $tds_tax = 0;
+	foreach($tds_arr as $tds_ddd)
+	{
+	$tdsss_taxxx = (int)$tds_ddd[0];  
+	$tds_iddd = (int)$tds_ddd[1];  
+	if($tds_iddd == $tds_id) 
+	{
+	$tds_tax = $tdsss_taxxx;   
+	}
+	}
+	
+	$tds_amount = (round((@$tds_tax/100)*$amount));
+	$total_tds_amount = ($amount - $tds_amount);
 
-
+echo $tds_amount; echo "<br>";
+	//$this->loadmodel('new_cash_bank');
+	//$this->new_cash_bank->updateAll(array("tds_tax_amount"=>$tds_amount),array("transaction_id"=>$transaction_id));
+	}
+	exit;
+}
+//End bank_payment_database_modification// 
 
 }
 ?>
