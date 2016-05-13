@@ -3767,9 +3767,8 @@ $society_name = $dataa['society']['society_name'];
 }
 $this->set('society_name',$society_name);
 }
-//////////////////////////////////// End Fix Deposit Show Ajax ///////////////////////////////////////////////////////
-
-///////////////////////////////////////// Start Bank Payment Json //////////////////////////////////////////////////
+//End Fix Deposit Show Ajax//
+//Start Bank Payment Json//
 function bank_payment_json()
 {
 $this->layout="";
@@ -3839,6 +3838,16 @@ $output = json_encode(array('type'=>'error', 'text' => 'Amount Should be Numeric
 die($output);
 }
 
+if(!empty($child[3])){
+	$tds_amount=round($child[3]);	
+		if($tds_amount>= $child[2]){
+			$output = json_encode(array('type'=>'error', 'text' => 'Tds Amount Should be small than Amount in row '.$c));
+			die($output);	
+		}
+}
+
+
+
 
 if(empty($child[5])){
 $output = json_encode(array('type'=>'error', 'text' => 'Mode of Payment is Required in row '.$c));
@@ -3863,7 +3872,7 @@ foreach($myArray as $child)
 $transaction_date = $child[0];
 $ledgr_acc = $child[1];
 $amount = $child[2];
-$tds_id = $child[3];
+$tds_amount = round($child[3]);
 $net_amt = $child[4];
 $mode = $child[5];
 $instrument = $child[6];
@@ -3883,41 +3892,11 @@ $multipleRowData = Array( Array("transaction_id" => $i, "receipt_id" => $bbb,  "
 "transaction_date" => strtotime($transaction_date), "prepaired_by" => $s_user_id, 
 "user_id" => $ledger_acc, "invoice_reference" => @$invoice,"narration" => $narration, "receipt_mode" => $mode,
 "receipt_instruction" => $instrument, "account_head" => $bank_ac,  
-"amount" => $amount,"society_id" => $s_society_id, "tds_id" =>$tds_id,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
+"amount" => $amount,"society_id" => $s_society_id,"tds_tax_amount"=>$tds_amount,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
 $this->new_cash_bank->saveAll($multipleRowData);  
 
-//////////////////// End Insert///////////////////////////////
-///////////// TDS CALCULATION /////////////////////
-$this->loadmodel('reference');
-$conditions=array("auto_id" => 3);
-$cursor4=$this->reference->find('all',array('conditions'=>$conditions));
-foreach($cursor4 as $collection)
-{
-$tds_arr = $collection['reference']['reference'];	
-}
-if(!empty($tds_id))
-{
-for($r=0; $r<sizeof($tds_arr); $r++)
-{
-$tds_sub_arr = $tds_arr[$r];
-$tds_id2 = (int)$tds_sub_arr[1];
-if($tds_id2 == $tds_id)
-{
-$tds_rate = $tds_sub_arr[0];
-break;
-}
-}
-$tds_amount = (round(($tds_rate/100)*$amount));
-$total_tds_amount = ($amount - $tds_amount);
-}
-else
-{
-$total_tds_amount = $amount;
-$tds_amount = 0;
-}
 
-////////////END TDS CALCULATION //////////////////// 
-////////////////START LEDGER ENTRY///////////////////////
+
 if($acc_type == 1)
 {
 $l=$this->autoincrement('ledger','auto_id');
@@ -3934,7 +3913,7 @@ $this->ledger->saveAll($multipleRowData);
 }
 
 
-
+$total_tds_amount=$amount-$tds_amount;
 
 $sub_account_id_a = (int)$bank_ac;
 $l=$this->autoincrement('ledger','auto_id');

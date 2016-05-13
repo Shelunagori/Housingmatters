@@ -101,7 +101,7 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 			  
 			  
 			<td>
-			<input type="text" id="tds_tax1" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,1)">
+			<input type="text" id="tds_tax1" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,1)" onkeyup="numeric_vali2(this.value,1)">
 			</td>
 			  </tr>
 
@@ -184,6 +184,16 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 		return false;		
 		}
 	}
+	function numeric_vali2(vv,dd)
+	{
+		if($.isNumeric(vv)){
+		$("#validdn").html('');	
+		}else{
+		$("#validdn").html('<div class="alert alert-error" style="color:red; font-weight:600; font-size:13px;">Tds amount Should be Numeric in row '+ dd +'</div>');
+		$("#tds_tax"+ dd).val("");
+		return false;		
+		}
+	}
 </script>
 
 <script>
@@ -232,13 +242,13 @@ echo $this->requestAction(array('controller' => 'hms', 'action' => 'submenu'), a
 			var ledger_account = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(2) select").val();
 			var invoice = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(3) input").val();
 			var amount = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(4) input").val();
-			var tds_id = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(5) select").val();
+			var tds_tax_amount = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(2) td:nth-child(5) input").val();
 			var net_amt = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(1) input").val();
 			var mode = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(2) select").val();
 			var instrument = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(3) input").val();
 			var bank_acc = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(4) select").val();
 			var narration = $("#main_table tr:nth-child("+i+") td:nth-child(1) #sub_table2 tr:nth-child(4) td:nth-child(5) input").val();
-			ar.push([transaction_date,ledger_account,amount,tds_id,net_amt,mode,instrument,bank_acc,invoice,narration]);
+			ar.push([transaction_date,ledger_account,amount,tds_tax_amount,net_amt,mode,instrument,bank_acc,invoice,narration]);
 			}
 			var myJsonString = JSON.stringify(ar);
 			$.ajax({

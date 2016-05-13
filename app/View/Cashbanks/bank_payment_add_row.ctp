@@ -76,7 +76,7 @@ $default_date = date('d-m-Y');
 			  </td>
 			  
 			  
-				<td><input type="text" id="tds_tax<?php echo $count; ?>" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,<?php echo $count; ?>)">
+				<td><input type="text" id="tds_tax<?php echo $count; ?>" class="m-wrap span12" style="text-align:right; background-color:white !important; margin-top:2.5px;" onchange="tds_calculation2(this.value,<?php echo $count; ?>)" onkeyup="numeric_vali2(this.value,<?php echo $count; ?>)">
 				</td>
 			  </tr>
 
