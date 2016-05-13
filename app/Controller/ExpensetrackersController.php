@@ -727,19 +727,19 @@ $this->layout='blank';
 		die($output);
 		}
 		
-		if(empty($amt_inv)){
-		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required '));
-		die($output);
-		}
+		//if(empty($amt_inv)){
+		//$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice is Required '));
+		//die($output);
+		//}
 		
-		if(is_numeric($amt_inv))
-		{
-		}
-		else
-		{
-		$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric Value'));
-		die($output);
-		}
+		//if(is_numeric($amt_inv))
+		//{
+		//}
+		//else
+		//{
+		//$output=json_encode(array('report_type'=>'error','text'=>'Amount of Invoice Should be Numeric //Value'));
+		//die($output);
+		//}
 		
 		
 		///////////////////////////////// End code ///////////////////////

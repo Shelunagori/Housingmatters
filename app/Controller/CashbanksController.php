@@ -5877,14 +5877,11 @@ $output=json_encode(array('report_type'=>'publish','text'=>'sdgdgdssdgds'));
 die($output);
 
 }
-////////////////////////////// End Petty Cash receipt update Json //////////////////////////////////////////
-
-//////////////////////// Start bank_payment_import_excel ///////////////////////////
+//End Petty Cash receipt update Json//
+//Start bank_payment_import_excel//
 function bank_payment_import_excel()
 {
 $this->layout="";
-
-
 $filename="Bank_Payment_Import";
 header ("Expires: 0");
 header ("Last-Modified: " . gmdate("D,d M YH:i:s") . "GMT");
@@ -5894,19 +5891,17 @@ header ("Content-type: application/vnd.ms-excel");
 header ("Content-Disposition: attachment; filename=".$filename.".csv");
 header ("Content-Description: Generated Report" );
 
-
 $this->ath();
-
 $s_role_id=$this->Session->read('role_id');
 $s_society_id = (int)$this->Session->read('society_id');
 $s_user_id = (int)$this->Session->read('user_id');
 
-$excel= "Transaction Date,Ledger A/c,Amount,TDS in Percentage,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
-$excel.="12-10-2015,Sinking Fund,10000,2,NEFT,HHHG4455,SBI,for marketing,narration \n";
+$excel= "Transaction Date,Ledger A/c,Amount,TDS Amount,Mode of Payment,Instrument/UTR,Bank Account,Invoice Reference,Narration \n";
+$excel.="12-10-2015,Sinking Fund,10000,100,NEFT,HHHG4455,SBI,for marketing,narration \n";
 echo $excel;
 
 }
-///////////////////////////////// End bank_payment_import_excel ///////////////////////////////////////////
+//End bank_payment_import_excel//
 
 /////////////////////////////////// Start bank_payment_import_view //////////////////////////////////////////////
 function bank_payment_import_view()
