@@ -1,20 +1,23 @@
 <div style="background-color: #FFF;">
 <table style="backgroud-color:white; width:100%;" id="main_table">
 <?php
-foreach($result_bank_receipt_converted as $data)
-{
-$csv_auto_id = (int)$data['payment_csv_converted']['auto_id'];
-$transaction_date = $data['payment_csv_converted']['trajection_date'];	
-$ledger_account_id = (int)$data['payment_csv_converted']['ledger_ac'];	
-$type = (int)$data['payment_csv_converted']['type'];
-$amount = $data['payment_csv_converted']['amount'];		
-$tds = $data['payment_csv_converted']['tds'];	
-$mode = $data['payment_csv_converted']['mode'];	
-$instrument = $data['payment_csv_converted']['instrument'];	
-$bank_id = $data['payment_csv_converted']['bank'];	
-$invoice_ref = $data['payment_csv_converted']['invoice_ref'];
-$narration = $data['payment_csv_converted']['narration'];
-?>
+	foreach($result_bank_receipt_converted as $data)
+	{
+		$net_amount="";
+		$tds="";
+		$amount="";
+		$csv_auto_id = (int)$data['payment_csv_converted']['auto_id'];
+		$transaction_date = $data['payment_csv_converted']['trajection_date'];	
+		$ledger_account_id = (int)$data['payment_csv_converted']['ledger_ac'];	
+		$type = (int)$data['payment_csv_converted']['type'];
+		$amount = $data['payment_csv_converted']['amount'];		
+		$tds = $data['payment_csv_converted']['tds'];	
+		$mode = $data['payment_csv_converted']['mode'];	
+		$instrument = $data['payment_csv_converted']['instrument'];	
+		$bank_id = $data['payment_csv_converted']['bank'];	
+		$invoice_ref = $data['payment_csv_converted']['invoice_ref'];
+		$narration = $data['payment_csv_converted']['narration'];
+	?>
 <tr id="<?php echo $csv_auto_id; ?>">
 <td style="border:solid 1px blue;">
 
@@ -25,7 +28,7 @@ $narration = $data['payment_csv_converted']['narration'];
 			  <th style="width:20%;">Ledger A/c</th>
 			  <th style="width:20%;">Invoice Reference</th>
 			  <th style="width:20%;">Amount</th>
-			  <th style="width:20%;">TDS%</th>
+			  <th style="width:20%;">TDS Amount</th>
 			  </tr>
 
 
@@ -91,21 +94,11 @@ $narration = $data['payment_csv_converted']['narration'];
 			  </td>
 			  
 			  
-				<td><div><select class="m-wrap chosen span12" field="tdss" record_id="<?php echo $csv_auto_id; ?>">
-				<option value="" style="display:none;">Select</option>
-				<?php
-				for($k=0; $k<sizeof($tds_arr); $k++)
-				{
-				$tds_sub_arr = $tds_arr[$k];	
-				$tds_id = (int)$tds_sub_arr[1];
-				$tds_tax = $tds_sub_arr[0];	
-				?>
-				<option value= "<?php echo $tds_id; ?>" <?php if($tds_tax==$tds) { ?> selected="selected" <?php } ?>><?php echo $tds_tax; ?></option>
-				<?php } ?>                           
-				</select></div>
+				<td><div><input type="text" class="m-wrap span12" style="background-color:white !important; margin-top:2.5px;" field="tdss" record_id="<?php echo $csv_auto_id; ?>" value="<?php echo $tds; ?>">
+				</div>
 				</td>
 			  </tr>
-
+              <?php $net_amount = $amount-$tds; ?>
               <tr>
 			  <th>Net Amount</th>
 			  <th>Mode of Payment</th>
@@ -117,7 +110,7 @@ $narration = $data['payment_csv_converted']['narration'];
 			  <tr>
 				  
 				  <td id="tds_show1"><input type="text"  class="m-wrap span12" 
-				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;">
+				  readonly="readonly" style="background-color:white !important; margin-top:2.5px;" value="<?php echo $net_amount; ?>">
 				  </td>
 				  
 				<td><div class="four">

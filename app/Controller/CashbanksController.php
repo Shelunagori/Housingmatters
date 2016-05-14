@@ -8843,8 +8843,8 @@ if($this->RequestHandler->isAjax()){
 	
 	
 }
-///////////////////// End bank_payment_import_csv ////////////////////////////////////
-/////////////////// Start Upload_Bank_payment_csv_file ///////////////////////////////
+//End bank_payment_import_csv//
+//Start Upload_Bank_payment_csv_file//
 function Upload_Bank_payment_csv_file()
 {
 $s_society_id = $this->Session->read('society_id');
@@ -8868,8 +8868,8 @@ $s_society_id = $this->Session->read('society_id');
 	
 	
 }
-//////////////////// End Upload_Bank_payment_csv_file //////////////////////////////////
-/////////////////// Start read_payment_csv_file ///////////////////////////////////
+//End Upload_Bank_payment_csv_file//
+//Start read_payment_csv_file//
 function read_payment_csv_file(){
 	$this->layout=null;
 	$s_society_id = $this->Session->read('society_id');
@@ -8899,18 +8899,15 @@ function read_payment_csv_file(){
 			
 			$this->loadmodel('bank_payment_csv');
 			$auto_id=$this->autoincrement('bank_payment_csv','auto_id');
-			$this->bank_payment_csv->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger,"amount"=>$amount, "tds" => $tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_converted"=>"NO")));
+			$this->bank_payment_csv->saveAll(Array(Array("auto_id" => $auto_id, "trajection_date" => $trajection_date,"ledger_ac"=>$ledger,"amount"=>$amount, "tds"=>$tds, "mode" => $mode,"instrument"=>$instrument,"bank"=>$bank,"invoice_ref"=>$invoice_ref,"narration"=>$narration,"society_id"=>$s_society_id,"is_converted"=>"NO")));
 		}
 	}
 	$this->loadmodel('import_payment_record');
 	$this->import_payment_record->updateAll(array("step2" => 1),array("society_id" => $s_society_id, "module_name" => "BP"));
 	die(json_encode("READ"));
 }
-
-
-
-/////////////////// End read_payment_csv_file ///////////////////////////////////
-////////////////// Start convert_payment_imported_data ////////////////////////////
+//End read_payment_csv_file//
+//Start convert_payment_imported_data//
 function convert_payment_imported_data()
 {
 $this->layout=null;
@@ -8985,8 +8982,8 @@ $bank_id = (int)$collection['ledger_sub_account']['auto_id'];
 	
 	
 }
-////////////////// End convert_payment_imported_data /////////////////////////////
-//////////////////// Start modify_bank_payment_csv_data //////////////////////////
+//End convert_payment_imported_data//
+//Start modify_bank_payment_csv_data//
 function modify_bank_payment_csv_data($page=null)
 {
 if($this->RequestHandler->isAjax()){
@@ -9056,10 +9053,9 @@ $this->loadmodel('accounts_group');
 $conditions=array("accounts_id" => 4);
 $cursor13=$this->accounts_group->find('all',array('conditions'=>$conditions));
 $this->set('cursor13',$cursor13);
-	
 }
-////////////////////// End modify_bank_payment_csv_data /////////////////////////////
-///////////////////// Start allow_import_bank_payment ///////////////////////////////
+//End modify_bank_payment_csv_data//
+//Start allow_import_bank_payment//
 function allow_import_bank_payment()
 {
 $this->layout=null;
@@ -9072,6 +9068,8 @@ $this->layout=null;
 	$order=array('bank_receipt_csv_converted.auto_id'=>'ASC');
 	$result_bank_receipt_converted=$this->payment_csv_converted->find('all',array('conditions'=>$conditions));
 	foreach($result_bank_receipt_converted as $receipt_converted){
+		$amount="";
+		$tds="";
 		$auto_id=$receipt_converted["payment_csv_converted"]["auto_id"];
 		$trajection_date=$receipt_converted["payment_csv_converted"]["trajection_date"];
 		$ledger = $receipt_converted["payment_csv_converted"]["ledger_ac"];
@@ -9121,6 +9119,25 @@ else
 $amount_vv = 1;
 }
 
+if(!empty($tds)){
+if(is_numeric($tds))
+{ 
+$tds_vv = 0;
+}
+else
+{
+$tds_vv = 1;
+}	
+if($tds>=$amount)	
+{
+$tds_v=1;	
+}
+else{
+$tds_v=0;	
+}
+}
+
+
 
 if(empty($mode)){ $mode_v = 1; }else{ $mode_v = 0; }	
 
@@ -9131,7 +9148,7 @@ if(empty($instrument)){ $inst_v = 1; }else{ $inst_v = 0;  }
 
 if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }		
 		
-		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v);
+		$v_result[]=array($bank_v,$inst_v,$mode_v,$amount_vv,$amount_v,$ledger_v,$transs_v,$trnsaction_v,$tds_vv,$tds_v);
 		
 	} 
 	foreach($v_result as $data){
@@ -9147,9 +9164,8 @@ if(empty($bank)){ $bank_v = 1; }else{ $bank_v = 0; }
 	
 	
 }
-/////////////////End allow_import_bank_payment /////////////////////////////////////
-////////////////// Start auto_save_bank_payment /////////////////////////////////////
-
+//End allow_import_bank_payment//
+//Start auto_save_bank_payment//
 function auto_save_bank_payment($record_id=null,$field=null,$value=null){
 	$this->layout=null;
 	
