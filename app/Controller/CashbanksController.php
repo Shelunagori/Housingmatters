@@ -528,7 +528,7 @@ function final_import_bank_receipt_ajax(){
 	$this->layout=null;
 	$s_society_id = $this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');
-	
+	$this->ath();
 	$this->loadmodel('import_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "BR");
 	$result_import_record = $this->import_record->find('all',array('conditions'=>$conditions));
@@ -5093,8 +5093,8 @@ $cursor2=$this->society->find('all',array('conditions'=>$conditions));
 $this->set('cursor2',$cursor2);
 
 }
-///////////////////////////// End bank receipt html view //////////////////////////////////////////////////////////////
-////////////////////////Start Bank Receipt Deposit Slip /////////////////////////////////////////////////////////////
+//End bank receipt html view//
+//Start Bank Receipt Deposit Slip//
 function bank_receipt_deposit_slip()
 {
 if($this->RequestHandler->isAjax()){
@@ -9317,7 +9317,7 @@ function final_import_bank_payment_ajax()
 $this->layout=null;
 	$s_society_id = (int)$this->Session->read('society_id');
 	$s_user_id= (int)$this->Session->read('user_id');
-	
+	$this->ath(); 
 	$this->loadmodel('import_payment_record');
 	$conditions=array("society_id" => $s_society_id,"module_name" => "BP");
 	$result_import_record = $this->import_payment_record->find('all',array('conditions'=>$conditions));
@@ -9337,6 +9337,8 @@ $this->layout=null;
 		$result_import_converted = $this->payment_csv_converted->find('all',array('conditions'=>$conditions,'limit'=>2));
 		
 		foreach($result_import_converted as $import_converted){
+			$tds_id=0;
+			
 			$bank_payment_csv_id=(int)$import_converted["payment_csv_converted"]["auto_id"];
 			$transaction_date=$import_converted["payment_csv_converted"]["trajection_date"];
 			$ledger_acc=(int)$import_converted["payment_csv_converted"]["ledger_ac"];
@@ -9349,9 +9351,7 @@ $this->layout=null;
 			$bank_ac=(int)$import_converted["payment_csv_converted"]["bank"];
 			$narration=$import_converted["payment_csv_converted"]["narration"];
 			$transaction_date = date('Y-m-d',strtotime($transaction_date));
-			
 	
-		//////////////////////////////////////////	
 $current_date = date('Y-m-d');		
 $i=$this->autoincrement('new_cash_bank','transaction_id');
 $bbb=$this->autoincrement_with_receipt_source('new_cash_bank','receipt_id',2);
@@ -9361,41 +9361,12 @@ $multipleRowData = Array( Array("transaction_id" => $i, "receipt_id" => $bbb,  "
 "transaction_date" => strtotime($transaction_date), "prepaired_by" => $s_user_id, 
 "user_id" => $ledger_acc,"invoice_reference" => @$invoice,"narration" => $narration, "receipt_mode" => $mode,
 "receipt_instruction" => $instrument, "account_head" => $bank_ac,  
-"amount" => $amount,"society_id" => $s_society_id, "tds_id" =>$tds_id,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
+"amount" => $amount,"society_id" => $s_society_id, "tds_tax_amount" =>$tds_id,"account_type"=>$acc_type,"receipt_source"=>2,"auto_inc"=>"YES"));
 $this->new_cash_bank->saveAll($multipleRowData);  
 
-//////////////////// End Insert///////////////////////////////
-///////////// TDS CALCULATION /////////////////////
-$this->loadmodel('reference');
-$conditions=array("auto_id" => 3);
-$cursor4=$this->reference->find('all',array('conditions'=>$conditions));
-foreach($cursor4 as $collection)
-{
-$tds_arr = $collection['reference']['reference'];	
-}
-if(!empty($tds_id))
-{
-for($r=0; $r<sizeof($tds_arr); $r++)
-{
-$tds_sub_arr = $tds_arr[$r];
-$tds_id2 = (int)$tds_sub_arr[1];
-if($tds_id2 == $tds_id)
-{
-$tds_rate = $tds_sub_arr[0];
-break;
-}
-}
-$tds_amount = (round(($tds_rate/100)*$amount));
-$total_tds_amount = ($amount - $tds_amount);
-}
-else
-{
-$total_tds_amount = $amount;
-$tds_amount = 0;
-}
 
-////////////END TDS CALCULATION //////////////////// 
-////////////////START LEDGER ENTRY///////////////////////
+
+
 if($acc_type == 1)
 {
 $l=$this->autoincrement('ledger','auto_id');
@@ -9411,8 +9382,8 @@ $multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($t
 $this->ledger->saveAll($multipleRowData); 
 }
 
-
-
+$tds_id=round($tds_id);
+$total_tds_amount=$amount-$tds_id;
 
 $sub_account_id_a = (int)$bank_ac;
 $l=$this->autoincrement('ledger','auto_id');
@@ -9424,13 +9395,13 @@ $multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($t
 $this->ledger->saveAll($multipleRowData); 
 
 
-if($tds_amount > 0)
+if($tds_id > 0)
 {
 $sub_account_id_t = 16;
 $l=$this->autoincrement('ledger','auto_id');
 $this->loadmodel('ledger');
 $multipleRowData = Array( Array("auto_id" => $l,"transaction_date"=>strtotime($transaction_date),
-"debit" =>null,"credit" =>$tds_amount,"ledger_account_id" =>$sub_account_id_t, 
+"debit" =>null,"credit" =>$tds_id,"ledger_account_id" =>$sub_account_id_t, 
 "ledger_sub_account_id" =>null, "table_name" =>"new_cash_bank","element_id" =>$i, 
 "society_id" => $s_society_id));
 $this->ledger->saveAll($multipleRowData); 

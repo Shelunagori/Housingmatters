@@ -78,6 +78,7 @@
 					?>
 					<option value="<?php echo $auto_id; ?>,2" <?php if($ledger_account_id == $auto_id && $type == 2) { ?> selected="selected" <?php } ?> ><?php echo $name; ?></option>
 					<?php }} ?>
+					<option value="32,2" <?php if($ledger_account_id == 32 && $type == 2) { ?> selected="selected" <?php } ?>>Cash-in-hand</option>
 					</select></div>
 					</td>
 

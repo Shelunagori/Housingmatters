@@ -8,7 +8,7 @@ public $components = array(
 );
 var $name = 'Expensetrackers';
 
-///////////////////// Start Expense Tracker Pie Chart (Accounts)///////////////////////////////
+//Start Expense Tracker Pie Chart (Accounts)//
 function expense_tracker_pie_chart()
 {
 if($this->RequestHandler->isAjax()){
@@ -1207,14 +1207,14 @@ $this->import_expense_tracker_record->updateAll(array("step4" => 1),array("socie
 		    
 }else{ echo "F"; die; }
 }
-////////////////// End allow_import_expense_tracker ////////////////////////////
-//////////////////// Start final_import_expense_tracker ///////////////////////
+//End allow_import_expense_tracker//
+//Start final_import_expense_tracker//
 function final_import_expense_tracker()
 {
 $this->layout=null;
 $s_society_id = $this->Session->read('society_id');
 $s_user_id=$this->Session->read('user_id');	
-
+$this->ath();
 $this->loadmodel('import_expense_tracker_record');
 $conditions=array("society_id" => $s_society_id,"module_name" => "ET");
 $result_import_record = $this->import_expense_tracker_record->find('all',array('conditions'=>$conditions));

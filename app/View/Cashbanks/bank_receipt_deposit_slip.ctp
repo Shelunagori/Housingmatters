@@ -58,7 +58,7 @@ $nnn = 55;
 foreach($cursor1 as $collection)
 {
 $receipt_mode = $collection['new_cash_bank']['receipt_mode'];
-if($receipt_mode == "Cheque")
+if($receipt_mode == "Cheque" || $receipt_mode == "cheque")
 {	
 $nnn = 555;
 }		
@@ -170,7 +170,7 @@ $wing_flat = $this->requestAction(array('controller' => 'hms', 'action' => 'wing
 			$TransactionDate = date('d-m-Y',$TransactionDate);
 			//$total_debit =  $total_debit + $amount; 
 $receipt_date = date('d-m-Y',($receipt_date));		
-if($receipt_mode == "Cheque")
+if($receipt_mode == "Cheque" || $receipt_mode == "cheque")
 {
 $total_debit =  $total_debit + $amount; 
 
