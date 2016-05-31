@@ -93,6 +93,7 @@ $this->ath();
 
 }
 
+
 function Upload_user_info_csv_file(){
 	$s_society_id = $this->Session->read('society_id');
 	$s_user_id=$this->Session->read('user_id');
@@ -4677,14 +4678,17 @@ if ($this->request->is('post'))
 				foreach($result_user as $data)
 				{
 				
-				 $user_id=$data['user']['user_id'];
-				 $society_id=$data['user']['society_id']; 
-				$user_name=$data['user']['user_name'];
-				$wing=$data['user']['wing'];
-				$tenant=$data['user']['tenant'];
-				$role_id=$data['user']['default_role_id'];
-				$profile=@$data['user']['profile_status'];
-				$slide_show=@$data['user']['slide_show'];
+					$user_id=$data['user']['user_id'];
+					$society_id=$data['user']['society_id']; 
+					$user_name=$data['user']['user_name'];
+					$email=$data['user']['email'];
+					$mobile=$data['user']['mobile'];
+					$verify_member=(int)$data['user']['verify_member'];
+					$wing=$data['user']['wing'];
+					$tenant=$data['user']['tenant'];
+					$role_id=$data['user']['default_role_id'];
+					$profile=@$data['user']['profile_status'];
+					$slide_show=@$data['user']['slide_show'];
 					if($slide_show==2){
 						$this->loadmodel('user');
 						$this->user->updateAll(array('slide_show'=>0),array('user_id'=>$user_id));
@@ -4711,6 +4715,17 @@ if ($this->request->is('post'))
 						}
 					}
 				}
+				
+				if($verify_member==0){
+					
+						if(!empty($mobile)){
+
+								goto verify;
+
+						}
+				}
+				
+				
 					$this->loadmodel('user');
 					$conditions5=array('signup_random'=>$password);
 					$res_n=$this->user->find('all',array('conditions'=>$conditions5));
@@ -4750,7 +4765,13 @@ if ($this->request->is('post'))
 				
 				a:
 				$this->set('wrong', 'Login is not allowed by Administrator ');
-				 
+				verify:
+				if($verify_member==0){
+					$de_user_id=$this->encode($user_id,'housingmatters');
+					$random=$de_user_id;
+					$this->response->header('Location', $this->webroot.'hms/verify_member?q='.$random.' ');
+					
+				} 
 			 }
 			 else
 			 {
@@ -7027,6 +7048,54 @@ $this->send_notification('<span class="label label-info" ><i class="icon-bullhor
 	
 	
 }
+
+
+
+
+function verify_member(){
+	
+$this->layout='without_session';
+$this->set('webroot_path',$this->webroot_path());
+$q=$this->request->query['q'];
+$user_id=(int)$this->decode($q,'housingmatters');	
+$this->loadmodel('user');
+$conditions=array('user_id'=>$user_id);
+$result_user=$this->user->find('all',array('conditions'=>$conditions));
+	foreach ($result_user as $collection){
+		$mobile=$collection['user']["mobile"];
+		$login_id=$collection['user']["login_id"];
+		$society_id=$collection['user']["society_id"];
+		$user_name=$collection['user']["user_name"];
+		$role_id=$collection['user']["default_role_id"];
+		$profile_status=@$collection['user']["profile_status"];
+
+	}
+
+
+	$mobile_verify= substr($mobile, 6, 4);
+	if($this->request->is('POST')) {
+		$pass=$this->request->data['pass'];
+		if($mobile_verify==$pass){
+			
+				$this->Session->write('user_id', $user_id);
+				$this->Session->write('login_id', $login_id);
+				$this->Session->write('role_id', $role_id);
+				$this->Session->write('society_id', $society_id);
+				$this->Session->write('user_name', $user_name);
+				$this->loadmodel('user');
+				$this->user->updateAll(array('verify_member' => 1),array('user_id'=>$user_id));
+				$this->redirect(array('action' => 'dashboard'));
+			
+		 }else{
+			
+			$this->redirect(array('action' => 'logout'));
+		 }
+		
+		
+	}
+	
+}
+
 
 function notice_approval_reject()
 {
@@ -10395,6 +10464,7 @@ $conditions=array('user.profile_status'=> array('$ne' => 2));
 $this->set('result_not_login',$this->user->find('all',array('conditions'=>$conditions)));
 
 }
+
 
 function set_new_password()
 {
@@ -26821,6 +26891,8 @@ $output=json_encode(array('type'=>'success','text'=>'Fixed Asset  is generated s
 die($output); 
 }
 /////////////////////////End fix_asset_update_json /////////////////////////////////////	
+
+
 
 
 }
